@@ -1,0 +1,76 @@
+[
+{
+"id": 1,
+"short": "DM",
+"full": "Death Match",
+"description": "قتل لاعب بدون سبب أو سيناريو RP.",
+"keywords": [
+"dm",
+"قتل",
+"قتل بدون سبب",
+"ضرب بدون سبب",
+"death match"
+]
+},
+{
+"id": 2,
+"short": "VDM",
+"full": "Vehicle Death Match",
+"description": "قتل لاعب باستخدام مركبة بدون سبب.",
+"keywords": [
+"vdm",
+"دهس",
+"قتل بالسيارة",
+"سيارة",
+"دهس لاعب"
+]
+},
+{
+"id": 3,
+"short": "MG",
+"full": "Meta Gaming",
+"description": "استخدام معلومات خارج الرول بلاي داخل الرول بلاي.",
+"keywords": [
+"mg",
+"ميتا",
+"معلومات خارجية",
+"meta gaming"
+]
+},
+{
+"id": 4,
+"short": "PG",
+"full": "Power Gaming",
+"description": "تنفيذ أفعال غير واقعية أو مستحيلة داخل الرول بلاي.",
+"keywords": [
+"pg",
+"باور جيمينج",
+"افعال غير واقعية",
+"power gaming"
+]
+},
+{
+"id": 5,
+"short": "RK",
+"full": "Revenge Kill",
+"description": "العودة لمكان الموت والانتقام بعد القتل.",
+"keywords": [
+"rk",
+"انتقام",
+"رجع وانتقم",
+"revenge kill"
+]
+},
+{
+"id": 6,
+"short": "TK",
+"full": "Team Kill",
+"description": "قتل عضو من نفس الفريق أو الفاكشن.",
+"keywords": [
+"tk",
+"قتل زميل",
+"قتل عضو فاكشن",
+"team kill"
+]
+}
+]
