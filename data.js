@@ -352,4 +352,340 @@ const siteData = {
         { category: "اساسية", command: "Auncuff", meaning: "فك كلبش" },
         { category: "اساسية", command: "Marry id id", meaning: "تزويج شخصين" },
         { category: "اساسية", command: "Setjob id 5", meaning: "اعطاء رخصة ميكانيكي" },
-        { category: "
+        { category: "اساسية", command: "Nearbyshops", meaning: "معرفة ايدي البائع" },
+        { category: "اساسية", command: "Showfactions", meaning: "مشاهدة جميع الفاكشنات" },
+        { category: "اساسية", command: "Showfeedbacks", meaning: "مشاهدة التقييم" },
+        { category: "اساسية", command: "Seefar 250", meaning: "تخفيف ال لاق" },
+
+        // ===== ريبورت (Reports) =====
+        { category: "ريبورت", command: "Ar", meaning: "قبول ريبورت" },
+        { category: "ريبورت", command: "Ri", meaning: "قراءة ريبورت" },
+        { category: "ريبورت", command: "Di", meaning: "رفع ريبورت" },
+        { category: "ريبورت", command: "Cr", meaning: "قفل ريبورت" },
+        { category: "ريبورت", command: "FR", meaning: "الغاء ريبورت من قبل ادمن" },
+        { category: "ريبورت", command: "Showfeedbacks", meaning: "مشاهدة التقييم" },
+        { category: "ريبورت", command: "Getpoint / mypoints", meaning: "معرفة نقاطك" },
+
+        // ===== عقاب (Punishments) =====
+        { category: "عقاب", command: "Jail", meaning: "سجن واحد" },
+        { category: "عقاب", command: "ojail", meaning: "سجن لاعب بلا اتصال" },
+        { category: "عقاب", command: "Unjail", meaning: "فك سجن" },
+        { category: "عقاب", command: "jailed", meaning: "رؤية جميع المساجين" },
+        { category: "عقاب", command: "ck", meaning: "اعطاء سي كي" },
+        { category: "عقاب", command: "cks", meaning: "رؤية جميع السي كي" },
+        { category: "عقاب", command: "unck", meaning: "فك السي كي" },
+        { category: "عقاب", command: "warn", meaning: "اعطاء تحذير (3 تحذيرات = باند)" },
+        { category: "عقاب", command: "Pkick", meaning: "طرد اللاعب" },
+        { category: "عقاب", command: "Slap", meaning: "اعطاء سلاب" },
+        { category: "عقاب", command: "Bury", meaning: "دفن لاعب" },
+        { category: "عقاب", command: "sjail", meaning: "سجن لاعب بدون علم احد (للادمن فقط)" },
+        { category: "عقاب", command: "Skick", meaning: "طرد لاعب بدون علم احد (للادمن فقط)" },
+        { category: "عقاب", command: "soban", meaning: "باند لاعب بدون علم احد (للادمن فقط)" },
+        { category: "عقاب", command: "sojail", meaning: "سجن لاعب بلا اتصال بدون علم احد" },
+        { category: "عقاب", command: "showban", meaning: "معرفة سبب الحظر" },
+        { category: "عقاب", command: "oban", meaning: "حظر لاعب بلا اتصال" },
+        { category: "عقاب", command: "pban", meaning: "حظر لاعب لمدة محددة" },
+        { category: "عقاب", command: "Unbind", meaning: "فك باند" },
+        { category: "عقاب", command: "banaccount", meaning: "باند لحساب معين" },
+        { category: "عقاب", command: "Findserial", meaning: "معرفة سريال لاعب" },
+        { category: "عقاب", command: "banip [IP] [Reason]", meaning: "باند ايبي" },
+        { category: "عقاب", command: "banserial [Serial] [Reason]", meaning: "باند سريال" },
+
+        // ===== عامة (General) =====
+        { category: "عامة", command: "quitjob", meaning: "خروج من الوظيفة" },
+        { category: "عامة", command: "setvol", meaning: "رفع صوت راديو السيارة" },
+        { category: "عامة", command: "eject", meaning: "انزال شخص من سيارتك" },
+        { category: "عامة", command: "glue", meaning: "تثبيت اللاعب فوق الاشياء" },
+        { category: "عامة", command: "staff", meaning: "رؤية الاداريين المتواجدين" },
+        { category: "عامة", command: "seefar 250", meaning: "تخفيف ال لاق" },
+        { category: "عامة", command: "status", meaning: "كتابة حالة فوق راس اللاعب" },
+        { category: "عامة", command: "clearchat", meaning: "مسح الشات" },
+        { category: "عامة", command: "showchat", meaning: "اخفاء/اظهار الشات" },
+        { category: "عامة", command: "ooc", meaning: "التحدث في الشات العام" },
+        { category: "عامة", command: "w", meaning: "تهمس لشخص" },
+        { category: "عامة", command: "s", meaning: "انتبه لي" },
+        { category: "عامة", command: "district", meaning: "تنبيه اطلاق نار" },
+        { category: "عامة", command: "writenote", meaning: "كتابة نوته" },
+        { category: "عامة", command: "tuneradio", meaning: "دخول تردد راديو" },
+        { category: "عامة", command: "toggleradio", meaning: "قفل/تشغيل الراديو" },
+        { category: "عامة", command: "reconnect", meaning: "اعادة تشغيل السيرفر" },
+        { category: "عامة", command: "ads", meaning: "عمل اعلان" },
+        { category: "عامة", command: "texlist", meaning: "ازالة الديكور من منزلك" },
+        { category: "عامة", command: "sellproperty", meaning: "بيع منزلك للسيرفر" },
+        { category: "عامة", command: "movesafe", meaning: "تحريك خزنة" },
+        { category: "عامة", command: "gate", meaning: "فتح بوابة" },
+        { category: "عامة", command: "nearbye", meaning: "اظهار/اخفاء او اصلاح السهم" },
+        { category: "عامة", command: "restock", meaning: "تعبئة البائعين في المحل" },
+        { category: "عامة", command: "history", meaning: "اظهار الهوستري" },
+        { category: "عامة", command: "cup", meaning: "حمل شخص" },
+        { category: "عامة", command: "cdw", meaning: "انزال شخص" },
+        { category: "عامة", command: "animselect / anims", meaning: "جميع الحركات" },
+        { category: "عامة", command: "fp", meaning: "منظور الشخص الاول" },
+        { category: "عامة", command: "pm", meaning: "ترسل لشخص في الخاص" },
+
+        // ===== ليدر (Leader) =====
+        { category: "ليدر", command: "gov", meaning: "عمل اعلان وظيف" },
+        { category: "ليدر", command: "issuebadge", meaning: "عمل شارة" },
+        { category: "ليدر", command: "togglef", meaning: "قفل شات الوظيفة" },
+        { category: "ليدر", command: "f", meaning: "شات الوظيفة" },
+        { category: "ليدر", command: "fl", meaning: "شات الليدرات" },
+        { category: "ليدر", command: "hq", meaning: "شات عام الوظيفة" },
+
+        // ===== راديو (Radio) =====
+        { category: "راديو", command: "tuneradio", meaning: "دخول تردد راديو" },
+        { category: "راديو", command: "toggleradio", meaning: "قفل/تشغيل الراديو" },
+        { category: "راديو", command: "rf", meaning: "صنع او حذف راديو لفاكشن" },
+        { category: "راديو", command: "srd", meaning: "قفل جميع راديو السيارات حولك" },
+        { category: "راديو", command: "setvol 100", meaning: "التحكم بدرجة صوت راديو السيارة" },
+
+        // ===== اسعاف (EMS) =====
+        { category: "اسعاف", command: "cpr", meaning: "حركة انعاش" },
+        { category: "اسعاف", command: "mrevive", meaning: "امر انعاش" },
+        { category: "اسعاف", command: "heal 100", meaning: "اعطاء دم" },
+        { category: "اسعاف", command: "backup", meaning: "عمل باك اب" },
+
+        // ===== جندي (Police/Military) =====
+        { category: "جندي", command: "setwalk 62", meaning: "مسك صلاح" },
+        { category: "جندي", command: "togattach", meaning: "حمل السلاح على الصدر" },
+        { category: "جندي", command: "handsup", meaning: "امر الاستسلام" },
+        { category: "جندي", command: "gunup", meaning: "امر رفع السلاح على المجرم" },
+        { category: "جندي", command: "bat", meaning: "ترفع السلاح" },
+        { category: "جندي", command: "ticket", meaning: "اعطاء مخالفات" },
+        { category: "جندي", command: "takelicense", meaning: "سحب رخصة شخص" },
+        { category: "جندي", command: "fingerprint", meaning: "تشوف بصمة الشخص" },
+        { category: "جندي", command: "traffic", meaning: "اظهار لوحات فوق السيارة" },
+        { category: "جندي", command: "n", meaning: "تبديل وضعية السلاح" },
+        { category: "جندي", command: "mdc", meaning: "قائمة البلاغات" },
+        { category: "جندي", command: "throwspikes", meaning: "رمي الاشواك" },
+        { category: "جندي", command: "removespikes", meaning: "حذف الاشواك" },
+        { category: "جندي", command: "togspeedcamera 120", meaning: "امر ردار السرعة" },
+
+        // ===== صحافة (Press) =====
+        { category: "صحافة", command: "interview", meaning: "اعطاء ميك" },
+        { category: "صحافة", command: "endinterview", meaning: "اخذ الميك" },
+        { category: "صحافة", command: "starttv", meaning: "عمل بث مباشر" },
+        { category: "صحافة", command: "endtv", meaning: "انهاء البث المباشر" },
+        { category: "صحافة", command: "movetv", meaning: "تحريك الكاميرا" },
+        { category: "صحافة", command: "i", meaning: "للتحدث" },
+
+        // ===== محكمة (Court) =====
+        { category: "محكمة", command: "changename", meaning: "تغيير اسم" },
+        { category: "محكمة", command: "marry", meaning: "امر زواج" },
+        { category: "محكمة", command: "divorce", meaning: "امر طلاق" },
+
+        // ===== مطار (Airport) =====
+        { category: "مطار", command: "fuel", meaning: "طلب تعبئة بنزين للطائرة" },
+        { category: "مطار", command: "air", meaning: "التحدث في الراديو الجوي" },
+        { category: "مطار", command: "maps", meaning: "رؤية تخطيط المطارات" },
+
+        // ===== صيانة (Mechanic) =====
+        { category: "صيانة", command: "towbike", meaning: "سحب دراجة" },
+        { category: "صيانة", command: "veh", meaning: "تصليح سيارة" },
+        { category: "صيانة", command: "Edveh", meaning: "التعديل على السيارة" },
+
+        // ===== انتقال (Teleport) =====
+        { category: "انتقال", command: "Gotoplace", meaning: "الانتقال الى مكان (igs/bank/ls/lv/sf/ash/dmv/1str/sfpd/cityhall)" },
+        { category: "انتقال", command: "goto", meaning: "انتقال لشخص" },
+        { category: "انتقال", command: "gotoveh", meaning: "انتقال لسيارة" },
+        { category: "انتقال", command: "gotomark", meaning: "انتقال لمارك" },
+        { category: "انتقال", command: "gotointi", meaning: "انتقال داخل انترو" },
+        { category: "انتقال", command: "gotohouse / gotoint", meaning: "انتقال لانترو" },
+        { category: "انتقال", command: "gotogate", meaning: "انتقال لبوابة" },
+
+        // ===== مود (Mode) =====
+        { category: "مود", command: "startres", meaning: "تشغيل مود" },
+        { category: "مود", command: "stopres", meaning: "ايقاف مود" },
+        { category: "مود", command: "restartres", meaning: "عمل ريستارت لمود" },
+        { category: "مود", command: "mods", meaning: "اظهار مود السيارات" },
+
+        // ===== سحب (Pull) =====
+        { category: "سحب", command: "gethere", meaning: "سحب شخص" },
+        { category: "سحب", command: "getveh", meaning: "سحب سيارة" },
+
+        // ===== ارسال (Send) =====
+        { category: "ارسال", command: "Sendto", meaning: "ارسال شخص لشخص" },
+        { category: "ارسال", command: "Sendtoveh", meaning: "ارسال شخص لسيارة" },
+        { category: "ارسال", command: "Sendveh", meaning: "ارسال سيارة لشخص" },
+
+        // ===== ريستارت (Restart) =====
+        { category: "ريستارت", command: "restart bank", meaning: "ريستارت البنك" },
+        { category: "ريستارت", command: "restartres", meaning: "ريستارت مود" },
+        { category: "ريستارت", command: "restartcarshop", meaning: "ريستارت معرض السيارات" },
+        { category: "ريستارت", command: "restartvehall", meaning: "ريستارت جميع السيارات" },
+        { category: "ريستارت", command: "resetaccount", meaning: "ريستارت لحساب معين" },
+        { category: "ريستارت", command: "restartresfaction-system", meaning: "ريستارت فاكشن" }
+    ],
+
+    // ========== الانترو (Interiors) ==========
+    interiors: [
+        { name: "قصر", image: "https://e.top4top.io/p_2086ggmpm7.png" },
+        { name: "مكتب", image: "https://f.top4top.io/p_2086djy703.png" },
+        { name: "مخزن", image: "https://e.top4top.io/p_2086r5j3j2.png" },
+        { name: "محل 1", image: "https://k.top4top.io/p_20869f9kn1.png" },
+        { name: "محل 2", image: "https://l.top4top.io/p_2086hmz3i2.png" },
+        { name: "فيلا", image: "https://d.top4top.io/p_2086sajbg6.png" },
+        { name: "ورش", image: "https://h.top4top.io/p_2086t8ef05.png" },
+        { name: "بيت 1", image: "https://i.top4top.io/p_2086dzm8x1.png" },
+        { name: "بيت 2", image: "https://j.top4top.io/p_20867eyhb2.png" },
+        { name: "غرف", image: "https://a.top4top.io/p_208663dgi3.png" },
+        { name: "حكومي", image: "https://k.top4top.io/p_208689i9p1.png" },
+        { name: "معرض", image: "https://g.top4top.io/p_2086rnurc4.png" },
+        { name: "فندق", image: "https://c.top4top.io/p_208681k105.png" },
+        { name: "كراج", image: "https://d.top4top.io/p_2086nyvpa1.png" },
+        { name: "حمام", image: "https://l.top4top.io/p_2086a06n82.png" },
+        { name: "فاعلية", image: "https://b.top4top.io/p_2086toijg4.png" }
+    ],
+
+    // ========== كود الانترو ==========
+    introCode: `-- كود صناعة الانترو في MTA
+function createInterior(id, name, price, type)
+    local interior = {
+        id = id,
+        name = name,
+        price = price,
+        type = type,
+        position = getElementPosition(source)
+    }
+    -- حفظ الانترو في قاعدة البيانات
+    exports.mysql:insert("interiors", interior)
+    outputChatBox("تم صنع الانترو: " .. name, source, 0, 255, 0)
+end
+
+-- مثال: createInterior(1, "قصر", 100000, "house")`
+};
+
+// حفظ البيانات في localStorage
+function saveData() {
+    localStorage.setItem('mtaData', JSON.stringify(siteData));
+}
+
+// تحميل البيانات
+function loadData() {
+    const saved = localStorage.getItem('mtaData');
+    if (saved) {
+        try {
+            const parsed = JSON.parse(saved);
+            Object.assign(siteData, parsed);
+        } catch(e) {
+            console.log('خطأ في تحميل البيانات');
+        }
+    }
+}
+
+// تصدير البيانات
+function exportData() {
+    return JSON.stringify(siteData, null, 2);
+}
+
+// استيراد البيانات
+function importData(jsonData) {
+    try {
+        const parsed = JSON.parse(jsonData);
+        Object.assign(siteData, parsed);
+        saveData();
+        return true;
+    } catch(e) {
+        return false;
+    }
+}
+
+// تحميل البيانات عند بدء التشغيل
+loadData();
+
+// ========== دوال البحث والمساعدة ==========
+
+// البحث عن أوامر حسب القسم
+function getCommandsByCategory(category) {
+    return siteData.commands.filter(cmd => cmd.category === category);
+}
+
+// البحث عن أمر معين
+function findCommand(search) {
+    const searchLower = search.toLowerCase();
+    return siteData.commands.filter(cmd => 
+        cmd.command.toLowerCase().includes(searchLower) ||
+        cmd.meaning.includes(search)
+    );
+}
+
+// البحث عن قانون
+function findRule(search) {
+    const searchLower = search.toLowerCase();
+    return siteData.rules.filter(rule =>
+        rule.english.toLowerCase().includes(searchLower) ||
+        rule.arabic.includes(search)
+    );
+}
+
+// البحث عن انترو
+function findInterior(search) {
+    const searchLower = search.toLowerCase();
+    return siteData.interiors.filter(int =>
+        int.name.includes(search)
+    );
+}
+
+// الرد التلقائي الذكي
+function smartReply(query) {
+    const q = query.toLowerCase().trim();
+    let response = [];
+    
+    // البحث عن انترو
+    const interiors = findInterior(q);
+    if (interiors.length > 0) {
+        response.push("🏠 **الانترو المطلوب:**");
+        interiors.forEach(int => {
+            response.push(`**${int.name}**`);
+            response.push(`<img src="${int.image}" alt="${int.name}" style="max-width:300px;border-radius:10px;margin:10px 0;">`);
+        });
+        return response.join('<br>');
+    }
+    
+    // البحث عن قوانين
+    if (q.includes('قانون') || q.includes('قوانين') || q === 'قوانين') {
+        const rules = siteData.rules.slice(0, 10);
+        response.push("📜 **القوانين:**");
+        rules.forEach(rule => {
+            response.push(`**${rule.english}** = ${rule.arabic}`);
+        });
+        response.push(`... وعرض ${siteData.rules.length} قانون كامل في صفحة القوانين`);
+        return response.join('<br>');
+    }
+    
+    // البحث عن أوامر حسب القسم
+    const category = siteData.categories.find(c => 
+        q.includes(c.name) || c.name.includes(q)
+    );
+    if (category) {
+        const cmds = getCommandsByCategory(category.name);
+        response.push(`📂 **قسم ${category.name} ${category.icon}** (${cmds.length} أمر):`);
+        cmds.slice(0, 15).forEach(cmd => {
+            response.push(`**${cmd.command}** = ${cmd.meaning}`);
+        });
+        if (cmds.length > 15) {
+            response.push(`... و ${cmds.length - 15} أمر إضافي في صفحة الأوامر`);
+        }
+        return response.join('<br>');
+    }
+    
+    // البحث عن أمر معين
+    const commands = findCommand(q);
+    if (commands.length > 0) {
+        response.push("🔍 **نتائج البحث:**");
+        commands.slice(0, 10).forEach(cmd => {
+            response.push(`**${cmd.command}** = ${cmd.meaning} (قسم: ${cmd.category})`);
+        });
+        if (commands.length > 10) {
+            response.push(`... و ${commands.length - 10} نتيجة إضافية`);
+        }
+        return response.join('<br>');
+    }
+    
+    // إذا لم يتم العثور على شيء
+    return "❌ **لم يتم العثور على نتائج**\n\n💡 جرب البحث عن:\n• اسم أمر مثل /kill\n• اسم قسم مثل فاكشن\n• اسم انترو مثل قصر\n• كلمة قانون";
+}
+
+// ========== تصدير للاستخدام ==========
+if (typeof module !== 'undefined' && module.exports) {
+    module.exports = { siteData, saveData, loadData, exportData, importData, smartReply };
+}
