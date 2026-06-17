@@ -36,12 +36,45 @@
     </main>
 
     <script>
+        /**
+         * دالة التطبيع اللغوي (النقطة الفيصلية)
+         * تعمل على توحيد النصوص لتتجاوز أخطاء الهمزات والتشكيل
+         */
+        function normalizeText(text) {
+            if (!text) return "";
+            return text.toString().toLowerCase()
+                // توحيد الهمزات (أ، إ، آ) إلى (ا)
+                .replace(/[أإآ]/g, 'ا')
+                // توحيد الياء (ى) إلى (ي)
+                .replace(/[ى]/g, 'ي')
+                // توحيد التاء المربوطة (ة) إلى (ه)
+                .replace(/[ة]/g, 'ه')
+                // إزالة المسافات الزائدة للبحث الدقيق
+                .replace(/\s+/g, '')
+                .trim();
+        }
+
+        /**
+         * دالة البحث المحدثة
+         */
+        function searchCommand(query) {
+            const normalizedQuery = normalizeText(query);
+            
+            return serverCommands.filter(item => {
+                // البحث في اسم الأمر أو في الوصف بعد توحيد النصين
+                return normalizeText(item.command).includes(normalizedQuery) || 
+                       normalizeText(item.desc).includes(normalizedQuery);
+            });
+        }
+
         function filterCommands() {
-            let input = document.getElementById('searchCmd').value.toLowerCase();
+            let input = document.getElementById('searchCmd').value;
+            let normalizedInput = normalizeText(input);
             let rows = document.querySelectorAll('#cmdTable tbody tr');
+            
             rows.forEach(row => {
-                let text = row.innerText.toLowerCase();
-                row.style.display = text.includes(input) ? '' : 'none';
+                let text = normalizeText(row.innerText);
+                row.style.display = text.includes(normalizedInput) ? '' : 'none';
             });
         }
     </script>
