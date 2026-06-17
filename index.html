@@ -210,6 +210,65 @@
         }
 
         /**
+         * استخراج الجذر اللغوي للكلمة العربية
+         * يزيل الزوائد مثل (ي، ت، ن، و، ا) في بداية ونهاية الكلمة
+         */
+        function getRoot(word) {
+            if (!word) return "";
+            let root = normalizeText(word);
+            
+            // إزالة أحرف زائدة في بداية الكلمة (مثل: ي، ت، ن، و، ا)
+            const prefixes = ['ي', 'ت', 'ن', 'و', 'ا', 'ال', 'ب', 'ك', 'ل', 'س'];
+            for (let p of prefixes) {
+                if (root.startsWith(p)) {
+                    root = root.slice(p.length);
+                    break;
+                }
+            }
+            
+            // إزالة أحرف زائدة في نهاية الكلمة (مثل: ي، ت، ن، و، ا، ة، ى، ه)
+            const suffixes = ['ي', 'ت', 'ن', 'و', 'ا', 'ة', 'ى', 'ه', 'نا', 'كم', 'هم'];
+            for (let s of suffixes) {
+                if (root.endsWith(s)) {
+                    root = root.slice(0, -s.length);
+                    break;
+                }
+            }
+            
+            return root || word;
+        }
+
+        /**
+         * دالة المطابقة الذكية - تقارن بين كلمتين بعد استخراج جذورهما
+         */
+        function isMatch(input, target) {
+            const normalizedInput = normalizeText(input);
+            const normalizedTarget = normalizeText(target);
+            
+            // البحث المباشر
+            if (normalizedInput.includes(normalizedTarget) || normalizedTarget.includes(normalizedInput)) {
+                return true;
+            }
+            
+            // البحث بجذور الكلمات
+            const rootInput = getRoot(input);
+            const rootTarget = getRoot(target);
+            
+            if (rootInput && rootTarget) {
+                if (rootInput.includes(rootTarget) || rootTarget.includes(rootInput)) {
+                    return true;
+                }
+                // حساب التشابه بين الجذور
+                const similarity = getSimilarity(rootInput, rootTarget);
+                if (similarity > 0.5) {
+                    return true;
+                }
+            }
+            
+            return false;
+        }
+
+        /**
          * دالة البحث المحدثة (استخدمها بدلاً من دالة البحث القديمة)
          */
         function searchCommand(query) {
@@ -279,6 +338,22 @@
                 return `هل تقصد: /${bestMatch.command} - الشرح: ${bestMatch.desc}؟`;
             } else {
                 return "عذراً، لم أجد طلباً مشابهاً. حاول كتابة كلمة أدق.";
+            }
+        }
+
+        /**
+         * دالة البحث الذكي باستخدام isMatch
+         */
+        function performSmartSearch(userInput) {
+            const foundCommand = serverCommands.find(item => {
+                // البحث في اسم الأمر أو الوصف باستخدام النظام الذكي
+                return isMatch(userInput, item.command) || isMatch(userInput, item.desc);
+            });
+
+            if (foundCommand) {
+                return `الأمر الموجود: /${foundCommand.command} - الشرح: ${foundCommand.desc}`;
+            } else {
+                return "لم أجد أمراً مطابقاً، يرجى كتابة كلمة مفتاحية صحيحة.";
             }
         }
 
@@ -503,7 +578,7 @@
                     if(matchedCmds.length > 6) reply += `<br><i>💡 هناك نتائج أخرى، يرجى تضييق جملة البحث للوصول الدقيق.</i>`;
                 } else {
                     // إذا لم يتم العثور على نتائج، استخدم البحث الذكي
-                    const smartResult = intelligentSearch(userText);
+                    const smartResult = performSmartSearch(userText);
                     reply = smartResult;
                 }
 
