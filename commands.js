@@ -408,4 +408,4 @@ const serverCommands = [
     { category: "معلومات شخصية", command: "setgender", desc: "تغيير جنس لاعب (ولد/بنت)" },
     { category: "معلومات شخصية", command: "setheight", desc: "تغيير وزن لاعب" },
     { category: "معلومات شخصية", command: "changename", desc: "تغيير اسم لاعب" }
-];
+]; // <-- تأكد أن هذا السطر موجود في آخر الملف تماماً
