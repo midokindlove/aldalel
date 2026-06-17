@@ -3,178 +3,361 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>لوحة دليل السيرفر الشاملة</title>
+    <title>موسوعة إدارة السيرفر الشاملة</title>
     <style>
         :root {
-            --bg-primary: #121214;
-            --bg-secondary: #1a1a1e;
+            --bg-primary: #0f1115;
+            --bg-secondary: #161920;
+            --bg-card: #1e222b;
             --accent-color: #3b82f6;
+            --accent-hover: #2563eb;
             --text-main: #f3f4f6;
             --text-muted: #9ca3af;
-            --border-color: #2d2d34;
-            --badge-bg: #222229;
+            --border-color: #2a2f3a;
+            --badge-cmd: #10b981;
+            --badge-rule: #ef4444;
         }
 
-        * { box-sizing: border-box; margin: 0; padding: 0; font-family: 'Segoe UI', sans-serif; }
-        body { background-color: var(--bg-primary); color: var(--text-main); display: flex; min-height: 100vh; }
+        * { box-sizing: border-box; margin: 0; padding: 0; font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif; }
+        body { background-color: var(--bg-primary); color: var(--text-main); display: flex; min-height: 100vh; overflow: hidden; }
 
-        .sidebar { width: 300px; background-color: var(--bg-secondary); border-left: 1px solid var(--border-color); padding: 20px; position: fixed; height: 100vh; overflow-y: auto; }
-        .sidebar h2 { font-size: 1.2rem; margin-bottom: 20px; color: #fff; text-align: center; border-bottom: 2px solid var(--accent-color); padding-bottom: 10px; }
-        .sidebar ul { list-style: none; }
-        .sidebar ul li a { color: var(--text-muted); text-decoration: none; display: block; padding: 8px 12px; border-radius: 6px; font-size: 0.85rem; }
-        .sidebar ul li a:hover { background-color: rgba(59, 130, 246, 0.1); color: #fff; }
+        /* القائمة الجانبية */
+        .sidebar { width: 280px; background-color: var(--bg-secondary); border-left: 1px solid var(--border-color); display: flex; flex-direction: column; height: 100vh; position: fixed; right: 0; top: 0; }
+        .sidebar-header { padding: 24px; text-align: center; border-bottom: 1px solid var(--border-color); }
+        .sidebar-header h2 { font-size: 1.3rem; color: #fff; font-weight: 700; letter-spacing: 0.5px; }
+        .sidebar-menu { list-style: none; padding: 20px 12px; flex: 1; overflow-y: auto; }
+        .sidebar-menu li { margin-bottom: 8px; }
+        .sidebar-menu li a { display: flex; align-items: center; padding: 12px 16px; color: var(--text-muted); text-decoration: none; border-radius: 8px; font-weight: 500; transition: all 0.2s ease; cursor: pointer; }
+        .sidebar-menu li a:hover, .sidebar-menu li a.active { background-color: var(--accent-color); color: #fff; }
 
-        .main-content { margin-right: 300px; flex: 1; padding: 40px; }
-        .header { margin-bottom: 40px; display: flex; justify-content: space-between; align-items: center; background: var(--bg-secondary); padding: 20px; border-radius: 12px; border: 1px solid var(--border-color); }
-        .search-box { padding: 12px 20px; width: 350px; border-radius: 8px; border: 1px solid var(--border-color); background-color: var(--bg-primary); color: #fff; outline: none; }
+        /* المحتوى الرئيسي */
+        .main-content { margin-right: 280px; flex: 1; display: flex; flex-direction: column; height: 100vh; background-color: var(--bg-primary); position: relative; }
+        
+        /* البار العلوي */
+        .top-bar { padding: 20px 40px; background-color: var(--bg-secondary); border-bottom: 1px solid var(--border-color); display: flex; justify-content: space-between; align-items: center; z-index: 10; }
+        .page-title { font-size: 1.4rem; font-weight: 600; color: #fff; }
+        .search-wrapper { position: relative; width: 400px; }
+        .search-box { width: 100%; padding: 12px 20px; border-radius: 8px; border: 1px solid var(--border-color); background-color: var(--bg-primary); color: #fff; outline: none; transition: border 0.2s; }
+        .search-box:focus { border-color: var(--accent-color); }
 
-        .section-panel { background-color: var(--bg-secondary); border-radius: 12px; padding: 25px; margin-bottom: 35px; border: 1px solid var(--border-color); }
-        .section-panel h3 { font-size: 1.2rem; margin-bottom: 20px; color: #60a5fa; border-bottom: 1px solid var(--border-color); padding-bottom: 12px; }
+        /* نظام الصفحات */
+        .page-view { display: none; flex: 1; padding: 40px; overflow-y: auto; }
+        .page-view.active { display: block; }
 
-        .commands-table { width: 100%; border-collapse: collapse; text-align: right; }
-        .commands-table th, .commands-table td { padding: 12px 16px; border-bottom: 1px solid var(--border-color); font-size: 0.95rem; }
-        .commands-table th { background-color: rgba(59, 130, 246, 0.05); color: #fff; }
-        .commands-table tr:hover { background-color: rgba(255, 255, 255, 0.01); }
+        /* الصفحة الرئيسية (Dashboard) */
+        .dashboard-grid { display: grid; grid-template-columns: repeat(auto-fit, min-columns: minmax(240px, 1fr)); gap: 24px; margin-bottom: 40px; }
+        .stat-card { background-color: var(--bg-card); padding: 24px; border-radius: 12px; border: 1px solid var(--border-color); text-align: center; }
+        .stat-card h3 { font-size: 2.5rem; color: var(--accent-color); margin-bottom: 8px; }
+        .stat-card p { color: var(--text-muted); font-size: 1rem; }
+        
+        .welcome-box { background: linear-gradient(135deg, #1e293b 0%, #0f172a 100%); padding: 35px; border-radius: 16px; border: 1px solid var(--border-color); margin-bottom: 30px; }
+        .welcome-box h2 { margin-bottom: 12px; color: #fff; }
+        .welcome-box p { color: var(--text-muted); line-height: 1.6; }
 
-        .command-badge { background-color: var(--badge-bg); color: #34d399; padding: 5px 12px; border-radius: 5px; font-family: monospace; font-weight: bold; border: 1px solid rgba(52, 211, 153, 0.2); }
-        .rule-badge { background-color: #271c1c; color: #f87171; padding: 4px 10px; border-radius: 5px; font-weight: bold; border: 1px solid rgba(248, 113, 113, 0.2); }
+        /* الجداول والقوائم */
+        .section-panel { background-color: var(--bg-secondary); border-radius: 12px; padding: 25px; margin-bottom: 30px; border: 1px solid var(--border-color); }
+        .section-panel h3 { font-size: 1.15rem; margin-bottom: 20px; color: #60a5fa; border-bottom: 1px solid var(--border-color); padding-bottom: 12px; }
+        
+        .data-table { width: 100%; border-collapse: collapse; text-align: right; }
+        .data-table th, .data-table td { padding: 14px 16px; border-bottom: 1px solid var(--border-color); font-size: 0.95rem; }
+        .data-table th { background-color: rgba(59, 130, 246, 0.05); color: #fff; font-weight: 600; }
+        .data-table tr:hover { background-color: rgba(255, 255, 255, 0.01); }
 
-        @media (max-width: 992px) { body { flex-direction: column; } .sidebar { width: 100%; height: auto; position: relative; } .main-content { margin-right: 0; padding: 20px; } .search-box { width: 100%; } }
+        .badge { padding: 6px 12px; border-radius: 6px; font-weight: bold; font-family: monospace; font-size: 0.85rem; display: inline-block; }
+        .badge-cmd { background-color: rgba(16, 185, 129, 0.1); color: var(--badge-cmd); border: 1px solid rgba(16, 185, 129, 0.2); }
+        .badge-rule { background-color: rgba(239, 68, 68, 0.1); color: var(--badge-rule); border: 1px solid rgba(239, 68, 68, 0.2); }
+
+        /* نظام الرد التلقائي (الشات بوت للبحث السريع) */
+        .chat-container { display: flex; flex-direction: column; height: calc(100vh - 160px); background-color: var(--bg-secondary); border-radius: 12px; border: 1px solid var(--border-color); overflow: hidden; }
+        .chat-messages { flex: 1; padding: 20px; overflow-y: auto; display: flex; flex-direction: column; gap: 15px; }
+        .msg { max-width: 75%; padding: 12px 18px; border-radius: 12px; line-height: 1.5; font-size: 0.95rem; }
+        .msg.bot { background-color: var(--bg-card); color: var(--text-main); align-self: flex-start; border-bottom-right-radius: 2px; border: 1px solid var(--border-color); }
+        .msg.user { background-color: var(--accent-color); color: #fff; align-self: flex-end; border-bottom-left-radius: 2px; }
+        .chat-input-area { padding: 15px; background-color: var(--bg-card); border-top: 1px solid var(--border-color); display: flex; gap: 10px; }
+        .chat-input { flex: 1; padding: 12px; background-color: var(--bg-primary); border: 1px solid var(--border-color); border-radius: 8px; color: #fff; outline: none; }
+        .chat-btn { padding: 0 24px; background-color: var(--accent-color); color: #fff; border: none; border-radius: 8px; font-weight: bold; cursor: pointer; transition: background 0.2s; }
+        .chat-btn:hover { background-color: var(--accent-hover); }
+
+        /* الكومبو بوكس لتصفية فئات الأوامر بسرعة */
+        .filter-select { padding: 10px; border-radius: 6px; background-color: var(--bg-primary); color: #fff; border: 1px solid var(--border-color); margin-bottom: 20px; width: 250px; outline: none; }
+
+        /* إعدادات الشاشات الصغيرة */
+        @media (max-width: 1024px) {
+            body { flex-direction: column; overflow: auto; }
+            .sidebar { width: 100%; height: auto; position: relative; }
+            .main-content { margin-right: 0; height: auto; }
+            .top-bar { flex-direction: column; gap: 15px; padding: 20px; }
+            .search-wrapper { width: 100%; }
+            .chat-container { height: 500px; }
+        }
     </style>
 </head>
 <body>
 
+    <!-- القائمة الجانبية -->
     <div class="sidebar">
-        <h2>أقسام الموسوعة</h2>
-        <ul>
-            <li><a href="#rules-sec">قوانين ومصطلحات السيرفر</a></li>
-            <li><a href="#basic-info-sec">1. المعلومات الأساسية</a></li>
-            <li><a href="#faction-sec">2. أوامر الفاكشنات (Factions)</a></li>
-            <li><a href="#gates-sec">3. أوامر البوابات (Gates)</a></li>
-            <li><a href="#int-sec">4. أوامر الإنترو (Interiors)</a></li>
-            <li><a href="#shop-sec">5. أوامر البائعين (Shops)</a></li>
-            <li><a href="#arrows-sec">6. أوامر الأسهم (Markers/Arrows)</a></li>
-            <li><a href="#barriers-sec">7. أوامر الحواجز (Barriers)</a></li>
-            <li><a href="#atm-sec">8. أوامر الصرافة (ATM)</a></li>
-            <li><a href="#marker-sec">9. أوامر الماركر (Marker)</a></li>
-            <li><a href="#ramps-sec">10. أوامر الريمب (Ramps)</a></li>
-            <li><a href="#vehicles-sec">11. أوامر السيارات (Vehicles)</a></li>
-            <li><a href="#respawn-sec">12. أوامر الريسبون (Respawn)</a></li>
-            <li><a href="#stealth-sec">13. أوامر التخفي (Stealth)</a></li>
-            <li><a href="#items-sec">14. أوامر الأغراض (Items)</a></li>
-            <li><a href="#monitoring-sec">15. أوامر المراقبة (Monitoring)</a></li>
-            <li><a href="#weather-sec">16. أوامر الطقس (Weather)</a></li>
-            <li><a href="#chat-sec">17. أوامر الشات (Chat)</a></li>
-            <li><a href="#weapons-sec">18. أوامر السلاح (Weapons)</a></li>
-            <li><a href="#giving-sec">19. أوامر الإعطاء (Giving)</a></li>
-            <li><a href="#basic-sec">20. الأوامر الأساسية (Basic)</a></li>
-            <li><a href="#reports-sec">21. أوامر الريبورت (Reports)</a></li>
-            <li><a href="#punish-sec">22. أوامر العقاب (Punishments)</a></li>
-            <li><a href="#general-sec">23. الأوامر العامة (General)</a></li>
-            <li><a href="#leader-sec">24. أوامر الليدر (Leader)</a></li>
-            <li><a href="#radio-sec">25. أوامر الراديو (Radio)</a></li>
-            <li><a href="#ems-sec">26. أوامر الإسعاف (EMS)</a></li>
-            <li><a href="#police-sec">27. أوامر الجندي/الشرطة</a></li>
-            <li><a href="#press-sec">28. أوامر الصحافة (Press)</a></li>
-            <li><a href="#court-sec">29. أوامر المحكمة (Court)</a></li>
-            <li><a href="#airport-sec">30. أوامر المطار (Airport)</a></li>
-            <li><a href="#mechanic-sec">31. أوامر الصيانة (Mechanic)</a></li>
-            <li><a href="#teleport-sec">32. أوامر الانتقال (Teleport)</a></li>
-            <li><a href="#mode-sec">33. أوامر المود (Mode)</a></li>
-            <li><a href="#pull-sec">34. أوامر السحب (Pull)</a></li>
-            <li><a href="#restart-sec">35. أوامر الريستارت (Restart)</a></li>
-            <li><a href="#info-sec">36. أوامر المعلومات الشخصية</a></li>
+        <div class="sidebar-header">
+            <h2>لوحة تحكم الإدارة</h2>
+        </div>
+        <ul class="sidebar-menu">
+            <li><a onclick="switchPage('dashboard', 'الرئيسية')" id="btn-dashboard" class="active">🏠 الصفحة الرئيسية</a></li>
+            <li><a onclick="switchPage('commands-page', 'دليل الأوامر الإدارية')" id="btn-commands-page">💻 الأوامر (36 فئة)</a></li>
+            <li><a onclick="switchPage('rules-page', 'قوانين الـ RolePlay')" id="btn-rules-page">⚖️ القوانين والمصطلحات</a></li>
+            <li><a onclick="switchPage('bot-page', 'المساعد الذكي (الرد التلقائي)')" id="btn-bot-page">🤖 المساعد والرد السريع</a></li>
         </ul>
     </div>
 
+    <!-- المحتوى الرئيسي -->
     <div class="main-content">
-        <div class="header">
-            <h1>لوحة دليل السيرفر المحدثة بالكامل</h1>
-            <input type="text" id="searchInput" class="search-box" placeholder="ابحث عن أمر أو شرح..." onkeyup="filterAllData()">
+        <!-- البار العلوي الثابت والبحث الذكي -->
+        <div class="top-bar">
+            <div class="page-title" id="current-page-title">الرئيسية</div>
+            <div class="search-wrapper" id="search-wrapper-container">
+                <input type="text" id="globalSearch" class="search-box" placeholder="بحث ذكي وسريع في الصفحة الحالية..." onkeyup="executeSearch()">
+            </div>
         </div>
 
-        <!-- جدول القوانين أولاً لأهميته -->
-        <div class="section-panel" id="rules-sec">
-            <h3>قوانين ومصطلحات السيرفر العامة (Rules)</h3>
-            <table class="commands-table">
-                <thead><tr><th style="width: 20%;">المصطلح</th><th>التفسير والمعنى القانوني</th></tr></thead>
-                <tbody id="rules-sec-body"></tbody>
-            </table>
+        <!-- [1] صفحة الرئسية (Dashboard) -->
+        <div id="dashboard" class="page-view active">
+            <div class="welcome-box">
+                <h2>أهلاً بك مجدداً في نظام إدارة السيرفر الموحد 👋</h2>
+                <p>تم تحديث قاعدة البيانات بنجاح لتوفر لك وصولاً شاملاً وفورياً لجميع الأدوات والقواعد الإدارية. يمكنك الانتقال بين الأقسام من القائمة الجانبية، أو التحدث مع المساعد الذكي لتوفير الوقت.</p>
+            </div>
+            
+            <div class="dashboard-grid">
+                <div class="stat-card">
+                    <h3 id="count-categories">36</h3>
+                    <p>فئة أوامر فرعية</p>
+                </div>
+                <div class="stat-card">
+                    <h3 id="count-commands">0</h3>
+                    <p>إجمالي الأوامر المسجلة</p>
+                </div>
+                <div class="stat-card">
+                    <h3 id="count-rules">48</h3>
+                    <p>قانون ومصطلح RolePlay</p>
+                </div>
+            </div>
         </div>
 
-        <!-- توليد جداول الأوامر ديناميكياً -->
-        <div class="section-panel" id="basic-info-sec"><h3>[1] أوامر المعلومات الأساسية</h3><table class="commands-table"><thead><tr><th style="width:35%">الأمر</th><th>الوصف والوظيفة</th></tr></thead><tbody id="basic-info-sec-body"></tbody></table></div>
-        <div class="section-panel" id="faction-sec"><h3>[2] أوامر الفاكشنات (Factions)</h3><table class="commands-table"><thead><tr><th style="width:35%">الأمر</th><th>الوصف والوظيفة</th></tr></thead><tbody id="faction-sec-body"></tbody></table></div>
-        <div class="section-panel" id="gates-sec"><h3>[3] أوامر البوابات (Gates)</h3><table class="commands-table"><thead><tr><th style="width:35%">الأمر</th><th>الوصف والوظيفة</th></tr></thead><tbody id="gates-sec-body"></tbody></table></div>
-        <div class="section-panel" id="int-sec"><h3>[4] أوامر الإنترو (Interiors)</h3><table class="commands-table"><thead><tr><th style="width:35%">الأمر</th><th>الوصف والوظيفة</th></tr></thead><tbody id="int-sec-body"></tbody></table></div>
-        <div class="section-panel" id="shop-sec"><h3>[5] أوامر البائعين (Shops)</h3><table class="commands-table"><thead><tr><th style="width:35%">الأمر</th><th>الوصف والوظيفة</th></tr></thead><tbody id="shop-sec-body"></tbody></table></div>
-        <div class="section-panel" id="arrows-sec"><h3>[6] أوامر الأسهم (Markers/Arrows)</h3><table class="commands-table"><thead><tr><th style="width:35%">الأمر</th><th>الوصف والوظيفة</th></tr></thead><tbody id="arrows-sec-body"></tbody></table></div>
-        <div class="section-panel" id="barriers-sec"><h3>[7] أوامر الحواجز (Barriers)</h3><table class="commands-table"><thead><tr><th style="width:35%">الأمر</th><th>الوصف والوظيفة</th></tr></thead><tbody id="barriers-sec-body"></tbody></table></div>
-        <div class="section-panel" id="atm-sec"><h3>[8] أوامر الصرافة (ATM)</h3><table class="commands-table"><thead><tr><th style="width:35%">الأمر</th><th>الوصف والوظيفة</th></tr></thead><tbody id="atm-sec-body"></tbody></table></div>
-        <div class="section-panel" id="marker-sec"><h3>[9] أوامر الماركر (Marker)</h3><table class="commands-table"><thead><tr><th style="width:35%">الأمر</th><th>الوصف والوظيفة</th></tr></thead><tbody id="marker-sec-body"></tbody></table></div>
-        <div class="section-panel" id="ramps-sec"><h3>[10] أوامر الريمب (Ramps)</h3><table class="commands-table"><thead><tr><th style="width:35%">الأمر</th><th>الوصف والوظيفة</th></tr></thead><tbody id="ramps-sec-body"></tbody></table></div>
-        <div class="section-panel" id="vehicles-sec"><h3>[11] أوامر السيارات (Vehicles)</h3><table class="commands-table"><thead><tr><th style="width:35%">الأمر</th><th>الوصف والوظيفة</th></tr></thead><tbody id="vehicles-sec-body"></tbody></table></div>
-        <div class="section-panel" id="respawn-sec"><h3>[12] أوامر الريسبون (Respawn)</h3><table class="commands-table"><thead><tr><th style="width:35%">الأمر</th><th>الوصف والوظيفة</th></tr></thead><tbody id="respawn-sec-body"></tbody></table></div>
-        <div class="section-panel" id="stealth-sec"><h3>[13] أوامر التخفي (Stealth)</h3><table class="commands-table"><thead><tr><th style="width:35%">الأمر</th><th>الوصف والوظيفة</th></tr></thead><tbody id="stealth-sec-body"></tbody></table></div>
-        <div class="section-panel" id="items-sec"><h3>[14] أوامر الأغراض (Items)</h3><table class="commands-table"><thead><tr><th style="width:35%">الأمر</th><th>الوصف والوظيفة</th></tr></thead><tbody id="items-sec-body"></tbody></table></div>
-        <div class="section-panel" id="monitoring-sec"><h3>[15] أوامر المراقبة (Monitoring)</h3><table class="commands-table"><thead><tr><th style="width:35%">الأمر</th><th>الوصف والوظيفة</th></tr></thead><tbody id="monitoring-sec-body"></tbody></table></div>
-        <div class="section-panel" id="weather-sec"><h3>[16] أوامر الطقس (Weather)</h3><table class="commands-table"><thead><tr><th style="width:35%">الأمر</th><th>الوصف والوظيفة</th></tr></thead><tbody id="weather-sec-body"></tbody></table></div>
-        <div class="section-panel" id="chat-sec"><h3>[17] أوامر الشات (Chat)</h3><table class="commands-table"><thead><tr><th style="width:35%">الأمر</th><th>الوصف والوظيفة</th></tr></thead><tbody id="chat-sec-body"></tbody></table></div>
-        <div class="section-panel" id="weapons-sec"><h3>[18] أوامر السلاح (Weapons)</h3><table class="commands-table"><thead><tr><th style="width:35%">الأمر</th><th>الوصف والوظيفة</th></tr></thead><tbody id="weapons-sec-body"></tbody></table></div>
-        <div class="section-panel" id="giving-sec"><h3>[19] أوامر الإعطاء (Giving)</h3><table class="commands-table"><thead><tr><th style="width:35%">الأمر</th><th>الوصف والوظيفة</th></tr></thead><tbody id="giving-sec-body"></tbody></table></div>
-        <div class="section-panel" id="basic-sec"><h3>[20] الأوامر الأساسية (Basic)</h3><table class="commands-table"><thead><tr><th style="width:35%">الأمر</th><th>الوصف والوظيفة</th></tr></thead><tbody id="basic-sec-body"></tbody></table></div>
-        <div class="section-panel" id="reports-sec"><h3>[21] أوامر الريبورت (Reports)</h3><table class="commands-table"><thead><tr><th style="width:35%">الأمر</th><th>الوصف والوظيفة</th></tr></thead><tbody id="reports-sec-body"></tbody></table></div>
-        <div class="section-panel" id="punish-sec"><h3>[22] أوامر العقاب (Punishments)</h3><table class="commands-table"><thead><tr><th style="width:35%">الأمر</th><th>الوصف والوظيفة</th></tr></thead><tbody id="punish-sec-body"></tbody></table></div>
-        <div class="section-panel" id="general-sec"><h3>[23] الأوامر العامة (General)</h3><table class="commands-table"><thead><tr><th style="width:35%">الأمر</th><th>الوصف والوظيفة</th></tr></thead><tbody id="general-sec-body"></tbody></table></div>
-        <div class="section-panel" id="leader-sec"><h3>[24] أوامر الليدر (Leader)</h3><table class="commands-table"><thead><tr><th style="width:35%">الأمر</th><th>الوصف والوظيفة</th></tr></thead><tbody id="leader-sec-body"></tbody></table></div>
-        <div class="section-panel" id="radio-sec"><h3>[25] أوامر الراديو (Radio)</h3><table class="commands-table"><thead><tr><th style="width:35%">الأمر</th><th>الوصف والوظيفة</th></tr></thead><tbody id="radio-sec-body"></tbody></table></div>
-        <div class="section-panel" id="ems-sec"><h3>[26] أوامر الإسعاف (EMS)</h3><table class="commands-table"><thead><tr><th style="width:35%">الأمر</th><th>الوصف والوظيفة</th></tr></thead><tbody id="ems-sec-body"></tbody></table></div>
-        <div class="section-panel" id="police-sec"><h3>[27] أوامر الجندي/الشرطة (Police/Military)</h3><table class="commands-table"><thead><tr><th style="width:35%">الأمر</th><th>الوصف والوظيفة</th></tr></thead><tbody id="police-sec-body"></tbody></table></div>
-        <div class="section-panel" id="press-sec"><h3>[28] أوامر الصحافة (Press)</h3><table class="commands-table"><thead><tr><th style="width:35%">الأمر</th><th>الوصف والوظيفة</th></tr></thead><tbody id="press-sec-body"></tbody></table></div>
-        <div class="section-panel" id="court-sec"><h3>[29] أوامر المحكمة (Court)</h3><table class="commands-table"><thead><tr><th style="width:35%">الأمر</th><th>الوصف والوظيفة</th></tr></thead><tbody id="court-sec-body"></tbody></table></div>
-        <div class="section-panel" id="airport-sec"><h3>[30] أوامر المطار (Airport)</h3><table class="commands-table"><thead><tr><th style="width:35%">الأمر</th><th>الوصف والوظيفة</th></tr></thead><tbody id="airport-sec-body"></tbody></table></div>
-        <div class="section-panel" id="mechanic-sec"><h3>[31] أوامر الصيانة (Mechanic)</h3><table class="commands-table"><thead><tr><th style="width:35%">الأمر</th><th>الوصف والوظيفة</th></tr></thead><tbody id="mechanic-sec-body"></tbody></table></div>
-        <div class="section-panel" id="teleport-sec"><h3>[32] أوامر الانتقال (Teleport)</h3><table class="commands-table"><thead><tr><th style="width:35%">الأمر</th><th>الوصف والوظيفة</th></tr></thead><tbody id="teleport-sec-body"></tbody></table></div>
-        <div class="section-panel" id="mode-sec"><h3>[33] أوامر المود (Mode)</h3><table class="commands-table"><thead><tr><th style="width:35%">الأمر</th><th>الوصف والوظيفة</th></tr></thead><tbody id="mode-sec-body"></tbody></table></div>
-        <div class="section-panel" id="pull-sec"><h3>[34] أوامر السحب (Pull)</h3><table class="commands-table"><thead><tr><th style="width:35%">الأمر</th><th>الوصف والوظيفة</th></tr></thead><tbody id="pull-sec-body"></tbody></table></div>
-        <div class="section-panel" id="restart-sec"><h3>[35] أوامر الريستارت (Restart)</h3><table class="commands-table"><thead><tr><th style="width:35%">الأمر</th><th>الوصف والوظيفة</th></tr></thead><tbody id="restart-sec-body"></tbody></table></div>
-        <div class="section-panel" id="info-sec"><h3>[36] أوامر المعلومات الشخصية (Info)</h3><table class="commands-table"><thead><tr><th style="width:35%">الأمر</th><th>الوصف والوظيفة</th></tr></thead><tbody id="info-sec-body"></tbody></table></div>
+        <!-- [2] صفحة الأوامر -->
+        <div id="commands-page" class="page-view">
+            <div style="display: flex; justify-content: space-between; align-items: center; flex-wrap: wrap;">
+                <select id="categoryFilter" class="filter-select" onchange="filterByCategory()">
+                    <option value="all">كل الفئات الإدارية (عرض الكل)</option>
+                </select>
+            </div>
+            <div id="commands-container"></div>
+        </div>
+
+        <!-- [3] صفحة القوانين -->
+        <div id="rules-page" class="page-view">
+            <div class="section-panel">
+                <h3>جدول المصطلحات والمخالفات المعتمدة للسيرفر</h3>
+                <table class="data-table">
+                    <thead>
+                        <tr>
+                            <th style="width: 25%;">المصطلح القانوني</th>
+                            <th>التفسير والمعنى التفصيلي في الـ RP</th>
+                        </tr>
+                    </thead>
+                    <tbody id="rules-table-body"></tbody>
+                </table>
+            </div>
+        </div>
+
+        <!-- [4] صفحة الرد التلقائي والشات بوت -->
+        <div id="bot-page" class="page-view">
+            <div class="chat-container">
+                <div class="chat-messages" id="chatMessages">
+                    <div class="msg bot">
+                        مرحباً بك في نظام الرد السريع! واجهت مشكلة أو تبحث عن أمر؟ اكتب لي اسم المخالفة (مثل: DM, MG) أو الكلمة الدلالية للأمر وسأجيبك فوراً!
+                    </div>
+                </div>
+                <div class="chat-input-area">
+                    <input type="text" id="chatInput" class="chat-input" placeholder="اكتب سؤالك هنا أو اسم القانون..." onkeypress="if(event.key === 'Enter') sendBotMessage()">
+                    <button class="chat-btn" onclick="sendBotMessage()">إرسال</button>
+                </div>
+            </div>
+        </div>
+
     </div>
 
+    <!-- استدعاء ملفات الـ JS الخارجية -->
     <script src="commands.js"></script>
     <script src="rules.js"></script>
 
     <script>
+        // إعداد وتبويب الصفحات الإدارية
+        function switchPage(pageId, title) {
+            document.querySelectorAll('.page-view').forEach(p => p.classList.remove('active'));
+            document.querySelectorAll('.sidebar-menu li a').forEach(a => a.classList.remove('active'));
+            
+            document.getElementById(pageId).classList.add('active');
+            document.getElementById(`btn-${pageId}`).classList.add('active');
+            document.getElementById('current-page-title').textContent = title;
+            
+            // إظهار أو إخفاء حقل البحث العلوي بناء على الصفحة
+            const searchContainer = document.getElementById('search-wrapper-container');
+            if(pageId === 'bot-page') {
+                searchContainer.style.visibility = 'hidden';
+            } else {
+                searchContainer.style.visibility = 'visible';
+                document.getElementById('globalSearch').value = '';
+                executeSearch(); 
+            }
+        }
+
+        // بناء وعرض البيانات عند تحميل الصفحة بالكامل
         document.addEventListener("DOMContentLoaded", () => {
-            // بناء الأوامر
-            serverCommands.forEach(item => {
-                const targetBody = document.getElementById(`${item.category}-body`);
-                if (targetBody) {
-                    const row = `<tr>
-                        <td><span class="command-badge">/${item.command}</span></td>
-                        <td>${item.desc}</td>
-                    </tr>`;
-                    targetBody.innerHTML += row;
+            // 1. حساب الإحصائيات بالرئيسية
+            document.getElementById('count-commands').textContent = serverCommands.length;
+            document.getElementById('count-rules').textContent = serverRules.length;
+
+            // 2. بناء الكومبو بوكس (الفئات) وتوليد الجداول للأوامر ديناميكياً
+            const categoriesMap = {
+                "basic-info-sec": "1. أوامر المعلومات الأساسية", "faction-sec": "2. أوامر الفاكشنات (Factions)", "gates-sec": "3. أوامر البوابات (Gates)",
+                "int-sec": "4. أوامر الإنترو (Interiors)", "shop-sec": "5. أوامر البائعين (Shops)", "arrows-sec": "6. أوامر الأسهم (Markers/Arrows)",
+                "barriers-sec": "7. أوامر الحواجز (Barriers)", "atm-sec": "8. أوامر الصرافة (ATM)", "marker-sec": "9. أوامر الماركر (Marker)",
+                "ramps-sec": "10. أوامر الريمب (Ramps)", "vehicles-sec": "11. أوامر السيارات (Vehicles)", "respawn-sec": "12. أوامر الريسبون (Respawn)",
+                "stealth-sec": "13. أوامر التخفي (Stealth)", "items-sec": "14. أوامر الأغراض (Items)", "monitoring-sec": "15. أوامر المراقبة (Monitoring)",
+                "weather-sec": "16. أوامر الطقس (Weather)", "chat-sec": "17. أوامر الشات (Chat)", "weapons-sec": "18. أوامر السلاح (Weapons)",
+                "giving-sec": "19. أوامر الإعطاء (Giving)", "basic-sec": "20. الأوامر الأساسية (Basic)", "reports-sec": "21. أوامر الريبورت (Reports)",
+                "punish-sec": "22. أوامر العقاب (Punishments)", "general-sec": "23. الأوامر العامة (General)", "leader-sec": "24. أوامر الليدر (Leader)",
+                "radio-sec": "25. أوامر الراديو (Radio)", "ems-sec": "26. أوامر الإسعاف (EMS)", "police-sec": "27. أوامر الجندي/الشرطة (Police/Military)",
+                "press-sec": "28. أوامر الصحافة (Press)", "court-sec": "29. أوامر المحكمة (Court)", "airport-sec": "30. أوامر المطار (Airport)",
+                "mechanic-sec": "31. أوامر الصيانة (Mechanic)", "teleport-sec": "32. أوامر الانتقال (Teleport)", "mode-sec": "33. أوامر المود (Mode)",
+                "pull-sec": "34. أوامر السحب (Pull)", "restart-sec": "35. أوامر الريستارت (Restart)", "info-sec": "36. أوامر المعلومات الشخصية (Info)"
+            };
+
+            const filterSelect = document.getElementById('categoryFilter');
+            const commandsContainer = document.getElementById('commands-container');
+
+            // إنشاء هياكل الجداول لكل فئة
+            for (const [key, value] of Object.entries(categoriesMap)) {
+                // إضافة الفئة للكومبو بوكس التصفية
+                let opt = document.createElement('option');
+                opt.value = key;
+                opt.textContent = value;
+                filterSelect.appendChild(opt);
+
+                // بناء كارد الفئة مع جدول داخله
+                let panel = document.createElement('div');
+                panel.className = 'section-panel cmd-group-panel';
+                panel.id = `panel-${key}`;
+                panel.innerHTML = `
+                    <h3>${value}</h3>
+                    <table class="data-table">
+                        <thead><tr><th style="width: 35%;">الأمر الإداري</th><th>الوصف والنظام</th></tr></thead>
+                        <tbody id="rows-${key}"></tbody>
+                    </table>
+                `;
+                commandsContainer.appendChild(panel);
+            }
+
+            // توزيع الأوامر داخل الجداول الخاصة بها
+            serverCommands.forEach(cmd => {
+                const tbody = document.getElementById(`rows-${cmd.category}`);
+                if(tbody) {
+                    tbody.innerHTML += `
+                        <tr>
+                            <td><span class="badge badge-cmd">/${cmd.command}</span></td>
+                            <td>${cmd.desc}</td>
+                        </tr>
+                    `;
                 }
             });
 
-            // بناء القوانين
-            const rulesBody = document.getElementById("rules-sec-body");
-            serverRules.forEach(item => {
-                const row = `<tr>
-                    <td><span class="rule-badge">${item.rule}</span></td>
-                    <td>${item.desc}</td>
-                </tr>`;
-                rulesBody.innerHTML += row;
+            // 3. بناء وتعبئة جدول القوانين والمصطلحات
+            const rulesTableBody = document.getElementById('rules-table-body');
+            serverRules.forEach(rule => {
+                rulesTableBody.innerHTML += `
+                    <tr>
+                        <td><span class="badge badge-rule">${rule.rule}</span></td>
+                        <td>${rule.desc}</td>
+                    </tr>
+                `;
             });
         });
 
-        function filterAllData() {
-            let input = document.getElementById('searchInput').value.toLowerCase();
-            let rows = document.querySelectorAll('.commands-table tbody tr');
-            rows.forEach(row => {
-                row.style.display = row.textContent.toLowerCase().includes(input) ? "" : "none";
+        // تصفية الأوامر حسب الكومبو بوكس المختار بالفئات
+        function filterByCategory() {
+            const selected = document.getElementById('categoryFilter').value;
+            document.querySelectorAll('.cmd-group-panel').forEach(panel => {
+                if(selected === 'all' || panel.id === `panel-${selected}`) {
+                    panel.style.display = "";
+                } else {
+                    panel.style.display = "none";
+                }
             });
+        }
+
+        // محرك البحث العلوي الذكي (يبحث في عناصر الجداول النشطة)
+        function executeSearch() {
+            const query = document.getElementById('globalSearch').value.toLowerCase();
+            const currentActivePage = document.querySelector('.page-view.active');
+            
+            if (!currentActivePage) return;
+
+            const rows = currentActivePage.querySelectorAll('.data-table tbody tr');
+            rows.forEach(row => {
+                row.style.display = row.textContent.toLowerCase().includes(query) ? "" : "none";
+            });
+
+            // إخفاء العناوين الفارغة أثناء البحث في الأوامر لجعل الواجهة مريحة
+            if(currentActivePage.id === 'commands-page') {
+                document.querySelectorAll('.cmd-group-panel').forEach(panel => {
+                    const visibleRows = panel.querySelectorAll('.data-table tbody tr[style=""]');
+                    const totalRows = panel.querySelectorAll('.data-table tbody tr');
+                    // إذا كل السطور مخفية بسبب البحث، أخفِ الفئة كاملة
+                    if(query !== "" && visibleRows.length === 0 && totalRows.length > 0) {
+                        panel.style.display = "none";
+                    } else {
+                        // الحفاظ على تصفية الكومبو بوكس الأصلي
+                        const selected = document.getElementById('categoryFilter').value;
+                        if(selected === 'all' || panel.id === `panel-${selected}`) {
+                            panel.style.display = "";
+                        }
+                    }
+                });
+            }
+        }
+
+        // نظام محاكاة الرد التلقائي (الشات بوت الذكي) للرد السريع
+        function sendBotMessage() {
+            const inputField = document.getElementById('chatInput');
+            const userText = inputField.value.trim();
+            if(!userText) return;
+
+            const chatMessages = document.getElementById('chatMessages');
+
+            // إظهار رسالة المستخدم
+            chatMessages.innerHTML += `<div class="msg user">${userText}</div>`;
+            inputField.value = '';
+            chatMessages.scrollTop = chatMessages.scrollHeight;
+
+            setTimeout(() => {
+                let reply = "لم أجد معلومات دقيقة حول هذا الاستفسار، جرب كتابة اسم القانون كـ (DM) أو جزء من اسم الأمر الذي تبحث عنه بشكل أوضح.";
+                const cleanText = userText.toLowerCase();
+
+                // 1. البحث في القوانين أولاً
+                let foundRule = serverRules.find(r => r.rule.toLowerCase() === cleanText || r.desc.toLowerCase().includes(cleanText));
+                // 2. البحث في الأوامر ثانياً
+                let foundCmds = serverCommands.filter(c => c.command.toLowerCase().includes(cleanText) || c.desc.toLowerCase().includes(cleanText));
+
+                if(foundRule) {
+                    reply = `📌 <b>نتيجة عثور في القوانين:</b><br><br>• القانون: <span class="badge badge-rule">${foundRule.rule}</span><br>• الشرح: ${foundRule.desc}`;
+                } else if(foundCmds.length > 0) {
+                    reply = `📌 <b>نتائج عثور في الأوامر الإدارية (${foundCmds.length}):</b><br><br>`;
+                    foundCmds.slice(0, 5).forEach(c => { // جلب أول 5 نتائج متطابقة كحد أقصى لمنع التكديس
+                        reply += `• <span class="badge badge-cmd">/${c.command}</span> : ${c.desc}<br>`;
+                    });
+                    if(foundCmds.length > 5) reply += `<i>...وهناك نتائج أخرى، يرجى تضييق نطاق البحث الإداري.</i>`;
+                }
+
+                chatMessages.innerHTML += `<div class="msg bot">${reply}</div>`;
+                chatMessages.scrollTop = chatMessages.scrollHeight;
+            }, 300);
         }
     </script>
 </body>
