@@ -57,7 +57,6 @@ body {
     width: 90%;
     max-width: 1200px;
     margin: 20px auto;
-
     display: flex;
     flex-wrap: wrap;
     gap: 10px;
@@ -70,6 +69,11 @@ body {
     border-radius: 10px;
     padding: 10px 15px;
     cursor: pointer;
+    transition: 0.2s;
+}
+
+.filter-btn:hover {
+    background: #334155;
 }
 
 .chat-area {
@@ -80,12 +84,10 @@ body {
 
 .bot-message,
 .user-message {
-
     padding: 15px;
     border-radius: 15px;
     margin-bottom: 15px;
     line-height: 1.8;
-
 }
 
 .bot-message {
@@ -97,43 +99,88 @@ body {
 }
 
 .result-card {
-
     background: #111827;
     border-radius: 15px;
     padding: 20px;
     margin-top: 15px;
-
 }
 
 .result-title {
     font-size: 24px;
     margin-bottom: 10px;
+    font-weight: bold;
 }
 
 .copy-btn {
-
-    margin-top: 10px;
-    background: #16a34a;
+    background: #22c55e;
     color: white;
     border: none;
+    padding: 10px 15px;
     border-radius: 10px;
-    padding: 10px;
+    margin-top: 15px;
     cursor: pointer;
+    transition: 0.2s;
+}
 
+.copy-btn:hover {
+    opacity: 0.8;
 }
 
 .gallery {
-
     display: grid;
-    grid-template-columns: repeat(auto-fill,minmax(250px,1fr));
+    grid-template-columns: repeat(auto-fill, minmax(250px, 1fr));
     gap: 15px;
     margin-top: 15px;
-
 }
 
 .gallery img {
-
     width: 100%;
     border-radius: 15px;
+    object-fit: cover;
+    transition: 0.3s;
+}
 
+.gallery img:hover {
+    transform: scale(1.03);
+}
+
+.result-card img {
+    width: 100%;
+    border-radius: 15px;
+    object-fit: cover;
+}
+
+.notification {
+    position: fixed;
+    bottom: 20px;
+    left: 20px;
+    background: #22c55e;
+    color: white;
+    padding: 12px 18px;
+    border-radius: 10px;
+    z-index: 9999;
+}
+
+@media (max-width: 768px) {
+
+    .search-box {
+        flex-direction: column;
+    }
+
+    .search-box button {
+        width: 100%;
+        height: 50px;
+    }
+
+    .header h1 {
+        font-size: 30px;
+    }
+
+    .result-title {
+        font-size: 20px;
+    }
+
+    .gallery {
+        grid-template-columns: 1fr;
+    }
 }
