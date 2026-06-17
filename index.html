@@ -9,11 +9,8 @@
 </head>
 <body>
 
-    <!-- ===== الهيدر ===== -->
     <header>
-        <a href="index.html" class="logo">
-            🎮 MTA <span>San Andreas</span>
-        </a>
+        <a href="index.html" class="logo">🎮 MTA <span>San Andreas</span></a>
         <nav>
             <a href="index.html" class="active">🏠 الرئيسية</a>
             <a href="commands.html">📋 الأوامر</a>
@@ -23,10 +20,8 @@
         </nav>
     </header>
 
-    <!-- ===== المحتوى الرئيسي ===== -->
     <div class="container">
 
-        <!-- ===== الترحيب ===== -->
         <div class="card text-center">
             <h1 class="card-title" style="justify-content:center;">🎮 مرحباً بك في دليل MTA San Andreas</h1>
             <p style="color:var(--text-muted);font-size:18px;">
@@ -34,19 +29,15 @@
             </p>
         </div>
 
-        <!-- ===== الأقسام السريعة ===== -->
         <div class="card">
             <h3 class="card-title">📂 الأقسام</h3>
-            <div class="quick-categories" id="quickCategories">
-                <!-- سيتم تعبئتها بواسطة JavaScript -->
-            </div>
+            <div class="quick-categories" id="quickCategories"></div>
         </div>
 
-        <!-- ===== بوت الدردشة الذكي ===== -->
         <div class="card">
             <h3 class="card-title">🤖 البوت الذكي</h3>
             <p style="color:var(--text-muted);margin-bottom:15px;">
-                اسأل عن أي أمر، قسم، قانون، أو انترو
+                اسأل عن أي أمر، قسم، قانون، أو انترو - يمكنك نسخ النص بضغطة زر
             </p>
             
             <div class="chat-container">
@@ -55,21 +46,20 @@
                         👋 مرحباً! أنا البوت الذكي لدليل MTA<br>
                         <small style="color:var(--text-muted);">
                             يمكنك سؤالي عن:<br>
-                            • أوامر مثل: /kill، فاكشن، سيارة<br>
-                            • قوانين مثل: DM، SK<br>
-                            • انترو مثل: قصر، فيلا، مكتب
+                            • أوامر مثل: <code style="color:#ffaa66;">sellproperty</code>، <code style="color:#ffaa66;">فاكشن</code><br>
+                            • قوانين مثل: <code style="color:#ffaa66;">DM</code>، <code style="color:#ffaa66;">SK</code><br>
+                            • انترو مثل: <code style="color:#ffaa66;">قصر</code>، <code style="color:#ffaa66;">فيلا</code>
                         </small>
                         <span class="time">${new Date().toLocaleTimeString('ar')}</span>
                     </div>
                 </div>
                 <div class="chat-input-area">
-                    <input type="text" id="chatInput" placeholder="اكتب سؤالك هنا..." onkeydown="if(event.key==='Enter') sendMessage()">
+                    <input type="text" id="chatInput" placeholder="✍️ اكتب سؤالك هنا..." onkeydown="if(event.key==='Enter') sendMessage()">
                     <button onclick="sendMessage()">📤 إرسال</button>
                 </div>
             </div>
         </div>
 
-        <!-- ===== إحصائيات ===== -->
         <div class="card" style="text-align:center;">
             <p style="color:var(--text-muted);">
                 📊 <span id="totalCommands">0</span> أمر | 
@@ -82,7 +72,6 @@
 
     <script src="data.js"></script>
     <script>
-        // ===== تعبئة الأقسام السريعة =====
         function loadQuickCategories() {
             const container = document.getElementById('quickCategories');
             const categories = siteData.categories.slice(0, 12);
@@ -94,7 +83,6 @@
             `).join('');
         }
 
-        // ===== إرسال رسالة للبوت =====
         function sendMessage() {
             const input = document.getElementById('chatInput');
             const messages = document.getElementById('chatMessages');
@@ -102,7 +90,6 @@
             
             if (!text) return;
             
-            // إضافة رسالة المستخدم
             messages.innerHTML += `
                 <div class="chat-message user">
                     ${text}
@@ -112,10 +99,8 @@
             
             input.value = '';
             
-            // الحصول على رد البوت
             const reply = smartReply(text);
             
-            // إضافة رد البوت
             setTimeout(() => {
                 messages.innerHTML += `
                     <div class="chat-message bot">
@@ -129,27 +114,16 @@
             messages.scrollTop = messages.scrollHeight;
         }
 
-        // ===== تحديث الإحصائيات =====
         function updateStats() {
             document.getElementById('totalCommands').textContent = siteData.commands.length;
             document.getElementById('totalRules').textContent = siteData.rules.length;
             document.getElementById('totalInteriors').textContent = siteData.interiors.length;
         }
 
-        // ===== التشغيل عند التحميل =====
         document.addEventListener('DOMContentLoaded', function() {
             loadQuickCategories();
             updateStats();
-            
-            // التركيز على حقل الإدخال
             document.getElementById('chatInput').focus();
-        });
-
-        // ===== السماح بالإرسال بالضغط على Enter =====
-        document.getElementById('chatInput').addEventListener('keydown', function(e) {
-            if (e.key === 'Enter') {
-                sendMessage();
-            }
         });
     </script>
 
