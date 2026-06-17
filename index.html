@@ -4,52 +4,33 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>موقع الدليل | MTA San Andreas Commands</title>
+    <!-- تضمين Tailwind CSS والمكتبات الخارجية للأيقونات والخطوط -->
     <script src="https://cdn.tailwindcss.com"></script>
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
     <link href="https://fonts.googleapis.com/css2?family=Cairo:wght@400;600;700;900&display=swap" rel="stylesheet">
     <style>
         body { font-family: 'Cairo', sans-serif; }
-        
-        /* 🌌 الخلفية المحلية المستقرة */
-        .gaming-background {
-            position: relative;
-            background-image: url('bg.jpg'); /* تأكد من وضع صورة بهذا الاسم بجانب ملف index.html */
-            background-size: cover;
-            background-position: center;
-            background-attachment: fixed;
-            background-repeat: no-repeat;
-        }
-        
-        /* طبقة حماية برمجية داكنة لمنع الإزعاج البصري ولراحة العين */
-        .gaming-background::before {
-            content: "";
-            position: fixed;
-            top: 0;
-            left: 0;
-            width: 100%;
-            height: 100%;
-            background: linear-gradient(135deg, rgba(11, 15, 22, 0.94), rgba(7, 10, 15, 0.90));
-            z-index: -1;
-        }
-
-        /* تأثيرات الإضاءة المتوهجة للبطاقات الرئيسية */
-        .neon-card-cyan { border: 1px solid rgba(6, 182, 212, 0.4); box-shadow: 0 0 25px rgba(6, 182, 212, 0.08); }
-        .neon-card-orange { border: 1px solid rgba(249, 115, 22, 0.4); box-shadow: 0 0 25px rgba(249, 115, 22, 0.08); }
-        
-        /* تخصيص شريط التمرير */
+        /* تأثيرات النيون الجيمنج المحسنة */
+        .neon-box-cyan { border: 1px solid rgba(6, 182, 212, 0.25); box-shadow: 0 0 20px rgba(6, 182, 212, 0.05); }
+        .neon-box-orange { border: 1px solid rgba(249, 115, 22, 0.25); box-shadow: 0 0 20px rgba(249, 115, 22, 0.05); }
+        .neon-text-cyan { text-shadow: 0 0 10px rgba(6, 182, 212, 0.5); }
+        /* تخصيص السكرول بار ليناسب ثيم اللعبة */
         ::-webkit-scrollbar { width: 6px; }
-        ::-webkit-scrollbar-track { background: #070a0f; }
-        ::-webkit-scrollbar-thumb { background: #1e293b; border-radius: 10px; }
+        ::-webkit-scrollbar-track { background: #0d1117; }
+        ::-webkit-scrollbar-thumb { background: #1f2937; border-radius: 10px; }
         ::-webkit-scrollbar-thumb:hover { background: #06b6d4; }
     </style>
 </head>
-<body class="gaming-background text-gray-200 min-h-screen selection:bg-cyan-500 selection:text-black">
+<body class="bg-[#0f1319] text-gray-200 min-h-screen selection:bg-cyan-500 selection:text-black">
 
-    <div class="flex flex-col lg:flex-row min-h-screen relative z-10">
+    <!-- القائمة الجانبية والهيدر (Gaming Dashboard Layout) -->
+    <div class="flex flex-col lg:flex-row min-h-screen">
         
-        <aside class="w-full lg:w-64 bg-[#0e131f]/95 p-6 border-l border-gray-800/80 flex flex-col justify-between shadow-2xl">
+        <!-- شريط التنقل الجانبي الاحترافي -->
+        <aside class="w-full lg:w-64 bg-[#141922] p-6 border-l border-gray-800 flex flex-col justify-between shadow-xl">
             <div>
-                <div class="flex items-center gap-3 mb-10 pb-4 border-b border-gray-800/60">
+                <!-- الشعار المطور -->
+                <div class="flex items-center gap-3 mb-10 pb-4 border-b border-gray-800">
                     <div class="w-10 h-10 rounded-xl bg-cyan-500/10 flex items-center justify-center border border-cyan-500/30">
                         <i class="fas fa-compass text-cyan-400 text-xl"></i>
                     </div>
@@ -59,45 +40,52 @@
                     </div>
                 </div>
 
+                <!-- أزرار الأقسام التفاعلية -->
                 <nav class="space-y-2">
-                    <button onclick="switchTab('home')" id="btn-home" class="w-full flex items-center gap-3 px-4 py-3 rounded-xl font-bold bg-cyan-600/10 text-cyan-400 border border-cyan-500/30 transition-all">
+                    <button onclick="switchTab('home')" id="btn-home" class="w-full flex items-center gap-3 px-4 py-3 rounded-xl font-bold bg-cyan-600/10 text-cyan-400 border border-cyan-500/20 transition-all">
                         <i class="fas fa-th-large"></i> لوحة التحكم الرئيسية
                     </button>
-                    <button onclick="switchTab('commands')" id="btn-commands" class="w-full flex items-center gap-3 px-4 py-3 rounded-xl font-bold text-gray-400 hover:bg-gray-800/50 hover:text-white transition-all">
+                    <button onclick="switchTab('commands')" id="btn-commands" class="w-full flex items-center gap-3 px-4 py-3 rounded-xl font-bold text-gray-400 hover:bg-gray-800 hover:text-white transition-all">
                         <i class="fas fa-gamepad"></i> قسم الأوامر
                     </button>
-                    <button onclick="switchTab('rules')" id="btn-rules" class="w-full flex items-center gap-3 px-4 py-3 rounded-xl font-bold text-gray-400 hover:bg-gray-800/50 hover:text-white transition-all">
+                    <button onclick="switchTab('rules')" id="btn-rules" class="w-full flex items-center gap-3 px-4 py-3 rounded-xl font-bold text-gray-400 hover:bg-gray-800 hover:text-white transition-all">
                         <i class="fas fa-gavel"></i> قسم القوانين
                     </button>
-                    <button onclick="switchTab('intro')" id="btn-intro" class="w-full flex items-center gap-3 px-4 py-3 rounded-xl font-bold text-gray-400 hover:bg-gray-800/50 hover:text-white transition-all">
+                    <button onclick="switchTab('intro')" id="btn-intro" class="w-full flex items-center gap-3 px-4 py-3 rounded-xl font-bold text-gray-400 hover:bg-gray-800 hover:text-white transition-all">
                         <i class="fas fa-code"></i> قسم الإنترو
                     </button>
                 </nav>
             </div>
 
-            <div class="pt-4 border-t border-gray-800/60 flex items-center justify-between text-xs text-gray-500">
-                <span>الإصدار الجرافيكي v4.5</span>
+            <!-- معلومات النسخة أو الأدمن في الأسفل -->
+            <div class="pt-4 border-t border-gray-800 flex items-center justify-between text-xs text-gray-500">
+                <span>الإصدار المميز v3.0</span>
                 <a href="admin.html" class="hover:text-cyan-400"><i class="fas fa-user-shield"></i> لوحة الإدارة</a>
             </div>
         </aside>
 
+        <!-- منطقة المحتوى الرئيسية -->
         <main class="flex-1 p-6 lg:p-8 overflow-y-auto">
 
+            <!-- 1. تبويب: الصفحة الرئيسية بتنسيق منفصل ومميز (البحث الشامل ضد الرد التلقائي) -->
             <section id="tab-home" class="space-y-6">
                 
-                <div class="bg-[#121824]/90 px-6 py-4 rounded-2xl border border-gray-800/80 flex justify-between items-center shadow-lg">
+                <!-- هيدر ترحيبي علوي خفيف -->
+                <div class="bg-[#141922] px-6 py-4 rounded-2xl border border-gray-800 flex justify-between items-center shadow-lg">
                     <div>
                         <h2 class="text-xl font-black text-white">منصة الدليل الرقمية لمجتمع MTA</h2>
                     </div>
                     <span class="px-3 py-1 rounded-full bg-green-500/10 text-green-400 text-xs font-bold border border-green-500/20 flex items-center gap-1.5">
-                        <span class="w-2 h-2 rounded-full bg-green-500 animate-pulse"></span> الخلفية متفاعلة
+                        <span class="w-2 h-2 rounded-full bg-green-500 animate-pulse"></span> النظام الذكي نشط
                     </span>
                 </div>
 
+                <!-- الهيكل المنقسم الجديد (المميز) -->
                 <div class="grid grid-cols-1 xl:grid-cols-2 gap-6">
                     
-                    <div class="bg-[#111723]/95 p-6 rounded-2xl flex flex-col space-y-4 shadow-2xl neon-card-orange">
-                        <div class="flex items-center gap-3 pb-3 border-b border-gray-800/60">
+                    <!-- 🧭 الجانب الأيمن: محرك البحث الشامل المتقدم مع مساحة عرض النتائج -->
+                    <div class="bg-[#141922] p-6 rounded-2xl border border-gray-800 flex flex-col space-y-4 shadow-xl">
+                        <div class="flex items-center gap-3 pb-3 border-b border-gray-800">
                             <div class="w-8 h-8 rounded-lg bg-orange-500/10 flex items-center justify-center border border-orange-500/30">
                                 <i class="fas fa-search text-orange-400"></i>
                             </div>
@@ -107,22 +95,27 @@
                             </div>
                         </div>
 
+                        <!-- صندوق الإدخال للبحث العام -->
                         <div class="relative">
-                            <input type="text" id="global-search" onkeyup="globalSearch()" placeholder="اكتب كلمة للبحث (مثال: سيارة، باند، DM)..." class="w-full bg-[#090d14] border border-gray-700 rounded-xl px-11 py-3.5 text-white placeholder-gray-500 focus:outline-none focus:border-orange-500 transition-all font-bold text-sm">
+                            <input type="text" id="global-search" onkeyup="globalSearch()" placeholder="اكتب كلمة للبحث (مثال: سيارة، باند، DM)..." class="w-full bg-[#0d1117] border border-gray-700 rounded-xl px-11 py-3.5 text-white placeholder-gray-500 focus:outline-none focus:border-orange-500 transition-all font-bold text-sm">
                             <i class="fas fa-search absolute right-4 top-4 text-gray-500"></i>
                         </div>
 
-                        <div class="flex-1 min-h-[340px] max-h-[340px] overflow-y-auto space-y-3 rounded-xl bg-[#080b12]/90 p-4 border border-gray-800/60" id="search-results-area">
+                        <!-- مساحة عرض نتائج البحث الديناميكية -->
+                        <div class="flex-1 min-h-[340px] max-h-[340px] overflow-y-auto space-y-3 rounded-xl bg-[#0d1117] p-4 border border-gray-800" id="search-results-area">
+                            <!-- الحالة الافتراضية قبل الكتابة -->
                             <div id="search-placeholder" class="h-full flex flex-col items-center justify-center text-center text-gray-500 space-y-2">
                                 <i class="fas fa-keyboard text-3xl text-gray-700"></i>
                                 <p class="text-xs">ابدأ بكتابة أي حرف بالأعلى لتظهر لك النتائج فوراً هنا.</p>
                             </div>
+                            <!-- النتائج تظهر هنا برمجياً -->
                             <div id="search-results-grid" class="space-y-3 hidden"></div>
                         </div>
                     </div>
 
-                    <div class="bg-[#111723]/95 p-6 rounded-2xl flex flex-col space-y-4 shadow-2xl neon-card-cyan">
-                        <div class="flex items-center gap-3 pb-3 border-b border-gray-800/60">
+                    <!-- 🤖 الجانب الأيسر: كونسول الرد التلقائي وشاشات الشات الذكية -->
+                    <div class="bg-[#141922] p-6 rounded-2xl border border-gray-800 flex flex-col space-y-4 shadow-xl">
+                        <div class="flex items-center gap-3 pb-3 border-b border-gray-800">
                             <div class="w-8 h-8 rounded-lg bg-cyan-500/10 flex items-center justify-center border border-cyan-500/30">
                                 <i class="fas fa-robot text-cyan-400"></i>
                             </div>
@@ -132,14 +125,16 @@
                             </div>
                         </div>
 
-                        <div id="chat-box" class="flex-1 min-h-[270px] max-h-[270px] overflow-y-auto space-y-3 rounded-xl bg-[#080b12]/90 p-4 border border-gray-800/60 text-xs md:text-sm">
-                            <div class="bg-[#141b29] text-gray-300 p-3.5 rounded-xl border border-gray-850 max-w-[85%] self-start leading-relaxed">
+                        <!-- شاشة رسائل الشات بوت -->
+                        <div id="chat-box" class="flex-1 min-h-[270px] max-h-[270px] overflow-y-auto space-y-3 rounded-xl bg-[#0d1117] p-4 border border-gray-800 text-xs md:text-sm">
+                            <div class="bg-[#171f2e] text-gray-300 p-3.5 rounded-xl border border-gray-800 max-w-[85%] self-start leading-relaxed">
                                 👋 أهلاً بك! أنا بوت الدليل التلقائي. اكتب سؤالك بالأسفل وسأقوم بتحليل الكلمات والرد عليك فوراً بالأمر أو التفسير المناسب.
                             </div>
                         </div>
 
+                        <!-- صندوق إدخال الشات والإرسال -->
                         <div class="flex gap-2">
-                            <input type="text" id="user-input" onkeypress="if(event.key === 'Enter') sendMessage()" placeholder="اسأل البوت هنا (مثال: كيف أعطي باند؟)..." class="w-full bg-[#090d14] border border-gray-700 rounded-xl px-4 py-3 text-white placeholder-gray-500 focus:outline-none focus:border-cyan-500 transition-all text-sm">
+                            <input type="text" id="user-input" onkeypress="if(event.key === 'Enter') sendMessage()" placeholder="اسأل البوت هنا (مثال: كيف أعطي باند؟)..." class="w-full bg-[#0d1117] border border-gray-700 rounded-xl px-4 py-3 text-white placeholder-gray-500 focus:outline-none focus:border-cyan-500 transition-all text-sm">
                             <button onclick="sendMessage()" class="bg-cyan-600 hover:bg-cyan-500 text-black font-bold px-5 py-3 rounded-xl transition-all shadow-md shadow-cyan-600/10">
                                 <i class="fas fa-paper-plane"></i>
                             </button>
@@ -149,15 +144,39 @@
                 </div>
             </section>
 
-            <section id="tab-commands" class="space-y-6 hidden"><div class="grid md:grid-cols-2 gap-6" id="main-commands-list"></div></section>
-            <section id="tab-rules" class="space-y-6 hidden"><div class="grid md:grid-cols-2 lg:grid-cols-3 gap-6" id="main-rules-list"></div></section>
-            <section id="tab-intro" class="space-y-6 hidden"><div class="space-y-6" id="main-intros-list"></div></section>
+            <!-- 2. تبويب: قسم الأوامر المطور -->
+            <section id="tab-commands" class="space-y-6 hidden">
+                <div>
+                    <h2 class="text-2xl font-black text-white">قائمة أوامر السيرفر الشاملة</h2>
+                    <p class="text-sm text-gray-400">تصفح وانسخ الأوامر البرمجية والبروتوكولية مباشرة.</p>
+                </div>
+                <div class="grid md:grid-cols-2 gap-6" id="main-commands-list"></div>
+            </section>
+
+            <!-- 3. تبويب: قسم القوانين المطور -->
+            <section id="tab-rules" class="space-y-6 hidden">
+                <div>
+                    <h2 class="text-2xl font-black text-white">قوانين الـ Roleplay وأنظمة MTA</h2>
+                    <p class="text-sm text-gray-400">القوانين العالمية والمصطلحات مشروحة باللغة العربية بالتفصيل.</p>
+                </div>
+                <div class="grid md:grid-cols-2 lg:grid-cols-3 gap-6" id="main-rules-list"></div>
+            </section>
+
+            <!-- 4. تبويب: قسم الإنترو المطور -->
+            <section id="tab-intro" class="space-y-6 hidden">
+                <div>
+                    <h2 class="text-2xl font-black text-white">معرض واجهات الإنترو وأكواد اللوا (Lua)</h2>
+                    <p class="text-sm text-gray-400">أكواد احترافية جاهزة للنسخ مع صور معاينة لتصميم سيرفرك المطور.</p>
+                </div>
+                <div class="space-y-6" id="main-intros-list"></div>
+            </section>
 
         </main>
     </div>
 
+    <!-- جافا سكريبت الذكية لإدارة البيانات والبحث الفوري والشات المطور -->
     <script>
-        // قاعدة البيانات والوظائف البرمجية البروتوكولية كما هي لضمان عمل محرك البحث والشات بكفاءة
+        // 💾 قاعدة البيانات الموحدة للموقع بالكامل
         const siteDatabase = {
             commands: [
                 { type: "أوامر المركبات", name: "/spawnvehicle [VehicleID]", desc: "توليد ورسبنة مركبة محددة أمام اللاعب باستخدام الآيدي المميز.", tags: ["سيارة", "مركبة", "رسبنه", "سبون", "car", "spawn"] },
@@ -167,19 +186,23 @@
             ],
             rules: [
                 { title: "DM - Deathmatch", arabicTitle: "القتل بدون سبب آر بي", desc: "يمنع منعاً باتاً الاعتداء على اللاعبين الآخرين أو قتلهم دون وجود دافع قصصي أو عداوة معتمدة في سيرفر الحياة الواقعية.", isImportant: true },
-                { title: "RK - Revenge Killing", arabicTitle: "الانتقام بعد الموت", desc: "عندما تموت في اللعبة، تُعتبر شخصيتك قد نسيت ما حدث. العودة فوراً لموقع موتك لقتل من قتلك يعتبر مخالفة صريحة.", isImportant: false }
+                { title: "RK - Revenge Killing", arabicTitle: "الانتقام بعد الموت", desc: "عندما تموت في اللعبة، تُعتبر شخصيتك قد نسيت ما حدث. العودة فوراً لموقع موتك لقتل من قتلك يعتبر مخالفة صريحة لقواعد الآر بي.", isImportant: false }
             ],
             intros: [
-                { title: "إنترو نيون لوج إن (Neon Login)", desc: "واجهة ترحيبية انسيابية وممتازة متوافقة مع جميع مقاسات الشاشات.", code: `addEventHandler("onClientResourceStart", resourceRoot, function() outputChatBox("Welcome!", 6, 182, 212) end)` }
+                { title: "إنترو نيون لوج إن (Neon Login)", desc: "واجهة ترحيبية انسيابية وممتازة متوافقة مع جميع مقاسات الشاشات عند دخول السيرفر وتعمل بكفاءة عالية.", code: `-- سكريبت تقديم لوحة الإنترو عند دخول السيرفر ترحيباً باللاعب\naddEventHandler("onClientResourceStart", resourceRoot,\n    function()\n        outputChatBox("Welcome to Al-Daleel Server UI System!", 6, 182, 212)\n        setCameraMatrix(1481.2, -1750.5, 25.3, 1481.5, -1740.2, 18.5)\n    end\n)` }
             ]
         };
 
-        window.onload = function() { renderCommands(); renderRules(); renderIntros(); };
+        window.onload = function() {
+            renderCommands();
+            renderRules();
+            renderIntros();
+        };
 
         function renderCommands() {
             const container = document.getElementById('main-commands-list');
             container.innerHTML = siteDatabase.commands.map(cmd => `
-                <div class="bg-[#111723]/90 p-5 rounded-2xl border border-gray-800 hover:border-cyan-500/40 transition-all flex justify-between items-start group">
+                <div class="bg-[#141922] p-5 rounded-2xl border border-gray-800 hover:border-cyan-500/40 transition-all flex justify-between items-start group">
                     <div>
                         <span class="px-2.5 py-0.5 text-xs bg-amber-500/10 text-amber-400 rounded-md font-bold border border-amber-500/20">${cmd.type}</span>
                         <h3 class="text-lg font-mono font-bold text-cyan-400 mt-2">${cmd.name}</h3>
@@ -193,8 +216,9 @@
         function renderRules() {
             const container = document.getElementById('main-rules-list');
             container.innerHTML = siteDatabase.rules.map(rule => `
-                <div class="bg-[#111723]/90 p-5 rounded-2xl border border-gray-800 ${rule.isImportant ? 'border-orange-500/40 shadow-xl' : ''} relative overflow-hidden">
-                    <h3 class="text-xl font-black text-white">${rule.title}</h3>
+                <div class="bg-[#141922] p-5 rounded-2xl border border-gray-800 ${rule.isImportant ? 'neon-box-orange' : ''} relative overflow-hidden">
+                    ${rule.isImportant ? '<div class="absolute top-0 left-0 bg-orange-500 text-black font-black text-xs px-3 py-1 rounded-br-xl">مهم جداً</div>' : ''}
+                    <h3 class="text-xl font-black text-white ${rule.isImportant ? 'mt-3' : ''}">${rule.title}</h3>
                     <span class="text-xs text-cyan-400 font-mono block mb-3">${rule.arabicTitle}</span>
                     <p class="text-sm text-gray-400 leading-relaxed">${rule.desc}</p>
                 </div>
@@ -204,53 +228,145 @@
         function renderIntros() {
             const container = document.getElementById('main-intros-list');
             container.innerHTML = siteDatabase.intros.map((intro, idx) => `
-                <div class="bg-[#111723]/90 rounded-2xl border border-gray-800 overflow-hidden max-w-3xl">
+                <div class="bg-[#141922] rounded-2xl border border-gray-800 overflow-hidden max-w-3xl">
                     <div class="p-6 bg-gradient-to-r from-cyan-900/20 to-transparent border-b border-gray-800 flex justify-between items-center">
-                        <h3 class="text-lg font-bold text-white">${intro.title}</h3>
+                        <div>
+                            <h3 class="text-lg font-bold text-white">${intro.title}</h3>
+                            <p class="text-xs text-gray-400">${intro.desc}</p>
+                        </div>
                     </div>
                     <div class="p-6">
-                        <pre class="bg-[#080b12] p-4 rounded-xl text-xs text-green-400"><code>${intro.code}</code></pre>
+                        <div class="relative bg-[#0d1117] p-4 rounded-xl border border-gray-800 font-mono text-xs text-green-400 overflow-x-auto">
+                            <button onclick="copyCode('lua-code-${idx}')" class="absolute top-3 left-3 bg-cyan-600 hover:bg-cyan-500 text-black font-bold px-3 py-1.5 rounded-lg text-xs transition-all">نسخ الكود بالكامل</button>
+                            <pre><code id="lua-code-${idx}">${intro.code}</code></pre>
+                        </div>
                     </div>
                 </div>
             `).join('');
         }
 
+        // 🔍 محرك البحث العام المطور والمحدد داخل مساحته الخاصة
         function globalSearch() {
             const query = document.getElementById('global-search').value.trim().toLowerCase();
             const placeholder = document.getElementById('search-placeholder');
             const resultsGrid = document.getElementById('search-results-grid');
 
-            if (!query) { placeholder.classList.remove('hidden'); resultsGrid.classList.add('hidden'); return; }
-            placeholder.classList.add('hidden'); resultsGrid.classList.remove('hidden');
+            if (!query) {
+                placeholder.classList.remove('hidden');
+                resultsGrid.classList.add('hidden');
+                resultsGrid.innerHTML = "";
+                return;
+            }
+
+            placeholder.classList.add('hidden');
+            resultsGrid.classList.remove('hidden');
 
             let htmlResults = "";
+            let matchCount = 0;
+
+            // البحث داخل الأوامر
             siteDatabase.commands.forEach(cmd => {
-                if (cmd.name.toLowerCase().includes(query) || cmd.desc.includes(query)) {
-                    htmlResults += `<div class="bg-[#111723] p-4 rounded-xl border border-cyan-500/20"><h4 class="text-sm font-mono font-bold text-white">${cmd.name}</h4><p class="text-xs text-gray-400">${cmd.desc}</p></div>`;
+                if (cmd.name.toLowerCase().includes(query) || cmd.desc.includes(query) || cmd.tags.some(tag => tag.includes(query))) {
+                    matchCount++;
+                    htmlResults += `
+                        <div class="bg-[#141922] p-4 rounded-xl border border-cyan-500/20 flex justify-between items-center gap-3">
+                            <div>
+                                <span class="text-[10px] text-cyan-400 font-bold block mb-1">🎮 أمر: ${cmd.type}</span>
+                                <h4 class="text-sm font-mono font-bold text-white">${cmd.name}</h4>
+                                <p class="text-xs text-gray-400 mt-0.5">${cmd.desc}</p>
+                            </div>
+                            <button onclick="copyText('${cmd.name}')" class="bg-cyan-600/10 hover:bg-cyan-600 p-2 text-cyan-400 hover:text-black rounded-lg text-xs transition-all"><i class="fas fa-copy"></i></button>
+                        </div>
+                    `;
                 }
             });
-            resultsGrid.innerHTML = htmlResults || `<div class="text-center py-8 text-gray-500 text-xs">لا توجد نتائج مطابقة</div>`;
+
+            // البحث داخل القوانين
+            siteDatabase.rules.forEach(rule => {
+                if (rule.title.toLowerCase().includes(query) || rule.arabicTitle.includes(query) || rule.desc.includes(query)) {
+                    matchCount++;
+                    htmlResults += `
+                        <div class="bg-[#141922] p-4 rounded-xl border border-orange-500/20">
+                            <span class="text-[10px] text-orange-400 font-bold block mb-1">⚖️ قانون</span>
+                            <h4 class="text-sm font-black text-white">${rule.title} - ${rule.arabicTitle}</h4>
+                            <p class="text-xs text-gray-400 mt-0.5">${rule.desc}</p>
+                        </div>
+                    `;
+                }
+            });
+
+            if (matchCount > 0) {
+                resultsGrid.innerHTML = htmlResults;
+            } else {
+                resultsGrid.innerHTML = `
+                    <div class="text-center py-8 text-gray-500 text-xs">
+                        <i class="fas fa-times-circle text-lg text-gray-700 block mb-1"></i>
+                        لا توجد نتائج مطابقة لـ "${query}"
+                    </div>
+                `;
+            }
         }
 
+        // 🤖 نظام شات الرد التلقائي المنفصل والذكي
         function sendMessage() {
             const input = document.getElementById('user-input');
             const chatBox = document.getElementById('chat-box');
-            if (!input.value.trim()) return;
+            const text = input.value.trim().toLowerCase();
 
-            chatBox.innerHTML += `<div class="bg-cyan-600/10 border border-cyan-500/20 p-3 rounded-xl max-w-[80%] self-end text-cyan-400 font-bold ml-auto text-left">${input.value}</div>`;
+            if (!text) return;
+
+            chatBox.innerHTML += `
+                <div class="bg-cyan-600/10 border border-cyan-500/20 p-3 rounded-xl max-w-[80%] self-end text-cyan-400 font-bold ml-auto text-left">
+                    ${input.value}
+                </div>
+            `;
             input.value = '';
             chatBox.scrollTop = chatBox.scrollHeight;
+
+            setTimeout(() => {
+                let botReply = "🔍 لم أفهم طلبك في الشات تماماً يا غالي. جرب البحث في لوحة التحكم المجاورة بالجانب الأيمن للحصول على نتائج أدق فوراً!";
+                
+                const chatDatabase = [
+                    { keywords: ["طيران", "fly"], reply: "💡 <b>أمر الطيران الإداري:</b> <code class='bg-black text-yellow-400 px-1 py-0.5 rounded'>/fly</code><br>🔹 يستعمله المسؤولون والـ VIP للطيران والتنقل في السيرفر." },
+                    { keywords: ["سيارة", "مركبة", "رسبنه"], reply: "🚘 <b>أمر رسبنة المركبات:</b> <code class='bg-black text-cyan-400 px-1 py-0.5 rounded'>/spawnvehicle [ID]</code><br>🔹 يرسبن لك أي مركبة تختارها باستخدام الآيدي الخاص بها." },
+                    { keywords: ["dm", "دي ام", "قتل"], reply: "⚖️ <b>قانون الـ DM (Deathmatch):</b> هو قتل أو ضرب اللاعبين الآخرين دون سبب واقعي، وعقوبتها صارمة جداً بالسجن الإداري." }
+                ];
+
+                for (let item of chatDatabase) {
+                    if (item.keywords.some(keyword => text.includes(keyword))) {
+                        botReply = item.reply;
+                        break;
+                    }
+                }
+
+                chatBox.innerHTML += `
+                    <div class="bg-[#171f2e] text-gray-300 p-3 rounded-xl border border-gray-800 max-w-[85%] mr-auto text-right border-r-2 border-r-cyan-500 leading-relaxed">
+                        ${botReply}
+                    </div>
+                `;
+                chatBox.scrollTop = chatBox.scrollHeight;
+            }, 400);
         }
 
         function switchTab(tabName) {
-            ['home', 'commands', 'rules', 'intro'].forEach(t => {
+            const tabs = ['home', 'commands', 'rules', 'intro'];
+            tabs.forEach(t => {
                 document.getElementById(`tab-${t}`).classList.add('hidden');
-                document.getElementById(`btn-${t}`).className = "w-full flex items-center gap-3 px-4 py-3 rounded-xl font-bold text-gray-400 hover:bg-gray-800/50 hover:text-white transition-all";
+                document.getElementById(`btn-${t}`).className = "w-full flex items-center gap-3 px-4 py-3 rounded-xl font-bold text-gray-400 hover:bg-gray-800 hover:text-white transition-all";
             });
             document.getElementById(`tab-${tabName}`).classList.remove('hidden');
-            document.getElementById(`btn-${tabName}`).className = "w-full flex items-center gap-3 px-4 py-3 rounded-xl font-bold bg-cyan-600/10 text-cyan-400 border border-cyan-500/30 transition-all";
+            document.getElementById(`btn-${tabName}`).className = "w-full flex items-center gap-3 px-4 py-3 rounded-xl font-bold bg-cyan-600/10 text-cyan-400 border border-cyan-500/20 transition-all";
         }
-        function copyText(txt) { navigator.clipboard.writeText(txt); alert('تم النسخ'); }
+
+        function copyText(txt) {
+            navigator.clipboard.writeText(txt);
+            alert('تم نسخ الأمر: ' + txt);
+        }
+        function copyCode(id) {
+            const code = document.getElementById(id).innerText;
+            navigator.clipboard.writeText(code);
+            alert('تم نسخ سكريبت الـ Lua بالكامل!');
+        }
     </script>
 </body>
 </html>
