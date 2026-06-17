@@ -3,480 +3,179 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>موقع الدليل | MTA San Andreas Commands</title>
-    <!-- تضمين Tailwind CSS والمكتبات الخارجية للأيقونات والخطوط -->
-    <script src="https://cdn.tailwindcss.com"></script>
-    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
-    <link href="https://fonts.googleapis.com/css2?family=Cairo:wght=400;600;700;900&display=swap" rel="stylesheet">
+    <title>لوحة دليل السيرفر الشاملة</title>
     <style>
-        body { font-family: 'Cairo', sans-serif; }
-        
-        /* 🌌 الخلفية المحلية المستقرة */
-        .gaming-background {
-            position: relative;
-            background-image: url('bg.jpg'); /* تأكد من وضع صورة بهذا الاسم بجانب ملف index.html */
-            background-size: cover;
-            background-position: center;
-            background-attachment: fixed;
-            background-repeat: no-repeat;
-        }
-        
-        /* طبقة حماية برمجية داكنة لمنع الإزعاج البصري ولراحة العين */
-        .gaming-background::before {
-            content: "";
-            position: fixed;
-            top: 0;
-            left: 0;
-            width: 100%;
-            height: 100%;
-            background: linear-gradient(135deg, rgba(11, 15, 22, 0.94), rgba(7, 10, 15, 0.90));
-            z-index: -1;
+        :root {
+            --bg-primary: #121214;
+            --bg-secondary: #1a1a1e;
+            --accent-color: #3b82f6;
+            --text-main: #f3f4f6;
+            --text-muted: #9ca3af;
+            --border-color: #2d2d34;
+            --badge-bg: #222229;
         }
 
-        /* تأثيرات الإضاءة المتوهجة للبطاقات الرئيسية */
-        .neon-card-cyan { border: 1px solid rgba(6, 182, 212, 0.4); box-shadow: 0 0 25px rgba(6, 182, 212, 0.08); }
-        .neon-card-orange { border: 1px solid rgba(249, 115, 22, 0.4); box-shadow: 0 0 25px rgba(249, 115, 22, 0.08); }
-        .neon-card-purple { border: 1px solid rgba(168, 85, 247, 0.4); box-shadow: 0 0 25px rgba(168, 85, 247, 0.08); }
-        
-        /* تخصيص شريط التمرير */
-        ::-webkit-scrollbar { width: 6px; }
-        ::-webkit-scrollbar-track { background: #070a0f; }
-        ::-webkit-scrollbar-thumb { background: #1e293b; border-radius: 10px; }
-        ::-webkit-scrollbar-thumb:hover { background: #06b6d4; }
+        * { box-sizing: border-box; margin: 0; padding: 0; font-family: 'Segoe UI', sans-serif; }
+        body { background-color: var(--bg-primary); color: var(--text-main); display: flex; min-height: 100vh; }
+
+        .sidebar { width: 300px; background-color: var(--bg-secondary); border-left: 1px solid var(--border-color); padding: 20px; position: fixed; height: 100vh; overflow-y: auto; }
+        .sidebar h2 { font-size: 1.2rem; margin-bottom: 20px; color: #fff; text-align: center; border-bottom: 2px solid var(--accent-color); padding-bottom: 10px; }
+        .sidebar ul { list-style: none; }
+        .sidebar ul li a { color: var(--text-muted); text-decoration: none; display: block; padding: 8px 12px; border-radius: 6px; font-size: 0.85rem; }
+        .sidebar ul li a:hover { background-color: rgba(59, 130, 246, 0.1); color: #fff; }
+
+        .main-content { margin-right: 300px; flex: 1; padding: 40px; }
+        .header { margin-bottom: 40px; display: flex; justify-content: space-between; align-items: center; background: var(--bg-secondary); padding: 20px; border-radius: 12px; border: 1px solid var(--border-color); }
+        .search-box { padding: 12px 20px; width: 350px; border-radius: 8px; border: 1px solid var(--border-color); background-color: var(--bg-primary); color: #fff; outline: none; }
+
+        .section-panel { background-color: var(--bg-secondary); border-radius: 12px; padding: 25px; margin-bottom: 35px; border: 1px solid var(--border-color); }
+        .section-panel h3 { font-size: 1.2rem; margin-bottom: 20px; color: #60a5fa; border-bottom: 1px solid var(--border-color); padding-bottom: 12px; }
+
+        .commands-table { width: 100%; border-collapse: collapse; text-align: right; }
+        .commands-table th, .commands-table td { padding: 12px 16px; border-bottom: 1px solid var(--border-color); font-size: 0.95rem; }
+        .commands-table th { background-color: rgba(59, 130, 246, 0.05); color: #fff; }
+        .commands-table tr:hover { background-color: rgba(255, 255, 255, 0.01); }
+
+        .command-badge { background-color: var(--badge-bg); color: #34d399; padding: 5px 12px; border-radius: 5px; font-family: monospace; font-weight: bold; border: 1px solid rgba(52, 211, 153, 0.2); }
+        .rule-badge { background-color: #271c1c; color: #f87171; padding: 4px 10px; border-radius: 5px; font-weight: bold; border: 1px solid rgba(248, 113, 113, 0.2); }
+
+        @media (max-width: 992px) { body { flex-direction: column; } .sidebar { width: 100%; height: auto; position: relative; } .main-content { margin-right: 0; padding: 20px; } .search-box { width: 100%; } }
     </style>
 </head>
-<body class="gaming-background text-gray-200 min-h-screen selection:bg-cyan-500 selection:text-black">
+<body>
 
-    <!-- القائمة الجانبية ومساحة العرض -->
-    <div class="flex flex-col lg:flex-row min-h-screen relative z-10">
-        
-        <!-- شريط التنقل الجانبي -->
-        <aside class="w-full lg:w-64 bg-[#0e131f]/95 p-6 border-l border-gray-800/80 flex flex-col justify-between shadow-2xl">
-            <div>
-                <!-- الشعار المميز -->
-                <div class="flex items-center gap-3 mb-10 pb-4 border-b border-gray-800/60">
-                    <div class="w-10 h-10 rounded-xl bg-cyan-500/10 flex items-center justify-center border border-cyan-500/30">
-                        <i class="fas fa-compass text-cyan-400 text-xl"></i>
-                    </div>
-                    <div>
-                        <h1 class="text-xl font-black text-white tracking-wide">AL-DALEEL</h1>
-                        <span class="text-xs text-cyan-400 font-bold">دليل أوامر إم تي إي</span>
-                    </div>
-                </div>
-
-                <!-- أزرار المستخدم العادي -->
-                <nav id="user-nav" class="space-y-2">
-                    <button onclick="switchTab('home')" id="btn-home" class="w-full flex items-center gap-3 px-4 py-3 rounded-xl font-bold bg-cyan-600/10 text-cyan-400 border border-cyan-500/30 transition-all">
-                        <i class="fas fa-th-large"></i> لوحة التحكم الرئيسية
-                    </button>
-                    <button onclick="switchTab('commands')" id="btn-commands" class="w-full flex items-center gap-3 px-4 py-3 rounded-xl font-bold text-gray-400 hover:bg-gray-800/50 hover:text-white transition-all">
-                        <i class="fas fa-gamepad"></i> قسم الأوامر
-                    </button>
-                    <button onclick="switchTab('rules')" id="btn-rules" class="w-full flex items-center gap-3 px-4 py-3 rounded-xl font-bold text-gray-400 hover:bg-gray-800/50 hover:text-white transition-all">
-                        <i class="fas fa-gavel"></i> قسم القوانين
-                    </button>
-                    <button onclick="switchTab('intro')" id="btn-intro" class="w-full flex items-center gap-3 px-4 py-3 rounded-xl font-bold text-gray-400 hover:bg-gray-800/50 hover:text-white transition-all">
-                        <i class="fas fa-code"></i> قسم الإنترو
-                    </button>
-                </nav>
-
-                <!-- أزرار الإدارة (تظهر بعد تسجيل الدخول الصحيح) -->
-                <nav id="admin-nav" class="space-y-2 hidden">
-                    <div class="text-xs text-purple-400 font-black px-4 mb-2 tracking-wider">◄ أدوات المطور والإدارة</div>
-                    <button onclick="switchTab('admin-panel')" id="btn-admin-panel" class="w-full flex items-center gap-3 px-4 py-3 rounded-xl font-bold text-purple-400 bg-purple-500/10 border border-purple-500/30 transition-all">
-                        <i class="fas fa-user-shield"></i> لوحة الإدارة الرئيسية
-                    </button>
-                    <button onclick="logoutAdmin()" class="w-full flex items-center gap-3 px-4 py-3 rounded-xl font-bold text-red-400 hover:bg-red-500/10 transition-all">
-                        <i class="fas fa-sign-out-alt"></i> تسجيل الخروج
-                    </button>
-                </nav>
-            </div>
-
-            <div class="pt-4 border-t border-gray-800/60 flex items-center justify-between text-xs text-gray-500">
-                <span>الإصدار الجرافيكي v5.0</span>
-                <button onclick="openLoginModal()" id="admin-login-link" class="hover:text-cyan-400 transition-all"><i class="fas fa-lock"></i> لوحة الإدارة</button>
-            </div>
-        </aside>
-
-        <!-- منطقة المحتوى الرئيسية -->
-        <main class="flex-1 p-6 lg:p-8 overflow-y-auto">
-
-            <!-- 1. الصفحة الرئيسية -->
-            <section id="tab-home" class="space-y-6">
-                <div class="bg-[#121824]/90 px-6 py-4 rounded-2xl border border-gray-800/80 flex justify-between items-center shadow-lg">
-                    <div>
-                        <h2 class="text-xl font-black text-white">منصة الدليل الرقمية لمجتمع MTA</h2>
-                    </div>
-                    <span class="px-3 py-1 rounded-full bg-green-500/10 text-green-400 text-xs font-bold border border-green-500/20 flex items-center gap-1.5">
-                        <span class="w-2 h-2 rounded-full bg-green-500 animate-pulse"></span> النظام نشط
-                    </span>
-                </div>
-
-                <div class="grid grid-cols-1 xl:grid-cols-2 gap-6">
-                    <!-- الجانب الأيمن: محرك البحث -->
-                    <div class="bg-[#111723]/95 p-6 rounded-2xl flex flex-col space-y-4 shadow-2xl neon-card-orange">
-                        <div class="flex items-center gap-3 pb-3 border-b border-gray-800/60">
-                            <div class="w-8 h-8 rounded-lg bg-orange-500/10 flex items-center justify-center border border-orange-500/30">
-                                <i class="fas fa-search text-orange-400"></i>
-                            </div>
-                            <div>
-                                <h3 class="font-black text-white">محرك البحث السريع الموحد</h3>
-                                <p class="text-xs text-gray-400">ابحث في كل زوايا وأكواد الموقع في نفس اللحظة</p>
-                            </div>
-                        </div>
-                        <div class="relative">
-                            <input type="text" id="global-search" onkeyup="globalSearch()" placeholder="اكتب كلمة للبحث (سيارة، باند، DM)..." class="w-full bg-[#090d14] border border-gray-700 rounded-xl px-11 py-3.5 text-white placeholder-gray-500 focus:outline-none focus:border-orange-500 transition-all font-bold text-sm">
-                            <i class="fas fa-search absolute right-4 top-4 text-gray-500"></i>
-                        </div>
-                        <div class="flex-1 min-h-[340px] max-h-[340px] overflow-y-auto space-y-3 rounded-xl bg-[#080b12]/90 p-4 border border-gray-800/60" id="search-results-area">
-                            <div id="search-placeholder" class="h-full flex flex-col items-center justify-center text-center text-gray-500 space-y-2">
-                                <i class="fas fa-keyboard text-3xl text-gray-700"></i>
-                                <p class="text-xs">ابدأ بكتابة أي حرف بالأعلى لتظهر النتائج هنا.</p>
-                            </div>
-                            <div id="search-results-grid" class="space-y-3 hidden"></div>
-                        </div>
-                    </div>
-
-                    <!-- الجانب الأيسر: البوت المساعد -->
-                    <div class="bg-[#111723]/95 p-6 rounded-2xl flex flex-col space-y-4 shadow-2xl neon-card-cyan">
-                        <div class="flex items-center gap-3 pb-3 border-b border-gray-800/60">
-                            <div class="w-8 h-8 rounded-lg bg-cyan-500/10 flex items-center justify-center border border-cyan-500/30">
-                                <i class="fas fa-robot text-cyan-400"></i>
-                            </div>
-                            <div>
-                                <h3 class="font-black text-white">مساعد الرد التلقائي (المحادثة)</h3>
-                                <p class="text-xs text-gray-400">اسأل البوت بشكل مباشر وسيجيبك فوراً</p>
-                            </div>
-                        </div>
-                        <div id="chat-box" class="flex-1 min-h-[270px] max-h-[270px] overflow-y-auto space-y-3 rounded-xl bg-[#080b12]/90 p-4 border border-gray-800/60 text-xs md:text-sm">
-                            <div class="bg-[#141b29] text-gray-300 p-3.5 rounded-xl border border-gray-850 max-w-[85%] self-start leading-relaxed">
-                                👋 أهلاً بك! أنا بوت الدليل التلقائي. اكتب سؤالك بالأسفل وسأقوم بالرد عليك فوراً.
-                            </div>
-                        </div>
-                        <div class="flex gap-2">
-                            <input type="text" id="user-input" onkeypress="if(event.key === 'Enter') sendMessage()" placeholder="اسأل البوت هنا..." class="w-full bg-[#090d14] border border-gray-700 rounded-xl px-4 py-3 text-white placeholder-gray-500 focus:outline-none focus:border-cyan-500 transition-all text-sm">
-                            <button onclick="sendMessage()" class="bg-cyan-600 hover:bg-cyan-500 text-black font-bold px-5 py-3 rounded-xl transition-all shadow-md">
-                                <i class="fas fa-paper-plane"></i>
-                            </button>
-                        </div>
-                    </div>
-                </div>
-            </section>
-
-            <!-- 2. تبويب: قسم الأوامر -->
-            <section id="tab-commands" class="space-y-6 hidden">
-                <div>
-                    <h2 class="text-2xl font-black text-white">قائمة أوامر السيرفر الشاملة</h2>
-                </div>
-                <div class="grid md:grid-cols-2 gap-6" id="main-commands-list"></div>
-            </section>
-
-            <!-- 3. تبويب: قسم القوانين -->
-            <section id="tab-rules" class="space-y-6 hidden">
-                <div>
-                    <h2 class="text-2xl font-black text-white">قوانين الـ Roleplay وأنظمة MTA</h2>
-                </div>
-                <div class="grid md:grid-cols-2 lg:grid-cols-3 gap-6" id="main-rules-list"></div>
-            </section>
-
-            <!-- 4. تبويب: قسم الإنترو -->
-            <section id="tab-intro" class="space-y-6 hidden">
-                <div>
-                    <h2 class="text-2xl font-black text-white">معرض واجهات الإنترو وأكواد اللوا (Lua)</h2>
-                </div>
-                <div class="space-y-6" id="main-intros-list"></div>
-            </section>
-
-            <!-- 🔐 5. تبويب: لوحة الإدارة السرية (تفتح بالباسورد فقط) -->
-            <section id="tab-admin-panel" class="space-y-6 hidden">
-                <div class="bg-gradient-to-r from-purple-900/40 to-indigo-900/20 p-6 rounded-2xl border border-purple-500/30 shadow-xl neon-card-purple">
-                    <h2 class="text-2xl font-black text-white flex items-center gap-3">
-                        <i class="fas fa-user-shield text-purple-400"></i> لوحة التحكم والتحكم بالقاعدة (Admin Panel)
-                    </h2>
-                    <p class="text-sm text-purple-300/85 mt-1">مرحباً بك أيها المسؤول. يمكنك هنا إضافة أوامر وقوانين جديدة فوراً للموقع.</p>
-                </div>
-
-                <!-- شبكة أدوات لوحة الإدارة -->
-                <div class="grid grid-cols-1 lg:grid-cols-3 gap-6">
-                    <!-- فورم إضافة أمر جديد -->
-                    <div class="bg-[#111723]/95 p-6 rounded-2xl border border-gray-800 space-y-4">
-                        <h3 class="text-lg font-bold text-white border-b border-gray-800 pb-2"><i class="fas fa-plus-circle text-cyan-400"></i> إضافة أمر جديد</h3>
-                        <div class="space-y-3">
-                            <label class="block text-xs text-gray-400 font-bold">نوع الأمر</label>
-                            <input type="text" id="new-cmd-type" placeholder="مثال: أوامر إدارية" class="w-full bg-[#080b12] border border-gray-700 rounded-xl p-3 text-sm text-white focus:outline-none focus:border-purple-500">
-                            
-                            <label class="block text-xs text-gray-400 font-bold">الأمر البرمجي</label>
-                            <input type="text" id="new-cmd-name" placeholder="مثال: /kick [Player]" class="w-full bg-[#080b12] border border-gray-700 rounded-xl p-3 text-sm text-white font-mono focus:outline-none focus:border-purple-500">
-                            
-                            <label class="block text-xs text-gray-400 font-bold">وصف الأمر بالتفصيل</label>
-                            <textarea id="new-cmd-desc" placeholder="قم بوصف وظيفة هذا الأمر هنا..." class="w-full bg-[#080b12] border border-gray-700 rounded-xl p-3 text-sm text-white h-20 focus:outline-none focus:border-purple-500"></textarea>
-                            
-                            <button onclick="addNewCommand()" class="w-full bg-purple-600 hover:bg-purple-500 text-white font-bold p-3 rounded-xl transition-all shadow-lg shadow-purple-600/20">نشر الأمر الحين</button>
-                        </div>
-                    </div>
-
-                    <!-- فورم إضافة قانون جديد -->
-                    <div class="bg-[#111723]/95 p-6 rounded-2xl border border-gray-800 space-y-4">
-                        <h3 class="text-lg font-bold text-white border-b border-gray-800 pb-2"><i class="fas fa-gavel text-orange-400"></i> إضافة قانون جديد</h3>
-                        <div class="space-y-3">
-                            <label class="block text-xs text-gray-400 font-bold">اختصار القانون الإنجليزي</label>
-                            <input type="text" id="new-rule-title" placeholder="مثال: PG - Powergaming" class="w-full bg-[#080b12] border border-gray-700 rounded-xl p-3 text-sm text-white focus:outline-none focus:border-purple-500">
-                            
-                            <label class="block text-xs text-gray-400 font-bold">الاسم بالعربية</label>
-                            <input type="text" id="new-rule-arabic" placeholder="مثال: اللعب بطريقة غير واقعية" class="w-full bg-[#080b12] border border-gray-700 rounded-xl p-3 text-sm text-white focus:outline-none focus:border-purple-500">
-                            
-                            <label class="block text-xs text-gray-400 font-bold">شرح عقوبة وتفاصيل القانون</label>
-                            <textarea id="new-rule-desc" placeholder="اكتب تفاصيل المخالفة هنا..." class="w-full bg-[#080b12] border border-gray-700 rounded-xl p-3 text-sm text-white h-20 focus:outline-none focus:border-purple-500"></textarea>
-                            
-                            <button onclick="addNewRule()" class="w-full bg-indigo-600 hover:bg-indigo-500 text-white font-bold p-3 rounded-xl transition-all shadow-lg">حفظ ونشر القانون</button>
-                        </div>
-                    </div>
-
-                    <!-- إحصائيات لوحة التحكم السريعة -->
-                    <div class="bg-[#111723]/95 p-6 rounded-2xl border border-gray-800 flex flex-col justify-between">
-                        <div>
-                            <h3 class="text-lg font-bold text-white border-b border-gray-800 pb-2"><i class="fas fa-chart-pie text-green-400"></i> حالة قاعدة البيانات</h3>
-                            <div class="mt-4 space-y-4">
-                                <div class="flex justify-between items-center bg-[#080b12] p-4 rounded-xl border border-gray-800">
-                                    <span class="text-sm font-bold text-gray-400">عدد الأوامر النشطة</span>
-                                    <span id="stat-cmd-count" class="text-xl font-black text-cyan-400 font-mono">4</span>
-                                </div>
-                                <div class="flex justify-between items-center bg-[#080b12] p-4 rounded-xl border border-gray-800">
-                                    <span class="text-sm font-bold text-gray-400">عدد القوانين والأنظمة</span>
-                                    <span id="stat-rule-count" class="text-xl font-black text-orange-400 font-mono">2</span>
-                                </div>
-                            </div>
-                        </div>
-                        <div class="bg-purple-950/30 border border-purple-800/40 p-4 rounded-xl text-xs text-purple-300 leading-relaxed mt-4">
-                            ℹ️ تذكر يا غالي: الإضافات الحالية تحفظ في ذاكرة المتصفح المؤقتة لإتاحة التجربة الفورية السريعة.
-                        </div>
-                    </div>
-                </div>
-            </section>
-
-        </main>
+    <div class="sidebar">
+        <h2>أقسام الموسوعة</h2>
+        <ul>
+            <li><a href="#rules-sec">قوانين ومصطلحات السيرفر</a></li>
+            <li><a href="#basic-info-sec">1. المعلومات الأساسية</a></li>
+            <li><a href="#faction-sec">2. أوامر الفاكشنات (Factions)</a></li>
+            <li><a href="#gates-sec">3. أوامر البوابات (Gates)</a></li>
+            <li><a href="#int-sec">4. أوامر الإنترو (Interiors)</a></li>
+            <li><a href="#shop-sec">5. أوامر البائعين (Shops)</a></li>
+            <li><a href="#arrows-sec">6. أوامر الأسهم (Markers/Arrows)</a></li>
+            <li><a href="#barriers-sec">7. أوامر الحواجز (Barriers)</a></li>
+            <li><a href="#atm-sec">8. أوامر الصرافة (ATM)</a></li>
+            <li><a href="#marker-sec">9. أوامر الماركر (Marker)</a></li>
+            <li><a href="#ramps-sec">10. أوامر الريمب (Ramps)</a></li>
+            <li><a href="#vehicles-sec">11. أوامر السيارات (Vehicles)</a></li>
+            <li><a href="#respawn-sec">12. أوامر الريسبون (Respawn)</a></li>
+            <li><a href="#stealth-sec">13. أوامر التخفي (Stealth)</a></li>
+            <li><a href="#items-sec">14. أوامر الأغراض (Items)</a></li>
+            <li><a href="#monitoring-sec">15. أوامر المراقبة (Monitoring)</a></li>
+            <li><a href="#weather-sec">16. أوامر الطقس (Weather)</a></li>
+            <li><a href="#chat-sec">17. أوامر الشات (Chat)</a></li>
+            <li><a href="#weapons-sec">18. أوامر السلاح (Weapons)</a></li>
+            <li><a href="#giving-sec">19. أوامر الإعطاء (Giving)</a></li>
+            <li><a href="#basic-sec">20. الأوامر الأساسية (Basic)</a></li>
+            <li><a href="#reports-sec">21. أوامر الريبورت (Reports)</a></li>
+            <li><a href="#punish-sec">22. أوامر العقاب (Punishments)</a></li>
+            <li><a href="#general-sec">23. الأوامر العامة (General)</a></li>
+            <li><a href="#leader-sec">24. أوامر الليدر (Leader)</a></li>
+            <li><a href="#radio-sec">25. أوامر الراديو (Radio)</a></li>
+            <li><a href="#ems-sec">26. أوامر الإسعاف (EMS)</a></li>
+            <li><a href="#police-sec">27. أوامر الجندي/الشرطة</a></li>
+            <li><a href="#press-sec">28. أوامر الصحافة (Press)</a></li>
+            <li><a href="#court-sec">29. أوامر المحكمة (Court)</a></li>
+            <li><a href="#airport-sec">30. أوامر المطار (Airport)</a></li>
+            <li><a href="#mechanic-sec">31. أوامر الصيانة (Mechanic)</a></li>
+            <li><a href="#teleport-sec">32. أوامر الانتقال (Teleport)</a></li>
+            <li><a href="#mode-sec">33. أوامر المود (Mode)</a></li>
+            <li><a href="#pull-sec">34. أوامر السحب (Pull)</a></li>
+            <li><a href="#restart-sec">35. أوامر الريستارت (Restart)</a></li>
+            <li><a href="#info-sec">36. أوامر المعلومات الشخصية</a></li>
+        </ul>
     </div>
 
-    <!-- 🔑 نافذة طلب الباسورد المنبثقة (Modal) -->
-    <div id="login-modal" class="fixed inset-0 z-50 flex items-center justify-center bg-black/80 backdrop-blur-sm hidden animate-fade-in">
-        <div class="bg-[#111723] border border-purple-500/40 p-6 rounded-2xl w-full max-w-sm mx-4 shadow-2xl text-center space-y-4">
-            <div class="w-12 h-12 bg-purple-500/10 rounded-full flex items-center justify-center mx-auto border border-purple-500/30">
-                <i class="fas fa-shield-alt text-purple-400 text-xl"></i>
-            </div>
-            <div>
-                <h3 class="text-lg font-black text-white">منطقة مشفرة ومحمية</h3>
-                <p class="text-xs text-gray-400 mt-1">يُرجى إدخال كلمة المرور المعتمدة لفتح لوحة المطور</p>
-            </div>
-            <div>
-                <input type="password" id="admin-password" placeholder="أدخل كلمة المرور السرية هنا..." class="w-full bg-[#080b12] border border-gray-700 rounded-xl p-3 text-center text-white tracking-widest text-lg font-mono focus:outline-none focus:border-purple-500">
-                <p id="login-error-msg" class="text-xs text-red-400 font-bold mt-2 hidden">❌ كلمة المرور غير صحيحة!</p>
-            </div>
-            <div class="flex gap-3">
-                <button onclick="submitAdminLogin()" class="flex-1 bg-purple-600 hover:bg-purple-500 text-white font-bold py-2.5 rounded-xl text-sm transition-all shadow-md">تحقق ودخول</button>
-                <button onclick="closeLoginModal()" class="flex-1 bg-gray-800 hover:bg-gray-700 text-gray-400 font-bold py-2.5 rounded-xl text-sm transition-all">إلغاء</button>
-            </div>
+    <div class="main-content">
+        <div class="header">
+            <h1>لوحة دليل السيرفر المحدثة بالكامل</h1>
+            <input type="text" id="searchInput" class="search-box" placeholder="ابحث عن أمر أو شرح..." onkeyup="filterAllData()">
         </div>
+
+        <!-- جدول القوانين أولاً لأهميته -->
+        <div class="section-panel" id="rules-sec">
+            <h3>قوانين ومصطلحات السيرفر العامة (Rules)</h3>
+            <table class="commands-table">
+                <thead><tr><th style="width: 20%;">المصطلح</th><th>التفسير والمعنى القانوني</th></tr></thead>
+                <tbody id="rules-sec-body"></tbody>
+            </table>
+        </div>
+
+        <!-- توليد جداول الأوامر ديناميكياً -->
+        <div class="section-panel" id="basic-info-sec"><h3>[1] أوامر المعلومات الأساسية</h3><table class="commands-table"><thead><tr><th style="width:35%">الأمر</th><th>الوصف والوظيفة</th></tr></thead><tbody id="basic-info-sec-body"></tbody></table></div>
+        <div class="section-panel" id="faction-sec"><h3>[2] أوامر الفاكشنات (Factions)</h3><table class="commands-table"><thead><tr><th style="width:35%">الأمر</th><th>الوصف والوظيفة</th></tr></thead><tbody id="faction-sec-body"></tbody></table></div>
+        <div class="section-panel" id="gates-sec"><h3>[3] أوامر البوابات (Gates)</h3><table class="commands-table"><thead><tr><th style="width:35%">الأمر</th><th>الوصف والوظيفة</th></tr></thead><tbody id="gates-sec-body"></tbody></table></div>
+        <div class="section-panel" id="int-sec"><h3>[4] أوامر الإنترو (Interiors)</h3><table class="commands-table"><thead><tr><th style="width:35%">الأمر</th><th>الوصف والوظيفة</th></tr></thead><tbody id="int-sec-body"></tbody></table></div>
+        <div class="section-panel" id="shop-sec"><h3>[5] أوامر البائعين (Shops)</h3><table class="commands-table"><thead><tr><th style="width:35%">الأمر</th><th>الوصف والوظيفة</th></tr></thead><tbody id="shop-sec-body"></tbody></table></div>
+        <div class="section-panel" id="arrows-sec"><h3>[6] أوامر الأسهم (Markers/Arrows)</h3><table class="commands-table"><thead><tr><th style="width:35%">الأمر</th><th>الوصف والوظيفة</th></tr></thead><tbody id="arrows-sec-body"></tbody></table></div>
+        <div class="section-panel" id="barriers-sec"><h3>[7] أوامر الحواجز (Barriers)</h3><table class="commands-table"><thead><tr><th style="width:35%">الأمر</th><th>الوصف والوظيفة</th></tr></thead><tbody id="barriers-sec-body"></tbody></table></div>
+        <div class="section-panel" id="atm-sec"><h3>[8] أوامر الصرافة (ATM)</h3><table class="commands-table"><thead><tr><th style="width:35%">الأمر</th><th>الوصف والوظيفة</th></tr></thead><tbody id="atm-sec-body"></tbody></table></div>
+        <div class="section-panel" id="marker-sec"><h3>[9] أوامر الماركر (Marker)</h3><table class="commands-table"><thead><tr><th style="width:35%">الأمر</th><th>الوصف والوظيفة</th></tr></thead><tbody id="marker-sec-body"></tbody></table></div>
+        <div class="section-panel" id="ramps-sec"><h3>[10] أوامر الريمب (Ramps)</h3><table class="commands-table"><thead><tr><th style="width:35%">الأمر</th><th>الوصف والوظيفة</th></tr></thead><tbody id="ramps-sec-body"></tbody></table></div>
+        <div class="section-panel" id="vehicles-sec"><h3>[11] أوامر السيارات (Vehicles)</h3><table class="commands-table"><thead><tr><th style="width:35%">الأمر</th><th>الوصف والوظيفة</th></tr></thead><tbody id="vehicles-sec-body"></tbody></table></div>
+        <div class="section-panel" id="respawn-sec"><h3>[12] أوامر الريسبون (Respawn)</h3><table class="commands-table"><thead><tr><th style="width:35%">الأمر</th><th>الوصف والوظيفة</th></tr></thead><tbody id="respawn-sec-body"></tbody></table></div>
+        <div class="section-panel" id="stealth-sec"><h3>[13] أوامر التخفي (Stealth)</h3><table class="commands-table"><thead><tr><th style="width:35%">الأمر</th><th>الوصف والوظيفة</th></tr></thead><tbody id="stealth-sec-body"></tbody></table></div>
+        <div class="section-panel" id="items-sec"><h3>[14] أوامر الأغراض (Items)</h3><table class="commands-table"><thead><tr><th style="width:35%">الأمر</th><th>الوصف والوظيفة</th></tr></thead><tbody id="items-sec-body"></tbody></table></div>
+        <div class="section-panel" id="monitoring-sec"><h3>[15] أوامر المراقبة (Monitoring)</h3><table class="commands-table"><thead><tr><th style="width:35%">الأمر</th><th>الوصف والوظيفة</th></tr></thead><tbody id="monitoring-sec-body"></tbody></table></div>
+        <div class="section-panel" id="weather-sec"><h3>[16] أوامر الطقس (Weather)</h3><table class="commands-table"><thead><tr><th style="width:35%">الأمر</th><th>الوصف والوظيفة</th></tr></thead><tbody id="weather-sec-body"></tbody></table></div>
+        <div class="section-panel" id="chat-sec"><h3>[17] أوامر الشات (Chat)</h3><table class="commands-table"><thead><tr><th style="width:35%">الأمر</th><th>الوصف والوظيفة</th></tr></thead><tbody id="chat-sec-body"></tbody></table></div>
+        <div class="section-panel" id="weapons-sec"><h3>[18] أوامر السلاح (Weapons)</h3><table class="commands-table"><thead><tr><th style="width:35%">الأمر</th><th>الوصف والوظيفة</th></tr></thead><tbody id="weapons-sec-body"></tbody></table></div>
+        <div class="section-panel" id="giving-sec"><h3>[19] أوامر الإعطاء (Giving)</h3><table class="commands-table"><thead><tr><th style="width:35%">الأمر</th><th>الوصف والوظيفة</th></tr></thead><tbody id="giving-sec-body"></tbody></table></div>
+        <div class="section-panel" id="basic-sec"><h3>[20] الأوامر الأساسية (Basic)</h3><table class="commands-table"><thead><tr><th style="width:35%">الأمر</th><th>الوصف والوظيفة</th></tr></thead><tbody id="basic-sec-body"></tbody></table></div>
+        <div class="section-panel" id="reports-sec"><h3>[21] أوامر الريبورت (Reports)</h3><table class="commands-table"><thead><tr><th style="width:35%">الأمر</th><th>الوصف والوظيفة</th></tr></thead><tbody id="reports-sec-body"></tbody></table></div>
+        <div class="section-panel" id="punish-sec"><h3>[22] أوامر العقاب (Punishments)</h3><table class="commands-table"><thead><tr><th style="width:35%">الأمر</th><th>الوصف والوظيفة</th></tr></thead><tbody id="punish-sec-body"></tbody></table></div>
+        <div class="section-panel" id="general-sec"><h3>[23] الأوامر العامة (General)</h3><table class="commands-table"><thead><tr><th style="width:35%">الأمر</th><th>الوصف والوظيفة</th></tr></thead><tbody id="general-sec-body"></tbody></table></div>
+        <div class="section-panel" id="leader-sec"><h3>[24] أوامر الليدر (Leader)</h3><table class="commands-table"><thead><tr><th style="width:35%">الأمر</th><th>الوصف والوظيفة</th></tr></thead><tbody id="leader-sec-body"></tbody></table></div>
+        <div class="section-panel" id="radio-sec"><h3>[25] أوامر الراديو (Radio)</h3><table class="commands-table"><thead><tr><th style="width:35%">الأمر</th><th>الوصف والوظيفة</th></tr></thead><tbody id="radio-sec-body"></tbody></table></div>
+        <div class="section-panel" id="ems-sec"><h3>[26] أوامر الإسعاف (EMS)</h3><table class="commands-table"><thead><tr><th style="width:35%">الأمر</th><th>الوصف والوظيفة</th></tr></thead><tbody id="ems-sec-body"></tbody></table></div>
+        <div class="section-panel" id="police-sec"><h3>[27] أوامر الجندي/الشرطة (Police/Military)</h3><table class="commands-table"><thead><tr><th style="width:35%">الأمر</th><th>الوصف والوظيفة</th></tr></thead><tbody id="police-sec-body"></tbody></table></div>
+        <div class="section-panel" id="press-sec"><h3>[28] أوامر الصحافة (Press)</h3><table class="commands-table"><thead><tr><th style="width:35%">الأمر</th><th>الوصف والوظيفة</th></tr></thead><tbody id="press-sec-body"></tbody></table></div>
+        <div class="section-panel" id="court-sec"><h3>[29] أوامر المحكمة (Court)</h3><table class="commands-table"><thead><tr><th style="width:35%">الأمر</th><th>الوصف والوظيفة</th></tr></thead><tbody id="court-sec-body"></tbody></table></div>
+        <div class="section-panel" id="airport-sec"><h3>[30] أوامر المطار (Airport)</h3><table class="commands-table"><thead><tr><th style="width:35%">الأمر</th><th>الوصف والوظيفة</th></tr></thead><tbody id="airport-sec-body"></tbody></table></div>
+        <div class="section-panel" id="mechanic-sec"><h3>[31] أوامر الصيانة (Mechanic)</h3><table class="commands-table"><thead><tr><th style="width:35%">الأمر</th><th>الوصف والوظيفة</th></tr></thead><tbody id="mechanic-sec-body"></tbody></table></div>
+        <div class="section-panel" id="teleport-sec"><h3>[32] أوامر الانتقال (Teleport)</h3><table class="commands-table"><thead><tr><th style="width:35%">الأمر</th><th>الوصف والوظيفة</th></tr></thead><tbody id="teleport-sec-body"></tbody></table></div>
+        <div class="section-panel" id="mode-sec"><h3>[33] أوامر المود (Mode)</h3><table class="commands-table"><thead><tr><th style="width:35%">الأمر</th><th>الوصف والوظيفة</th></tr></thead><tbody id="mode-sec-body"></tbody></table></div>
+        <div class="section-panel" id="pull-sec"><h3>[34] أوامر السحب (Pull)</h3><table class="commands-table"><thead><tr><th style="width:35%">الأمر</th><th>الوصف والوظيفة</th></tr></thead><tbody id="pull-sec-body"></tbody></table></div>
+        <div class="section-panel" id="restart-sec"><h3>[35] أوامر الريستارت (Restart)</h3><table class="commands-table"><thead><tr><th style="width:35%">الأمر</th><th>الوصف والوظيفة</th></tr></thead><tbody id="restart-sec-body"></tbody></table></div>
+        <div class="section-panel" id="info-sec"><h3>[36] أوامر المعلومات الشخصية (Info)</h3><table class="commands-table"><thead><tr><th style="width:35%">الأمر</th><th>الوصف والوظيفة</th></tr></thead><tbody id="info-sec-body"></tbody></table></div>
     </div>
+
+    <script src="commands.js"></script>
+    <script src="rules.js"></script>
 
     <script>
-        // قاعدة البيانات الموحدة للموقع
-        const siteDatabase = {
-            commands: [
-                { type: "أوامر المركبات", name: "/spawnvehicle [VehicleID]", desc: "توليد ورسبنة مركبة محددة أمام اللاعب باستخدام الآيدي المميز.", tags: ["سيارة", "مركبة", "رسبنه", "سبون", "car", "spawn"] },
-                { type: "أوامر إدارية", name: "/ban [PlayerName] [Reason]", desc: "حظر لاعب من دخول السيرفر مع كتابة سبب الحظر وتفاصيله بشكل قطعي.", tags: ["باند", "حظر", "طرد", "طرد نهائي", "ban"] },
-                { type: "أوامر المسؤولين", name: "/fly", desc: "تفعيل وضع الطيران السريع للمسؤولين والـ VIP لتفقد السيرفر وحل المشاكل الفنية.", tags: ["طيران", "اطير", "طير", "fly"] },
-                { type: "أوامر اللاعبين", name: "/repair", desc: "إصلاح وصيانة محرك وهيكل السيارة الحالية بالكامل وإعادة طلائها مجاناً.", tags: ["تصليح", "اصلاح", "تعديل سيارة", "repair"] }
-            ],
-            rules: [
-                { title: "DM - Deathmatch", arabicTitle: "القتل بدون سبب آر بي", desc: "يمنع منعاً باتاً الاعتداء على اللاعبين الآخرين أو قتلهم دون وجود دافع قصصي أو عداوة معتمدة في سيرفر الحياة الواقعية.", isImportant: true },
-                { title: "RK - Revenge Killing", arabicTitle: "الانتقام بعد الموت", desc: "عندما تموت في اللعبة، تُعتبر شخصيتك قد نسيت ما حدث. العودة فوراً لموقع موتك لقتل من قتلك يعتبر مخالفة صريحة.", isImportant: false }
-            ],
-            intros: [
-                { title: "إنترو نيون لوج إن (Neon Login)", desc: "واجهة ترحيبية انسيابية وممتازة متوافقة مع جميع مقاسات الشاشات.", code: `addEventHandler("onClientResourceStart", resourceRoot, function() outputChatBox("Welcome!", 6, 182, 212) end)` }
-            ]
-        };
-
-        window.onload = function() {
-            renderCommands();
-            renderRules();
-            renderIntros();
-            updateStats();
-        };
-
-        // دالة التحديث الرسومي للبيانات
-        function renderCommands() {
-            const container = document.getElementById('main-commands-list');
-            container.innerHTML = siteDatabase.commands.map(cmd => `
-                <div class="bg-[#111723]/90 p-5 rounded-2xl border border-gray-800 hover:border-cyan-500/40 transition-all flex justify-between items-start group">
-                    <div>
-                        <span class="px-2.5 py-0.5 text-xs bg-amber-500/10 text-amber-400 rounded-md font-bold border border-amber-500/20">${cmd.type}</span>
-                        <h3 class="text-lg font-mono font-bold text-cyan-400 mt-2">${cmd.name}</h3>
-                        <p class="text-sm text-gray-400 mt-1">${cmd.desc}</p>
-                    </div>
-                    <button onclick="copyText('${cmd.name}')" class="bg-gray-800 group-hover:bg-cyan-500 group-hover:text-black p-2.5 rounded-xl text-gray-400 transition-all"><i class="fas fa-copy"></i></button>
-                </div>
-            `).join('');
-        }
-
-        function renderRules() {
-            const container = document.getElementById('main-rules-list');
-            container.innerHTML = siteDatabase.rules.map(rule => `
-                <div class="bg-[#111723]/90 p-5 rounded-2xl border border-gray-800 ${rule.isImportant ? 'border-orange-500/40 shadow-xl' : ''} relative overflow-hidden">
-                    <h3 class="text-xl font-black text-white">${rule.title}</h3>
-                    <span class="text-xs text-cyan-400 font-mono block mb-3">${rule.arabicTitle}</span>
-                    <p class="text-sm text-gray-400 leading-relaxed">${rule.desc}</p>
-                </div>
-            `).join('');
-        }
-
-        function renderIntros() {
-            const container = document.getElementById('main-intros-list');
-            container.innerHTML = siteDatabase.intros.map((intro, idx) => `
-                <div class="bg-[#111723]/90 rounded-2xl border border-gray-800 overflow-hidden max-w-3xl">
-                    <div class="p-6 bg-gradient-to-r from-cyan-900/20 to-transparent border-b border-gray-800 flex justify-between items-center">
-                        <h3 class="text-lg font-bold text-white">${intro.title}</h3>
-                    </div>
-                    <div class="p-6">
-                        <pre class="bg-[#080b12] p-4 rounded-xl text-xs text-green-400"><code>${intro.code}</code></pre>
-                    </div>
-                </div>
-            `).join('');
-        }
-
-        function updateStats() {
-            document.getElementById('stat-cmd-count').innerText = siteDatabase.commands.length;
-            document.getElementById('stat-rule-count').innerText = siteDatabase.rules.length;
-        }
-
-        // 🔑 إدارة شؤون الحماية وتسجيل الدخول
-        function openLoginModal() {
-            document.getElementById('login-modal').classList.remove('hidden');
-            document.getElementById('admin-password').focus();
-        }
-
-        function closeLoginModal() {
-            document.getElementById('login-modal').classList.add('hidden');
-            document.getElementById('admin-password').value = '';
-            document.getElementById('login-error-msg').classList.add('hidden');
-        }
-
-        function submitAdminLogin() {
-            const passwordInput = document.getElementById('admin-password').value;
-            const errorMsg = document.getElementById('login-error-msg');
-            
-            // التحقق من الباسورد المطلوب 0000#
-            if (passwordInput === '0000#') {
-                closeLoginModal();
-                // إظهار تبويبات الإدارة وإخفاء رابط القفل القديم
-                document.getElementById('user-nav').classList.add('hidden');
-                document.getElementById('admin-nav').classList.remove('hidden');
-                document.getElementById('admin-login-link').classList.add('hidden');
-                
-                // الانتقال التلقائي للوحة التحكم
-                switchTab('admin-panel');
-                alert('🔓 تم التحقق بنجاح! مرحباً بك في نظام الإدارة التفاعلي.');
-            } else {
-                errorMsg.classList.remove('hidden');
-            }
-        }
-
-        function logoutAdmin() {
-            document.getElementById('user-nav').classList.remove('hidden');
-            document.getElementById('admin-nav').classList.add('hidden');
-            document.getElementById('admin-login-link').classList.remove('hidden');
-            switchTab('home');
-            alert('🔒 تم تسجيل الخروج بنجاح وتأمين الواجهة.');
-        }
-
-        // ✍️ وظائف إضافة البيانات من طرف الآدمن
-        function addNewCommand() {
-            const type = document.getElementById('new-cmd-type').value.trim();
-            const name = document.getElementById('new-cmd-name').value.trim();
-            const desc = document.getElementById('new-cmd-desc').value.trim();
-
-            if (!type || !name || !desc) { alert('❌ يرجى ملء كافة الحقول أولاً!'); return; }
-
-            siteDatabase.commands.push({ type, name, desc, tags: [name.toLowerCase(), type] });
-            renderCommands();
-            updateStats();
-
-            document.getElementById('new-cmd-type').value = '';
-            document.getElementById('new-cmd-name').value = '';
-            document.getElementById('new-cmd-desc').value = '';
-            alert('✅ تم نشر الأمر الجديد بنجاح في قسم الأوامر!');
-        }
-
-        function addNewRule() {
-            const title = document.getElementById('new-rule-title').value.trim();
-            const arabicTitle = document.getElementById('new-rule-arabic').value.trim();
-            const desc = document.getElementById('new-rule-desc').value.trim();
-
-            if (!title || !arabicTitle || !desc) { alert('❌ يرجى ملء كافة الحقول أولاً!'); return; }
-
-            siteDatabase.rules.push({ title, arabicTitle, desc, isImportant: false });
-            renderRules();
-            updateStats();
-
-            document.getElementById('new-rule-title').value = '';
-            document.getElementById('new-rule-arabic').value = '';
-            document.getElementById('new-rule-desc').value = '';
-            alert('✅ تم حفظ القانون الجديد ونشره للجميع!');
-        }
-
-        // محرك البحث والتبديل وبقية الأكواد
-        function globalSearch() {
-            const query = document.getElementById('global-search').value.trim().toLowerCase();
-            const placeholder = document.getElementById('search-placeholder');
-            const resultsGrid = document.getElementById('search-results-grid');
-
-            if (!query) { placeholder.classList.remove('hidden'); resultsGrid.classList.add('hidden'); return; }
-            placeholder.classList.add('hidden'); resultsGrid.classList.remove('hidden');
-
-            let htmlResults = "";
-            siteDatabase.commands.forEach(cmd => {
-                if (cmd.name.toLowerCase().includes(query) || cmd.desc.includes(query)) {
-                    htmlResults += `<div class="bg-[#111723] p-4 rounded-xl border border-cyan-500/20"><h4 class="text-sm font-mono font-bold text-white">${cmd.name}</h4><p class="text-xs text-gray-400">${cmd.desc}</p></div>`;
-                }
-            });
-            resultsGrid.innerHTML = htmlResults || `<div class="text-center py-8 text-gray-500 text-xs">لا توجد نتائج مطابقة</div>`;
-        }
-
-        function sendMessage() {
-            const input = document.getElementById('user-input');
-            const chatBox = document.getElementById('chat-box');
-            if (!input.value.trim()) return;
-
-            chatBox.innerHTML += `<div class="bg-cyan-600/10 border border-cyan-500/20 p-3 rounded-xl max-w-[80%] self-end text-cyan-400 font-bold ml-auto text-left">${input.value}</div>`;
-            input.value = '';
-            chatBox.scrollTop = chatBox.scrollHeight;
-        }
-
-        function switchTab(tabName) {
-            const allTabs = ['home', 'commands', 'rules', 'intro', 'admin-panel'];
-            allTabs.forEach(t => {
-                const element = document.getElementById(`tab-${t}`);
-                const btn = document.getElementById(`btn-${t}`);
-                if (element) element.classList.add('hidden');
-                if (btn) {
-                    if (t === 'admin-panel') {
-                        btn.className = "w-full flex items-center gap-3 px-4 py-3 rounded-xl font-bold text-purple-400 hover:bg-purple-500/10 transition-all";
-                    } else {
-                        btn.className = "w-full flex items-center gap-3 px-4 py-3 rounded-xl font-bold text-gray-400 hover:bg-gray-800/50 hover:text-white transition-all";
-                    }
+        document.addEventListener("DOMContentLoaded", () => {
+            // بناء الأوامر
+            serverCommands.forEach(item => {
+                const targetBody = document.getElementById(`${item.category}-body`);
+                if (targetBody) {
+                    const row = `<tr>
+                        <td><span class="command-badge">/${item.command}</span></td>
+                        <td>${item.desc}</td>
+                    </tr>`;
+                    targetBody.innerHTML += row;
                 }
             });
 
-            document.getElementById(`tab-${tabName}`).classList.remove('hidden');
-            const activeBtn = document.getElementById(`btn-${tabName}`);
-            if (activeBtn) {
-                if (tabName === 'admin-panel') {
-                    activeBtn.className = "w-full flex items-center gap-3 px-4 py-3 rounded-xl font-bold bg-purple-600/10 text-purple-400 border border-purple-500/30 transition-all";
-                } else {
-                    activeBtn.className = "w-full flex items-center gap-3 px-4 py-3 rounded-xl font-bold bg-cyan-600/10 text-cyan-400 border border-cyan-500/30 transition-all";
-                }
-            }
+            // بناء القوانين
+            const rulesBody = document.getElementById("rules-sec-body");
+            serverRules.forEach(item => {
+                const row = `<tr>
+                    <td><span class="rule-badge">${item.rule}</span></td>
+                    <td>${item.desc}</td>
+                </tr>`;
+                rulesBody.innerHTML += row;
+            });
+        });
+
+        function filterAllData() {
+            let input = document.getElementById('searchInput').value.toLowerCase();
+            let rows = document.querySelectorAll('.commands-table tbody tr');
+            rows.forEach(row => {
+                row.style.display = row.textContent.toLowerCase().includes(input) ? "" : "none";
+            });
         }
-        function copyText(txt) { navigator.clipboard.writeText(txt); alert('تم النسخ'); }
     </script>
 </body>
 </html>
