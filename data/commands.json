@@ -1,0 +1,174 @@
+[
+{
+"id": 1,
+"name": "/makefaction",
+"category": "فاكشن",
+"description": "إنشاء فاكشن جديد.",
+"keywords": [
+"فاكشن",
+"انشاء فاكشن",
+"فصيل",
+"make faction"
+]
+},
+{
+"id": 2,
+"name": "/setfactionleader",
+"category": "فاكشن",
+"description": "تعيين ليدر للفاكشن.",
+"keywords": [
+"ليدر",
+"زعيم",
+"فصيل",
+"قيادة"
+]
+},
+{
+"id": 3,
+"name": "/recon",
+"category": "مراقبة",
+"description": "مراقبة لاعب.",
+"keywords": [
+"مراقبة",
+"متابعة",
+"مشاهدة لاعب",
+"راقب لاعب",
+"recon"
+]
+},
+{
+"id": 4,
+"name": "/spec",
+"category": "مراقبة",
+"description": "مراقبة مباشرة للاعب.",
+"keywords": [
+"spec",
+"سبيك",
+"مشاهدة",
+"متابعة لاعب"
+]
+},
+{
+"id": 5,
+"name": "/veh",
+"category": "سيارة",
+"description": "إخراج سيارة.",
+"keywords": [
+"سيارة",
+"مركبة",
+"spawn car",
+"veh"
+]
+},
+{
+"id": 6,
+"name": "/respawnveh",
+"category": "رسبون",
+"description": "إعادة رسبون سيارة.",
+"keywords": [
+"رسبون",
+"اعادة سيارة",
+"respawn"
+]
+},
+{
+"id": 7,
+"name": "/goto",
+"category": "انتقال",
+"description": "الانتقال إلى لاعب.",
+"keywords": [
+"انتقال",
+"اذهب",
+"روح للاعب",
+"goto"
+]
+},
+{
+"id": 8,
+"name": "/gethere",
+"category": "سحب",
+"description": "سحب لاعب إليك.",
+"keywords": [
+"سحب",
+"اسحب لاعب",
+"احضار لاعب"
+]
+},
+{
+"id": 9,
+"name": "/setweather",
+"category": "طقس",
+"description": "تغيير الطقس.",
+"keywords": [
+"طقس",
+"جو",
+"weather"
+]
+},
+{
+"id": 10,
+"name": "/settime",
+"category": "طقس",
+"description": "تغيير الوقت.",
+"keywords": [
+"وقت",
+"زمن",
+"ساعة"
+]
+},
+{
+"id": 11,
+"name": "/mute",
+"category": "عقاب",
+"description": "إسكات لاعب.",
+"keywords": [
+"اسكات",
+"ميوت",
+"mute"
+]
+},
+{
+"id": 12,
+"name": "/kick",
+"category": "عقاب",
+"description": "طرد لاعب.",
+"keywords": [
+"طرد",
+"كيك",
+"kick"
+]
+},
+{
+"id": 13,
+"name": "/ban",
+"category": "عقاب",
+"description": "حظر لاعب.",
+"keywords": [
+"بان",
+"حظر",
+"ban"
+]
+},
+{
+"id": 14,
+"name": "/givegun",
+"category": "اعطاء",
+"description": "إعطاء سلاح.",
+"keywords": [
+"اعطاء سلاح",
+"منح سلاح",
+"gun"
+]
+},
+{
+"id": 15,
+"name": "/sethp",
+"category": "معلومات",
+"description": "تعديل الصحة.",
+"keywords": [
+"صحة",
+"دم",
+"hp"
+]
+}
+]
