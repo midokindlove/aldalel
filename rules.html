@@ -1,0 +1,126 @@
+<!DOCTYPE html>
+<html lang="ar" dir="rtl">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>القوانين - MTA San Andreas</title>
+    <link rel="stylesheet" href="style.css">
+    <link href="https://fonts.googleapis.com/css2?family=Cairo:wght@400;600;700&display=swap" rel="stylesheet">
+</head>
+<body>
+
+    <header>
+        <a href="index.html" class="logo">🎮 MTA <span>San Andreas</span></a>
+        <nav>
+            <a href="index.html">🏠 الرئيسية</a>
+            <a href="commands.html">📋 الأوامر</a>
+            <a href="rules.html" class="active">📜 القوانين</a>
+            <a href="intro.html">🏠 الانترو</a>
+            <a href="admin.html">⚙️ الإدارة</a>
+        </nav>
+    </header>
+
+    <div class="container">
+
+        <div class="card">
+            <h1 class="card-title">📜 قوانين السيرفر</h1>
+            
+            <!-- ===== فلتر البحث ===== -->
+            <div class="filter-section">
+                <input type="text" id="searchRules" placeholder="🔍 بحث عن قانون..." oninput="filterRules()">
+            </div>
+
+            <!-- ===== جدول القوانين ===== -->
+            <div class="table-container">
+                <table>
+                    <thead>
+                        <tr>
+                            <th style="width:30%;">القانون (English)</th>
+                            <th style="width:60%;">المعنى (Arabic)</th>
+                            <th style="width:10%;">نسخ</th>
+                        </tr>
+                    </thead>
+                    <tbody id="rulesTable">
+                        <!-- سيتم تعبئتها بواسطة JavaScript -->
+                    </tbody>
+                </table>
+            </div>
+
+            <p id="resultsCount" style="color:var(--text-muted);margin-top:15px;"></p>
+        </div>
+
+    </div>
+
+    <script src="data.js"></script>
+    <script>
+        // ===== عرض القوانين =====
+        function displayRules(rules) {
+            const tbody = document.getElementById('rulesTable');
+            const count = document.getElementById('resultsCount');
+            
+            if (rules.length === 0) {
+                tbody.innerHTML = `<tr><td colspan="3" style="text-align:center;padding:40px;color:var(--text-muted);">❌ لا توجد نتائج مطابقة</td></tr>`;
+                count.textContent = '0 نتيجة';
+                return;
+            }
+            
+            tbody.innerHTML = rules.map(rule => `
+                <tr>
+                    <td style="font-weight:bold;color:#ffaa66;">${rule.english}</td>
+                    <td>${rule.arabic}</td>
+                    <td><button class="copy-btn" onclick="copyText('${rule.english.replace(/'/g, "\\'")} - ${rule.arabic.replace(/'/g, "\\'")}')">📋</button></td>
+                </tr>
+            `).join('');
+            
+            count.textContent = `${rules.length} قانون`;
+        }
+
+        // ===== فلترة القوانين =====
+        function filterRules() {
+            const search = document.getElementById('searchRules').value.toLowerCase().trim();
+            
+            let filtered = siteData.rules;
+            
+            if (search) {
+                filtered = filtered.filter(rule => 
+                    rule.english.toLowerCase().includes(search) ||
+                    rule.arabic.includes(search)
+                );
+            }
+            
+            displayRules(filtered);
+        }
+
+        // ===== نسخ النص =====
+        function copyText(text) {
+            navigator.clipboard.writeText(text).then(() => {
+                const btn = event.target;
+                btn.textContent = '✅';
+                btn.classList.add('copied');
+                setTimeout(() => {
+                    btn.textContent = '📋';
+                    btn.classList.remove('copied');
+                }, 2000);
+            }).catch(() => {
+                const textarea = document.createElement('textarea');
+                textarea.value = text;
+                document.body.appendChild(textarea);
+                textarea.select();
+                document.execCommand('copy');
+                document.body.removeChild(textarea);
+                const btn = event.target;
+                btn.textContent = '✅';
+                setTimeout(() => {
+                    btn.textContent = '📋';
+                }, 2000);
+            });
+        }
+
+        // ===== التشغيل عند التحميل =====
+        document.addEventListener('DOMContentLoaded', function() {
+            displayRules(siteData.rules);
+        });
+    </script>
+
+</body>
+</html>
