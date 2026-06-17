@@ -6,6 +6,264 @@
     <title>الدليل - MTA San Andreas</title>
     <link rel="stylesheet" href="style.css">
     <link href="https://fonts.googleapis.com/css2?family=Cairo:wght@400;600;700&display=swap" rel="stylesheet">
+    <style>
+        /* ===== تنسيق الصور في البوت ===== */
+        .chat-message.bot .interior-result {
+            display: inline-block;
+            background: var(--bg-card);
+            border-radius: 12px;
+            overflow: hidden;
+            border: 1px solid var(--border-color);
+            margin: 8px 0;
+            transition: all 0.3s ease;
+            cursor: pointer;
+            max-width: 280px;
+        }
+
+        .chat-message.bot .interior-result:hover {
+            border-color: var(--primary);
+            transform: translateY(-3px);
+            box-shadow: 0 8px 30px rgba(255,107,0,0.2);
+        }
+
+        .chat-message.bot .interior-result img {
+            width: 100%;
+            height: 160px;
+            object-fit: cover;
+            display: block;
+        }
+
+        .chat-message.bot .interior-result .result-name {
+            padding: 10px 14px;
+            color: var(--primary);
+            font-weight: bold;
+            text-align: center;
+            font-size: 14px;
+            background: rgba(0,0,0,0.2);
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+
+        .chat-message.bot .interior-result .result-name .copy-btn-sm {
+            background: var(--bg-dark);
+            border: 1px solid var(--border-color);
+            color: var(--text-light);
+            padding: 2px 10px;
+            border-radius: 4px;
+            cursor: pointer;
+            font-size: 11px;
+            transition: all 0.3s ease;
+        }
+
+        .chat-message.bot .interior-result .result-name .copy-btn-sm:hover {
+            background: var(--primary);
+            border-color: var(--primary);
+        }
+
+        .chat-message.bot .interior-result .badge-bot {
+            position: absolute;
+            top: 8px;
+            right: 8px;
+            background: rgba(255,107,0,0.85);
+            color: white;
+            padding: 2px 10px;
+            border-radius: 12px;
+            font-size: 10px;
+            font-weight: bold;
+        }
+
+        .chat-message.bot .interior-result {
+            position: relative;
+        }
+
+        /* ===== نافذة عرض الصورة (Lightbox) للبوت ===== */
+        .lightbox-bot {
+            display: none;
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: rgba(0, 0, 0, 0.92);
+            z-index: 99999;
+            justify-content: center;
+            align-items: center;
+            animation: fadeIn 0.3s ease;
+            padding: 20px;
+            box-sizing: border-box;
+        }
+
+        .lightbox-bot.active {
+            display: flex;
+        }
+
+        .lightbox-bot .close-lightbox {
+            position: absolute;
+            top: 25px;
+            right: 35px;
+            color: white;
+            font-size: 45px;
+            font-weight: bold;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            z-index: 100000;
+            width: 60px;
+            height: 60px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            border-radius: 50%;
+            background: rgba(255, 255, 255, 0.1);
+            border: 2px solid rgba(255, 255, 255, 0.2);
+        }
+
+        .lightbox-bot .close-lightbox:hover {
+            background: rgba(255, 0, 0, 0.3);
+            border-color: #ff3333;
+            transform: rotate(90deg);
+        }
+
+        .lightbox-bot .lightbox-content {
+            max-width: 90%;
+            max-height: 85vh;
+            position: relative;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+        }
+
+        .lightbox-bot .lightbox-content img {
+            max-width: 100%;
+            max-height: 75vh;
+            border-radius: 12px;
+            box-shadow: 0 20px 60px rgba(0,0,0,0.8);
+            border: 2px solid rgba(255,255,255,0.1);
+            object-fit: contain;
+        }
+
+        .lightbox-bot .lightbox-info {
+            color: white;
+            margin-top: 20px;
+            text-align: center;
+            font-size: 18px;
+            display: flex;
+            align-items: center;
+            gap: 20px;
+            background: rgba(0,0,0,0.5);
+            padding: 12px 30px;
+            border-radius: 50px;
+            backdrop-filter: blur(10px);
+            border: 1px solid rgba(255,255,255,0.1);
+        }
+
+        .lightbox-bot .lightbox-info .name {
+            color: var(--primary);
+            font-weight: bold;
+            font-size: 20px;
+        }
+
+        .lightbox-bot .lightbox-info .copy-btn-lightbox {
+            background: var(--primary);
+            border: none;
+            color: white;
+            padding: 8px 20px;
+            border-radius: 25px;
+            cursor: pointer;
+            font-size: 14px;
+            transition: all 0.3s ease;
+            font-weight: bold;
+        }
+
+        .lightbox-bot .lightbox-info .copy-btn-lightbox:hover {
+            background: var(--primary-dark);
+            transform: scale(1.05);
+        }
+
+        .lightbox-bot .nav-arrow {
+            position: absolute;
+            top: 50%;
+            transform: translateY(-50%);
+            color: white;
+            font-size: 50px;
+            cursor: pointer;
+            padding: 20px 15px;
+            border-radius: 50%;
+            background: rgba(0,0,0,0.3);
+            transition: all 0.3s ease;
+            border: 2px solid rgba(255,255,255,0.1);
+            user-select: none;
+            width: 70px;
+            height: 70px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+        }
+
+        .lightbox-bot .nav-arrow:hover {
+            background: rgba(255,107,0,0.4);
+            border-color: var(--primary);
+        }
+
+        .lightbox-bot .nav-arrow.prev {
+            left: 20px;
+        }
+
+        .lightbox-bot .nav-arrow.next {
+            right: 20px;
+        }
+
+        .lightbox-bot .lightbox-counter {
+            position: absolute;
+            bottom: 30px;
+            left: 50%;
+            transform: translateX(-50%);
+            color: rgba(255,255,255,0.6);
+            font-size: 14px;
+            background: rgba(0,0,0,0.5);
+            padding: 6px 18px;
+            border-radius: 20px;
+            backdrop-filter: blur(5px);
+        }
+
+        /* ===== التجاوب ===== */
+        @media (max-width: 768px) {
+            .lightbox-bot .lightbox-content img {
+                max-height: 55vh;
+            }
+            .lightbox-bot .lightbox-info {
+                flex-direction: column;
+                padding: 15px 25px;
+                gap: 10px;
+                font-size: 15px;
+            }
+            .lightbox-bot .nav-arrow {
+                width: 45px;
+                height: 45px;
+                font-size: 28px;
+                padding: 10px;
+            }
+            .lightbox-bot .nav-arrow.prev {
+                left: 5px;
+            }
+            .lightbox-bot .nav-arrow.next {
+                right: 5px;
+            }
+            .lightbox-bot .close-lightbox {
+                top: 15px;
+                right: 20px;
+                font-size: 30px;
+                width: 45px;
+                height: 45px;
+            }
+            .chat-message.bot .interior-result {
+                max-width: 100%;
+            }
+            .chat-message.bot .interior-result img {
+                height: 130px;
+            }
+        }
+    </style>
 </head>
 <body>
 
@@ -37,7 +295,7 @@
         <div class="card">
             <h3 class="card-title">🤖 البوت الذكي</h3>
             <p style="color:var(--text-muted);margin-bottom:15px;">
-                اسأل عن أي أمر، قسم، قانون، أو انترو - يمكنك نسخ النص بضغطة زر
+                اسأل عن أي أمر، قسم، قانون، أو انترو - <strong>اضغط على الصورة</strong> لعرضها بحجم أكبر
             </p>
             
             <div class="chat-container">
@@ -70,8 +328,29 @@
 
     </div>
 
+    <!-- ===== نافذة عرض الصورة (Lightbox) للبوت ===== -->
+    <div id="lightboxBot" class="lightbox-bot" onclick="closeLightboxBot(event)">
+        <span class="close-lightbox" onclick="closeLightboxBot(event)">✕</span>
+        <span class="nav-arrow prev" onclick="navigateLightboxBot(-1, event)">‹</span>
+        <span class="nav-arrow next" onclick="navigateLightboxBot(1, event)">›</span>
+        
+        <div class="lightbox-content" onclick="event.stopPropagation()">
+            <img id="lightboxBotImage" src="" alt="انترو">
+            <div class="lightbox-info">
+                <span class="name" id="lightboxBotName">اسم الانترو</span>
+                <button class="copy-btn-lightbox" onclick="copyLightboxBotName()">📋 نسخ الاسم</button>
+            </div>
+        </div>
+        
+        <div class="lightbox-counter" id="lightboxBotCounter">1 / 1</div>
+    </div>
+
     <script src="data.js"></script>
     <script>
+        let lightboxBotIndex = 0;
+        let lightboxBotImages = [];
+
+        // ===== تعبئة الأقسام السريعة =====
         function loadQuickCategories() {
             const container = document.getElementById('quickCategories');
             const categories = siteData.categories.slice(0, 12);
@@ -83,6 +362,7 @@
             `).join('');
         }
 
+        // ===== إرسال رسالة للبوت =====
         function sendMessage() {
             const input = document.getElementById('chatInput');
             const messages = document.getElementById('chatMessages');
@@ -109,22 +389,199 @@
                     </div>
                 `;
                 messages.scrollTop = messages.scrollHeight;
+                // إضافة أحداث النقر على الصور بعد تحميلها
+                attachImageClickEvents();
             }, 300);
             
             messages.scrollTop = messages.scrollHeight;
         }
 
+        // ===== إضافة أحداث النقر على الصور في البوت =====
+        function attachImageClickEvents() {
+            document.querySelectorAll('.chat-message.bot .interior-result').forEach((el, index) => {
+                el.onclick = function(e) {
+                    // منع فتح إذا تم الضغط على زر النسخ
+                    if (e.target.classList.contains('copy-btn-sm')) return;
+                    const img = this.querySelector('img');
+                    const name = this.querySelector('.result-name span').textContent;
+                    openLightboxBot(img.src, name);
+                };
+            });
+        }
+
+        // ===== فتح نافذة عرض الصورة =====
+        function openLightboxBot(imageSrc, imageName) {
+            const lightbox = document.getElementById('lightboxBot');
+            const img = document.getElementById('lightboxBotImage');
+            const name = document.getElementById('lightboxBotName');
+            const counter = document.getElementById('lightboxBotCounter');
+            
+            img.src = imageSrc;
+            img.alt = imageName;
+            name.textContent = imageName;
+            
+            // تحديث العداد
+            lightboxBotImages = [];
+            document.querySelectorAll('.chat-message.bot .interior-result img').forEach((el, i) => {
+                lightboxBotImages.push({
+                    src: el.src,
+                    name: el.closest('.interior-result').querySelector('.result-name span').textContent
+                });
+            });
+            
+            const currentIndex = lightboxBotImages.findIndex(item => item.src === imageSrc);
+            lightboxBotIndex = currentIndex !== -1 ? currentIndex : 0;
+            counter.textContent = `${lightboxBotIndex + 1} / ${lightboxBotImages.length}`;
+            
+            document.body.style.overflow = 'hidden';
+            lightbox.classList.add('active');
+            
+            document.addEventListener('keydown', lightboxBotKeyHandler);
+        }
+
+        // ===== إغلاق نافذة العرض =====
+        function closeLightboxBot(event) {
+            if (event && event.target !== event.currentTarget && !event.target.closest('.lightbox-content')) {
+                return;
+            }
+            
+            const lightbox = document.getElementById('lightboxBot');
+            lightbox.classList.remove('active');
+            document.body.style.overflow = '';
+            document.removeEventListener('keydown', lightboxBotKeyHandler);
+        }
+
+        // ===== التنقل بين الصور =====
+        function navigateLightboxBot(direction, event) {
+            if (event) event.stopPropagation();
+            
+            if (lightboxBotImages.length === 0) return;
+            
+            lightboxBotIndex = (lightboxBotIndex + direction + lightboxBotImages.length) % lightboxBotImages.length;
+            const item = lightboxBotImages[lightboxBotIndex];
+            openLightboxBot(item.src, item.name);
+        }
+
+        // ===== دعم لوحة المفاتيح =====
+        function lightboxBotKeyHandler(e) {
+            if (e.key === 'Escape') {
+                closeLightboxBot(e);
+            } else if (e.key === 'ArrowRight' || e.key === 'ArrowDown') {
+                navigateLightboxBot(1, e);
+            } else if (e.key === 'ArrowLeft' || e.key === 'ArrowUp') {
+                navigateLightboxBot(-1, e);
+            }
+        }
+
+        // ===== نسخ الاسم من نافذة العرض =====
+        function copyLightboxBotName() {
+            const name = document.getElementById('lightboxBotName').textContent;
+            copyText(name);
+            
+            const btn = document.querySelector('.lightbox-bot .copy-btn-lightbox');
+            const originalText = btn.textContent;
+            btn.textContent = '✅ تم النسخ';
+            btn.style.background = '#00cc66';
+            setTimeout(() => {
+                btn.textContent = originalText;
+                btn.style.background = '';
+            }, 2000);
+        }
+
+        // ===== نسخ النص =====
+        function copyText(text) {
+            navigator.clipboard.writeText(text).then(() => {
+                const btns = document.querySelectorAll('.copy-btn-sm, .copy-btn-lightbox');
+                btns.forEach(btn => {
+                    if (btn.textContent === '📋' || btn.textContent.includes('نسخ')) {
+                        const orig = btn.textContent;
+                        btn.textContent = '✅';
+                        btn.style.background = '#00cc66';
+                        setTimeout(() => {
+                            btn.textContent = orig;
+                            btn.style.background = '';
+                        }, 2000);
+                    }
+                });
+            }).catch(() => {
+                const textarea = document.createElement('textarea');
+                textarea.value = text;
+                textarea.style.position = 'fixed';
+                textarea.style.left = '-9999px';
+                document.body.appendChild(textarea);
+                textarea.select();
+                document.execCommand('copy');
+                document.body.removeChild(textarea);
+                alert('✅ تم نسخ: ' + text);
+            });
+        }
+
+        // ===== تحديث الإحصائيات =====
         function updateStats() {
             document.getElementById('totalCommands').textContent = siteData.commands.length;
             document.getElementById('totalRules').textContent = siteData.rules.length;
             document.getElementById('totalInteriors').textContent = siteData.interiors.length;
         }
 
+        // ===== تعديل دالة smartReply في data.js لعرض الصور بشكل جميل =====
+        // (سيتم استدعاؤها من data.js)
+
+        // ===== التشغيل عند التحميل =====
         document.addEventListener('DOMContentLoaded', function() {
             loadQuickCategories();
             updateStats();
             document.getElementById('chatInput').focus();
         });
+
+        // ===== تحديث smartReply لعرض الصور بشكل أفضل =====
+        // نعيد تعريف الدالة في السياق الحالي لتعديلها
+        const originalSmartReply = window.smartReply;
+        if (typeof window.smartReply === 'function') {
+            // الدالة موجودة بالفعل من data.js
+            // نضيف تعديل لعرض الانترو
+            const oldReply = window.smartReply;
+            window.smartReply = function(query) {
+                const q = query.toLowerCase().trim();
+                
+                // البحث عن انترو - عرض الصور بشكل محسن
+                const interiors = findInterior(q);
+                if (interiors.length > 0) {
+                    let response = '<div style="text-align:center;">🏠 <strong>الانترو المطلوب:</strong></div>';
+                    interiors.forEach(int => {
+                        response += `
+                            <div class="interior-result" style="cursor:pointer;">
+                                <span class="badge-bot">🏠</span>
+                                <img src="${int.image}" alt="${int.name}" loading="lazy">
+                                <div class="result-name">
+                                    <span>${int.name}</span>
+                                    <button class="copy-btn-sm" onclick="event.stopPropagation(); copyText('${int.name}')">📋</button>
+                                </div>
+                            </div>
+                        `;
+                    });
+                    // إضافة زر لعرض الكل
+                    if (interiors.length > 1) {
+                        response += `<div style="text-align:center;margin-top:10px;font-size:12px;color:var(--text-muted);">👆 اضغط على الصورة لتكبيرها</div>`;
+                    }
+                    return response;
+                }
+                
+                // استخدام الدالة الأصلية للبحث الآخر
+                return oldReply(query);
+            };
+        }
+
+        // ===== دالة مساعدة للبحث عن انترو =====
+        function findInterior(search) {
+            const searchLower = search.toLowerCase().trim();
+            return siteData.interiors.filter(int => 
+                int.name.includes(search)
+            );
+        }
+
+        // ===== إعادة تعريف smartReply في النطاق العام =====
+        // هذا يضمن أن البوت يستخدم الدالة المعدلة
+        window.findInterior = findInterior;
     </script>
 
 </body>
