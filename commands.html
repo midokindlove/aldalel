@@ -1,0 +1,157 @@
+<!DOCTYPE html>
+<html lang="ar" dir="rtl">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>الأوامر - MTA San Andreas</title>
+    <link rel="stylesheet" href="style.css">
+    <link href="https://fonts.googleapis.com/css2?family=Cairo:wght@400;600;700&display=swap" rel="stylesheet">
+</head>
+<body>
+
+    <header>
+        <a href="index.html" class="logo">🎮 MTA <span>San Andreas</span></a>
+        <nav>
+            <a href="index.html">🏠 الرئيسية</a>
+            <a href="commands.html" class="active">📋 الأوامر</a>
+            <a href="rules.html">📜 القوانين</a>
+            <a href="intro.html">🏠 الانترو</a>
+            <a href="admin.html">⚙️ الإدارة</a>
+        </nav>
+    </header>
+
+    <div class="container">
+
+        <div class="card">
+            <h1 class="card-title">📋 جميع الأوامر</h1>
+            
+            <!-- ===== فلتر البحث ===== -->
+            <div class="filter-section">
+                <input type="text" id="searchCommands" placeholder="🔍 بحث عن أمر..." oninput="filterCommands()">
+                <select id="categoryFilter" onchange="filterCommands()">
+                    <option value="all">📂 جميع الأقسام</option>
+                </select>
+            </div>
+
+            <!-- ===== جدول الأوامر ===== -->
+            <div class="table-container">
+                <table>
+                    <thead>
+                        <tr>
+                            <th style="width:30%;">الأمر</th>
+                            <th style="width:50%;">المعنى</th>
+                            <th style="width:15%;">القسم</th>
+                            <th style="width:5%;">نسخ</th>
+                        </tr>
+                    </thead>
+                    <tbody id="commandsTable">
+                        <!-- سيتم تعبئتها بواسطة JavaScript -->
+                    </tbody>
+                </table>
+            </div>
+
+            <p id="resultsCount" style="color:var(--text-muted);margin-top:15px;"></p>
+        </div>
+
+    </div>
+
+    <script src="data.js"></script>
+    <script>
+        // ===== تعبئة خيارات الأقسام =====
+        function loadCategoryFilter() {
+            const select = document.getElementById('categoryFilter');
+            const categories = siteData.categories;
+            select.innerHTML = `<option value="all">📂 جميع الأقسام</option>` + 
+                categories.map(cat => `<option value="${cat.name}">${cat.icon} ${cat.name}</option>`).join('');
+        }
+
+        // ===== عرض الأوامر =====
+        function displayCommands(commands) {
+            const tbody = document.getElementById('commandsTable');
+            const count = document.getElementById('resultsCount');
+            
+            if (commands.length === 0) {
+                tbody.innerHTML = `<tr><td colspan="4" style="text-align:center;padding:40px;color:var(--text-muted);">❌ لا توجد نتائج مطابقة</td></tr>`;
+                count.textContent = '0 نتيجة';
+                return;
+            }
+            
+            tbody.innerHTML = commands.map(cmd => `
+                <tr>
+                    <td class="command-text">${cmd.command}</td>
+                    <td class="meaning-text">${cmd.meaning}</td>
+                    <td><span class="category-badge">${cmd.category}</span></td>
+                    <td><button class="copy-btn" onclick="copyText('${cmd.command.replace(/'/g, "\\'")}')">📋</button></td>
+                </tr>
+            `).join('');
+            
+            count.textContent = `${commands.length} نتيجة`;
+        }
+
+        // ===== فلترة الأوامر =====
+        function filterCommands() {
+            const search = document.getElementById('searchCommands').value.toLowerCase().trim();
+            const category = document.getElementById('categoryFilter').value;
+            
+            let filtered = siteData.commands;
+            
+            if (category !== 'all') {
+                filtered = filtered.filter(cmd => cmd.category === category);
+            }
+            
+            if (search) {
+                filtered = filtered.filter(cmd => 
+                    cmd.command.toLowerCase().includes(search) ||
+                    cmd.meaning.includes(search)
+                );
+            }
+            
+            displayCommands(filtered);
+        }
+
+        // ===== نسخ النص =====
+        function copyText(text) {
+            navigator.clipboard.writeText(text).then(() => {
+                const btn = event.target;
+                btn.textContent = '✅';
+                btn.classList.add('copied');
+                setTimeout(() => {
+                    btn.textContent = '📋';
+                    btn.classList.remove('copied');
+                }, 2000);
+            }).catch(() => {
+                // طريقة بديلة للنسخ
+                const textarea = document.createElement('textarea');
+                textarea.value = text;
+                document.body.appendChild(textarea);
+                textarea.select();
+                document.execCommand('copy');
+                document.body.removeChild(textarea);
+                const btn = event.target;
+                btn.textContent = '✅';
+                setTimeout(() => {
+                    btn.textContent = '📋';
+                }, 2000);
+            });
+        }
+
+        // ===== تحميل المعلمات من الرابط =====
+        function loadFromURL() {
+            const params = new URLSearchParams(window.location.search);
+            const category = params.get('category');
+            if (category) {
+                document.getElementById('categoryFilter').value = category;
+                filterCommands();
+            }
+        }
+
+        // ===== التشغيل عند التحميل =====
+        document.addEventListener('DOMContentLoaded', function() {
+            loadCategoryFilter();
+            filterCommands();
+            loadFromURL();
+        });
+    </script>
+
+</body>
+</html>
