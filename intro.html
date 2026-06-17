@@ -3,14 +3,297 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>الانترو - MTA San Andreas</title>
+    <title>الانترو - الدليل MTA</title>
     <link rel="stylesheet" href="style.css">
     <link href="https://fonts.googleapis.com/css2?family=Cairo:wght@400;600;700&display=swap" rel="stylesheet">
+    <style>
+        /* ===== تنسيق معرض الانترو ===== */
+        .interior-gallery {
+            display: grid;
+            grid-template-columns: repeat(auto-fill, minmax(220px, 1fr));
+            gap: 25px;
+            padding: 10px 0;
+        }
+
+        .interior-card {
+            background: var(--bg-card);
+            border-radius: var(--radius);
+            overflow: hidden;
+            border: 1px solid var(--border-color);
+            transition: all 0.3s ease;
+            cursor: pointer;
+            position: relative;
+        }
+
+        .interior-card:hover {
+            transform: translateY(-8px);
+            border-color: var(--primary);
+            box-shadow: 0 12px 40px rgba(255,107,0,0.25);
+        }
+
+        .interior-card img {
+            width: 100%;
+            height: 200px;
+            object-fit: cover;
+            transition: all 0.3s ease;
+            display: block;
+        }
+
+        .interior-card:hover img {
+            transform: scale(1.03);
+        }
+
+        .interior-card .name {
+            padding: 14px 16px;
+            font-weight: bold;
+            color: var(--primary);
+            text-align: center;
+            font-size: 16px;
+            background: rgba(0,0,0,0.3);
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+
+        .interior-card .name .copy-btn-sm {
+            background: var(--bg-dark);
+            border: 1px solid var(--border-color);
+            color: var(--text-light);
+            padding: 4px 12px;
+            border-radius: 6px;
+            cursor: pointer;
+            font-size: 12px;
+            transition: all 0.3s ease;
+        }
+
+        .interior-card .name .copy-btn-sm:hover {
+            background: var(--primary);
+            border-color: var(--primary);
+        }
+
+        .interior-card .badge {
+            position: absolute;
+            top: 12px;
+            right: 12px;
+            background: rgba(255,107,0,0.9);
+            color: white;
+            padding: 4px 12px;
+            border-radius: 20px;
+            font-size: 11px;
+            font-weight: bold;
+        }
+
+        /* ===== نافذة عرض الصورة بحجم كبير (Lightbox) ===== */
+        .lightbox {
+            display: none;
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: rgba(0, 0, 0, 0.92);
+            z-index: 9999;
+            justify-content: center;
+            align-items: center;
+            animation: fadeIn 0.3s ease;
+            padding: 20px;
+            box-sizing: border-box;
+        }
+
+        .lightbox.active {
+            display: flex;
+        }
+
+        .lightbox .close-lightbox {
+            position: absolute;
+            top: 25px;
+            right: 35px;
+            color: white;
+            font-size: 45px;
+            font-weight: bold;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            z-index: 10000;
+            width: 60px;
+            height: 60px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            border-radius: 50%;
+            background: rgba(255, 255, 255, 0.1);
+            border: 2px solid rgba(255, 255, 255, 0.2);
+        }
+
+        .lightbox .close-lightbox:hover {
+            background: rgba(255, 0, 0, 0.3);
+            border-color: #ff3333;
+            transform: rotate(90deg);
+        }
+
+        .lightbox .lightbox-content {
+            max-width: 90%;
+            max-height: 85vh;
+            position: relative;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+        }
+
+        .lightbox .lightbox-content img {
+            max-width: 100%;
+            max-height: 80vh;
+            border-radius: 12px;
+            box-shadow: 0 20px 60px rgba(0,0,0,0.8);
+            border: 2px solid rgba(255,255,255,0.1);
+            object-fit: contain;
+        }
+
+        .lightbox .lightbox-info {
+            color: white;
+            margin-top: 20px;
+            text-align: center;
+            font-size: 18px;
+            display: flex;
+            align-items: center;
+            gap: 20px;
+            background: rgba(0,0,0,0.5);
+            padding: 12px 30px;
+            border-radius: 50px;
+            backdrop-filter: blur(10px);
+            border: 1px solid rgba(255,255,255,0.1);
+        }
+
+        .lightbox .lightbox-info .name {
+            color: var(--primary);
+            font-weight: bold;
+            font-size: 20px;
+        }
+
+        .lightbox .lightbox-info .copy-btn-lightbox {
+            background: var(--primary);
+            border: none;
+            color: white;
+            padding: 8px 20px;
+            border-radius: 25px;
+            cursor: pointer;
+            font-size: 14px;
+            transition: all 0.3s ease;
+            font-weight: bold;
+        }
+
+        .lightbox .lightbox-info .copy-btn-lightbox:hover {
+            background: var(--primary-dark);
+            transform: scale(1.05);
+        }
+
+        .lightbox .lightbox-counter {
+            position: absolute;
+            bottom: 30px;
+            left: 50%;
+            transform: translateX(-50%);
+            color: rgba(255,255,255,0.6);
+            font-size: 14px;
+            background: rgba(0,0,0,0.5);
+            padding: 6px 18px;
+            border-radius: 20px;
+            backdrop-filter: blur(5px);
+        }
+
+        .lightbox .nav-arrow {
+            position: absolute;
+            top: 50%;
+            transform: translateY(-50%);
+            color: white;
+            font-size: 50px;
+            cursor: pointer;
+            padding: 20px 15px;
+            border-radius: 50%;
+            background: rgba(0,0,0,0.3);
+            transition: all 0.3s ease;
+            border: 2px solid rgba(255,255,255,0.1);
+            user-select: none;
+            width: 70px;
+            height: 70px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+        }
+
+        .lightbox .nav-arrow:hover {
+            background: rgba(255,107,0,0.4);
+            border-color: var(--primary);
+        }
+
+        .lightbox .nav-arrow.prev {
+            left: 20px;
+        }
+
+        .lightbox .nav-arrow.next {
+            right: 20px;
+        }
+
+        @keyframes fadeIn {
+            from { opacity: 0; transform: scale(0.95); }
+            to { opacity: 1; transform: scale(1); }
+        }
+
+        /* ===== التجاوب ===== */
+        @media (max-width: 768px) {
+            .interior-gallery {
+                grid-template-columns: repeat(auto-fill, minmax(160px, 1fr));
+                gap: 15px;
+            }
+            .interior-card img {
+                height: 150px;
+            }
+            .lightbox .lightbox-content img {
+                max-height: 60vh;
+            }
+            .lightbox .lightbox-info {
+                flex-direction: column;
+                padding: 15px 25px;
+                gap: 10px;
+            }
+            .lightbox .nav-arrow {
+                width: 45px;
+                height: 45px;
+                font-size: 28px;
+                padding: 10px;
+            }
+            .lightbox .nav-arrow.prev {
+                left: 5px;
+            }
+            .lightbox .nav-arrow.next {
+                right: 5px;
+            }
+            .lightbox .close-lightbox {
+                top: 15px;
+                right: 20px;
+                font-size: 30px;
+                width: 45px;
+                height: 45px;
+            }
+        }
+
+        @media (max-width: 480px) {
+            .interior-gallery {
+                grid-template-columns: repeat(auto-fill, minmax(130px, 1fr));
+                gap: 10px;
+            }
+            .interior-card img {
+                height: 110px;
+            }
+            .interior-card .name {
+                font-size: 13px;
+                padding: 10px 12px;
+            }
+        }
+    </style>
 </head>
 <body>
 
     <header>
-        <a href="index.html" class="logo">🎮 MTA <span>San Andreas</span></a>
+        <a href="index.html" class="logo">📖 الدليل <span>MTA</span></a>
         <nav>
             <a href="index.html">🏠 الرئيسية</a>
             <a href="commands.html">📋 الأوامر</a>
@@ -26,7 +309,7 @@
         <div class="card">
             <h1 class="card-title">🏠 معرض الانترو</h1>
             <p style="color:var(--text-muted);margin-bottom:20px;">
-                جميع أنواع الانترو في السيرفر - اضغط على زر النسخ لنسخ الاسم
+                جميع أنواع الانترو في السيرفر - <strong>اضغط على الصورة</strong> لعرضها بحجم أكبر
             </p>
             
             <div class="interior-gallery" id="interiorGallery">
@@ -45,18 +328,48 @@
 
     </div>
 
+    <!-- ===== نافذة عرض الصورة (Lightbox) ===== -->
+    <div id="lightbox" class="lightbox" onclick="closeLightbox(event)">
+        <span class="close-lightbox" onclick="closeLightbox(event)">✕</span>
+        <span class="nav-arrow prev" onclick="navigateLightbox(-1, event)">‹</span>
+        <span class="nav-arrow next" onclick="navigateLightbox(1, event)">›</span>
+        
+        <div class="lightbox-content" onclick="event.stopPropagation()">
+            <img id="lightboxImage" src="" alt="انترو">
+            <div class="lightbox-info">
+                <span class="name" id="lightboxName">اسم الانترو</span>
+                <button class="copy-btn-lightbox" onclick="copyLightboxName()">📋 نسخ الاسم</button>
+            </div>
+        </div>
+        
+        <div class="lightbox-counter" id="lightboxCounter">1 / 1</div>
+    </div>
+
     <script src="data.js"></script>
     <script>
+        let lightboxIndex = 0;
+        let interiorsList = [];
+
         // ===== عرض معرض الانترو =====
         function displayInteriors() {
             const gallery = document.getElementById('interiorGallery');
+            interiorsList = siteData.interiors;
             
-            gallery.innerHTML = siteData.interiors.map(int => `
-                <div class="interior-card">
-                    <img src="${int.image}" alt="${int.name}" loading="lazy">
-                    <div class="name">${int.name}</div>
-                    <div class="copy-code">
-                        <button onclick="copyText('${int.name}')">📋 نسخ الاسم</button>
+            if (interiorsList.length === 0) {
+                gallery.innerHTML = `<div style="text-align:center;padding:40px;color:var(--text-muted);grid-column:1/-1;">
+                    <span style="font-size:60px;display:block;margin-bottom:15px;">🏠</span>
+                    لا توجد انترو مضافة حالياً
+                </div>`;
+                return;
+            }
+            
+            gallery.innerHTML = interiorsList.map((int, index) => `
+                <div class="interior-card" onclick="openLightbox(${index})">
+                    <span class="badge">#${index + 1}</span>
+                    <img src="${int.image}" alt="${int.name}" loading="lazy" onerror="this.src='data:image/svg+xml,%3Csvg xmlns=%22http://www.w3.org/2000/svg%22 width=%22200%22 height=%22200%22%3E%3Crect fill=%22%23333%22 width=%22200%22 height=%22200%22/%3E%3Ctext x=%2250%%22 y=%2250%%22 text-anchor=%22middle%22 dy=%22.3em%22 fill=%22%23666%22 font-size=%2220%22 font-family=%22sans-serif%22%3E🏠 ${int.name}%3C/text%3E%3C/svg%3E'">
+                    <div class="name">
+                        <span>${int.name}</span>
+                        <button class="copy-btn-sm" onclick="event.stopPropagation(); copyText('${int.name}')">📋</button>
                     </div>
                 </div>
             `).join('');
@@ -65,32 +378,110 @@
         // ===== عرض كود الانترو =====
         function displayIntroCode() {
             const codeBlock = document.getElementById('introCode');
-            const code = siteData.introCode || '// لم يتم إضافة كود الانترو بعد';
+            const code = siteData.introCode || '// لم يتم إضافة كود الانترو بعد\n// يمكنك إضافة الكود من لوحة الإدارة';
             codeBlock.innerHTML = `
                 <button class="copy-code-btn" onclick="copyCode()">📋 نسخ الكود</button>
-                <pre style="margin:0;font-family:inherit;">${code}</pre>
+                <pre style="margin:0;font-family:inherit;white-space:pre-wrap;word-break:break-all;">${code}</pre>
             `;
+        }
+
+        // ===== فتح نافذة العرض =====
+        function openLightbox(index) {
+            lightboxIndex = index;
+            const lightbox = document.getElementById('lightbox');
+            const img = document.getElementById('lightboxImage');
+            const name = document.getElementById('lightboxName');
+            const counter = document.getElementById('lightboxCounter');
+            
+            const interior = interiorsList[index];
+            img.src = interior.image;
+            img.alt = interior.name;
+            name.textContent = interior.name;
+            counter.textContent = `${index + 1} / ${interiorsList.length}`;
+            
+            // منع التمرير في الخلفية
+            document.body.style.overflow = 'hidden';
+            
+            lightbox.classList.add('active');
+            
+            // إضافة دعم لوحة المفاتيح
+            document.addEventListener('keydown', lightboxKeyHandler);
+        }
+
+        // ===== إغلاق نافذة العرض =====
+        function closeLightbox(event) {
+            if (event && event.target !== event.currentTarget && !event.target.closest('.lightbox-content')) {
+                return;
+            }
+            
+            const lightbox = document.getElementById('lightbox');
+            lightbox.classList.remove('active');
+            document.body.style.overflow = '';
+            document.removeEventListener('keydown', lightboxKeyHandler);
+        }
+
+        // ===== التنقل بين الصور =====
+        function navigateLightbox(direction, event) {
+            if (event) event.stopPropagation();
+            
+            lightboxIndex = (lightboxIndex + direction + interiorsList.length) % interiorsList.length;
+            openLightbox(lightboxIndex);
+        }
+
+        // ===== دعم لوحة المفاتيح =====
+        function lightboxKeyHandler(e) {
+            if (e.key === 'Escape') {
+                closeLightbox(e);
+            } else if (e.key === 'ArrowRight' || e.key === 'ArrowDown') {
+                navigateLightbox(1, e);
+            } else if (e.key === 'ArrowLeft' || e.key === 'ArrowUp') {
+                navigateLightbox(-1, e);
+            }
+        }
+
+        // ===== نسخ الاسم من نافذة العرض =====
+        function copyLightboxName() {
+            const name = document.getElementById('lightboxName').textContent;
+            copyText(name);
+            
+            // تغيير زر النسخ مؤقتاً
+            const btn = document.querySelector('.copy-btn-lightbox');
+            const originalText = btn.textContent;
+            btn.textContent = '✅ تم النسخ';
+            btn.style.background = '#00cc66';
+            setTimeout(() => {
+                btn.textContent = originalText;
+                btn.style.background = '';
+            }, 2000);
         }
 
         // ===== نسخ النص =====
         function copyText(text) {
             navigator.clipboard.writeText(text).then(() => {
-                const btns = document.querySelectorAll('.interior-card .copy-code button');
+                // تغيير جميع أزرار النسخ مؤقتاً
+                const btns = document.querySelectorAll('.copy-btn-sm, .copy-btn-lightbox');
                 btns.forEach(btn => {
-                    if (btn.textContent.includes('نسخ')) {
-                        btn.textContent = '✅ تم النسخ';
+                    if (btn.textContent === '📋' || btn.textContent.includes('نسخ')) {
+                        const orig = btn.textContent;
+                        btn.textContent = '✅';
+                        btn.style.background = '#00cc66';
                         setTimeout(() => {
-                            btn.textContent = '📋 نسخ الاسم';
+                            btn.textContent = orig;
+                            btn.style.background = '';
                         }, 2000);
                     }
                 });
             }).catch(() => {
+                // طريقة بديلة
                 const textarea = document.createElement('textarea');
                 textarea.value = text;
+                textarea.style.position = 'fixed';
+                textarea.style.left = '-9999px';
                 document.body.appendChild(textarea);
                 textarea.select();
                 document.execCommand('copy');
                 document.body.removeChild(textarea);
+                alert('✅ تم نسخ: ' + text);
             });
         }
 
@@ -100,16 +491,21 @@
             navigator.clipboard.writeText(code).then(() => {
                 const btn = document.querySelector('.copy-code-btn');
                 btn.textContent = '✅ تم النسخ';
+                btn.style.background = '#00cc66';
                 setTimeout(() => {
                     btn.textContent = '📋 نسخ الكود';
+                    btn.style.background = '';
                 }, 2000);
             }).catch(() => {
                 const textarea = document.createElement('textarea');
                 textarea.value = code;
+                textarea.style.position = 'fixed';
+                textarea.style.left = '-9999px';
                 document.body.appendChild(textarea);
                 textarea.select();
                 document.execCommand('copy');
                 document.body.removeChild(textarea);
+                alert('✅ تم نسخ الكود');
             });
         }
 
@@ -117,7 +513,16 @@
         document.addEventListener('DOMContentLoaded', function() {
             displayInteriors();
             displayIntroCode();
+            
+            // إغلاق الـ Lightbox عند الضغط على ESC
+            document.addEventListener('keydown', lightboxKeyHandler);
         });
+
+        // ===== إعادة التحميل عند تغيير البيانات (لتحديث المعرض) =====
+        // يتم استدعاؤها من admin.html عند إضافة/حذف انترو
+        window.refreshInteriors = function() {
+            displayInteriors();
+        };
     </script>
 
 </body>
