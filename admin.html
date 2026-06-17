@@ -1,0 +1,297 @@
+<!DOCTYPE html>
+<html lang="ar" dir="rtl">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>الإدارة - MTA San Andreas</title>
+    <link rel="stylesheet" href="style.css">
+    <link href="https://fonts.googleapis.com/css2?family=Cairo:wght@400;600;700&display=swap" rel="stylesheet">
+</head>
+<body>
+
+    <header>
+        <a href="index.html" class="logo">🎮 MTA <span>San Andreas</span></a>
+        <nav>
+            <a href="index.html">🏠 الرئيسية</a>
+            <a href="commands.html">📋 الأوامر</a>
+            <a href="rules.html">📜 القوانين</a>
+            <a href="intro.html">🏠 الانترو</a>
+            <a href="admin.html" class="active">⚙️ الإدارة</a>
+        </nav>
+    </header>
+
+    <div class="container">
+
+        <div class="card">
+            <h1 class="card-title">⚙️ لوحة الإدارة</h1>
+            <p style="color:var(--text-muted);">
+                أدخل الرقم السري للوصول إلى لوحة التحكم
+            </p>
+
+            <!-- ===== تسجيل الدخول ===== -->
+            <div id="adminLogin" class="admin-login">
+                <input type="password" id="adminPassword" placeholder="🔑 أدخل الرقم السري" maxlength="4" onkeydown="if(event.key==='Enter') loginAdmin()">
+                <br>
+                <button onclick="loginAdmin()">🚀 دخول</button>
+                <p id="loginError" style="color:#ff3333;margin-top:10px;display:none;">❌ الرقم السري غير صحيح</p>
+            </div>
+
+            <!-- ===== لوحة التحكم ===== -->
+            <div id="adminPanel" class="admin-panel">
+                <div class="alert alert-success">
+                    ✅ تم الدخول بنجاح! يمكنك الآن إدارة الموقع.
+                </div>
+
+                <!-- ===== أزرار التصدير والاستيراد ===== -->
+                <div class="admin-actions">
+                    <button class="btn-export" onclick="exportDataFile()">📤 تصدير البيانات</button>
+                    <button class="btn-import" onclick="document.getElementById('importFile').click()">📥 استيراد البيانات</button>
+                    <input type="file" id="importFile" accept=".json" style="display:none;" onchange="importDataFile(event)">
+                    <button class="btn-edit" onclick="resetData()">🔄 إعادة ضبط البيانات</button>
+                </div>
+
+                <!-- ===== أقسام التحكم ===== -->
+                <div class="admin-controls">
+
+                    <!-- ===== إضافة أمر ===== -->
+                    <div class="control-card">
+                        <h4>➕ إضافة أمر</h4>
+                        <input type="text" id="newCommand" placeholder="الأمر (مثال: /heal)">
+                        <input type="text" id="newMeaning" placeholder="المعنى">
+                        <select id="newCategory">
+                            <!-- سيتم تعبئتها -->
+                        </select>
+                        <button class="btn-add" onclick="addCommand()">➕ إضافة</button>
+                    </div>
+
+                    <!-- ===== إضافة قانون ===== -->
+                    <div class="control-card">
+                        <h4>➕ إضافة قانون</h4>
+                        <input type="text" id="newRuleEn" placeholder="القانون (English)">
+                        <input type="text" id="newRuleAr" placeholder="المعنى (Arabic)">
+                        <button class="btn-add" onclick="addRule()">➕ إضافة</button>
+                    </div>
+
+                    <!-- ===== إضافة انترو ===== -->
+                    <div class="control-card">
+                        <h4>➕ إضافة انترو</h4>
+                        <input type="text" id="newInteriorName" placeholder="اسم الانترو">
+                        <input type="text" id="newInteriorImage" placeholder="رابط الصورة">
+                        <button class="btn-add" onclick="addInterior()">➕ إضافة</button>
+                    </div>
+
+                    <!-- ===== تحديث كود الانترو ===== -->
+                    <div class="control-card">
+                        <h4>💻 تحديث كود الانترو</h4>
+                        <textarea id="newIntroCode" placeholder="أدخل كود الانترو هنا..."></textarea>
+                        <button class="btn-edit" onclick="updateIntroCode()">💾 حفظ الكود</button>
+                    </div>
+
+                    <!-- ===== حذف جميع البيانات ===== -->
+                    <div class="control-card" style="border-color:#ff3333;">
+                        <h4 style="color:#ff3333;">⚠️ منطقة الخطر</h4>
+                        <button class="btn-delete" onclick="clearAllData()" style="width:100%;">🗑️ حذف جميع البيانات</button>
+                    </div>
+
+                </div>
+
+                <!-- ===== إحصائيات ===== -->
+                <div class="card" style="margin-top:20px;border-color:var(--border-color);">
+                    <p style="color:var(--text-muted);">
+                        📊 <span id="adminCommands">0</span> أمر | 
+                        📜 <span id="adminRules">0</span> قانون | 
+                        🏠 <span id="adminInteriors">0</span> انترو
+                    </p>
+                </div>
+            </div>
+        </div>
+
+    </div>
+
+    <script src="data.js"></script>
+    <script>
+        const ADMIN_PASSWORD = '0000';
+        let isLoggedIn = false;
+
+        // ===== تسجيل الدخول =====
+        function loginAdmin() {
+            const password = document.getElementById('adminPassword').value;
+            const error = document.getElementById('loginError');
+            
+            if (password === ADMIN_PASSWORD) {
+                isLoggedIn = true;
+                document.getElementById('adminLogin').style.display = 'none';
+                document.getElementById('adminPanel').classList.add('show');
+                error.style.display = 'none';
+                loadAdminControls();
+                updateAdminStats();
+            } else {
+                error.style.display = 'block';
+                document.getElementById('adminPassword').value = '';
+                document.getElementById('adminPassword').focus();
+            }
+        }
+
+        // ===== تحميل عناصر التحكم =====
+        function loadAdminControls() {
+            const select = document.getElementById('newCategory');
+            select.innerHTML = siteData.categories.map(cat => 
+                `<option value="${cat.name}">${cat.icon} ${cat.name}</option>`
+            ).join('');
+            
+            document.getElementById('newIntroCode').value = siteData.introCode || '';
+        }
+
+        // ===== تحديث الإحصائيات =====
+        function updateAdminStats() {
+            document.getElementById('adminCommands').textContent = siteData.commands.length;
+            document.getElementById('adminRules').textContent = siteData.rules.length;
+            document.getElementById('adminInteriors').textContent = siteData.interiors.length;
+        }
+
+        // ===== إضافة أمر =====
+        function addCommand() {
+            const command = document.getElementById('newCommand').value.trim();
+            const meaning = document.getElementById('newMeaning').value.trim();
+            const category = document.getElementById('newCategory').value;
+            
+            if (!command || !meaning) {
+                alert('❌ الرجاء إدخال الأمر والمعنى');
+                return;
+            }
+            
+            siteData.commands.push({ category, command, meaning });
+            saveData();
+            updateAdminStats();
+            
+            document.getElementById('newCommand').value = '';
+            document.getElementById('newMeaning').value = '';
+            
+            alert('✅ تم إضافة الأمر بنجاح');
+        }
+
+        // ===== إضافة قانون =====
+        function addRule() {
+            const english = document.getElementById('newRuleEn').value.trim();
+            const arabic = document.getElementById('newRuleAr').value.trim();
+            
+            if (!english || !arabic) {
+                alert('❌ الرجاء إدخال القانون والمعنى');
+                return;
+            }
+            
+            siteData.rules.push({ english, arabic });
+            saveData();
+            updateAdminStats();
+            
+            document.getElementById('newRuleEn').value = '';
+            document.getElementById('newRuleAr').value = '';
+            
+            alert('✅ تم إضافة القانون بنجاح');
+        }
+
+        // ===== إضافة انترو =====
+        function addInterior() {
+            const name = document.getElementById('newInteriorName').value.trim();
+            const image = document.getElementById('newInteriorImage').value.trim();
+            
+            if (!name || !image) {
+                alert('❌ الرجاء إدخال اسم الانترو ورابط الصورة');
+                return;
+            }
+            
+            siteData.interiors.push({ name, image });
+            saveData();
+            updateAdminStats();
+            
+            document.getElementById('newInteriorName').value = '';
+            document.getElementById('newInteriorImage').value = '';
+            
+            alert('✅ تم إضافة الانترو بنجاح');
+        }
+
+        // ===== تحديث كود الانترو =====
+        function updateIntroCode() {
+            const code = document.getElementById('newIntroCode').value;
+            siteData.introCode = code;
+            saveData();
+            alert('✅ تم حفظ كود الانترو بنجاح');
+        }
+
+        // ===== تصدير البيانات =====
+        function exportDataFile() {
+            const data = exportData();
+            const blob = new Blob([data], { type: 'application/json' });
+            const url = URL.createObjectURL(blob);
+            const a = document.createElement('a');
+            a.href = url;
+            a.download = `mta_data_${new Date().toISOString().slice(0,10)}.json`;
+            a.click();
+            URL.revokeObjectURL(url);
+        }
+
+        // ===== استيراد البيانات =====
+        function importDataFile(event) {
+            const file = event.target.files[0];
+            if (!file) return;
+            
+            const reader = new FileReader();
+            reader.onload = function(e) {
+                try {
+                    const data = e.target.result;
+                    if (importData(data)) {
+                        alert('✅ تم استيراد البيانات بنجاح');
+                        updateAdminStats();
+                        loadAdminControls();
+                    } else {
+                        alert('❌ خطأ في استيراد البيانات');
+                    }
+                } catch(err) {
+                    alert('❌ خطأ في قراءة الملف');
+                }
+            };
+            reader.readAsText(file);
+            event.target.value = '';
+        }
+
+        // ===== إعادة ضبط البيانات =====
+        function resetData() {
+            if (confirm('⚠️ هل أنت متأكد من إعادة ضبط البيانات إلى الإعدادات الافتراضية؟')) {
+                localStorage.removeItem('mtaData');
+                location.reload();
+            }
+        }
+
+        // ===== حذف جميع البيانات =====
+        function clearAllData() {
+            if (confirm('🚨 تحذير شديد! هل أنت متأكد من حذف جميع البيانات؟ لا يمكن التراجع عن هذا الإجراء!')) {
+                if (confirm('تأكيد نهائي: حذف جميع البيانات؟')) {
+                    siteData.commands = [];
+                    siteData.rules = [];
+                    siteData.interiors = [];
+                    siteData.introCode = '';
+                    saveData();
+                    updateAdminStats();
+                    loadAdminControls();
+                    alert('🗑️ تم حذف جميع البيانات');
+                }
+            }
+        }
+
+        // ===== التحقق من حالة الدخول عند التحميل =====
+        document.addEventListener('DOMContentLoaded', function() {
+            // إذا كان هناك جلسة سابقة (اختياري)
+            if (isLoggedIn) {
+                document.getElementById('adminLogin').style.display = 'none';
+                document.getElementById('adminPanel').classList.add('show');
+                loadAdminControls();
+                updateAdminStats();
+            }
+            
+            // التركيز على حقل كلمة المرور
+            document.getElementById('adminPassword').focus();
+        });
+    </script>
+
+</body>
+</html>
