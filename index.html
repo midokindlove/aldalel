@@ -1,0 +1,86 @@
+<!DOCTYPE html>
+<html lang="ar" dir="rtl">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>MTA Assistant</title>
+
+    <link rel="stylesheet" href="assets/css/style.css">
+</head>
+
+<body>
+
+    <header class="header">
+        <h1>MTA Assistant</h1>
+        <p>مساعد ذكي للأوامر والقوانين والانترو</p>
+    </header>
+
+    <main>
+
+        <section class="search-section">
+
+            <div class="search-box">
+
+                <input
+                    type="text"
+                    id="userInput"
+                    placeholder="اسأل عن أي أمر أو قانون أو انترو...">
+
+                <button id="searchBtn">
+                    إرسال
+                </button>
+
+            </div>
+
+        </section>
+
+        <section class="quick-filters">
+
+            <button class="filter-btn" data-category="all">الكل</button>
+            <button class="filter-btn" data-category="فاكشن">فاكشن</button>
+            <button class="filter-btn" data-category="بوابة">بوابة</button>
+            <button class="filter-btn" data-category="انترو">انترو</button>
+            <button class="filter-btn" data-category="سيارة">سيارة</button>
+            <button class="filter-btn" data-category="مراقبة">مراقبة</button>
+            <button class="filter-btn" data-category="شات">شات</button>
+            <button class="filter-btn" data-category="سلاح">سلاح</button>
+            <button class="filter-btn" data-category="عقاب">عقاب</button>
+            <button class="filter-btn" data-category="قوانين">قوانين</button>
+
+        </section>
+
+        <section id="chatArea" class="chat-area">
+
+            <div class="bot-message">
+
+                مرحباً 👋
+
+                يمكنك البحث عن:
+
+                • الأوامر
+                • القوانين
+                • الانترو
+                • أسماء الأقسام
+
+                مثال:
+
+                فاكشن
+                سيارة
+                DM
+                بيت
+                مراقبة
+
+            </div>
+
+        </section>
+
+    </main>
+
+    <script src="assets/js/app.js"></script>
+    <script src="assets/js/search.js"></script>
+    <script src="assets/js/ai.js"></script>
+
+</body>
+
+</html>
