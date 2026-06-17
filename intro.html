@@ -1,0 +1,124 @@
+<!DOCTYPE html>
+<html lang="ar" dir="rtl">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>الانترو - MTA San Andreas</title>
+    <link rel="stylesheet" href="style.css">
+    <link href="https://fonts.googleapis.com/css2?family=Cairo:wght@400;600;700&display=swap" rel="stylesheet">
+</head>
+<body>
+
+    <header>
+        <a href="index.html" class="logo">🎮 MTA <span>San Andreas</span></a>
+        <nav>
+            <a href="index.html">🏠 الرئيسية</a>
+            <a href="commands.html">📋 الأوامر</a>
+            <a href="rules.html">📜 القوانين</a>
+            <a href="intro.html" class="active">🏠 الانترو</a>
+            <a href="admin.html">⚙️ الإدارة</a>
+        </nav>
+    </header>
+
+    <div class="container">
+
+        <!-- ===== معرض الانترو ===== -->
+        <div class="card">
+            <h1 class="card-title">🏠 معرض الانترو</h1>
+            <p style="color:var(--text-muted);margin-bottom:20px;">
+                جميع أنواع الانترو في السيرفر - اضغط على زر النسخ لنسخ الاسم
+            </p>
+            
+            <div class="interior-gallery" id="interiorGallery">
+                <!-- سيتم تعبئتها بواسطة JavaScript -->
+            </div>
+        </div>
+
+        <!-- ===== كود الانترو ===== -->
+        <div class="card">
+            <h3 class="card-title">💻 كود صناعة الانترو</h3>
+            <div class="code-block" id="introCode">
+                <!-- سيتم تعبئتها بواسطة JavaScript -->
+                <button class="copy-code-btn" onclick="copyCode()">📋 نسخ الكود</button>
+            </div>
+        </div>
+
+    </div>
+
+    <script src="data.js"></script>
+    <script>
+        // ===== عرض معرض الانترو =====
+        function displayInteriors() {
+            const gallery = document.getElementById('interiorGallery');
+            
+            gallery.innerHTML = siteData.interiors.map(int => `
+                <div class="interior-card">
+                    <img src="${int.image}" alt="${int.name}" loading="lazy">
+                    <div class="name">${int.name}</div>
+                    <div class="copy-code">
+                        <button onclick="copyText('${int.name}')">📋 نسخ الاسم</button>
+                    </div>
+                </div>
+            `).join('');
+        }
+
+        // ===== عرض كود الانترو =====
+        function displayIntroCode() {
+            const codeBlock = document.getElementById('introCode');
+            const code = siteData.introCode || '// لم يتم إضافة كود الانترو بعد';
+            codeBlock.innerHTML = `
+                <button class="copy-code-btn" onclick="copyCode()">📋 نسخ الكود</button>
+                <pre style="margin:0;font-family:inherit;">${code}</pre>
+            `;
+        }
+
+        // ===== نسخ النص =====
+        function copyText(text) {
+            navigator.clipboard.writeText(text).then(() => {
+                const btns = document.querySelectorAll('.interior-card .copy-code button');
+                btns.forEach(btn => {
+                    if (btn.textContent.includes('نسخ')) {
+                        btn.textContent = '✅ تم النسخ';
+                        setTimeout(() => {
+                            btn.textContent = '📋 نسخ الاسم';
+                        }, 2000);
+                    }
+                });
+            }).catch(() => {
+                const textarea = document.createElement('textarea');
+                textarea.value = text;
+                document.body.appendChild(textarea);
+                textarea.select();
+                document.execCommand('copy');
+                document.body.removeChild(textarea);
+            });
+        }
+
+        // ===== نسخ الكود =====
+        function copyCode() {
+            const code = siteData.introCode || '// لم يتم إضافة كود الانترو بعد';
+            navigator.clipboard.writeText(code).then(() => {
+                const btn = document.querySelector('.copy-code-btn');
+                btn.textContent = '✅ تم النسخ';
+                setTimeout(() => {
+                    btn.textContent = '📋 نسخ الكود';
+                }, 2000);
+            }).catch(() => {
+                const textarea = document.createElement('textarea');
+                textarea.value = code;
+                document.body.appendChild(textarea);
+                textarea.select();
+                document.execCommand('copy');
+                document.body.removeChild(textarea);
+            });
+        }
+
+        // ===== التشغيل عند التحميل =====
+        document.addEventListener('DOMContentLoaded', function() {
+            displayInteriors();
+            displayIntroCode();
+        });
+    </script>
+
+</body>
+</html>
