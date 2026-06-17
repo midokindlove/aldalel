@@ -222,6 +222,66 @@
             });
         }
 
+        // دالة حساب التشابه بين كلمتين (خوارزمية ليفينشتاين)
+        function getSimilarity(s1, s2) {
+            let longer = s1, shorter = s2;
+            if (s1.length < s2.length) { longer = s2; shorter = s1; }
+            let longerLength = longer.length;
+            if (longerLength === 0) return 1.0;
+            
+            // حساب عدد الاختلافات
+            let costs = new Array();
+            for (let i = 0; i <= longer.length; i++) {
+                let lastValue = i;
+                for (let j = 0; j <= shorter.length; j++) {
+                    if (i == 0) costs[j] = j;
+                    else {
+                        if (j > 0) {
+                            let newValue = costs[j - 1];
+                            if (longer[i - 1] != shorter[j - 1])
+                                newValue = Math.min(Math.min(newValue, lastValue), costs[j]) + 1;
+                            costs[j - 1] = lastValue;
+                            lastValue = newValue;
+                        }
+                    }
+                }
+                if (i > 0) costs[shorter.length] = lastValue;
+            }
+            return (longerLength - costs[shorter.length]) / parseFloat(longerLength);
+        }
+
+        /**
+         * دالة البحث الذكي - تحسب درجة التشابه وتقترح أفضل تطابق
+         */
+        function intelligentSearch(userInput) {
+            const query = normalizeText(userInput);
+            let bestMatch = null;
+            let highestScore = 0;
+
+            // المرور على كافة الأوامر
+            serverCommands.forEach(item => {
+                const cmd = normalizeText(item.command);
+                const desc = normalizeText(item.desc);
+                
+                // حساب التشابه مع الأمر أو الوصف
+                const scoreCmd = getSimilarity(query, cmd);
+                const scoreDesc = getSimilarity(query, desc);
+                const score = Math.max(scoreCmd, scoreDesc);
+
+                if (score > highestScore) {
+                    highestScore = score;
+                    bestMatch = item;
+                }
+            });
+
+            // إذا كان التشابه أكثر من 40% نعرض النتيجة، وإلا نعتذر
+            if (highestScore > 0.4) {
+                return `هل تقصد: /${bestMatch.command} - الشرح: ${bestMatch.desc}؟`;
+            } else {
+                return "عذراً، لم أجد طلباً مشابهاً. حاول كتابة كلمة أدق.";
+            }
+        }
+
         // قاموس الكلمات المفتاحية الذكي - يربط المفردات العامية والشائعة بمدلولاتها في السيرفر
         const dictionary = {
             "طيران": ["givesuperman", "superman", "طير"],
@@ -441,6 +501,10 @@
                         reply += `• <span class="badge badge-cmd">/${c.command}</span> : ${c.desc}<br>`;
                     });
                     if(matchedCmds.length > 6) reply += `<br><i>💡 هناك نتائج أخرى، يرجى تضييق جملة البحث للوصول الدقيق.</i>`;
+                } else {
+                    // إذا لم يتم العثور على نتائج، استخدم البحث الذكي
+                    const smartResult = intelligentSearch(userText);
+                    reply = smartResult;
                 }
 
                 chatMessages.innerHTML += `<div class="msg bot">${reply}</div>`;
