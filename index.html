@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>موسوعة إدارة السيرفر الشاملة</title>
+    <title>موسوعة إدارة السيرفر الشاملة - النسخة الذكية</title>
     <style>
         :root {
             --bg-primary: #0f1115;
@@ -45,7 +45,7 @@
         .page-view.active { display: block; }
 
         /* الصفحة الرئيسية (Dashboard) */
-        .dashboard-grid { display: grid; grid-template-columns: repeat(auto-fit, min-columns: minmax(240px, 1fr)); gap: 24px; margin-bottom: 40px; }
+        .dashboard-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(240px, 1fr)); gap: 24px; margin-bottom: 40px; }
         .stat-card { background-color: var(--bg-card); padding: 24px; border-radius: 12px; border: 1px solid var(--border-color); text-align: center; }
         .stat-card h3 { font-size: 2.5rem; color: var(--accent-color); margin-bottom: 8px; }
         .stat-card p { color: var(--text-muted); font-size: 1rem; }
@@ -67,7 +67,7 @@
         .badge-cmd { background-color: rgba(16, 185, 129, 0.1); color: var(--badge-cmd); border: 1px solid rgba(16, 185, 129, 0.2); }
         .badge-rule { background-color: rgba(239, 68, 68, 0.1); color: var(--badge-rule); border: 1px solid rgba(239, 68, 68, 0.2); }
 
-        /* نظام الرد التلقائي (الشات بوت للبحث السريع) */
+        /* شات المساعد والرد التلقائي الذكي */
         .chat-container { display: flex; flex-direction: column; height: calc(100vh - 160px); background-color: var(--bg-secondary); border-radius: 12px; border: 1px solid var(--border-color); overflow: hidden; }
         .chat-messages { flex: 1; padding: 20px; overflow-y: auto; display: flex; flex-direction: column; gap: 15px; }
         .msg { max-width: 75%; padding: 12px 18px; border-radius: 12px; line-height: 1.5; font-size: 0.95rem; }
@@ -78,10 +78,8 @@
         .chat-btn { padding: 0 24px; background-color: var(--accent-color); color: #fff; border: none; border-radius: 8px; font-weight: bold; cursor: pointer; transition: background 0.2s; }
         .chat-btn:hover { background-color: var(--accent-hover); }
 
-        /* الكومبو بوكس لتصفية فئات الأوامر بسرعة */
         .filter-select { padding: 10px; border-radius: 6px; background-color: var(--bg-primary); color: #fff; border: 1px solid var(--border-color); margin-bottom: 20px; width: 250px; outline: none; }
 
-        /* إعدادات الشاشات الصغيرة */
         @media (max-width: 1024px) {
             body { flex-direction: column; overflow: auto; }
             .sidebar { width: 100%; height: auto; position: relative; }
@@ -103,38 +101,38 @@
             <li><a onclick="switchPage('dashboard', 'الرئيسية')" id="btn-dashboard" class="active">🏠 الصفحة الرئيسية</a></li>
             <li><a onclick="switchPage('commands-page', 'دليل الأوامر الإدارية')" id="btn-commands-page">💻 الأوامر (36 فئة)</a></li>
             <li><a onclick="switchPage('rules-page', 'قوانين الـ RolePlay')" id="btn-rules-page">⚖️ القوانين والمصطلحات</a></li>
-            <li><a onclick="switchPage('bot-page', 'المساعد الذكي (الرد التلقائي)')" id="btn-bot-page">🤖 المساعد والرد السريع</a></li>
+            <li><a onclick="switchPage('bot-page', 'المساعد الذكي للرد التلقائي')" id="btn-bot-page">🤖 المساعد والرد الذكي</a></li>
         </ul>
     </div>
 
     <!-- المحتوى الرئيسي -->
     <div class="main-content">
-        <!-- البار العلوي الثابت والبحث الذكي -->
+        <!-- البار العلوي مع نظام البحث المفتاحي المطور -->
         <div class="top-bar">
             <div class="page-title" id="current-page-title">الرئيسية</div>
             <div class="search-wrapper" id="search-wrapper-container">
-                <input type="text" id="globalSearch" class="search-box" placeholder="بحث ذكي وسريع في الصفحة الحالية..." onkeyup="executeSearch()">
+                <input type="text" id="globalSearch" class="search-box" placeholder="ابحث بأي طريقة (مثال: موتر، حبس، دي ام، طيران)..." onkeyup="executeSearch()">
             </div>
         </div>
 
-        <!-- [1] صفحة الرئسية (Dashboard) -->
+        <!-- [1] صفحة الرئيسية -->
         <div id="dashboard" class="page-view active">
             <div class="welcome-box">
-                <h2>أهلاً بك مجدداً في نظام إدارة السيرفر الموحد 👋</h2>
-                <p>تم تحديث قاعدة البيانات بنجاح لتوفر لك وصولاً شاملاً وفورياً لجميع الأدوات والقواعد الإدارية. يمكنك الانتقال بين الأقسام من القائمة الجانبية، أو التحدث مع المساعد الذكي لتوفير الوقت.</p>
+                <h2>نظام الإدارة والرد الفوري الذكي 🧠</h2>
+                <p>تم تزويد محرك البحث الحالي بخواص الذكاء الاصطناعي السريع. يتعرف النظام الآن على الكلمات العامية والردود الذكية لضمان العثور على الأوامر والقوانين بأي صيغة كتابة كانت.</p>
             </div>
             
             <div class="dashboard-grid">
                 <div class="stat-card">
-                    <h3 id="count-categories">36</h3>
+                    <h3>36</h3>
                     <p>فئة أوامر فرعية</p>
                 </div>
                 <div class="stat-card">
                     <h3 id="count-commands">0</h3>
-                    <p>إجمالي الأوامر المسجلة</p>
+                    <p>إجمالي الأوامر النشطة</p>
                 </div>
                 <div class="stat-card">
-                    <h3 id="count-rules">48</h3>
+                    <h3 id="count-rules">0</h3>
                     <p>قانون ومصطلح RolePlay</p>
                 </div>
             </div>
@@ -142,7 +140,7 @@
 
         <!-- [2] صفحة الأوامر -->
         <div id="commands-page" class="page-view">
-            <div style="display: flex; justify-content: space-between; align-items: center; flex-wrap: wrap;">
+            <div>
                 <select id="categoryFilter" class="filter-select" onchange="filterByCategory()">
                     <option value="all">كل الفئات الإدارية (عرض الكل)</option>
                 </select>
@@ -166,16 +164,21 @@
             </div>
         </div>
 
-        <!-- [4] صفحة الرد التلقائي والشات بوت -->
+        <!-- [4] صفحة الرد التلقائي وشات المساعد الذكي -->
         <div id="bot-page" class="page-view">
             <div class="chat-container">
                 <div class="chat-messages" id="chatMessages">
                     <div class="msg bot">
-                        مرحباً بك في نظام الرد السريع! واجهت مشكلة أو تبحث عن أمر؟ اكتب لي اسم المخالفة (مثل: DM, MG) أو الكلمة الدلالية للأمر وسأجيبك فوراً!
+                        مرحباً بك في نظام الرد التلقائي الذكي! 🤖<br>
+                        يمكنك سؤالي بأي طريقة عامية أو فصحى مثل:<br>
+                        • "كيف اعطي طيران؟"<br>
+                        • "وش عقوبة الـ DM؟"<br>
+                        • "ابي ارسبن المواتر" <br>
+                        اكتب سؤالك وسأتولى تحليل الكلمات المفتاحية فوراً.
                     </div>
                 </div>
                 <div class="chat-input-area">
-                    <input type="text" id="chatInput" class="chat-input" placeholder="اكتب سؤالك هنا أو اسم القانون..." onkeypress="if(event.key === 'Enter') sendBotMessage()">
+                    <input type="text" id="chatInput" class="chat-input" placeholder="اكتب سؤالك هنا أو الكلمة المفتاحية (مثال: سجن، رخصة، سيارات)..." onkeypress="if(event.key === 'Enter') sendBotMessage()">
                     <button class="chat-btn" onclick="sendBotMessage()">إرسال</button>
                 </div>
             </div>
@@ -183,12 +186,51 @@
 
     </div>
 
-    <!-- استدعاء ملفات الـ JS الخارجية -->
+    <!-- ربط الملفات الأصلية -->
     <script src="commands.js"></script>
     <script src="rules.js"></script>
 
     <script>
-        // إعداد وتبويب الصفحات الإدارية
+        // قاموس الكلمات المفتاحية الذكي - يربط المفردات العامية والشائعة بمدلولاتها في السيرفر
+        const dictionary = {
+            "طيران": ["givesuperman", "superman", "طير"],
+            "سجن": ["jail", "ojail", "sjail", "sojail", "حبس", "المساجين", "عقاب"],
+            "حبس": ["jail", "ojail", "sjail", "sojail", "سجن"],
+            "سيارة": ["veh", "vehicle", "respawnall", "fixveh", "cars", "موتر", "سيارات", "مركبة", "مواتر"],
+            "سيارات": ["veh", "vehicle", "respawnall", "fixveh", "cars", "موتر", "سيارة", "مركبة", "مواتر"],
+            "موتر": ["veh", "vehicle", "respawnall", "fixveh", "cars", "سيارة", "مركبة", "مواتر"],
+            "مواتر": ["veh", "vehicle", "respawnall", "fixveh", "cars", "سيارة", "مركبة", "موتر"],
+            "فلوس": ["money", "givemoney", "setmoney", "مال", "اموال", "هدية"],
+            "مال": ["money", "givemoney", "setmoney", "فلوس", "اموال"],
+            "شات": ["chat", "clearchat", "showchat", "تكلم", "اكتب", "مسح"],
+            "سلاح": ["gun", "makegun", "ammo", "makeammo", "gunchart", "gunmaker", "اسلحة", "فرد", "رشاش"],
+            "اسلحة": ["gun", "makegun", "ammo", "makeammo", "gunchart", "gunmaker", "سلاح"],
+            "باند": ["ban", "pban", "oban", "soban", "banaccount", "banip", "banserial", "حظر", "طرد"],
+            "حظر": ["ban", "pban", "oban", "soban", "banaccount", "banip", "banserial", "باند"],
+            "رخصة": ["license", "agivelicense", "takelicense", "رخص", "سواقة"],
+            "انتقال": ["goto", "gethere", "gotoplace", "teleport", "انتقل", "اسحب", "جيب"],
+            "تخفي": ["hideadmin", "disappear", "supervise", "freecam", "مختفي", "غيب"],
+            "بيت": ["int", "interiors", "addint", "delint", "nearbyints", "منزل", "بيوت", "داخلية"],
+            "منزل": ["int", "interiors", "addint", "delint", "nearbyints", "بيت", "بيوت"],
+            "محل": ["shop", "makeshop", "delshop", "nearbyshops", "شوب", "بائع", "بائعين"],
+            "شوب": ["shop", "makeshop", "delshop", "nearbyshops", "محل", "بائع", "بائعين"]
+        };
+
+        // دالة للتحقق مما إذا كانت الكلمة المدخلة تنتمي لمرادفات قاموس الأوامر
+        function getKeywordsFromText(text) {
+            let matchedKeywords = [];
+            const words = text.toLowerCase().split(/[\s,.\/]+/);
+            
+            words.forEach(word => {
+                for (const [key, synonyms] of Object.entries(dictionary)) {
+                    if (word.includes(key) || key.includes(word)) {
+                        matchedKeywords = matchedKeywords.concat(synonyms);
+                    }
+                }
+            });
+            return [...new Set(matchedKeywords)]; // إزالة التكرارات
+        }
+
         function switchPage(pageId, title) {
             document.querySelectorAll('.page-view').forEach(p => p.classList.remove('active'));
             document.querySelectorAll('.sidebar-menu li a').forEach(a => a.classList.remove('active'));
@@ -197,7 +239,6 @@
             document.getElementById(`btn-${pageId}`).classList.add('active');
             document.getElementById('current-page-title').textContent = title;
             
-            // إظهار أو إخفاء حقل البحث العلوي بناء على الصفحة
             const searchContainer = document.getElementById('search-wrapper-container');
             if(pageId === 'bot-page') {
                 searchContainer.style.visibility = 'hidden';
@@ -208,13 +249,10 @@
             }
         }
 
-        // بناء وعرض البيانات عند تحميل الصفحة بالكامل
         document.addEventListener("DOMContentLoaded", () => {
-            // 1. حساب الإحصائيات بالرئيسية
             document.getElementById('count-commands').textContent = serverCommands.length;
             document.getElementById('count-rules').textContent = serverRules.length;
 
-            // 2. بناء الكومبو بوكس (الفئات) وتوليد الجداول للأوامر ديناميكياً
             const categoriesMap = {
                 "basic-info-sec": "1. أوامر المعلومات الأساسية", "faction-sec": "2. أوامر الفاكشنات (Factions)", "gates-sec": "3. أوامر البوابات (Gates)",
                 "int-sec": "4. أوامر الإنترو (Interiors)", "shop-sec": "5. أوامر البائعين (Shops)", "arrows-sec": "6. أوامر الأسهم (Markers/Arrows)",
@@ -233,15 +271,12 @@
             const filterSelect = document.getElementById('categoryFilter');
             const commandsContainer = document.getElementById('commands-container');
 
-            // إنشاء هياكل الجداول لكل فئة
             for (const [key, value] of Object.entries(categoriesMap)) {
-                // إضافة الفئة للكومبو بوكس التصفية
                 let opt = document.createElement('option');
                 opt.value = key;
                 opt.textContent = value;
                 filterSelect.appendChild(opt);
 
-                // بناء كارد الفئة مع جدول داخله
                 let panel = document.createElement('div');
                 panel.className = 'section-panel cmd-group-panel';
                 panel.id = `panel-${key}`;
@@ -255,12 +290,11 @@
                 commandsContainer.appendChild(panel);
             }
 
-            // توزيع الأوامر داخل الجداول الخاصة بها
             serverCommands.forEach(cmd => {
                 const tbody = document.getElementById(`rows-${cmd.category}`);
                 if(tbody) {
                     tbody.innerHTML += `
-                        <tr>
+                        <tr data-command="${cmd.command.toLowerCase()}" data-desc="${cmd.desc.toLowerCase()}">
                             <td><span class="badge badge-cmd">/${cmd.command}</span></td>
                             <td>${cmd.desc}</td>
                         </tr>
@@ -268,11 +302,10 @@
                 }
             });
 
-            // 3. بناء وتعبئة جدول القوانين والمصطلحات
             const rulesTableBody = document.getElementById('rules-table-body');
             serverRules.forEach(rule => {
                 rulesTableBody.innerHTML += `
-                    <tr>
+                    <tr data-rule="${rule.rule.toLowerCase()}" data-desc="${rule.desc.toLowerCase()}">
                         <td><span class="badge badge-rule">${rule.rule}</span></td>
                         <td>${rule.desc}</td>
                     </tr>
@@ -280,7 +313,6 @@
             });
         });
 
-        // تصفية الأوامر حسب الكومبو بوكس المختار بالفئات
         function filterByCategory() {
             const selected = document.getElementById('categoryFilter').value;
             document.querySelectorAll('.cmd-group-panel').forEach(panel => {
@@ -292,28 +324,36 @@
             });
         }
 
-        // محرك البحث العلوي الذكي (يبحث في عناصر الجداول النشطة)
+        // محرك البحث العلوي الذكي والمطور مفتاحياً لعرض السطور المتوافقة
         function executeSearch() {
-            const query = document.getElementById('globalSearch').value.toLowerCase();
+            const query = document.getElementById('globalSearch').value.toLowerCase().trim();
             const currentActivePage = document.querySelector('.page-view.active');
-            
             if (!currentActivePage) return;
 
             const rows = currentActivePage.querySelectorAll('.data-table tbody tr');
+            const linkedKeywords = getKeywordsFromText(query); // جلب المترادفات لو كتبت كلمة عامية
+
             rows.forEach(row => {
-                row.style.display = row.textContent.toLowerCase().includes(query) ? "" : "none";
+                const cmdAttr = row.getAttribute('data-command') || '';
+                const ruleAttr = row.getAttribute('data-rule') || '';
+                const descAttr = row.getAttribute('data-desc') || '';
+                const rowText = row.textContent.toLowerCase();
+
+                // شرط المطابقة: إما النص المباشر موجود أو أحد الكلمات المفتاحية من القاموس تطابق الأمر
+                let isMatch = rowText.includes(query) || 
+                              linkedKeywords.some(kw => cmdAttr.includes(kw) || ruleAttr.includes(kw) || descAttr.includes(kw));
+
+                row.style.display = isMatch ? "" : "none";
             });
 
-            // إخفاء العناوين الفارغة أثناء البحث في الأوامر لجعل الواجهة مريحة
+            // ضبط ظهور واختفاء الفئات بناءً على نتائج البحث
             if(currentActivePage.id === 'commands-page') {
                 document.querySelectorAll('.cmd-group-panel').forEach(panel => {
                     const visibleRows = panel.querySelectorAll('.data-table tbody tr[style=""]');
                     const totalRows = panel.querySelectorAll('.data-table tbody tr');
-                    // إذا كل السطور مخفية بسبب البحث، أخفِ الفئة كاملة
                     if(query !== "" && visibleRows.length === 0 && totalRows.length > 0) {
                         panel.style.display = "none";
                     } else {
-                        // الحفاظ على تصفية الكومبو بوكس الأصلي
                         const selected = document.getElementById('categoryFilter').value;
                         if(selected === 'all' || panel.id === `panel-${selected}`) {
                             panel.style.display = "";
@@ -323,36 +363,50 @@
             }
         }
 
-        // نظام محاكاة الرد التلقائي (الشات بوت الذكي) للرد السريع
+        // الرد التلقائي الذكي (شات بوت تفكيك النصوص)
         function sendBotMessage() {
             const inputField = document.getElementById('chatInput');
             const userText = inputField.value.trim();
             if(!userText) return;
 
             const chatMessages = document.getElementById('chatMessages');
-
-            // إظهار رسالة المستخدم
             chatMessages.innerHTML += `<div class="msg user">${userText}</div>`;
             inputField.value = '';
             chatMessages.scrollTop = chatMessages.scrollHeight;
 
             setTimeout(() => {
-                let reply = "لم أجد معلومات دقيقة حول هذا الاستفسار، جرب كتابة اسم القانون كـ (DM) أو جزء من اسم الأمر الذي تبحث عنه بشكل أوضح.";
+                let reply = "لم أفهم طلبك بالكامل، جرب كتابة كلمات دلالية أوضح مثل (سيارة، سجن، باند، DM، رخصة).";
                 const cleanText = userText.toLowerCase();
 
-                // 1. البحث في القوانين أولاً
-                let foundRule = serverRules.find(r => r.rule.toLowerCase() === cleanText || r.desc.toLowerCase().includes(cleanText));
-                // 2. البحث في الأوامر ثانياً
-                let foundCmds = serverCommands.filter(c => c.command.toLowerCase().includes(cleanText) || c.desc.toLowerCase().includes(cleanText));
+                // استخراج الكلمات المفتاحية من جملة المستخدم
+                const keywords = getKeywordsFromText(cleanText);
 
-                if(foundRule) {
-                    reply = `📌 <b>نتيجة عثور في القوانين:</b><br><br>• القانون: <span class="badge badge-rule">${foundRule.rule}</span><br>• الشرح: ${foundRule.desc}`;
-                } else if(foundCmds.length > 0) {
-                    reply = `📌 <b>نتائج عثور في الأوامر الإدارية (${foundCmds.length}):</b><br><br>`;
-                    foundCmds.slice(0, 5).forEach(c => { // جلب أول 5 نتائج متطابقة كحد أقصى لمنع التكديس
+                // 1. فحص القوانين أولاً
+                let matchedRules = serverRules.filter(r => 
+                    cleanText.includes(r.rule.toLowerCase()) || 
+                    r.rule.toLowerCase().includes(cleanText) ||
+                    r.desc.toLowerCase().includes(cleanText)
+                );
+
+                // 2. فحص الأوامر ثانياً (بناءً على الاسم المباشر أو القاموس الذكي)
+                let matchedCmds = serverCommands.filter(c => 
+                    cleanText.includes(c.command.toLowerCase()) || 
+                    c.command.toLowerCase().includes(cleanText) || 
+                    c.desc.toLowerCase().includes(cleanText) ||
+                    keywords.some(kw => c.command.toLowerCase().includes(kw) || c.desc.toLowerCase().includes(kw))
+                );
+
+                if (matchedRules.length > 0) {
+                    reply = `📌 <b>تم التعرف على القوانين والمصطلحات التالية لطلبك:</b><br><br>`;
+                    matchedRules.slice(0, 3).forEach(r => {
+                        reply += `• القانون: <span class="badge badge-rule">${r.rule}</span><br>الشرح: ${r.desc}<br><br>`;
+                    });
+                } else if (matchedCmds.length > 0) {
+                    reply = `📌 <b>تم العثور على الأوامر الإدارية المناسبة لطلبك (${matchedCmds.length}):</b><br><br>`;
+                    matchedCmds.slice(0, 6).forEach(c => {
                         reply += `• <span class="badge badge-cmd">/${c.command}</span> : ${c.desc}<br>`;
                     });
-                    if(foundCmds.length > 5) reply += `<i>...وهناك نتائج أخرى، يرجى تضييق نطاق البحث الإداري.</i>`;
+                    if(matchedCmds.length > 6) reply += `<br><i>💡 هناك نتائج أخرى، يرجى تضييق جملة البحث للوصول الدقيق.</i>`;
                 }
 
                 chatMessages.innerHTML += `<div class="msg bot">${reply}</div>`;
