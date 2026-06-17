@@ -191,6 +191,37 @@
     <script src="rules.js"></script>
 
     <script>
+        /**
+         * دالة التطبيع اللغوي (النقطة الفيصلية)
+         * تعمل على توحيد النصوص لتتجاوز أخطاء الهمزات والتشكيل
+         */
+        function normalizeText(text) {
+            if (!text) return "";
+            return text.toString().toLowerCase()
+                // توحيد الهمزات (أ، إ، آ) إلى (ا)
+                .replace(/[أإآ]/g, 'ا')
+                // توحيد الياء (ى) إلى (ي)
+                .replace(/[ى]/g, 'ي')
+                // توحيد التاء المربوطة (ة) إلى (ه)
+                .replace(/[ة]/g, 'ه')
+                // إزالة المسافات الزائدة للبحث الدقيق
+                .replace(/\s+/g, '')
+                .trim();
+        }
+
+        /**
+         * دالة البحث المحدثة (استخدمها بدلاً من دالة البحث القديمة)
+         */
+        function searchCommand(query) {
+            const normalizedQuery = normalizeText(query);
+            
+            return serverCommands.filter(item => {
+                // البحث في اسم الأمر أو في الوصف بعد توحيد النصين
+                return normalizeText(item.command).includes(normalizedQuery) || 
+                       normalizeText(item.desc).includes(normalizedQuery);
+            });
+        }
+
         // قاموس الكلمات المفتاحية الذكي - يربط المفردات العامية والشائعة بمدلولاتها في السيرفر
         const dictionary = {
             "طيران": ["givesuperman", "superman", "طير"],
@@ -219,11 +250,13 @@
         // دالة للتحقق مما إذا كانت الكلمة المدخلة تنتمي لمرادفات قاموس الأوامر
         function getKeywordsFromText(text) {
             let matchedKeywords = [];
-            const words = text.toLowerCase().split(/[\s,.\/]+/);
+            const normalizedText = normalizeText(text);
+            const words = normalizedText.split(/[\s,.\/]+/);
             
             words.forEach(word => {
                 for (const [key, synonyms] of Object.entries(dictionary)) {
-                    if (word.includes(key) || key.includes(word)) {
+                    const normalizedKey = normalizeText(key);
+                    if (word.includes(normalizedKey) || normalizedKey.includes(word)) {
                         matchedKeywords = matchedKeywords.concat(synonyms);
                     }
                 }
@@ -326,7 +359,8 @@
 
         // محرك البحث العلوي الذكي والمطور مفتاحياً لعرض السطور المتوافقة
         function executeSearch() {
-            const query = document.getElementById('globalSearch').value.toLowerCase().trim();
+            const query = document.getElementById('globalSearch').value;
+            const normalizedQuery = normalizeText(query);
             const currentActivePage = document.querySelector('.page-view.active');
             if (!currentActivePage) return;
 
@@ -334,13 +368,13 @@
             const linkedKeywords = getKeywordsFromText(query); // جلب المترادفات لو كتبت كلمة عامية
 
             rows.forEach(row => {
-                const cmdAttr = row.getAttribute('data-command') || '';
-                const ruleAttr = row.getAttribute('data-rule') || '';
-                const descAttr = row.getAttribute('data-desc') || '';
-                const rowText = row.textContent.toLowerCase();
+                const cmdAttr = normalizeText(row.getAttribute('data-command') || '');
+                const ruleAttr = normalizeText(row.getAttribute('data-rule') || '');
+                const descAttr = normalizeText(row.getAttribute('data-desc') || '');
+                const rowText = normalizeText(row.textContent);
 
                 // شرط المطابقة: إما النص المباشر موجود أو أحد الكلمات المفتاحية من القاموس تطابق الأمر
-                let isMatch = rowText.includes(query) || 
+                let isMatch = rowText.includes(normalizedQuery) || 
                               linkedKeywords.some(kw => cmdAttr.includes(kw) || ruleAttr.includes(kw) || descAttr.includes(kw));
 
                 row.style.display = isMatch ? "" : "none";
@@ -351,7 +385,7 @@
                 document.querySelectorAll('.cmd-group-panel').forEach(panel => {
                     const visibleRows = panel.querySelectorAll('.data-table tbody tr[style=""]');
                     const totalRows = panel.querySelectorAll('.data-table tbody tr');
-                    if(query !== "" && visibleRows.length === 0 && totalRows.length > 0) {
+                    if(normalizedQuery !== "" && visibleRows.length === 0 && totalRows.length > 0) {
                         panel.style.display = "none";
                     } else {
                         const selected = document.getElementById('categoryFilter').value;
@@ -376,24 +410,24 @@
 
             setTimeout(() => {
                 let reply = "لم أفهم طلبك بالكامل، جرب كتابة كلمات دلالية أوضح مثل (سيارة، سجن، باند، DM، رخصة).";
-                const cleanText = userText.toLowerCase();
+                const normalizedTextUser = normalizeText(userText);
 
                 // استخراج الكلمات المفتاحية من جملة المستخدم
-                const keywords = getKeywordsFromText(cleanText);
+                const keywords = getKeywordsFromText(userText);
 
                 // 1. فحص القوانين أولاً
                 let matchedRules = serverRules.filter(r => 
-                    cleanText.includes(r.rule.toLowerCase()) || 
-                    r.rule.toLowerCase().includes(cleanText) ||
-                    r.desc.toLowerCase().includes(cleanText)
+                    normalizedTextUser.includes(normalizeText(r.rule)) || 
+                    normalizeText(r.rule).includes(normalizedTextUser) ||
+                    normalizeText(r.desc).includes(normalizedTextUser)
                 );
 
                 // 2. فحص الأوامر ثانياً (بناءً على الاسم المباشر أو القاموس الذكي)
                 let matchedCmds = serverCommands.filter(c => 
-                    cleanText.includes(c.command.toLowerCase()) || 
-                    c.command.toLowerCase().includes(cleanText) || 
-                    c.desc.toLowerCase().includes(cleanText) ||
-                    keywords.some(kw => c.command.toLowerCase().includes(kw) || c.desc.toLowerCase().includes(kw))
+                    normalizedTextUser.includes(normalizeText(c.command)) || 
+                    normalizeText(c.command).includes(normalizedTextUser) || 
+                    normalizeText(c.desc).includes(normalizedTextUser) ||
+                    keywords.some(kw => normalizeText(c.command).includes(kw) || normalizeText(c.desc).includes(kw))
                 );
 
                 if (matchedRules.length > 0) {
