@@ -10,27 +10,51 @@
     <link href="https://fonts.googleapis.com/css2?family=Cairo:wght@400;600;700;900&display=swap" rel="stylesheet">
     <style>
         body { font-family: 'Cairo', sans-serif; }
-        /* تأثيرات النيون الجيمنج المحسنة */
-        .neon-box-cyan { border: 1px solid rgba(6, 182, 212, 0.25); box-shadow: 0 0 20px rgba(6, 182, 212, 0.05); }
-        .neon-box-orange { border: 1px solid rgba(249, 115, 22, 0.25); box-shadow: 0 0 20px rgba(249, 115, 22, 0.05); }
-        .neon-text-cyan { text-shadow: 0 0 10px rgba(6, 182, 212, 0.5); }
-        /* تخصيص السكرول بار ليناسب ثيم اللعبة */
+        
+        /* 🌌 تأثير الخلفية اللطيفة وغير المزعجة للعبة */
+        .gaming-bg {
+            position: relative;
+            /* وضعنا صورة لمدينة لوس سانتوس بالليل كمثال، يمكنك استبدال الرابط بأي صورة تريدها */
+            background-image: url('https://images.alphacoders.com/439/439741.jpg');
+            background-size: cover;
+            background-position: center;
+            background-attachment: fixed;
+        }
+        /* طبقة التعتيم والـ Blur السحرية لراحة العين */
+        .gaming-bg::before {
+            content: "";
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: linear-gradient(135deg, rgba(15, 19, 25, 0.96), rgba(10, 13, 18, 0.93));
+            backdrop-filter: blur(8px); /* غباش لطيف لتنعيم تفاصيل الصورة */
+            z-index: -1;
+        }
+
+        /* تأثيرات النيون الجيمنج المحسنة للبطاقات */
+        .neon-box-cyan { border: 1px solid rgba(6, 182, 212, 0.2); box-shadow: 0 4px 20px rgba(6, 182, 212, 0.03); }
+        .neon-box-orange { border: 1px solid rgba(249, 115, 22, 0.2); box-shadow: 0 4px 20px rgba(249, 115, 22, 0.03); }
+        
+        /* تخصيص السكرول بار */
         ::-webkit-scrollbar { width: 6px; }
         ::-webkit-scrollbar-track { background: #0d1117; }
         ::-webkit-scrollbar-thumb { background: #1f2937; border-radius: 10px; }
         ::-webkit-scrollbar-thumb:hover { background: #06b6d4; }
     </style>
 </head>
-<body class="bg-[#0f1319] text-gray-200 min-h-screen selection:bg-cyan-500 selection:text-black">
+<!-- أضفنا كلاس الـ gaming-bg هنا لتطبيق الخلفية على الموقع بالكامل -->
+<body class="gaming-bg text-gray-200 min-h-screen selection:bg-cyan-500 selection:text-black">
 
-    <!-- القائمة الجانبية والهيدر (Gaming Dashboard Layout) -->
-    <div class="flex flex-col lg:flex-row min-h-screen">
+    <!-- القائمة الجانبية والهيدر -->
+    <div class="flex flex-col lg:flex-row min-h-screen relative z-10">
         
-        <!-- شريط التنقل الجانبي الاحترافي -->
-        <aside class="w-full lg:w-64 bg-[#141922] p-6 border-l border-gray-800 flex flex-col justify-between shadow-xl">
+        <!-- شريط التنقل الجانبي الاحترافي (شفافية خفيفة ليعطي عمق مع الخلفية) -->
+        <aside class="w-full lg:w-64 bg-[#141922]/90 backdrop-blur-md p-6 border-l border-gray-800/50 flex flex-col justify-between shadow-2xl">
             <div>
                 <!-- الشعار المطور -->
-                <div class="flex items-center gap-3 mb-10 pb-4 border-b border-gray-800">
+                <div class="flex items-center gap-3 mb-10 pb-4 border-b border-gray-800/60">
                     <div class="w-10 h-10 rounded-xl bg-cyan-500/10 flex items-center justify-center border border-cyan-500/30">
                         <i class="fas fa-compass text-cyan-400 text-xl"></i>
                     </div>
@@ -45,47 +69,47 @@
                     <button onclick="switchTab('home')" id="btn-home" class="w-full flex items-center gap-3 px-4 py-3 rounded-xl font-bold bg-cyan-600/10 text-cyan-400 border border-cyan-500/20 transition-all">
                         <i class="fas fa-th-large"></i> لوحة التحكم الرئيسية
                     </button>
-                    <button onclick="switchTab('commands')" id="btn-commands" class="w-full flex items-center gap-3 px-4 py-3 rounded-xl font-bold text-gray-400 hover:bg-gray-800 hover:text-white transition-all">
+                    <button onclick="switchTab('commands')" id="btn-commands" class="w-full flex items-center gap-3 px-4 py-3 rounded-xl font-bold text-gray-400 hover:bg-gray-800/50 hover:text-white transition-all">
                         <i class="fas fa-gamepad"></i> قسم الأوامر
                     </button>
-                    <button onclick="switchTab('rules')" id="btn-rules" class="w-full flex items-center gap-3 px-4 py-3 rounded-xl font-bold text-gray-400 hover:bg-gray-800 hover:text-white transition-all">
+                    <button onclick="switchTab('rules')" id="btn-rules" class="w-full flex items-center gap-3 px-4 py-3 rounded-xl font-bold text-gray-400 hover:bg-gray-800/50 hover:text-white transition-all">
                         <i class="fas fa-gavel"></i> قسم القوانين
                     </button>
-                    <button onclick="switchTab('intro')" id="btn-intro" class="w-full flex items-center gap-3 px-4 py-3 rounded-xl font-bold text-gray-400 hover:bg-gray-800 hover:text-white transition-all">
+                    <button onclick="switchTab('intro')" id="btn-intro" class="w-full flex items-center gap-3 px-4 py-3 rounded-xl font-bold text-gray-400 hover:bg-gray-800/50 hover:text-white transition-all">
                         <i class="fas fa-code"></i> قسم الإنترو
                     </button>
                 </nav>
             </div>
 
-            <!-- معلومات النسخة أو الأدمن في الأسفل -->
-            <div class="pt-4 border-t border-gray-800 flex items-center justify-between text-xs text-gray-500">
-                <span>الإصدار المميز v3.0</span>
+            <!-- معلومات النسخة في الأسفل -->
+            <div class="pt-4 border-t border-gray-800/60 flex items-center justify-between text-xs text-gray-500">
+                <span>الإصدار المميز v3.5</span>
                 <a href="admin.html" class="hover:text-cyan-400"><i class="fas fa-user-shield"></i> لوحة الإدارة</a>
             </div>
         </aside>
 
-        <!-- منطقة المحتوى الرئيسية -->
+        <!-- منطقة المحتوى الرئيسية (مقسمة بخلفيات داكنة ومريحة جداً للعين) -->
         <main class="flex-1 p-6 lg:p-8 overflow-y-auto">
 
-            <!-- 1. تبويب: الصفحة الرئيسية بتنسيق منفصل ومميز (البحث الشامل ضد الرد التلقائي) -->
+            <!-- 1. تبويب: الصفحة الرئيسية (البحث الشامل ضد الرد التلقائي) -->
             <section id="tab-home" class="space-y-6">
                 
                 <!-- هيدر ترحيبي علوي خفيف -->
-                <div class="bg-[#141922] px-6 py-4 rounded-2xl border border-gray-800 flex justify-between items-center shadow-lg">
+                <div class="bg-[#141922]/80 backdrop-blur-md px-6 py-4 rounded-2xl border border-gray-800/60 flex justify-between items-center shadow-lg">
                     <div>
                         <h2 class="text-xl font-black text-white">منصة الدليل الرقمية لمجتمع MTA</h2>
                     </div>
                     <span class="px-3 py-1 rounded-full bg-green-500/10 text-green-400 text-xs font-bold border border-green-500/20 flex items-center gap-1.5">
-                        <span class="w-2 h-2 rounded-full bg-green-500 animate-pulse"></span> النظام الذكي نشط
+                        <span class="w-2 h-2 rounded-full bg-green-500 animate-pulse"></span> الأجواء مهيأة
                     </span>
                 </div>
 
-                <!-- الهيكل المنقسم الجديد (المميز) -->
+                <!-- الهيكل المنقسم (البحث ضد الشات) مع خلفيات بطاقات داكنة ومحميّة -->
                 <div class="grid grid-cols-1 xl:grid-cols-2 gap-6">
                     
-                    <!-- 🧭 الجانب الأيمن: محرك البحث الشامل المتقدم مع مساحة عرض النتائج -->
-                    <div class="bg-[#141922] p-6 rounded-2xl border border-gray-800 flex flex-col space-y-4 shadow-xl">
-                        <div class="flex items-center gap-3 pb-3 border-b border-gray-800">
+                    <!-- 🧭 الجانب الأيمن: محرك البحث السريع -->
+                    <div class="bg-[#141922]/90 backdrop-blur-md p-6 rounded-2xl border border-gray-800/60 flex flex-col space-y-4 shadow-xl neon-box-orange">
+                        <div class="flex items-center gap-3 pb-3 border-b border-gray-800/60">
                             <div class="w-8 h-8 rounded-lg bg-orange-500/10 flex items-center justify-center border border-orange-500/30">
                                 <i class="fas fa-search text-orange-400"></i>
                             </div>
@@ -95,27 +119,24 @@
                             </div>
                         </div>
 
-                        <!-- صندوق الإدخال للبحث العام -->
                         <div class="relative">
-                            <input type="text" id="global-search" onkeyup="globalSearch()" placeholder="اكتب كلمة للبحث (مثال: سيارة، باند، DM)..." class="w-full bg-[#0d1117] border border-gray-700 rounded-xl px-11 py-3.5 text-white placeholder-gray-500 focus:outline-none focus:border-orange-500 transition-all font-bold text-sm">
+                            <input type="text" id="global-search" onkeyup="globalSearch()" placeholder="اكتب كلمة للبحث (مثال: سيارة، باند، DM)..." class="w-full bg-[#0d1117]/90 border border-gray-700 rounded-xl px-11 py-3.5 text-white placeholder-gray-500 focus:outline-none focus:border-orange-500 transition-all font-bold text-sm">
                             <i class="fas fa-search absolute right-4 top-4 text-gray-500"></i>
                         </div>
 
                         <!-- مساحة عرض نتائج البحث الديناميكية -->
-                        <div class="flex-1 min-h-[340px] max-h-[340px] overflow-y-auto space-y-3 rounded-xl bg-[#0d1117] p-4 border border-gray-800" id="search-results-area">
-                            <!-- الحالة الافتراضية قبل الكتابة -->
+                        <div class="flex-1 min-h-[340px] max-h-[340px] overflow-y-auto space-y-3 rounded-xl bg-[#0d1117]/80 p-4 border border-gray-800/60" id="search-results-area">
                             <div id="search-placeholder" class="h-full flex flex-col items-center justify-center text-center text-gray-500 space-y-2">
                                 <i class="fas fa-keyboard text-3xl text-gray-700"></i>
                                 <p class="text-xs">ابدأ بكتابة أي حرف بالأعلى لتظهر لك النتائج فوراً هنا.</p>
                             </div>
-                            <!-- النتائج تظهر هنا برمجياً -->
                             <div id="search-results-grid" class="space-y-3 hidden"></div>
                         </div>
                     </div>
 
-                    <!-- 🤖 الجانب الأيسر: كونسول الرد التلقائي وشاشات الشات الذكية -->
-                    <div class="bg-[#141922] p-6 rounded-2xl border border-gray-800 flex flex-col space-y-4 shadow-xl">
-                        <div class="flex items-center gap-3 pb-3 border-b border-gray-800">
+                    <!-- 🤖 الجانب الأيسر: كونسول الرد التلقائي وشاشات الشات -->
+                    <div class="bg-[#141922]/90 backdrop-blur-md p-6 rounded-2xl border border-gray-800/60 flex flex-col space-y-4 shadow-xl neon-box-cyan">
+                        <div class="flex items-center gap-3 pb-3 border-b border-gray-800/60">
                             <div class="w-8 h-8 rounded-lg bg-cyan-500/10 flex items-center justify-center border border-cyan-500/30">
                                 <i class="fas fa-robot text-cyan-400"></i>
                             </div>
@@ -126,15 +147,15 @@
                         </div>
 
                         <!-- شاشة رسائل الشات بوت -->
-                        <div id="chat-box" class="flex-1 min-h-[270px] max-h-[270px] overflow-y-auto space-y-3 rounded-xl bg-[#0d1117] p-4 border border-gray-800 text-xs md:text-sm">
-                            <div class="bg-[#171f2e] text-gray-300 p-3.5 rounded-xl border border-gray-800 max-w-[85%] self-start leading-relaxed">
+                        <div id="chat-box" class="flex-1 min-h-[270px] max-h-[270px] overflow-y-auto space-y-3 rounded-xl bg-[#0d1117]/80 p-4 border border-gray-800/60 text-xs md:text-sm">
+                            <div class="bg-[#171f2e]/90 text-gray-300 p-3.5 rounded-xl border border-gray-800/60 max-w-[85%] self-start leading-relaxed">
                                 👋 أهلاً بك! أنا بوت الدليل التلقائي. اكتب سؤالك بالأسفل وسأقوم بتحليل الكلمات والرد عليك فوراً بالأمر أو التفسير المناسب.
                             </div>
                         </div>
 
                         <!-- صندوق إدخال الشات والإرسال -->
                         <div class="flex gap-2">
-                            <input type="text" id="user-input" onkeypress="if(event.key === 'Enter') sendMessage()" placeholder="اسأل البوت هنا (مثال: كيف أعطي باند؟)..." class="w-full bg-[#0d1117] border border-gray-700 rounded-xl px-4 py-3 text-white placeholder-gray-500 focus:outline-none focus:border-cyan-500 transition-all text-sm">
+                            <input type="text" id="user-input" onkeypress="if(event.key === 'Enter') sendMessage()" placeholder="اسأل البوت هنا (مثال: كيف أعطي باند؟)..." class="w-full bg-[#0d1117]/90 border border-gray-700 rounded-xl px-4 py-3 text-white placeholder-gray-500 focus:outline-none focus:border-cyan-500 transition-all text-sm">
                             <button onclick="sendMessage()" class="bg-cyan-600 hover:bg-cyan-500 text-black font-bold px-5 py-3 rounded-xl transition-all shadow-md shadow-cyan-600/10">
                                 <i class="fas fa-paper-plane"></i>
                             </button>
@@ -144,7 +165,7 @@
                 </div>
             </section>
 
-            <!-- 2. تبويب: قسم الأوامر المطور -->
+            <!-- 2. تبويب: قسم الأوامر -->
             <section id="tab-commands" class="space-y-6 hidden">
                 <div>
                     <h2 class="text-2xl font-black text-white">قائمة أوامر السيرفر الشاملة</h2>
@@ -153,7 +174,7 @@
                 <div class="grid md:grid-cols-2 gap-6" id="main-commands-list"></div>
             </section>
 
-            <!-- 3. تبويب: قسم القوانين المطور -->
+            <!-- 3. تبويب: قسم القوانين -->
             <section id="tab-rules" class="space-y-6 hidden">
                 <div>
                     <h2 class="text-2xl font-black text-white">قوانين الـ Roleplay وأنظمة MTA</h2>
@@ -162,7 +183,7 @@
                 <div class="grid md:grid-cols-2 lg:grid-cols-3 gap-6" id="main-rules-list"></div>
             </section>
 
-            <!-- 4. تبويب: قسم الإنترو المطور -->
+            <!-- 4. تبويب: قسم الإنترو -->
             <section id="tab-intro" class="space-y-6 hidden">
                 <div>
                     <h2 class="text-2xl font-black text-white">معرض واجهات الإنترو وأكواد اللوا (Lua)</h2>
@@ -199,10 +220,11 @@
             renderIntros();
         };
 
+        // دالة بناء الأوامر برمجياً
         function renderCommands() {
             const container = document.getElementById('main-commands-list');
             container.innerHTML = siteDatabase.commands.map(cmd => `
-                <div class="bg-[#141922] p-5 rounded-2xl border border-gray-800 hover:border-cyan-500/40 transition-all flex justify-between items-start group">
+                <div class="bg-[#141922]/90 backdrop-blur-md p-5 rounded-2xl border border-gray-800/60 hover:border-cyan-500/40 transition-all flex justify-between items-start group">
                     <div>
                         <span class="px-2.5 py-0.5 text-xs bg-amber-500/10 text-amber-400 rounded-md font-bold border border-amber-500/20">${cmd.type}</span>
                         <h3 class="text-lg font-mono font-bold text-cyan-400 mt-2">${cmd.name}</h3>
@@ -213,10 +235,11 @@
             `).join('');
         }
 
+        // دالة بناء القوانين برمجياً
         function renderRules() {
             const container = document.getElementById('main-rules-list');
             container.innerHTML = siteDatabase.rules.map(rule => `
-                <div class="bg-[#141922] p-5 rounded-2xl border border-gray-800 ${rule.isImportant ? 'neon-box-orange' : ''} relative overflow-hidden">
+                <div class="bg-[#141922]/90 backdrop-blur-md p-5 rounded-2xl border border-gray-800/60 ${rule.isImportant ? 'border-orange-500/40' : ''} relative overflow-hidden">
                     ${rule.isImportant ? '<div class="absolute top-0 left-0 bg-orange-500 text-black font-black text-xs px-3 py-1 rounded-br-xl">مهم جداً</div>' : ''}
                     <h3 class="text-xl font-black text-white ${rule.isImportant ? 'mt-3' : ''}">${rule.title}</h3>
                     <span class="text-xs text-cyan-400 font-mono block mb-3">${rule.arabicTitle}</span>
@@ -225,18 +248,19 @@
             `).join('');
         }
 
+        // دالة بناء الإنتروهات برمجياً
         function renderIntros() {
             const container = document.getElementById('main-intros-list');
             container.innerHTML = siteDatabase.intros.map((intro, idx) => `
-                <div class="bg-[#141922] rounded-2xl border border-gray-800 overflow-hidden max-w-3xl">
-                    <div class="p-6 bg-gradient-to-r from-cyan-900/20 to-transparent border-b border-gray-800 flex justify-between items-center">
+                <div class="bg-[#141922]/90 backdrop-blur-md rounded-2xl border border-gray-800/60 overflow-hidden max-w-3xl">
+                    <div class="p-6 bg-gradient-to-r from-cyan-900/20 to-transparent border-b border-gray-800/60 flex justify-between items-center">
                         <div>
                             <h3 class="text-lg font-bold text-white">${intro.title}</h3>
                             <p class="text-xs text-gray-400">${intro.desc}</p>
                         </div>
                     </div>
                     <div class="p-6">
-                        <div class="relative bg-[#0d1117] p-4 rounded-xl border border-gray-800 font-mono text-xs text-green-400 overflow-x-auto">
+                        <div class="relative bg-[#0d1117]/90 p-4 rounded-xl border border-gray-800/60 font-mono text-xs text-green-400 overflow-x-auto">
                             <button onclick="copyCode('lua-code-${idx}')" class="absolute top-3 left-3 bg-cyan-600 hover:bg-cyan-500 text-black font-bold px-3 py-1.5 rounded-lg text-xs transition-all">نسخ الكود بالكامل</button>
                             <pre><code id="lua-code-${idx}">${intro.code}</code></pre>
                         </div>
@@ -269,7 +293,7 @@
                 if (cmd.name.toLowerCase().includes(query) || cmd.desc.includes(query) || cmd.tags.some(tag => tag.includes(query))) {
                     matchCount++;
                     htmlResults += `
-                        <div class="bg-[#141922] p-4 rounded-xl border border-cyan-500/20 flex justify-between items-center gap-3">
+                        <div class="bg-[#141922]/90 p-4 rounded-xl border border-cyan-500/20 flex justify-between items-center gap-3">
                             <div>
                                 <span class="text-[10px] text-cyan-400 font-bold block mb-1">🎮 أمر: ${cmd.type}</span>
                                 <h4 class="text-sm font-mono font-bold text-white">${cmd.name}</h4>
@@ -286,7 +310,7 @@
                 if (rule.title.toLowerCase().includes(query) || rule.arabicTitle.includes(query) || rule.desc.includes(query)) {
                     matchCount++;
                     htmlResults += `
-                        <div class="bg-[#141922] p-4 rounded-xl border border-orange-500/20">
+                        <div class="bg-[#141922]/90 p-4 rounded-xl border border-orange-500/20">
                             <span class="text-[10px] text-orange-400 font-bold block mb-1">⚖️ قانون</span>
                             <h4 class="text-sm font-black text-white">${rule.title} - ${rule.arabicTitle}</h4>
                             <p class="text-xs text-gray-400 mt-0.5">${rule.desc}</p>
@@ -340,7 +364,7 @@
                 }
 
                 chatBox.innerHTML += `
-                    <div class="bg-[#171f2e] text-gray-300 p-3 rounded-xl border border-gray-800 max-w-[85%] mr-auto text-right border-r-2 border-r-cyan-500 leading-relaxed">
+                    <div class="bg-[#171f2e]/90 text-gray-300 p-3 rounded-xl border border-gray-800/60 max-w-[85%] mr-auto text-right border-r-2 border-r-cyan-500 leading-relaxed">
                         ${botReply}
                     </div>
                 `;
@@ -352,7 +376,7 @@
             const tabs = ['home', 'commands', 'rules', 'intro'];
             tabs.forEach(t => {
                 document.getElementById(`tab-${t}`).classList.add('hidden');
-                document.getElementById(`btn-${t}`).className = "w-full flex items-center gap-3 px-4 py-3 rounded-xl font-bold text-gray-400 hover:bg-gray-800 hover:text-white transition-all";
+                document.getElementById(`btn-${t}`).className = "w-full flex items-center gap-3 px-4 py-3 rounded-xl font-bold text-gray-400 hover:bg-gray-800/50 hover:text-white transition-all";
             });
             document.getElementById(`tab-${tabName}`).classList.remove('hidden');
             document.getElementById(`btn-${tabName}`).className = "w-full flex items-center gap-3 px-4 py-3 rounded-xl font-bold bg-cyan-600/10 text-cyan-400 border border-cyan-500/20 transition-all";
