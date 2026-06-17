@@ -80,6 +80,17 @@
 
         .filter-select { padding: 10px; border-radius: 6px; background-color: var(--bg-primary); color: #fff; border: 1px solid var(--border-color); margin-bottom: 20px; width: 250px; outline: none; }
 
+        /* رسالة الخطأ */
+        .error-message {
+            background-color: rgba(239, 68, 68, 0.2);
+            border: 1px solid #ef4444;
+            color: #ef4444;
+            padding: 20px;
+            border-radius: 12px;
+            text-align: center;
+            font-size: 1.1rem;
+        }
+
         @media (max-width: 1024px) {
             body { flex-direction: column; overflow: auto; }
             .sidebar { width: 100%; height: auto; position: relative; }
@@ -186,7 +197,7 @@
 
     </div>
 
-    <!-- ربط الملفات الأصلية -->
+    <!-- ربط الملفات - الترتيب مهم جداً -->
     <script src="commands.js"></script>
     <script src="rules.js"></script>
 
@@ -405,61 +416,116 @@
             }
         }
 
-        document.addEventListener("DOMContentLoaded", () => {
-            document.getElementById('count-commands').textContent = serverCommands.length;
-            document.getElementById('count-rules').textContent = serverRules.length;
+        /**
+         * دالة عرض الأوامر في الجدول
+         */
+        function displayCommands(commands) {
+            const commandsContainer = document.getElementById('commands-container');
+            if (!commandsContainer) return;
+
+            // تنظيف الحاوية أولاً
+            commandsContainer.innerHTML = '';
 
             const categoriesMap = {
-                "basic-info-sec": "1. أوامر المعلومات الأساسية", "faction-sec": "2. أوامر الفاكشنات (Factions)", "gates-sec": "3. أوامر البوابات (Gates)",
-                "int-sec": "4. أوامر الإنترو (Interiors)", "shop-sec": "5. أوامر البائعين (Shops)", "arrows-sec": "6. أوامر الأسهم (Markers/Arrows)",
-                "barriers-sec": "7. أوامر الحواجز (Barriers)", "atm-sec": "8. أوامر الصرافة (ATM)", "marker-sec": "9. أوامر الماركر (Marker)",
-                "ramps-sec": "10. أوامر الريمب (Ramps)", "vehicles-sec": "11. أوامر السيارات (Vehicles)", "respawn-sec": "12. أوامر الريسبون (Respawn)",
-                "stealth-sec": "13. أوامر التخفي (Stealth)", "items-sec": "14. أوامر الأغراض (Items)", "monitoring-sec": "15. أوامر المراقبة (Monitoring)",
-                "weather-sec": "16. أوامر الطقس (Weather)", "chat-sec": "17. أوامر الشات (Chat)", "weapons-sec": "18. أوامر السلاح (Weapons)",
-                "giving-sec": "19. أوامر الإعطاء (Giving)", "basic-sec": "20. الأوامر الأساسية (Basic)", "reports-sec": "21. أوامر الريبورت (Reports)",
-                "punish-sec": "22. أوامر العقاب (Punishments)", "general-sec": "23. الأوامر العامة (General)", "leader-sec": "24. أوامر الليدر (Leader)",
-                "radio-sec": "25. أوامر الراديو (Radio)", "ems-sec": "26. أوامر الإسعاف (EMS)", "police-sec": "27. أوامر الجندي/الشرطة (Police/Military)",
-                "press-sec": "28. أوامر الصحافة (Press)", "court-sec": "29. أوامر المحكمة (Court)", "airport-sec": "30. أوامر المطار (Airport)",
-                "mechanic-sec": "31. أوامر الصيانة (Mechanic)", "teleport-sec": "32. أوامر الانتقال (Teleport)", "mode-sec": "33. أوامر المود (Mode)",
-                "pull-sec": "34. أوامر السحب (Pull)", "restart-sec": "35. أوامر الريستارت (Restart)", "info-sec": "36. أوامر المعلومات الشخصية (Info)"
+                "معلومات اساسية": "1. أوامر المعلومات الأساسية",
+                "فاكشن": "2. أوامر الفاكشنات (Factions)",
+                "بوابات": "3. أوامر البوابات (Gates)",
+                "انترو": "4. أوامر الإنترو (Interiors)",
+                "شوب": "5. أوامر البائعين (Shops)",
+                "اسهم": "6. أوامر الأسهم (Markers/Arrows)",
+                "حواجز": "7. أوامر الحواجز (Barriers)",
+                "صرافة": "8. أوامر الصرافة (ATM)",
+                "ماركر": "9. أوامر الماركر (Marker)",
+                "ريمب": "10. أوامر الريمب (Ramps)",
+                "سيارات": "11. أوامر السيارات (Vehicles)",
+                "ريسبون": "12. أوامر الريسبون (Respawn)",
+                "تخفي": "13. أوامر التخفي (Stealth)",
+                "اغراض": "14. أوامر الأغراض (Items)",
+                "مراقبة": "15. أوامر المراقبة (Monitoring)",
+                "طقس": "16. أوامر الطقس (Weather)",
+                "شات": "17. أوامر الشات (Chat)",
+                "سلاح": "18. أوامر السلاح (Weapons)",
+                "اعطاء": "19. أوامر الإعطاء (Giving)",
+                "اساسي": "20. الأوامر الأساسية (Basic)",
+                "ريبورت": "21. أوامر الريبورت (Reports)",
+                "عقوبات": "22. أوامر العقاب (Punishments)",
+                "عام": "23. الأوامر العامة (General)",
+                "ليدر": "24. أوامر الليدر (Leader)",
+                "راديو": "25. أوامر الراديو (Radio)",
+                "اسعاف": "26. أوامر الإسعاف (EMS)",
+                "شرطة": "27. أوامر الجندي/الشرطة (Police/Military)",
+                "صحافة": "28. أوامر الصحافة (Press)",
+                "محكمة": "29. أوامر المحكمة (Court)",
+                "مطار": "30. أوامر المطار (Airport)",
+                "صيانة": "31. أوامر الصيانة (Mechanic)",
+                "انتقال": "32. أوامر الانتقال (Teleport)",
+                "مود": "33. أوامر المود (Mode)",
+                "سحب": "34. أوامر السحب (Pull)",
+                "ريستارت": "35. أوامر الريستارت (Restart)",
+                "معلومات شخصية": "36. أوامر المعلومات الشخصية (Info)"
             };
 
             const filterSelect = document.getElementById('categoryFilter');
-            const commandsContainer = document.getElementById('commands-container');
+            if (filterSelect) {
+                // تنظيف الخيارات مع الاحتفاظ بخيار "الكل"
+                filterSelect.innerHTML = '<option value="all">كل الفئات الإدارية (عرض الكل)</option>';
+            }
 
-            for (const [key, value] of Object.entries(categoriesMap)) {
-                let opt = document.createElement('option');
-                opt.value = key;
-                opt.textContent = value;
-                filterSelect.appendChild(opt);
+            // تجميع الأوامر حسب الفئة
+            const groupedCommands = {};
+            commands.forEach(cmd => {
+                if (!groupedCommands[cmd.category]) {
+                    groupedCommands[cmd.category] = [];
+                }
+                groupedCommands[cmd.category].push(cmd);
+            });
+
+            // إنشاء اللوحات لكل فئة
+            for (const [category, cmds] of Object.entries(groupedCommands)) {
+                const displayName = categoriesMap[category] || category;
+                
+                if (filterSelect) {
+                    let opt = document.createElement('option');
+                    opt.value = category;
+                    opt.textContent = displayName;
+                    filterSelect.appendChild(opt);
+                }
 
                 let panel = document.createElement('div');
                 panel.className = 'section-panel cmd-group-panel';
-                panel.id = `panel-${key}`;
-                panel.innerHTML = `
-                    <h3>${value}</h3>
+                panel.id = `panel-${category}`;
+                
+                let tableHTML = `
+                    <h3>${displayName}</h3>
                     <table class="data-table">
                         <thead><tr><th style="width: 35%;">الأمر الإداري</th><th>الوصف والنظام</th></tr></thead>
-                        <tbody id="rows-${key}"></tbody>
-                    </table>
+                        <tbody id="rows-${category}">
                 `;
-                commandsContainer.appendChild(panel);
-            }
-
-            serverCommands.forEach(cmd => {
-                const tbody = document.getElementById(`rows-${cmd.category}`);
-                if(tbody) {
-                    tbody.innerHTML += `
+                
+                cmds.forEach(cmd => {
+                    tableHTML += `
                         <tr data-command="${cmd.command.toLowerCase()}" data-desc="${cmd.desc.toLowerCase()}">
                             <td><span class="badge badge-cmd">/${cmd.command}</span></td>
                             <td>${cmd.desc}</td>
                         </tr>
                     `;
-                }
-            });
+                });
+                
+                tableHTML += `</tbody></table>`;
+                panel.innerHTML = tableHTML;
+                commandsContainer.appendChild(panel);
+            }
+        }
 
+        /**
+         * دالة عرض القوانين في الجدول
+         */
+        function displayRules(rules) {
             const rulesTableBody = document.getElementById('rules-table-body');
-            serverRules.forEach(rule => {
+            if (!rulesTableBody) return;
+            
+            rulesTableBody.innerHTML = '';
+            rules.forEach(rule => {
                 rulesTableBody.innerHTML += `
                     <tr data-rule="${rule.rule.toLowerCase()}" data-desc="${rule.desc.toLowerCase()}">
                         <td><span class="badge badge-rule">${rule.rule}</span></td>
@@ -467,7 +533,39 @@
                     </tr>
                 `;
             });
-        });
+        }
+
+        window.onload = function() {
+            // التحقق من تحميل المصفوفات
+            if (typeof serverCommands === 'undefined') {
+                console.error("خطأ: ملف commands.js لم يتم تحميله!");
+                const container = document.getElementById('commands-container');
+                if (container) {
+                    container.innerHTML = `
+                        <div class="error-message">
+                            ⚠️ فشل تحميل الأوامر!<br>
+                            <small>تأكد من وجود ملف commands.js في نفس المجلد.</small>
+                        </div>
+                    `;
+                }
+                document.getElementById('count-commands').textContent = "0";
+                return;
+            }
+
+            if (typeof serverRules === 'undefined') {
+                console.error("خطأ: ملف rules.js لم يتم تحميله!");
+                document.getElementById('count-rules').textContent = "0";
+            } else {
+                document.getElementById('count-rules').textContent = serverRules.length;
+                displayRules(serverRules);
+            }
+
+            console.log("✅ تم تحميل " + serverCommands.length + " أمر بنجاح.");
+            document.getElementById('count-commands').textContent = serverCommands.length;
+            
+            // عرض الأوامر في الجدول
+            displayCommands(serverCommands);
+        };
 
         function filterByCategory() {
             const selected = document.getElementById('categoryFilter').value;
@@ -538,23 +636,33 @@
                 // استخراج الكلمات المفتاحية من جملة المستخدم
                 const keywords = getKeywordsFromText(userText);
 
-                // 1. فحص القوانين أولاً
-                let matchedRules = serverRules.filter(r => 
-                    normalizedTextUser.includes(normalizeText(r.rule)) || 
-                    normalizeText(r.rule).includes(normalizedTextUser) ||
-                    normalizeText(r.desc).includes(normalizedTextUser)
-                );
+                // التحقق من وجود serverRules
+                if (typeof serverRules !== 'undefined') {
+                    // 1. فحص القوانين أولاً
+                    let matchedRules = serverRules.filter(r => 
+                        normalizedTextUser.includes(normalizeText(r.rule)) || 
+                        normalizeText(r.rule).includes(normalizedTextUser) ||
+                        normalizeText(r.desc).includes(normalizedTextUser)
+                    );
 
-                // 2. فحص الأوامر (باستخدام النظام الذكي المطور)
-                if (matchedRules.length > 0) {
-                    reply = `📌 <b>تم التعرف على القوانين والمصطلحات التالية لطلبك:</b><br><br>`;
-                    matchedRules.slice(0, 3).forEach(r => {
-                        reply += `• القانون: <span class="badge badge-rule">${r.rule}</span><br>الشرح: ${r.desc}<br><br>`;
-                    });
-                } else {
+                    if (matchedRules.length > 0) {
+                        reply = `📌 <b>تم التعرف على القوانين والمصطلحات التالية لطلبك:</b><br><br>`;
+                        matchedRules.slice(0, 3).forEach(r => {
+                            reply += `• القانون: <span class="badge badge-rule">${r.rule}</span><br>الشرح: ${r.desc}<br><br>`;
+                        });
+                        chatMessages.innerHTML += `<div class="msg bot">${reply}</div>`;
+                        chatMessages.scrollTop = chatMessages.scrollHeight;
+                        return;
+                    }
+                }
+
+                // التحقق من وجود serverCommands
+                if (typeof serverCommands !== 'undefined') {
                     // استخدام نظام البحث الذكي المطور (فئات + أوامر)
                     const smartResult = intelligentSearch(userText);
                     reply = smartResult;
+                } else {
+                    reply = "❌ عذراً، نظام الأوامر غير متاح. تأكد من تحميل ملف commands.js.";
                 }
 
                 chatMessages.innerHTML += `<div class="msg bot">${reply}</div>`;
