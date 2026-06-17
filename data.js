@@ -554,12 +554,14 @@ end
 -- مثال: createInterior(1, "قصر", 100000, "house")`
 };
 
-// حفظ البيانات في localStorage
+// ============================================
+// دوال حفظ واسترجاع البيانات
+// ============================================
+
 function saveData() {
     localStorage.setItem('mtaData', JSON.stringify(siteData));
 }
 
-// تحميل البيانات
 function loadData() {
     const saved = localStorage.getItem('mtaData');
     if (saved) {
@@ -572,12 +574,10 @@ function loadData() {
     }
 }
 
-// تصدير البيانات
 function exportData() {
     return JSON.stringify(siteData, null, 2);
 }
 
-// استيراد البيانات
 function importData(jsonData) {
     try {
         const parsed = JSON.parse(jsonData);
@@ -589,17 +589,16 @@ function importData(jsonData) {
     }
 }
 
-// تحميل البيانات عند بدء التشغيل
 loadData();
 
-// ========== دوال البحث والمساعدة ==========
+// ============================================
+// دوال البحث والمساعدة (تم تعديلها)
+// ============================================
 
-// البحث عن أوامر حسب القسم
 function getCommandsByCategory(category) {
     return siteData.commands.filter(cmd => cmd.category === category);
 }
 
-// البحث عن أمر معين
 function findCommand(search) {
     const searchLower = search.toLowerCase();
     return siteData.commands.filter(cmd => 
@@ -608,7 +607,6 @@ function findCommand(search) {
     );
 }
 
-// البحث عن قانون
 function findRule(search) {
     const searchLower = search.toLowerCase();
     return siteData.rules.filter(rule =>
@@ -617,7 +615,6 @@ function findRule(search) {
     );
 }
 
-// البحث عن انترو
 function findInterior(search) {
     const searchLower = search.toLowerCase();
     return siteData.interiors.filter(int =>
@@ -625,20 +622,23 @@ function findInterior(search) {
     );
 }
 
-// الرد التلقائي الذكي
+// ===== الرد التلقائي الذكي (تم التعديل) =====
 function smartReply(query) {
     const q = query.toLowerCase().trim();
     let response = [];
     
-    // البحث عن انترو
+    // البحث عن انترو - عرض الصور
     const interiors = findInterior(q);
     if (interiors.length > 0) {
         response.push("🏠 **الانترو المطلوب:**");
         interiors.forEach(int => {
-            response.push(`**${int.name}**`);
-            response.push(`<img src="${int.image}" alt="${int.name}" style="max-width:300px;border-radius:10px;margin:10px 0;">`);
+            response.push(`<div style="text-align:center;margin:10px 0;">`);
+            response.push(`<strong>${int.name}</strong>`);
+            response.push(`<br><img src="${int.image}" alt="${int.name}" style="max-width:300px;border-radius:10px;margin:10px 0;border:1px solid #333;">`);
+            response.push(`<br><button class="copy-btn" onclick="copyText('${int.name}')">📋 نسخ الاسم</button>`);
+            response.push(`</div>`);
         });
-        return response.join('<br>');
+        return response.join('');
     }
     
     // البحث عن قوانين
@@ -646,10 +646,13 @@ function smartReply(query) {
         const rules = siteData.rules.slice(0, 10);
         response.push("📜 **القوانين:**");
         rules.forEach(rule => {
-            response.push(`**${rule.english}** = ${rule.arabic}`);
+            response.push(`<div style="margin:5px 0;padding:8px;background:rgba(255,255,255,0.05);border-radius:6px;">`);
+            response.push(`<strong>${rule.english}</strong> = ${rule.arabic}`);
+            response.push(` <button class="copy-btn" onclick="copyText('${rule.english} - ${rule.arabic}')">📋</button>`);
+            response.push(`</div>`);
         });
         response.push(`... وعرض ${siteData.rules.length} قانون كامل في صفحة القوانين`);
-        return response.join('<br>');
+        return response.join('');
     }
     
     // البحث عن أوامر حسب القسم
@@ -660,12 +663,16 @@ function smartReply(query) {
         const cmds = getCommandsByCategory(category.name);
         response.push(`📂 **قسم ${category.name} ${category.icon}** (${cmds.length} أمر):`);
         cmds.slice(0, 15).forEach(cmd => {
-            response.push(`**${cmd.command}** = ${cmd.meaning}`);
+            response.push(`<div style="margin:5px 0;padding:8px;background:rgba(255,255,255,0.05);border-radius:6px;">`);
+            response.push(`<code style="color:#ffaa66;direction:ltr;display:inline-block;">${cmd.command}</code>`);
+            response.push(` = ${cmd.meaning}`);
+            response.push(` <button class="copy-btn" onclick="copyText('${cmd.command}')">📋</button>`);
+            response.push(`</div>`);
         });
         if (cmds.length > 15) {
             response.push(`... و ${cmds.length - 15} أمر إضافي في صفحة الأوامر`);
         }
-        return response.join('<br>');
+        return response.join('');
     }
     
     // البحث عن أمر معين
@@ -673,19 +680,60 @@ function smartReply(query) {
     if (commands.length > 0) {
         response.push("🔍 **نتائج البحث:**");
         commands.slice(0, 10).forEach(cmd => {
-            response.push(`**${cmd.command}** = ${cmd.meaning} (قسم: ${cmd.category})`);
+            response.push(`<div style="margin:5px 0;padding:8px;background:rgba(255,255,255,0.05);border-radius:6px;">`);
+            response.push(`<code style="color:#ffaa66;direction:ltr;display:inline-block;">${cmd.command}</code>`);
+            response.push(` = ${cmd.meaning} (قسم: ${cmd.category})`);
+            response.push(` <button class="copy-btn" onclick="copyText('${cmd.command}')">📋</button>`);
+            response.push(`</div>`);
         });
         if (commands.length > 10) {
             response.push(`... و ${commands.length - 10} نتيجة إضافية`);
         }
-        return response.join('<br>');
+        return response.join('');
     }
     
     // إذا لم يتم العثور على شيء
-    return "❌ **لم يتم العثور على نتائج**\n\n💡 جرب البحث عن:\n• اسم أمر مثل /kill\n• اسم قسم مثل فاكشن\n• اسم انترو مثل قصر\n• كلمة قانون";
+    return `❌ **لم يتم العثور على نتائج**
+
+💡 جرب البحث عن:
+• اسم أمر مثل <code>sellproperty</code>
+• اسم قسم مثل <code>فاكشن</code>
+• اسم انترو مثل <code>قصر</code>
+• كلمة <code>قوانين</code>`;
 }
 
-// ========== تصدير للاستخدام ==========
+// ===== دالة النسخ العامة =====
+function copyText(text) {
+    navigator.clipboard.writeText(text).then(() => {
+        // البحث عن جميع أزرار النسخ وتغييرها مؤقتاً
+        const btns = document.querySelectorAll('.copy-btn');
+        btns.forEach(btn => {
+            if (btn.textContent === '📋' || btn.textContent.includes('نسخ')) {
+                btn.textContent = '✅';
+                btn.classList.add('copied');
+                setTimeout(() => {
+                    btn.textContent = '📋';
+                    btn.classList.remove('copied');
+                }, 2000);
+            }
+        });
+    }).catch(() => {
+        // طريقة بديلة
+        const textarea = document.createElement('textarea');
+        textarea.value = text;
+        textarea.style.position = 'fixed';
+        textarea.style.left = '-9999px';
+        document.body.appendChild(textarea);
+        textarea.select();
+        document.execCommand('copy');
+        document.body.removeChild(textarea);
+        alert('✅ تم نسخ: ' + text);
+    });
+}
+
+// ============================================
+// تصدير للاستخدام
+// ============================================
 if (typeof module !== 'undefined' && module.exports) {
-    module.exports = { siteData, saveData, loadData, exportData, importData, smartReply };
+    module.exports = { siteData, saveData, loadData, exportData, importData, smartReply, copyText };
 }
