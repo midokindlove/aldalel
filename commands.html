@@ -74,4 +74,48 @@
                     <td><code class="command-text" style="color:#ffaa66;direction:ltr;display:inline-block;background:rgba(255,255,255,0.05);padding:4px 10px;border-radius:4px;">${cmd.command}</code></td>
                     <td>${cmd.meaning}</td>
                     <td><span class="category-badge">${cmd.category}</span></td>
-                    <td><button class="copy-btn"
+                    <td><button class="copy-btn" onclick="copyText('${cmd.command.replace(/'/g, "\\'")}')">📋</button></td>
+                </tr>
+            `).join('');
+            
+            count.textContent = `${commands.length} نتيجة`;
+        }
+
+        function filterCommands() {
+            const search = document.getElementById('searchCommands').value.toLowerCase().trim();
+            const category = document.getElementById('categoryFilter').value;
+            
+            let filtered = siteData.commands;
+            
+            if (category !== 'all') {
+                filtered = filtered.filter(cmd => cmd.category === category);
+            }
+            
+            if (search) {
+                filtered = filtered.filter(cmd => 
+                    cmd.command.toLowerCase().includes(search) ||
+                    cmd.meaning.includes(search)
+                );
+            }
+            
+            displayCommands(filtered);
+        }
+
+        function loadFromURL() {
+            const params = new URLSearchParams(window.location.search);
+            const category = params.get('category');
+            if (category) {
+                document.getElementById('categoryFilter').value = category;
+                filterCommands();
+            }
+        }
+
+        document.addEventListener('DOMContentLoaded', function() {
+            loadCategoryFilter();
+            filterCommands();
+            loadFromURL();
+        });
+    </script>
+
+</body>
+</html>
