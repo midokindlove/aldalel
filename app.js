@@ -1,12 +1,4 @@
-// ============================================
-// التطبيق الرئيسي - MTA Commands
-// ============================================
-
 let currentPage = 'home';
-
-// ============================================
-// التهيئة عند تحميل الصفحة
-// ============================================
 
 document.addEventListener('DOMContentLoaded', () => {
   initNavigation();
@@ -14,10 +6,6 @@ document.addEventListener('DOMContentLoaded', () => {
   initMenuToggle();
   loadPage('home');
 });
-
-// ============================================
-// نظام التنقل
-// ============================================
 
 function initNavigation() {
   const navLinks = document.querySelectorAll('.nav-links a');
@@ -35,10 +23,6 @@ function initNavigation() {
     });
   });
 }
-
-// ============================================
-// تحميل الصفحات
-// ============================================
 
 function loadPage(page) {
   currentPage = page;
@@ -62,14 +46,13 @@ function loadPage(page) {
       initChatPage();
       break;
     case 'admin':
-      // سيتم تحميلها من admin.js
       if (typeof renderAdminPage === 'function') {
         content.innerHTML = renderAdminPage();
         if (typeof initAdminLogin === 'function') {
           initAdminLogin();
         }
       } else {
-        content.innerHTML = '<h1>⚠️ ملف admin.js غير موجود</h1>';
+        content.innerHTML = '<div class="page active"><h1>⚙️ لوحة الإدارة</h1><p>جاري التحميل...</p></div>';
       }
       break;
     default:
@@ -77,52 +60,37 @@ function loadPage(page) {
   }
 }
 
-// ============================================
-// الصفحة الرئيسية
-// ============================================
-
 function renderHomePage() {
   const data = dataManager.data.home;
   
   let shortcutsHtml = data.shortcuts.map(shortcut => {
     if (shortcut.url) {
-      return `
-        <a href="${shortcut.url}" target="_blank" class="card" style="text-decoration: none; color: inherit;">
-          <div style="text-align: center;">
-            <div style="font-size: 3rem; margin-bottom: 1rem;">${shortcut.icon}</div>
-            <h3>${shortcut.title}</h3>
-          </div>
-        </a>
-      `;
-    } else {
-      return `
-        <div class="card" onclick="loadPage('${shortcut.page}')" style="cursor: pointer;">
-          <div style="text-align: center;">
-            <div style="font-size: 3rem; margin-bottom: 1rem;">${shortcut.icon}</div>
-            <h3>${shortcut.title}</h3>
-          </div>
+      return `<a href="${shortcut.url}" target="_blank" class="card" style="text-decoration: none; color: inherit;">
+        <div style="text-align: center;">
+          <div style="font-size: 3rem; margin-bottom: 1rem;">${shortcut.icon}</div>
+          <h3>${shortcut.title}</h3>
         </div>
-      `;
+      </a>`;
+    } else {
+      return `<div class="card" onclick="loadPage('${shortcut.page}')" style="cursor: pointer;">
+        <div style="text-align: center;">
+          <div style="font-size: 3rem; margin-bottom: 1rem;">${shortcut.icon}</div>
+          <h3>${shortcut.title}</h3>
+        </div>
+      </div>`;
     }
   }).join('');
   
-  return `
-    <div class="page active">
-      <h1>🎮 ${data.welcomeMessage}</h1>
-      <p style="font-size: 1.2rem; margin-bottom: 2rem; color: #b0b0b0;">
-        اكتشف جميع الأوامر والقوانين الخاصة بسيرفر MTA - سان أندرياس
-      </p>
-      
-      <div style="display: grid; grid-template-columns: repeat(auto-fit, minmax(200px, 1fr)); gap: 1.5rem; margin-top: 2rem;">
-        ${shortcutsHtml}
-      </div>
+  return `<div class="page active">
+    <h1>🎮 ${data.welcomeMessage}</h1>
+    <p style="font-size: 1.2rem; margin-bottom: 2rem; color: #b0b0b0;">
+      اكتشف جميع الأوامر والقوانين الخاصة بسيرفر MTA - سان أندرياس
+    </p>
+    <div style="display: grid; grid-template-columns: repeat(auto-fit, minmax(200px, 1fr)); gap: 1.5rem; margin-top: 2rem;">
+      ${shortcutsHtml}
     </div>
-  `;
+  </div>`;
 }
-
-// ============================================
-// صفحة القوانين
-// ============================================
 
 function renderRulesPage() {
   const data = dataManager.data.rules;
@@ -132,43 +100,27 @@ function renderRulesPage() {
       <h3>${section.title}</h3>
       <ul style="list-style: none; padding: 0;">
         ${section.items.map((item) => `
-          <li style="padding: 0.5rem; border-bottom: 1px solid rgba(0, 255, 136, 0.1);">
-            ✓ ${item}
-          </li>
+          <li style="padding: 0.5rem; border-bottom: 1px solid rgba(0, 255, 136, 0.1);">✓ ${item}</li>
         `).join('')}
       </ul>
     </div>
   `).join('');
   
-  return `
-    <div class="page active">
-      <h1>📜 قوانين السيرفر</h1>
-      <p style="margin-bottom: 2rem; color: #b0b0b0;">
-        يرجى قراءة القوانين بعناية قبل اللعب في السيرفر
-      </p>
-      ${sectionsHtml}
-    </div>
-  `;
+  return `<div class="page active">
+    <h1>📜 قوانين السيرفر</h1>
+    <p style="margin-bottom: 2rem; color: #b0b0b0;">يرجى قراءة القوانين بعناية قبل اللعب في السيرفر</p>
+    ${sectionsHtml}
+  </div>`;
 }
 
-// ============================================
-// صفحة الأوامر
-// ============================================
-
 function renderCommandsPage() {
-  return `
-    <div class="page active">
-      <h1>⌨️ أوامر السيرفر</h1>
-      
-      <div class="search-box">
-        <input type="text" id="command-search" placeholder="🔍 ابحث عن أمر..." oninput="searchCommands(this.value)">
-      </div>
-      
-      <div id="commands-results">
-        ${renderCommandsList()}
-      </div>
+  return `<div class="page active">
+    <h1>⌨️ أوامر السيرفر</h1>
+    <div class="search-box">
+      <input type="text" id="command-search" placeholder="🔍 ابحث عن أمر..." oninput="searchCommands(this.value)">
     </div>
-  `;
+    <div id="commands-results">${renderCommandsList()}</div>
+  </div>`;
 }
 
 function renderCommandsList() {
@@ -207,31 +159,23 @@ function searchCommands(query) {
   
   let html = results.map(result => {
     if (result.type === 'command') {
-      return `
-        <div class="card">
-          <h3>${result.section}</h3>
-          <div class="command-item">
-            <div class="command-code">${result.data.command}</div>
-            <p style="margin-top: 0.5rem; color: #b0b0b0;">${result.data.description}</p>
-          </div>
+      return `<div class="card">
+        <h3>${result.section}</h3>
+        <div class="command-item">
+          <div class="command-code">${result.data.command}</div>
+          <p style="margin-top: 0.5rem; color: #b0b0b0;">${result.data.description}</p>
         </div>
-      `;
+      </div>`;
     } else {
-      return `
-        <div class="card">
-          <h3>${result.section}</h3>
-          <p>✓ ${result.data}</p>
-        </div>
-      `;
+      return `<div class="card">
+        <h3>${result.section}</h3>
+        <p>✓ ${result.data}</p>
+      </div>`;
     }
   }).join('');
   
   container.innerHTML = html;
 }
-
-// ============================================
-// صفحة الانترو
-// ============================================
 
 function renderIntrosPage() {
   const data = dataManager.data.intros;
@@ -243,152 +187,14 @@ function renderIntrosPage() {
     </div>
   `).join('');
   
-  return `
-    <div class="page active">
-      <h1>🎬 الانترو</h1>
-      <p style="margin-bottom: 2rem; color: #b0b0b0;">
-        صور الانترو الخاصة بالسيرفر
-      </p>
-      
-      <div class="image-grid">
-        ${imagesHtml}
-      </div>
-    </div>
-  `;
+  return `<div class="page active">
+    <h1>🎬 الانترو</h1>
+    <p style="margin-bottom: 2rem; color: #b0b0b0;">صور الانترو الخاصة بالسيرفر</p>
+    <div class="image-grid">${imagesHtml}</div>
+  </div>`;
 }
-
-// ============================================
-// صفحة الرد التلقائي
-// ============================================
 
 function renderChatPage() {
-  return `
-    <div class="page active">
-      <h1>🤖 الرد التلقائي</h1>
-      <p style="margin-bottom: 2rem; color: #b0b0b0;">
-        اكتب سؤالك وسيرد عليك المساعد الآلي
-      </p>
-      
-      <div class="card" style="height: 500px; display: flex; flex-direction: column;">
-        <div id="chat-page-messages" class="chat-messages" style="flex: 1; overflow-y: auto; margin-bottom: 1rem;">
-          <div class="chat-message bot">
-            أهلاً! أنا المساعد الآلي، كيف يمكنني مساعدتك؟
-          </div>
-        </div>
-        <div style="display: flex; gap: 0.5rem;">
-          <input type="text" id="chat-page-input" placeholder="اكتب سؤالك هنا..." style="flex: 1; margin-bottom: 0;">
-          <button class="btn" onclick="sendChatPageMessage()">إرسال</button>
-        </div>
-      </div>
-    </div>
-  `;
-}
-
-function initChatPage() {
-  const input = document.getElementById('chat-page-input');
-  if (input) {
-    input.addEventListener('keypress', (e) => {
-      if (e.key === 'Enter') {
-        sendChatPageMessage();
-      }
-    });
-  }
-}
-
-function sendChatPageMessage() {
-  const input = document.getElementById('chat-page-input');
-  if (!input) return;
-  
-  const message = input.value.trim();
-  if (!message) return;
-  
-  addChatPageMessage(message, 'user');
-  input.value = '';
-  
-  setTimeout(() => {
-    const reply = dataManager.getAutoReply(message);
-    addChatPageMessage(reply, 'bot');
-  }, 500);
-}
-
-function addChatPageMessage(text, sender) {
-  const messagesContainer = document.getElementById('chat-page-messages');
-  if (!messagesContainer) return;
-  
-  const messageDiv = document.createElement('div');
-  messageDiv.className = `chat-message ${sender}`;
-  messageDiv.textContent = text;
-  messagesContainer.appendChild(messageDiv);
-  messagesContainer.scrollTop = messagesContainer.scrollHeight;
-}
-
-// ============================================
-// نظام الشات العائم
-// ============================================
-
-function initChat() {
-  const chatToggle = document.getElementById('chat-toggle');
-  const chatBox = document.getElementById('chat-box');
-  const chatClose = document.getElementById('chat-close');
-  const chatSend = document.getElementById('chat-send');
-  const chatInput = document.getElementById('chat-input-field');
-  
-  chatToggle.addEventListener('click', () => {
-    chatBox.classList.toggle('hidden');
-    if (!chatBox.classList.contains('hidden')) {
-      const messagesContainer = document.getElementById('chat-messages');
-      if (messagesContainer.children.length === 0) {
-        addChatMessage('أهلاً! أنا المساعد الآلي، كيف يمكنني مساعدتك؟', 'bot');
-      }
-    }
-  });
-  
-  chatClose.addEventListener('click', () => {
-    chatBox.classList.add('hidden');
-  });
-  
-  chatSend.addEventListener('click', sendChatMessage);
-  
-  chatInput.addEventListener('keypress', (e) => {
-    if (e.key === 'Enter') {
-      sendChatMessage();
-    }
-  });
-}
-
-function sendChatMessage() {
-  const input = document.getElementById('chat-input-field');
-  const message = input.value.trim();
-  
-  if (!message) return;
-  
-  addChatMessage(message, 'user');
-  input.value = '';
-  
-  setTimeout(() => {
-    const reply = dataManager.getAutoReply(message);
-    addChatMessage(reply, 'bot');
-  }, 500);
-}
-
-function addChatMessage(text, sender) {
-  const messagesContainer = document.getElementById('chat-messages');
-  const messageDiv = document.createElement('div');
-  messageDiv.className = `chat-message ${sender}`;
-  messageDiv.textContent = text;
-  messagesContainer.appendChild(messageDiv);
-  messagesContainer.scrollTop = messagesContainer.scrollHeight;
-}
-
-// ============================================
-// قائمة الموبايل
-// ============================================
-
-function initMenuToggle() {
-  const menuToggle = document.querySelector('.menu-toggle');
-  const navLinks = document.querySelector('.nav-links');
-  
-  menuToggle.addEventListener('click', () => {
-    navLinks.classList.toggle('active');
-  });
-}
+  return `<div class="page active">
+    <h1>🤖 الرد التلقائي</h1>
+    <p style="margin-bottom: 2rem; color: #b0b0b0;">اكتب سؤالك وسيرد عليك
