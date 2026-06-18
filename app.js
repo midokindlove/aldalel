@@ -41,6 +41,7 @@ function loadPage(page) {
       break;
     case 'commands':
       content.innerHTML = renderCommandsPage();
+      initCommandListeners();
       break;
     case 'intros':
       content.innerHTML = renderIntrosPage();
@@ -117,12 +118,16 @@ function renderRulesPage() {
   </div>`;
 }
 
+// ============================================
+// صفحة الأوامر - تصميم أفقي مع نسخ
+// ============================================
+
 function renderCommandsPage() {
   return `<div class="page active">
     <h1>⌨️ أوامر السيرفر</h1>
     <p style="margin-bottom: 2rem; color: #b0b0b0;">اضغط على أي أمر لنسخه تلقائياً 📋</p>
     <div class="search-box">
-      <input type="text" id="command-search" placeholder="🔍 ابحث عن أمر..." oninput="searchCommands(this.value)">
+      <input type="text" id="command-search" placeholder=" ابحث عن أمر..." oninput="searchCommands(this.value)">
     </div>
     <div id="commands-results">${renderCommandsList()}</div>
   </div>`;
@@ -137,11 +142,12 @@ function renderCommandsList() {
       <div class="commands-list">
         ${section.commands.map(cmd => `
           <div class="command-row" data-command="${cmd.command}">
-            <div class="command-name">
+            <div class="command-box">
               <code class="command-code">${cmd.command}</code>
-              <span class="copy-hint"> نسخ</span>
             </div>
-            <div class="command-desc">${cmd.description}</div>
+            <div class="desc-box">
+              <span class="command-desc">${cmd.description}</span>
+            </div>
           </div>
         `).join('')}
       </div>
@@ -155,6 +161,7 @@ function searchCommands(query) {
   
   if (query.trim() === '') {
     container.innerHTML = renderCommandsList();
+    initCommandListeners();
     return;
   }
   
@@ -183,11 +190,12 @@ function searchCommands(query) {
         <div class="commands-list">
           ${grouped[sectionTitle].map(cmd => `
             <div class="command-row" data-command="${cmd.command}">
-              <div class="command-name">
+              <div class="command-box">
                 <code class="command-code">${cmd.command}</code>
-                <span class="copy-hint">📋 نسخ</span>
               </div>
-              <div class="command-desc">${cmd.description}</div>
+              <div class="desc-box">
+                <span class="command-desc">${cmd.description}</span>
+              </div>
             </div>
           `).join('')}
         </div>
@@ -196,14 +204,18 @@ function searchCommands(query) {
   }
   
   container.innerHTML = html;
-  
-  // إضافة event listeners للعناصر الجديدة
-  document.querySelectorAll('.command-row').forEach(row => {
-    row.addEventListener('click', function() {
-      const command = this.getAttribute('data-command');
-      copyCommand(command, this);
+  initCommandListeners();
+}
+
+function initCommandListeners() {
+  setTimeout(() => {
+    document.querySelectorAll('.command-row').forEach(row => {
+      row.addEventListener('click', function() {
+        const command = this.getAttribute('data-command');
+        copyCommand(command, this);
+      });
     });
-  });
+  }, 50);
 }
 
 function copyCommand(command, element) {
@@ -259,6 +271,10 @@ function showCopyFeedback(element, command) {
   }, 2000);
 }
 
+// ============================================
+// صفحة الانترو
+// ============================================
+
 function renderIntrosPage() {
   const data = dataManager.data.intros;
   
@@ -275,6 +291,10 @@ function renderIntrosPage() {
     <div class="image-grid">${imagesHtml}</div>
   </div>`;
 }
+
+// ============================================
+// صفحة الرد التلقائي
+// ============================================
 
 function renderChatPage() {
   return `<div class="page active">
@@ -328,6 +348,10 @@ function addChatPageMessage(text, sender) {
   messagesContainer.scrollTop = messagesContainer.scrollHeight;
 }
 
+// ============================================
+// الشات العائم
+// ============================================
+
 function initChat() {
   const chatToggle = document.getElementById('chat-toggle');
   const chatBox = document.getElementById('chat-box');
@@ -380,6 +404,10 @@ function addChatMessage(text, sender) {
   messagesContainer.scrollTop = messagesContainer.scrollHeight;
 }
 
+// ============================================
+// قائمة الموبايل
+// ============================================
+
 function initMenuToggle() {
   const menuToggle = document.querySelector('.menu-toggle');
   const navLinks = document.querySelector('.nav-links');
@@ -388,15 +416,3 @@ function initMenuToggle() {
     navLinks.classList.toggle('active');
   });
 }
-
-// إضافة event listeners للأوامر عند تحميل الصفحة
-document.addEventListener('DOMContentLoaded', () => {
-  setTimeout(() => {
-    document.querySelectorAll('.command-row').forEach(row => {
-      row.addEventListener('click', function() {
-        const command = this.getAttribute('data-command');
-        copyCommand(command, this);
-      });
-    });
-  }, 100);
-});
