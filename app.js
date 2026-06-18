@@ -3,8 +3,6 @@
 // ============================================
 
 let currentPage = 'home';
-let isAdminLoggedIn = false;
-const ADMIN_PASSWORD = '00000';
 
 // ============================================
 // التهيئة عند تحميل الصفحة
@@ -64,8 +62,15 @@ function loadPage(page) {
       initChatPage();
       break;
     case 'admin':
-      content.innerHTML = renderAdminPage();
-      initAdminLogin();
+      // سيتم تحميلها من admin.js
+      if (typeof renderAdminPage === 'function') {
+        content.innerHTML = renderAdminPage();
+        if (typeof initAdminLogin === 'function') {
+          initAdminLogin();
+        }
+      } else {
+        content.innerHTML = '<h1>⚠️ ملف admin.js غير موجود</h1>';
+      }
       break;
     default:
       content.innerHTML = '<h1>صفحة غير موجودة</h1>';
@@ -147,7 +152,7 @@ function renderRulesPage() {
 }
 
 // ============================================
-// صفحة الأوامر - تم الإصلاح
+// صفحة الأوامر
 // ============================================
 
 function renderCommandsPage() {
@@ -166,7 +171,6 @@ function renderCommandsPage() {
   `;
 }
 
-// دالة منفصلة لعرض قائمة الأوامر فقط
 function renderCommandsList() {
   const data = dataManager.data.commands;
   
@@ -185,7 +189,6 @@ function renderCommandsList() {
   `).join('');
 }
 
-// البحث في الأوامر - تم الإصلاح
 function searchCommands(query) {
   const container = document.getElementById('commands-results');
   if (!container) return;
@@ -255,7 +258,7 @@ function renderIntrosPage() {
 }
 
 // ============================================
-// صفحة الرد التلقائي - مبسطة
+// صفحة الرد التلقائي
 // ============================================
 
 function renderChatPage() {
@@ -388,507 +391,4 @@ function initMenuToggle() {
   menuToggle.addEventListener('click', () => {
     navLinks.classList.toggle('active');
   });
-}
-
-// ============================================
-// لوحة الإدارة
-// ============================================
-
-function renderAdminPage() {
-  if (!isAdminLoggedIn) {
-    return `
-      <div class="page active">
-        <div class="admin-login">
-          <h1>🔐 لوحة الإدارة</h1>
-          <p style="margin-bottom: 2rem;">يرجى إدخال كلمة المرور للوصول</p>
-          <input type="password" id="admin-password" placeholder="كلمة المرور">
-          <button class="btn" onclick="loginAdmin()">دخول</button>
-        </div>
-      </div>
-    `;
-  }
-  
-  return renderAdminDashboard();
-}
-
-function initAdminLogin() {
-  if (!isAdminLoggedIn) {
-    const passwordInput = document.getElementById('admin-password');
-    if (passwordInput) {
-      passwordInput.addEventListener('keypress', (e) => {
-        if (e.key === 'Enter') loginAdmin();
-      });
-    }
-  }
-}
-
-function loginAdmin() {
-  const password = document.getElementById('admin-password').value;
-  
-  if (password === ADMIN_PASSWORD) {
-    isAdminLoggedIn = true;
-    loadPage('admin');
-  } else {
-    alert('كلمة المرور غير صحيحة!');
-  }
-}
-
-function logoutAdmin() {
-  isAdminLoggedIn = false;
-  loadPage('home');
-}
-
-function renderAdminDashboard() {
-  return `
-    <div class="page active">
-      <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 2rem;">
-        <h1>⚙️ لوحة الإدارة</h1>
-        <button class="btn btn-danger" onclick="logoutAdmin()">خروج</button>
-      </div>
-      
-      <div class="admin-section">
-        <h2>🏠 الصفحة الرئيسية</h2>
-        <div id="shortcuts-manager">${renderShortcutsManager()}</div>
-        <button class="btn" onclick="showAddShortcutForm()">➕ إضافة اختصار</button>
-        <div id="shortcut-form"></div>
-      </div>
-      
-      <div class="admin-section">
-        <h2>📜 القوانين</h2>
-        <div id="rules-manager">${renderRulesManager()}</div>
-        <button class="btn" onclick="showAddRuleSectionForm()">➕ إضافة قسم قوانين</button>
-        <div id="rule-section-form"></div>
-      </div>
-      
-      <div class="admin-section">
-        <h2>⌨️ الأوامر</h2>
-        <div id="commands-manager">${renderCommandsManager()}</div>
-        <button class="btn" onclick="showAddCommandSectionForm()">➕ إضافة قسم أوامر</button>
-        <div id="command-section-form"></div>
-      </div>
-      
-      <div class="admin-section">
-        <h2>🎬 الانترو</h2>
-        <div id="intros-manager">${renderIntrosManager()}</div>
-        <button class="btn" onclick="showAddIntroForm()">➕ إضافة انترو</button>
-        <div id="intro-form"></div>
-      </div>
-      
-      <div class="admin-section">
-        <h2>🤖 الرد التلقائي</h2>
-        <div id="autoreplies-manager">${renderAutoRepliesManager()}</div>
-        <button class="btn" onclick="showAddAutoReplyForm()">➕ إضافة رد تلقائي</button>
-        <div id="autoreply-form"></div>
-      </div>
-      
-      <div class="admin-section">
-        <h2>🔧 أدوات</h2>
-        <button class="btn" onclick="exportData()">📥 تصدير البيانات</button>
-        <button class="btn" onclick="document.getElementById('import-file').click()">📤 استيراد البيانات</button>
-        <input type="file" id="import-file" style="display: none;" accept=".json" onchange="importData(event)">
-        <button class="btn btn-danger" onclick="resetAllData()">🔄 إعادة تعيين كل البيانات</button>
-      </div>
-    </div>
-  `;
-}
-
-// ============================================
-// إدارة الاختصارات
-// ============================================
-
-function renderShortcutsManager() {
-  const shortcuts = dataManager.data.home.shortcuts;
-  
-  if (shortcuts.length === 0) return '<p>لا توجد اختصارات</p>';
-  
-  return shortcuts.map((shortcut, index) => `
-    <div class="card" style="display: flex; justify-content: space-between; align-items: center;">
-      <div>
-        <strong>${shortcut.icon} ${shortcut.title}</strong>
-        <p style="color: #b0b0b0; font-size: 0.9rem;">${shortcut.url || shortcut.page}</p>
-      </div>
-      <button class="btn btn-danger" onclick="deleteShortcut(${index})">حذف</button>
-    </div>
-  `).join('');
-}
-
-function showAddShortcutForm() {
-  const form = document.getElementById('shortcut-form');
-  form.innerHTML = `
-    <div class="card" style="margin-top: 1rem;">
-      <h3>إضافة اختصار جديد</h3>
-      <input type="text" id="shortcut-title" placeholder="العنوان">
-      <input type="text" id="shortcut-icon" placeholder="الأيقونة (إيموجي)">
-      <input type="text" id="shortcut-url" placeholder="الرابط (اختياري)">
-      <input type="text" id="shortcut-page" placeholder="الصفحة (اختياري: home, rules, commands, intros, chat)">
-      <button class="btn" onclick="addShortcut()">إضافة</button>
-      <button class="btn btn-danger" onclick="document.getElementById('shortcut-form').innerHTML = ''">إلغاء</button>
-    </div>
-  `;
-}
-
-function addShortcut() {
-  const title = document.getElementById('shortcut-title').value;
-  const icon = document.getElementById('shortcut-icon').value;
-  const url = document.getElementById('shortcut-url').value;
-  const page = document.getElementById('shortcut-page').value;
-  
-  if (!title || !icon) {
-    alert('يرجى إدخال العنوان والأيقونة');
-    return;
-  }
-  
-  dataManager.addShortcut(title, url || null, icon);
-  if (page && !url) {
-    dataManager.data.home.shortcuts[dataManager.data.home.shortcuts.length - 1].page = page;
-    dataManager.saveData();
-  }
-  
-  refreshAdminPage();
-}
-
-function deleteShortcut(index) {
-  if (confirm('هل أنت متأكد من حذف هذا الاختصار؟')) {
-    dataManager.deleteShortcut(index);
-    refreshAdminPage();
-  }
-}
-
-// ============================================
-// إدارة القوانين
-// ============================================
-
-function renderRulesManager() {
-  const sections = dataManager.data.rules.sections;
-  
-  if (sections.length === 0) return '<p>لا توجد أقسام قوانين</p>';
-  
-  return sections.map(section => `
-    <div class="card">
-      <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 1rem;">
-        <h3>${section.title}</h3>
-        <button class="btn btn-danger" onclick="deleteRuleSection('${section.id}')">حذف القسم</button>
-      </div>
-      
-      <ul style="list-style: none; padding: 0;">
-        ${section.items.map((item, index) => `
-          <li style="display: flex; justify-content: space-between; padding: 0.5rem; border-bottom: 1px solid rgba(0, 255, 136, 0.1);">
-            <span>✓ ${item}</span>
-            <button class="btn btn-danger" onclick="deleteRuleItem('${section.id}', ${index})">حذف</button>
-          </li>
-        `).join('')}
-      </ul>
-      
-      <button class="btn" onclick="showAddRuleItemForm('${section.id}')">➕ إضافة قانون</button>
-      <div id="rule-item-form-${section.id}"></div>
-    </div>
-  `).join('');
-}
-
-function showAddRuleSectionForm() {
-  const form = document.getElementById('rule-section-form');
-  form.innerHTML = `
-    <div class="card" style="margin-top: 1rem;">
-      <h3>إضافة قسم قوانين جديد</h3>
-      <input type="text" id="rule-section-title" placeholder="عنوان القسم">
-      <button class="btn" onclick="addRuleSection()">إضافة</button>
-      <button class="btn btn-danger" onclick="document.getElementById('rule-section-form').innerHTML = ''">إلغاء</button>
-    </div>
-  `;
-}
-
-function addRuleSection() {
-  const title = document.getElementById('rule-section-title').value;
-  if (!title) {
-    alert('يرجى إدخال عنوان القسم');
-    return;
-  }
-  dataManager.addRuleSection(title);
-  refreshAdminPage();
-}
-
-function deleteRuleSection(sectionId) {
-  if (confirm('هل أنت متأكد من حذف هذا القسم؟')) {
-    dataManager.deleteRuleSection(sectionId);
-    refreshAdminPage();
-  }
-}
-
-function showAddRuleItemForm(sectionId) {
-  const form = document.getElementById(`rule-item-form-${sectionId}`);
-  form.innerHTML = `
-    <div style="margin-top: 1rem;">
-      <input type="text" id="rule-item-text" placeholder="نص القانون">
-      <button class="btn" onclick="addRuleItem('${sectionId}')">إضافة</button>
-      <button class="btn btn-danger" onclick="document.getElementById('rule-item-form-${sectionId}').innerHTML = ''">إلغاء</button>
-    </div>
-  `;
-}
-
-function addRuleItem(sectionId) {
-  const text = document.getElementById('rule-item-text').value;
-  if (!text) {
-    alert('يرجى إدخال نص القانون');
-    return;
-  }
-  dataManager.addRuleItem(sectionId, text);
-  refreshAdminPage();
-}
-
-function deleteRuleItem(sectionId, index) {
-  if (confirm('هل أنت متأكد من حذف هذا القانون؟')) {
-    dataManager.deleteRuleItem(sectionId, index);
-    refreshAdminPage();
-  }
-}
-
-// ============================================
-// إدارة الأوامر
-// ============================================
-
-function renderCommandsManager() {
-  const sections = dataManager.data.commands.sections;
-  
-  if (sections.length === 0) return '<p>لا توجد أقسام أوامر</p>';
-  
-  return sections.map(section => `
-    <div class="card">
-      <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 1rem;">
-        <h3>${section.title}</h3>
-        <button class="btn btn-danger" onclick="deleteCommandSection('${section.id}')">حذف القسم</button>
-      </div>
-      
-      ${section.commands.map((cmd, index) => `
-        <div style="display: flex; justify-content: space-between; align-items: center; padding: 0.5rem; border-bottom: 1px solid rgba(0, 255, 136, 0.1);">
-          <div>
-            <strong class="command-code">${cmd.command}</strong>
-            <p style="color: #b0b0b0; font-size: 0.9rem;">${cmd.description}</p>
-          </div>
-          <button class="btn btn-danger" onclick="deleteCommand('${section.id}', ${index})">حذف</button>
-        </div>
-      `).join('')}
-      
-      <button class="btn" onclick="showAddCommandForm('${section.id}')">➕ إضافة أمر</button>
-      <div id="command-form-${section.id}"></div>
-    </div>
-  `).join('');
-}
-
-function showAddCommandSectionForm() {
-  const form = document.getElementById('command-section-form');
-  form.innerHTML = `
-    <div class="card" style="margin-top: 1rem;">
-      <h3>إضافة قسم أوامر جديد</h3>
-      <input type="text" id="command-section-title" placeholder="عنوان القسم">
-      <button class="btn" onclick="addCommandSection()">إضافة</button>
-      <button class="btn btn-danger" onclick="document.getElementById('command-section-form').innerHTML = ''">إلغاء</button>
-    </div>
-  `;
-}
-
-function addCommandSection() {
-  const title = document.getElementById('command-section-title').value;
-  if (!title) {
-    alert('يرجى إدخال عنوان القسم');
-    return;
-  }
-  dataManager.addCommandSection(title);
-  refreshAdminPage();
-}
-
-function deleteCommandSection(sectionId) {
-  if (confirm('هل أنت متأكد من حذف هذا القسم؟')) {
-    dataManager.deleteCommandSection(sectionId);
-    refreshAdminPage();
-  }
-}
-
-function showAddCommandForm(sectionId) {
-  const form = document.getElementById(`command-form-${sectionId}`);
-  form.innerHTML = `
-    <div style="margin-top: 1rem;">
-      <input type="text" id="command-text" placeholder="الأمر (مثال: /help)">
-      <input type="text" id="command-description" placeholder="الوصف">
-      <button class="btn" onclick="addCommand('${sectionId}')">إضافة</button>
-      <button class="btn btn-danger" onclick="document.getElementById('command-form-${sectionId}').innerHTML = ''">إلغاء</button>
-    </div>
-  `;
-}
-
-function addCommand(sectionId) {
-  const command = document.getElementById('command-text').value;
-  const description = document.getElementById('command-description').value;
-  
-  if (!command || !description) {
-    alert('يرجى إدخال الأمر والوصف');
-    return;
-  }
-  
-  dataManager.addCommand(sectionId, command, description);
-  refreshAdminPage();
-}
-
-function deleteCommand(sectionId, index) {
-  if (confirm('هل أنت متأكد من حذف هذا الأمر؟')) {
-    dataManager.deleteCommand(sectionId, index);
-    refreshAdminPage();
-  }
-}
-
-// ============================================
-// إدارة الانترو
-// ============================================
-
-function renderIntrosManager() {
-  const images = dataManager.data.intros.images;
-  
-  if (images.length === 0) return '<p>لا توجد صور انترو</p>';
-  
-  return images.map(img => `
-    <div class="card" style="display: flex; gap: 1rem; align-items: center;">
-      <img src="${img.url}" alt="${img.caption}" style="width: 100px; height: 75px; object-fit: cover; border-radius: 5px;">
-      <div style="flex: 1;">
-        <strong>${img.caption}</strong>
-        <p style="color: #b0b0b0; font-size: 0.9rem;">${img.url}</p>
-      </div>
-      <button class="btn btn-danger" onclick="deleteIntro('${img.id}')">حذف</button>
-    </div>
-  `).join('');
-}
-
-function showAddIntroForm() {
-  const form = document.getElementById('intro-form');
-  form.innerHTML = `
-    <div class="card" style="margin-top: 1rem;">
-      <h3>إضافة انترو جديد</h3>
-      <input type="text" id="intro-url" placeholder="رابط الصورة">
-      <input type="text" id="intro-caption" placeholder="الوصف">
-      <button class="btn" onclick="addIntro()">إضافة</button>
-      <button class="btn btn-danger" onclick="document.getElementById('intro-form').innerHTML = ''">إلغاء</button>
-    </div>
-  `;
-}
-
-function addIntro() {
-  const url = document.getElementById('intro-url').value;
-  const caption = document.getElementById('intro-caption').value;
-  
-  if (!url || !caption) {
-    alert('يرجى إدخال رابط الصورة والوصف');
-    return;
-  }
-  
-  dataManager.addIntro(url, caption);
-  refreshAdminPage();
-}
-
-function deleteIntro(introId) {
-  if (confirm('هل أنت متأكد من حذف هذه الصورة؟')) {
-    dataManager.deleteIntro(introId);
-    refreshAdminPage();
-  }
-}
-
-// ============================================
-// إدارة الرد التلقائي
-// ============================================
-
-function renderAutoRepliesManager() {
-  const replies = dataManager.data.autoReplies;
-  
-  if (replies.length === 0) return '<p>لا توجد ردود تلقائية</p>';
-  
-  return replies.map((reply, index) => `
-    <div class="card">
-      <div style="display: flex; justify-content: space-between; align-items: start;">
-        <div style="flex: 1;">
-          <strong>الكلمات المفتاحية:</strong>
-          <p style="color: #b0b0b0;">${reply.keywords.join(', ')}</p>
-          <strong style="margin-top: 0.5rem; display: block;">الرد:</strong>
-          <p style="color: #00ff88;">${reply.reply}</p>
-        </div>
-        <button class="btn btn-danger" onclick="deleteAutoReply(${index})">حذف</button>
-      </div>
-    </div>
-  `).join('');
-}
-
-function showAddAutoReplyForm() {
-  const form = document.getElementById('autoreply-form');
-  form.innerHTML = `
-    <div class="card" style="margin-top: 1rem;">
-      <h3>إضافة رد تلقائي جديد</h3>
-      <input type="text" id="autoreply-keywords" placeholder="الكلمات المفتاحية (مفصولة بفاصلة)">
-      <textarea id="autoreply-text" placeholder="الرد" rows="3"></textarea>
-      <button class="btn" onclick="addAutoReply()">إضافة</button>
-      <button class="btn btn-danger" onclick="document.getElementById('autoreply-form').innerHTML = ''">إلغاء</button>
-    </div>
-  `;
-}
-
-function addAutoReply() {
-  const keywordsStr = document.getElementById('autoreply-keywords').value;
-  const reply = document.getElementById('autoreply-text').value;
-  
-  if (!keywordsStr || !reply) {
-    alert('يرجى إدخال الكلمات المفتاحية والرد');
-    return;
-  }
-  
-  const keywords = keywordsStr.split(',').map(k => k.trim());
-  dataManager.addAutoReply(keywords, reply);
-  refreshAdminPage();
-}
-
-function deleteAutoReply(index) {
-  if (confirm('هل أنت متأكد من حذف هذا الرد التلقائي؟')) {
-    dataManager.deleteAutoReply(index);
-    refreshAdminPage();
-  }
-}
-
-// ============================================
-// أدوات إضافية
-// ============================================
-
-function exportData() {
-  const data = dataManager.exportData();
-  const blob = new Blob([data], { type: 'application/json' });
-  const url = URL.createObjectURL(blob);
-  const a = document.createElement('a');
-  a.href = url;
-  a.download = 'mta-website-data.json';
-  a.click();
-  URL.revokeObjectURL(url);
-}
-
-function importData(event) {
-  const file = event.target.files[0];
-  if (!file) return;
-  
-  const reader = new FileReader();
-  reader.onload = (e) => {
-    const success = dataManager.importData(e.target.result);
-    if (success) {
-      alert('تم استيراد البيانات بنجاح!');
-      refreshAdminPage();
-    } else {
-      alert('خطأ في استيراد البيانات!');
-    }
-  };
-  reader.readAsText(file);
-}
-
-function resetAllData() {
-  if (confirm('هل أنت متأكد من إعادة تعيين كل البيانات؟ سيتم حذف جميع التعديلات!')) {
-    dataManager.resetData();
-    refreshAdminPage();
-    alert('تم إعادة تعيين البيانات بنجاح!');
-  }
-}
-
-function refreshAdminPage() {
-  if (currentPage === 'admin' && isAdminLoggedIn) {
-    loadPage('admin');
-  }
 }
