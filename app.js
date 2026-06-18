@@ -1,6 +1,7 @@
 // ============================================
 // الدليل - MTA Commands Guide
 // التطبيق الرئيسي
+// مع Lightbox لعرض صور الانترو
 // ============================================
 
 let currentPage = 'home';
@@ -46,6 +47,7 @@ function loadPage(page) {
       break;
     case 'intros':
       app.innerHTML = renderIntrosPage();
+      initIntrosPage();
       break;
     case 'chat':
       app.innerHTML = renderChatPage();
@@ -68,6 +70,10 @@ function loadPage(page) {
   window.scrollTo({ top: 0, behavior: 'smooth' });
 }
 
+// ============================================
+// الصفحة الرئيسية
+// ============================================
+
 function renderHomePage() {
   const data = dataManager.data.home;
   
@@ -88,13 +94,17 @@ function renderHomePage() {
   return `
     <div class="hero-section">
       <h1>${data.welcomeMessage}</h1>
-      <p>اكتشف جميع الأوامر والقوانين الخاصة بسيرفر MTA - سان أندرياس</p>
+      <p>اكتشف جميع الأوامر والقوانين والانترو الخاصة بسيرفر MTA - سان أندرياس</p>
     </div>
     <div class="shortcuts-grid">
       ${shortcutsHtml}
     </div>
   `;
 }
+
+// ============================================
+// صفحة الأوامر
+// ============================================
 
 function renderCommandsPage() {
   return `
@@ -256,6 +266,10 @@ function showCopyFeedback(element, command) {
   }, 2000);
 }
 
+// ============================================
+// صفحة القوانين
+// ============================================
+
 function renderRulesPage() {
   const data = dataManager.data.rules;
   
@@ -289,30 +303,163 @@ function renderRulesPage() {
   `;
 }
 
+// ============================================
+// صفحة الانترو - مع Lightbox
+// ============================================
+
 function renderIntrosPage() {
   const data = dataManager.data.intros;
   
-  let imagesHtml = data.images.map(img => `
-    <div class="intro-card">
-      <img src="${img.url}" alt="${img.caption}">
-      <div class="intro-info">
-        <h4>${img.caption}</h4>
-        <p>${img.url}</p>
+  // تجميع الانترو حسب النوع
+  const grouped = {};
+  data.images.forEach(img => {
+    const name = img.name || 'أخرى';
+    if (!grouped[name]) {
+      grouped[name] = [];
+    }
+    grouped[name].push(img);
+  });
+  
+  let html = '';
+  
+  // عرض كل مجموعة
+  for (const groupName in grouped) {
+    html += `
+      <div class="section-card">
+        <div class="section-header">
+          <h3>🏠 ${groupName} (${grouped[groupName].length})</h3>
+        </div>
+        <div class="intros-grid">
+          ${grouped[groupName].map(img => `
+            <div class="intro-card" onclick="openLightbox('${img.url}', '${img.caption.replace(/'/g, "\\'")}')">
+              <img src="${img.url}" alt="${img.caption}" loading="lazy">
+              <div class="intro-info">
+                <h4>${img.caption}</h4>
+                <p style="color: var(--primary); font-size: 0.8rem; margin-top: 0.3rem;">👆 اضغط للعرض الكامل</p>
+              </div>
+            </div>
+          `).join('')}
+        </div>
       </div>
-    </div>
-  `).join('');
+    `;
+  }
   
   return `
     <h1 class="page-title">🎬 الانترو</h1>
-    <p class="page-subtitle">صور الانترو الخاصة بالسيرفر</p>
-    <div class="intros-grid">
-      ${imagesHtml}
-    </div>
+    <p class="page-subtitle">صور الانترو الخاصة بالسيرفر - اضغط على أي صورة لعرضها بحجم كامل</p>
+    ${html}
   `;
 }
 
+function initIntrosPage() {
+  // إضافة event listeners للصور
+  setTimeout(() => {
+    document.querySelectorAll('.intro-card').forEach(card => {
+      card.style.cursor = 'pointer';
+    });
+  }, 50);
+}
+
+// ===== Lightbox - عرض الصور بحجم كامل =====
+
+function openLightbox(url, caption) {
+  // إنشاء الـ modal
+  const modal = document.createElement('div');
+  modal.className = 'lightbox-modal';
+  modal.id = 'lightbox-modal';
+  modal.innerHTML = `
+    <div class="lightbox-backdrop" onclick="closeLightbox()"></div>
+    <div class="lightbox-content">
+      <button class="lightbox-close" onclick="closeLightbox()">✕</button>
+      <button class="lightbox-nav lightbox-prev" onclick="navigateLightbox(-1)">‹</button>
+      <button class="lightbox-nav lightbox-next" onclick="navigateLightbox(1)">›</button>
+      <div class="lightbox-image-container">
+        <img src="${url}" alt="${caption}" class="lightbox-image" id="lightbox-image">
+      </div>
+      <div class="lightbox-caption" id="lightbox-caption">${caption}</div>
+    </div>
+  `;
+  
+  document.body.appendChild(modal);
+  document.body.style.overflow = 'hidden';
+  
+  // حفظ البيانات للتنقل
+  window.lightboxData = {
+    currentUrl: url,
+    caption: caption,
+    allImages: dataManager.data.intros.images
+  };
+  
+  // إضافة event listener للـ keyboard
+  document.addEventListener('keydown', handleLightboxKeys);
+  
+  // تأثير الظهور
+  setTimeout(() => {
+    modal.classList.add('active');
+  }, 10);
+}
+
+function closeLightbox() {
+  const modal = document.getElementById('lightbox-modal');
+  if (modal) {
+    modal.classList.remove('active');
+    setTimeout(() => {
+      modal.remove();
+      document.body.style.overflow = '';
+    }, 300);
+  }
+  
+  document.removeEventListener('keydown', handleLightboxKeys);
+  window.lightboxData = null;
+}
+
+function navigateLightbox(direction) {
+  if (!window.lightboxData) return;
+  
+  const { currentUrl, allImages } = window.lightboxData;
+  const currentIndex = allImages.findIndex(img => img.url === currentUrl);
+  
+  if (currentIndex === -1) return;
+  
+  let newIndex = currentIndex + direction;
+  
+  // Loop around
+  if (newIndex < 0) newIndex = allImages.length - 1;
+  if (newIndex >= allImages.length) newIndex = 0;
+  
+  const newImage = allImages[newIndex];
+  
+  // تحديث الصورة
+  const imgElement = document.getElementById('lightbox-image');
+  const captionElement = document.getElementById('lightbox-caption');
+  
+  if (imgElement && captionElement) {
+    imgElement.style.opacity = '0';
+    
+    setTimeout(() => {
+      imgElement.src = newImage.url;
+      imgElement.alt = newImage.caption;
+      captionElement.textContent = newImage.caption;
+      imgElement.style.opacity = '1';
+      
+      window.lightboxData.currentUrl = newImage.url;
+      window.lightboxData.caption = newImage.caption;
+    }, 200);
+  }
+}
+
+function handleLightboxKeys(e) {
+  if (e.key === 'Escape') {
+    closeLightbox();
+  } else if (e.key === 'ArrowLeft') {
+    navigateLightbox(1);
+  } else if (e.key === 'ArrowRight') {
+    navigateLightbox(-1);
+  }
+}
+
 // ============================================
-// صفحة الرد التلقائي - محسّنة
+// صفحة الرد التلقائي
 // ============================================
 
 function renderChatPage() {
@@ -322,7 +469,7 @@ function renderChatPage() {
     <div class="chat-container">
       <div class="chat-body" id="chat-page-messages">
         <div class="chat-message bot">
-          <div class="msg-avatar"></div>
+          <div class="msg-avatar">🤖</div>
           <div class="msg-bubble">
             <div class="msg-header">المساعد الآلي</div>
             <div class="msg-text"><p>أهلاً! كيف يمكنني مساعدتك؟</p></div>
@@ -465,7 +612,7 @@ function addFloatChatMessage(text, sender) {
   
   if (sender === 'bot') {
     messageDiv.innerHTML = `
-      <div class="msg-avatar"></div>
+      <div class="msg-avatar">🤖</div>
       <div class="msg-bubble">
         <div class="msg-text">${text}</div>
       </div>
@@ -481,6 +628,10 @@ function addFloatChatMessage(text, sender) {
   messagesContainer.appendChild(messageDiv);
   messagesContainer.scrollTop = messagesContainer.scrollHeight;
 }
+
+// ============================================
+// قائمة الموبايل
+// ============================================
 
 function initMenuToggle() {
   const menuToggle = document.getElementById('menuToggle');
