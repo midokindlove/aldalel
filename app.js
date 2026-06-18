@@ -62,6 +62,10 @@ function loadPage(page) {
     case 'intros':
       content.innerHTML = renderIntrosPage();
       break;
+    case 'chat':
+      content.innerHTML = renderChatPage();
+      initChatPage();
+      break;
     case 'admin':
       content.innerHTML = renderAdminPage();
       initAdminLogin();
@@ -249,7 +253,91 @@ function renderIntrosPage() {
 }
 
 // ============================================
-// نظام الشات والرد التلقائي
+// صفحة الرد التلقائي الكاملة
+// ============================================
+
+function renderChatPage() {
+  const autoReplies = dataManager.data.autoReplies;
+  
+  let repliesListHtml = autoReplies.map(reply => `
+    <div class="card" style="margin-bottom: 1rem;">
+      <strong style="color: #00ff88;">الكلمات المفتاحية:</strong>
+      <p style="margin: 0.5rem 0;">${reply.keywords.join(', ')}</p>
+      <strong style="color: #00ff88;">الرد:</strong>
+      <p style="margin: 0.5rem 0; color: #e0e0e0;">${reply.reply}</p>
+    </div>
+  `).join('');
+  
+  return `
+    <div class="page active">
+      <h1>🤖 الرد التلقائي</h1>
+      <p style="margin-bottom: 2rem; color: #b0b0b0;">
+        اسأل المساعد الآلي عن أي شيء وسيرد عليك تلقائياً
+      </p>
+      
+      <!-- واجهة الشات الكاملة -->
+      <div class="card" style="height: 500px; display: flex; flex-direction: column;">
+        <div id="chat-page-messages" class="chat-messages" style="flex: 1; overflow-y: auto; margin-bottom: 1rem;">
+          <div class="chat-message bot">
+            أهلاً! أنا المساعد الآلي، كيف يمكنني مساعدتك؟
+          </div>
+        </div>
+        <div style="display: flex; gap: 0.5rem;">
+          <input type="text" id="chat-page-input" placeholder="اكتب سؤالك هنا..." style="flex: 1; margin-bottom: 0;">
+          <button class="btn" onclick="sendChatPageMessage()">إرسال</button>
+        </div>
+      </div>
+      
+      <!-- قائمة الردود التلقائية المتاحة -->
+      <div style="margin-top: 3rem;">
+        <h2>📋 الردود التلقائية المتاحة</h2>
+        <p style="margin-bottom: 1.5rem; color: #b0b0b0;">
+          هذه هي الأسئلة التي يمكن للمساعد الآلي الرد عليها:
+        </p>
+        ${repliesListHtml}
+      </div>
+    </div>
+  `;
+}
+
+function initChatPage() {
+  const input = document.getElementById('chat-page-input');
+  if (input) {
+    input.addEventListener('keypress', (e) => {
+      if (e.key === 'Enter') {
+        sendChatPageMessage();
+      }
+    });
+  }
+}
+
+function sendChatPageMessage() {
+  const input = document.getElementById('chat-page-input');
+  const message = input.value.trim();
+  
+  if (!message) return;
+  
+  addChatPageMessage(message, 'user');
+  input.value = '';
+  
+  // الحصول على الرد التلقائي
+  setTimeout(() => {
+    const reply = dataManager.getAutoReply(message);
+    addChatPageMessage(reply, 'bot');
+  }, 500);
+}
+
+function addChatPageMessage(text, sender) {
+  const messagesContainer = document.getElementById('chat-page-messages');
+  const messageDiv = document.createElement('div');
+  messageDiv.className = `chat-message ${sender}`;
+  messageDiv.textContent = text;
+  messagesContainer.appendChild(messageDiv);
+  messagesContainer.scrollTop = messagesContainer.scrollHeight;
+}
+
+// ============================================
+// نظام الشات العائم
 // ============================================
 
 function initChat() {
@@ -465,7 +553,7 @@ function showAddShortcutForm() {
       <input type="text" id="shortcut-title" placeholder="العنوان">
       <input type="text" id="shortcut-icon" placeholder="الأيقونة (إيموجي)">
       <input type="text" id="shortcut-url" placeholder="الرابط (اختياري)">
-      <input type="text" id="shortcut-page" placeholder="الصفحة (اختياري: home, rules, commands, intros)">
+      <input type="text" id="shortcut-page" placeholder="الصفحة (اختياري: home, rules, commands, intros, chat)">
       <button class="btn" onclick="addShortcut()">إضافة</button>
       <button class="btn btn-danger" onclick="document.getElementById('shortcut-form').innerHTML = ''">إلغاء</button>
     </div>
