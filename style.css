@@ -1,5 +1,5 @@
 /* ============================================
-   MTA Commands - تصميم احترافي حديث
+   MTA Commands - تصميم احترافي
    ============================================ */
 
 * {
@@ -360,7 +360,7 @@ input::placeholder, textarea::placeholder {
 }
 
 /* ============================================
-   لوحة الإدارة
+   لوحة الإدارة - تصميم لوحة تحكم حقيقية
    ============================================ */
 
 .admin-login {
@@ -384,21 +384,26 @@ input::placeholder, textarea::placeholder {
   border: 1px solid var(--border);
 }
 
+/* ===== لوحة التحكم الحقيقية ===== */
 .admin-layout {
-  display: grid;
-  grid-template-columns: 250px 1fr;
+  display: flex;
   gap: 2rem;
+  min-height: calc(100vh - 200px);
 }
 
-/* Sidebar */
+/* Sidebar - القائمة الجانبية */
 .admin-sidebar {
+  width: 280px;
+  flex-shrink: 0;
   background: var(--bg-card);
   border-radius: 12px;
   border: 1px solid var(--border);
   padding: 1.5rem;
-  height: fit-content;
   position: sticky;
   top: 100px;
+  height: fit-content;
+  max-height: calc(100vh - 120px);
+  overflow-y: auto;
 }
 
 .sidebar-title {
@@ -406,17 +411,18 @@ input::placeholder, textarea::placeholder {
   text-transform: uppercase;
   letter-spacing: 2px;
   color: var(--text-secondary);
-  margin-bottom: 1rem;
+  margin-bottom: 1.5rem;
   padding-bottom: 1rem;
   border-bottom: 2px solid var(--border);
+  font-weight: 700;
 }
 
 .sidebar-btn {
   width: 100%;
   background: transparent;
-  border: none;
+  border: 2px solid transparent;
   color: var(--text-secondary);
-  padding: 0.875rem 1rem;
+  padding: 1rem 1.25rem;
   border-radius: 8px;
   cursor: pointer;
   font-size: 1rem;
@@ -424,28 +430,35 @@ input::placeholder, textarea::placeholder {
   transition: all 0.3s;
   display: flex;
   align-items: center;
-  gap: 0.75rem;
+  gap: 1rem;
   margin-bottom: 0.5rem;
+  font-weight: 500;
 }
 
 .sidebar-btn:hover {
   background: rgba(0, 255, 136, 0.1);
   color: var(--primary);
+  border-color: var(--border);
 }
 
 .sidebar-btn.active {
   background: var(--primary);
   color: var(--bg-dark);
-  font-weight: bold;
+  border-color: var(--primary);
+  font-weight: 700;
+  box-shadow: 0 4px 15px rgba(0, 255, 136, 0.3);
 }
 
 .sidebar-icon {
-  font-size: 1.25rem;
+  font-size: 1.5rem;
+  width: 30px;
+  text-align: center;
 }
 
-/* Content */
+/* Content Area - منطقة المحتوى */
 .admin-content {
-  min-height: 600px;
+  flex: 1;
+  min-width: 0;
 }
 
 .admin-panel {
@@ -461,8 +474,10 @@ input::placeholder, textarea::placeholder {
   justify-content: space-between;
   align-items: center;
   margin-bottom: 2rem;
-  padding-bottom: 1rem;
+  padding-bottom: 1.5rem;
   border-bottom: 2px solid var(--border);
+  flex-wrap: wrap;
+  gap: 1rem;
 }
 
 .panel-header h2 {
@@ -470,6 +485,11 @@ input::placeholder, textarea::placeholder {
 }
 
 /* Search */
+.search-box-inline {
+  display: flex;
+  align-items: center;
+}
+
 .search-box-inline input {
   padding-right: 3rem;
   margin: 0;
@@ -497,6 +517,7 @@ input::placeholder, textarea::placeholder {
   cursor: pointer;
   font-size: 0.9rem;
   transition: all 0.3s;
+  font-weight: 600;
 }
 
 .tab-btn:hover {
@@ -521,6 +542,7 @@ input::placeholder, textarea::placeholder {
 
 .inline-form h3 {
   margin-bottom: 1rem;
+  font-size: 1.2rem;
 }
 
 .inline-form.compact {
@@ -532,6 +554,7 @@ input::placeholder, textarea::placeholder {
   display: flex;
   gap: 1rem;
   align-items: center;
+  flex-wrap: wrap;
 }
 
 .form-row input,
@@ -545,20 +568,21 @@ input::placeholder, textarea::placeholder {
   border-radius: 10px;
   overflow: hidden;
   border: 1px solid var(--border);
+  margin-top: 1.5rem;
 }
 
 .table-header {
   display: flex;
-  padding: 1rem;
+  padding: 1rem 1.5rem;
   background: rgba(0, 255, 136, 0.1);
-  font-weight: bold;
+  font-weight: 700;
   color: var(--primary);
   border-bottom: 2px solid var(--border);
 }
 
 .table-row {
   display: flex;
-  padding: 1rem;
+  padding: 1rem 1.5rem;
   border-bottom: 1px solid var(--border);
   transition: all 0.3s;
   align-items: center;
@@ -580,7 +604,7 @@ input::placeholder, textarea::placeholder {
 .list-item {
   display: flex;
   align-items: center;
-  padding: 0.875rem;
+  padding: 1rem;
   background: rgba(10, 14, 39, 0.3);
   border-radius: 8px;
   margin-bottom: 0.5rem;
@@ -595,7 +619,7 @@ input::placeholder, textarea::placeholder {
 
 .list-item-icon {
   color: var(--primary);
-  font-size: 1.25rem;
+  font-size: 1.5rem;
   margin-left: 1rem;
 }
 
@@ -619,6 +643,8 @@ input::placeholder, textarea::placeholder {
   margin-bottom: 1.5rem;
   padding-bottom: 1rem;
   border-bottom: 2px solid var(--border);
+  flex-wrap: wrap;
+  gap: 1rem;
 }
 
 .section-block-header h3 {
@@ -713,6 +739,7 @@ input::placeholder, textarea::placeholder {
   font-size: 0.875rem;
   border: 1px solid var(--border);
   display: inline-block;
+  margin: 0.25rem;
 }
 
 /* Empty State */
@@ -815,21 +842,28 @@ input::placeholder, textarea::placeholder {
   background: var(--primary-dark);
 }
 
-/* Responsive */
+/* ===== Responsive - لوحة التحكم ===== */
 @media (max-width: 1024px) {
   .admin-layout {
-    grid-template-columns: 1fr;
+    flex-direction: column;
   }
   
   .admin-sidebar {
+    width: 100%;
     position: static;
+    max-height: none;
+  }
+  
+  .sidebar-btn {
+    display: inline-flex;
+    width: auto;
+    margin-left: 0.5rem;
   }
 }
 
 @media (max-width: 768px) {
   .panel-header {
     flex-direction: column;
-    gap: 1rem;
     align-items: stretch;
   }
   
