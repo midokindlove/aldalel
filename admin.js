@@ -1,8 +1,10 @@
 // ============================================
-// لوحة الإدارة - تصميم منظم ومباشر
+// لوحة الإدارة - نظام Tabs مع بحث وفلترة
 // ============================================
 
 let adminCurrentSection = 'home';
+let adminCurrentTab = 'all';
+let adminSearchQuery = '';
 
 // ============================================
 // صفحة الإدارة الرئيسية
@@ -120,6 +122,8 @@ function renderAdminDashboard() {
 
 function switchAdminSection(section, btn) {
   adminCurrentSection = section;
+  adminCurrentTab = 'all';
+  adminSearchQuery = '';
   document.getElementById('admin-section-content').innerHTML = renderAdminSection(section);
   
   document.querySelectorAll('.sidebar-btn').forEach(b => b.classList.remove('active'));
@@ -139,16 +143,49 @@ function renderAdminSection(section) {
 }
 
 // ============================================
+// تبديل التبويب
+// ============================================
+
+function switchTab(tab) {
+  adminCurrentTab = tab;
+  refreshCurrentSection();
+}
+
+function refreshCurrentSection() {
+  document.getElementById('admin-section-content').innerHTML = renderAdminSection(adminCurrentSection);
+}
+
+// ============================================
+// البحث
+// ============================================
+
+function searchInSection(query) {
+  adminSearchQuery = query.toLowerCase();
+  refreshCurrentSection();
+}
+
+// ============================================
 // قسم الصفحة الرئيسية
 // ============================================
 
 function renderAdminHomeSection() {
   const shortcuts = dataManager.data.home.shortcuts;
   
+  // فلترة حسب البحث
+  const filteredShortcuts = adminSearchQuery 
+    ? shortcuts.filter(s => 
+        s.title.toLowerCase().includes(adminSearchQuery) ||
+        (s.url && s.url.toLowerCase().includes(adminSearchQuery))
+      )
+    : shortcuts;
+  
   return `
     <div class="admin-panel">
       <div class="panel-header">
         <h2>🏠 الصفحة الرئيسية - الاختصارات</h2>
+        <div class="search-box-inline">
+          <input type="text" id="search-input" placeholder="🔍 بحث..." value="${adminSearchQuery}" oninput="searchInSection(this.value)">
+        </div>
       </div>
       
       <!-- نموذج الإضافة مباشر -->
@@ -170,17 +207,24 @@ function renderAdminHomeSection() {
           <div style="flex: 1;">الرابط</div>
           <div style="width: 80px;">إجراء</div>
         </div>
-        ${shortcuts.length === 0 ? '<div class="empty-state">لا توجد اختصارات</div>' : ''}
-        ${shortcuts.map((shortcut, index) => `
-          <div class="table-row">
-            <div style="width: 60px; font-size: 1.5rem;">${shortcut.icon}</div>
-            <div style="flex: 1; font-weight: bold;">${shortcut.title}</div>
-            <div style="flex: 1; color: #b0b0b0; font-size: 0.9rem;">${shortcut.url || shortcut.page || '-'}</div>
-            <div style="width: 80px;">
-              <button class="btn btn-danger btn-sm" onclick="deleteShortcut(${index})">🗑️</button>
+        ${filteredShortcuts.length === 0 ? '<div class="empty-state">لا توجد نتائج</div>' : ''}
+        ${filteredShortcuts.map((shortcut, index) => {
+          const originalIndex = shortcuts.indexOf(shortcut);
+          return `
+            <div class="table-row">
+              <div style="width: 60px; font-size: 1.5rem;">${shortcut.icon}</div>
+              <div style="flex: 1; font-weight: bold;">${shortcut.title}</div>
+              <div style="flex: 1; color: #b0b0b0; font-size: 0.9rem;">${shortcut.url || shortcut.page || '-'}</div>
+              <div style="width: 80px;">
+                <button class="btn btn-danger btn-sm" onclick="deleteShortcut(${originalIndex})">🗑️</button>
+              </div>
             </div>
-          </div>
-        `).join('')}
+          `;
+        }).join('')}
+      </div>
+      
+      <div class="results-info">
+        عرض ${filteredShortcuts.length} من ${shortcuts.length} اختصار
       </div>
     </div>
   `;
@@ -208,31 +252,61 @@ function deleteShortcut(index) {
 }
 
 // ============================================
-// قسم القوانين - عرض مباشر
+// قسم القوانين - مع Tabs
 // ============================================
 
 function renderAdminRulesSection() {
   const sections = dataManager.data.rules.sections;
   
+  // فلترة حسب التبويب
+  const filteredSections = adminCurrentTab === 'all' 
+    ? sections 
+    : sections.filter(s => s.id === adminCurrentTab);
+  
+  // فلترة حسب البحث
+  const finalSections = adminSearchQuery
+    ? filteredSections.map(section => ({
+        ...section,
+        items: section.items.filter(item => item.toLowerCase().includes(adminSearchQuery))
+      })).filter(section => section.items.length > 0)
+    : filteredSections;
+  
   return `
     <div class="admin-panel">
       <div class="panel-header">
         <h2>📜 إدارة القوانين</h2>
-      </div>
-      
-      <!-- إضافة قسم جديد -->
-      <div class="inline-form">
-        <h3>➕ إضافة قسم قوانين جديد</h3>
-        <div class="form-row">
-          <input type="text" id="rule-section-title" placeholder="عنوان القسم (مثال: القوانين العامة)" style="flex: 1;">
-          <button class="btn" onclick="addRuleSection()">إضافة</button>
+        <div class="search-box-inline">
+          <input type="text" id="search-input" placeholder="🔍 بحث..." value="${adminSearchQuery}" oninput="searchInSection(this.value)">
         </div>
       </div>
       
-      <!-- عرض الأقسام -->
-      ${sections.length === 0 ? '<div class="empty-state">لا توجد أقسام قوانين</div>' : ''}
+      <!-- Tabs -->
+      <div class="tabs-container">
+        <button class="tab-btn ${adminCurrentTab === 'all' ? 'active' : ''}" onclick="switchTab('all')">
+          الكل (${sections.length})
+        </button>
+        ${sections.map(section => `
+          <button class="tab-btn ${adminCurrentTab === section.id ? 'active' : ''}" onclick="switchTab('${section.id}')">
+            ${section.title} (${section.items.length})
+          </button>
+        `).join('')}
+      </div>
       
-      ${sections.map(section => `
+      <!-- إضافة قسم جديد -->
+      ${adminCurrentTab === 'all' ? `
+        <div class="inline-form">
+          <h3>➕ إضافة قسم قوانين جديد</h3>
+          <div class="form-row">
+            <input type="text" id="rule-section-title" placeholder="عنوان القسم (مثال: القوانين العامة)" style="flex: 1;">
+            <button class="btn" onclick="addRuleSection()">إضافة</button>
+          </div>
+        </div>
+      ` : ''}
+      
+      <!-- عرض الأقسام -->
+      ${finalSections.length === 0 ? '<div class="empty-state">لا توجد نتائج</div>' : ''}
+      
+      ${finalSections.map(section => `
         <div class="section-block">
           <div class="section-block-header">
             <h3>📁 ${section.title}</h3>
@@ -250,16 +324,23 @@ function renderAdminRulesSection() {
           <!-- قائمة القوانين -->
           <div class="items-list">
             ${section.items.length === 0 ? '<p style="color: #b0b0b0; padding: 1rem; text-align: center;">لا توجد قوانين في هذا القسم</p>' : ''}
-            ${section.items.map((item, index) => `
-              <div class="list-item">
-                <span class="list-item-icon">✓</span>
-                <span class="list-item-text">${item}</span>
-                <button class="btn btn-danger btn-sm" onclick="deleteRuleItem('${section.id}', ${index})">🗑️</button>
-              </div>
-            `).join('')}
+            ${section.items.map((item, index) => {
+              const originalIndex = dataManager.data.rules.sections.find(s => s.id === section.id).items.indexOf(item);
+              return `
+                <div class="list-item">
+                  <span class="list-item-icon">✓</span>
+                  <span class="list-item-text">${item}</span>
+                  <button class="btn btn-danger btn-sm" onclick="deleteRuleItem('${section.id}', ${originalIndex})">🗑️</button>
+                </div>
+              `;
+            }).join('')}
           </div>
         </div>
       `).join('')}
+      
+      <div class="results-info">
+        عرض ${finalSections.length} قسم
+      </div>
     </div>
   `;
 }
@@ -277,6 +358,7 @@ function addRuleSection() {
 function deleteRuleSection(sectionId) {
   if (confirm('هل أنت متأكد من حذف هذا القسم وجميع قوانينه؟')) {
     dataManager.deleteRuleSection(sectionId);
+    adminCurrentTab = 'all';
     refreshAdminPage();
   }
 }
@@ -300,31 +382,64 @@ function deleteRuleItem(sectionId, index) {
 }
 
 // ============================================
-// قسم الأوامر - عرض مباشر
+// قسم الأوامر - مع Tabs
 // ============================================
 
 function renderAdminCommandsSection() {
   const sections = dataManager.data.commands.sections;
   
+  // فلترة حسب التبويب
+  const filteredSections = adminCurrentTab === 'all' 
+    ? sections 
+    : sections.filter(s => s.id === adminCurrentTab);
+  
+  // فلترة حسب البحث
+  const finalSections = adminSearchQuery
+    ? filteredSections.map(section => ({
+        ...section,
+        commands: section.commands.filter(cmd => 
+          cmd.command.toLowerCase().includes(adminSearchQuery) ||
+          cmd.description.toLowerCase().includes(adminSearchQuery)
+        )
+      })).filter(section => section.commands.length > 0)
+    : filteredSections;
+  
   return `
     <div class="admin-panel">
       <div class="panel-header">
         <h2>⌨️ إدارة الأوامر</h2>
-      </div>
-      
-      <!-- إضافة قسم جديد -->
-      <div class="inline-form">
-        <h3>➕ إضافة قسم أوامر جديد</h3>
-        <div class="form-row">
-          <input type="text" id="command-section-title" placeholder="عنوان القسم (مثال: أوامر الإدارة)" style="flex: 1;">
-          <button class="btn" onclick="addCommandSection()">إضافة</button>
+        <div class="search-box-inline">
+          <input type="text" id="search-input" placeholder="🔍 بحث..." value="${adminSearchQuery}" oninput="searchInSection(this.value)">
         </div>
       </div>
       
-      <!-- عرض الأقسام -->
-      ${sections.length === 0 ? '<div class="empty-state">لا توجد أقسام أوامر</div>' : ''}
+      <!-- Tabs -->
+      <div class="tabs-container">
+        <button class="tab-btn ${adminCurrentTab === 'all' ? 'active' : ''}" onclick="switchTab('all')">
+          الكل (${sections.length})
+        </button>
+        ${sections.map(section => `
+          <button class="tab-btn ${adminCurrentTab === section.id ? 'active' : ''}" onclick="switchTab('${section.id}')">
+            ${section.title} (${section.commands.length})
+          </button>
+        `).join('')}
+      </div>
       
-      ${sections.map(section => `
+      <!-- إضافة قسم جديد -->
+      ${adminCurrentTab === 'all' ? `
+        <div class="inline-form">
+          <h3>➕ إضافة قسم أوامر جديد</h3>
+          <div class="form-row">
+            <input type="text" id="command-section-title" placeholder="عنوان القسم (مثال: أوامر الإدارة)" style="flex: 1;">
+            <button class="btn" onclick="addCommandSection()">إضافة</button>
+          </div>
+        </div>
+      ` : ''}
+      
+      <!-- عرض الأقسام -->
+      ${finalSections.length === 0 ? '<div class="empty-state">لا توجد نتائج</div>' : ''}
+      
+      ${finalSections.map(section => `
         <div class="section-block">
           <div class="section-block-header">
             <h3>📁 ${section.title}</h3>
@@ -348,24 +463,31 @@ function renderAdminCommandsSection() {
               <div style="width: 100px;">إجراءات</div>
             </div>
             ${section.commands.length === 0 ? '<div class="empty-state">لا توجد أوامر</div>' : ''}
-            ${section.commands.map((cmd, index) => `
-              <div class="table-row">
-                <div style="flex: 1;">
-                  <code class="command-code">${cmd.command}</code>
+            ${section.commands.map((cmd, index) => {
+              const originalIndex = dataManager.data.commands.sections.find(s => s.id === section.id).commands.indexOf(cmd);
+              return `
+                <div class="table-row">
+                  <div style="flex: 1;">
+                    <code class="command-code">${cmd.command}</code>
+                  </div>
+                  <div style="flex: 2; color: #b0b0b0;">${cmd.description}</div>
+                  <div style="width: 100px; display: flex; gap: 0.25rem;">
+                    <button class="btn btn-sm" onclick="showEditCommand('${section.id}', ${originalIndex})">✏️</button>
+                    <button class="btn btn-danger btn-sm" onclick="deleteCommand('${section.id}', ${originalIndex})">🗑️</button>
+                  </div>
                 </div>
-                <div style="flex: 2; color: #b0b0b0;">${cmd.description}</div>
-                <div style="width: 100px; display: flex; gap: 0.25rem;">
-                  <button class="btn btn-sm" onclick="showEditCommand('${section.id}', ${index})">✏️</button>
-                  <button class="btn btn-danger btn-sm" onclick="deleteCommand('${section.id}', ${index})">🗑️</button>
-                </div>
-              </div>
-            `).join('')}
+              `;
+            }).join('')}
           </div>
           
           <!-- منطقة التعديل -->
           <div id="edit-area-${section.id}"></div>
         </div>
       `).join('')}
+      
+      <div class="results-info">
+        عرض ${finalSections.length} قسم
+      </div>
     </div>
   `;
 }
@@ -383,6 +505,7 @@ function addCommandSection() {
 function deleteCommandSection(sectionId) {
   if (confirm('هل أنت متأكد من حذف هذا القسم وجميع أوامره؟')) {
     dataManager.deleteCommandSection(sectionId);
+    adminCurrentTab = 'all';
     refreshAdminPage();
   }
 }
@@ -447,10 +570,21 @@ function deleteCommand(sectionId, index) {
 function renderAdminIntrosSection() {
   const images = dataManager.data.intros.images;
   
+  // فلترة حسب البحث
+  const filteredImages = adminSearchQuery 
+    ? images.filter(img => 
+        img.caption.toLowerCase().includes(adminSearchQuery) ||
+        img.url.toLowerCase().includes(adminSearchQuery)
+      )
+    : images;
+  
   return `
     <div class="admin-panel">
       <div class="panel-header">
         <h2>🎬 إدارة الانترو</h2>
+        <div class="search-box-inline">
+          <input type="text" id="search-input" placeholder="🔍 بحث..." value="${adminSearchQuery}" oninput="searchInSection(this.value)">
+        </div>
       </div>
       
       <!-- إضافة انترو -->
@@ -464,19 +598,26 @@ function renderAdminIntrosSection() {
       </div>
       
       <!-- قائمة الانترو -->
-      ${images.length === 0 ? '<div class="empty-state">لا توجد صور انترو</div>' : ''}
+      ${filteredImages.length === 0 ? '<div class="empty-state">لا توجد نتائج</div>' : ''}
       
       <div class="image-grid-admin">
-        ${images.map(img => `
-          <div class="image-card-admin">
-            <img src="${img.url}" alt="${img.caption}">
-            <div class="image-card-info">
-              <strong>${img.caption}</strong>
-              <small>${img.url}</small>
+        ${filteredImages.map(img => {
+          const originalIndex = images.indexOf(img);
+          return `
+            <div class="image-card-admin">
+              <img src="${img.url}" alt="${img.caption}">
+              <div class="image-card-info">
+                <strong>${img.caption}</strong>
+                <small>${img.url}</small>
+              </div>
+              <button class="btn btn-danger btn-sm" onclick="deleteIntro('${img.id}')">🗑️ حذف</button>
             </div>
-            <button class="btn btn-danger btn-sm" onclick="deleteIntro('${img.id}')">🗑️ حذف</button>
-          </div>
-        `).join('')}
+          `;
+        }).join('')}
+      </div>
+      
+      <div class="results-info">
+        عرض ${filteredImages.length} من ${images.length} صورة
       </div>
     </div>
   `;
@@ -509,10 +650,21 @@ function deleteIntro(introId) {
 function renderAdminAutorepliesSection() {
   const replies = dataManager.data.autoReplies;
   
+  // فلترة حسب البحث
+  const filteredReplies = adminSearchQuery 
+    ? replies.filter(reply => 
+        reply.keywords.some(k => k.toLowerCase().includes(adminSearchQuery)) ||
+        reply.reply.toLowerCase().includes(adminSearchQuery)
+      )
+    : replies;
+  
   return `
     <div class="admin-panel">
       <div class="panel-header">
         <h2>🤖 إدارة الرد التلقائي</h2>
+        <div class="search-box-inline">
+          <input type="text" id="search-input" placeholder="🔍 بحث..." value="${adminSearchQuery}" oninput="searchInSection(this.value)">
+        </div>
       </div>
       
       <!-- إضافة رد -->
@@ -528,7 +680,7 @@ function renderAdminAutorepliesSection() {
       </div>
       
       <!-- قائمة الردود -->
-      ${replies.length === 0 ? '<div class="empty-state">لا توجد ردود تلقائية</div>' : ''}
+      ${filteredReplies.length === 0 ? '<div class="empty-state">لا توجد نتائج</div>' : ''}
       
       <div class="data-table">
         <div class="table-header">
@@ -536,19 +688,26 @@ function renderAdminAutorepliesSection() {
           <div style="flex: 2;">الرد</div>
           <div style="width: 80px;">إجراء</div>
         </div>
-        ${replies.map((reply, index) => `
-          <div class="table-row">
-            <div style="flex: 1;">
-              <div style="display: flex; flex-wrap: wrap; gap: 0.25rem;">
-                ${reply.keywords.map(k => `<span class="keyword-tag">${k}</span>`).join('')}
+        ${filteredReplies.map((reply, index) => {
+          const originalIndex = replies.indexOf(reply);
+          return `
+            <div class="table-row">
+              <div style="flex: 1;">
+                <div style="display: flex; flex-wrap: wrap; gap: 0.25rem;">
+                  ${reply.keywords.map(k => `<span class="keyword-tag">${k}</span>`).join('')}
+                </div>
+              </div>
+              <div style="flex: 2; color: #00ff88;">${reply.reply}</div>
+              <div style="width: 80px;">
+                <button class="btn btn-danger btn-sm" onclick="deleteAutoReply(${originalIndex})">🗑️</button>
               </div>
             </div>
-            <div style="flex: 2; color: #00ff88;">${reply.reply}</div>
-            <div style="width: 80px;">
-              <button class="btn btn-danger btn-sm" onclick="deleteAutoReply(${index})">🗑️</button>
-            </div>
-          </div>
-        `).join('')}
+          `;
+        }).join('')}
+      </div>
+      
+      <div class="results-info">
+        عرض ${filteredReplies.length} من ${replies.length} رد
       </div>
     </div>
   `;
