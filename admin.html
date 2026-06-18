@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>الإدارة الذكية المتطورة - الدليل MTA</title>
+    <title>الإدارة المتطورة - الدليل MTA</title>
     <link rel="stylesheet" href="style.css">
     <link href="https://fonts.googleapis.com/css2?family=Cairo:wght@400;600;700&display=swap" rel="stylesheet">
     <style>
@@ -37,7 +37,6 @@
             line-height: 1.6;
         }
 
-        /* ===== شريط التمرير ===== */
         ::-webkit-scrollbar {
             width: 8px;
         }
@@ -52,7 +51,6 @@
             background: var(--primary-dark);
         }
 
-        /* ===== الهيدر ===== */
         header {
             background: var(--secondary);
             padding: 15px 20px;
@@ -109,14 +107,12 @@
             color: white;
         }
 
-        /* ===== الحاوية الرئيسية ===== */
         .container {
             max-width: 1400px;
             margin: 0 auto;
             padding: 20px;
         }
 
-        /* ===== البطاقات ===== */
         .card {
             background: var(--bg-card);
             border-radius: var(--radius);
@@ -140,7 +136,6 @@
             gap: 10px;
         }
 
-        /* ===== لوحة التحكم ===== */
         .admin-dashboard {
             display: grid;
             grid-template-columns: repeat(auto-fit, minmax(150px, 1fr));
@@ -181,7 +176,6 @@
             margin-bottom: 5px;
         }
 
-        /* ===== التبويبات ===== */
         .admin-tabs {
             display: flex;
             gap: 6px;
@@ -226,7 +220,6 @@
             to { opacity: 1; transform: translateY(0); }
         }
 
-        /* ===== البحث ===== */
         .search-box {
             width: 100%;
             padding: 10px 16px;
@@ -244,7 +237,6 @@
             border-color: var(--primary);
         }
 
-        /* ===== قائمة العناصر ===== */
         .item-list {
             max-height: 400px;
             overflow-y: auto;
@@ -307,30 +299,20 @@
             background: #ffaa00;
             color: white;
         }
-
-        .btn-sm-edit:hover {
-            background: #cc8800;
-        }
+        .btn-sm-edit:hover { background: #cc8800; }
 
         .btn-sm-delete {
             background: #ff3333;
             color: white;
         }
-
-        .btn-sm-delete:hover {
-            background: #cc0000;
-        }
+        .btn-sm-delete:hover { background: #cc0000; }
 
         .btn-sm-move {
             background: #3399ff;
             color: white;
         }
+        .btn-sm-move:hover { background: #2277cc; }
 
-        .btn-sm-move:hover {
-            background: #2277cc;
-        }
-
-        /* ===== النماذج ===== */
         .form-grid {
             display: grid;
             grid-template-columns: 1fr 1fr;
@@ -377,7 +359,6 @@
             font-size: 12px;
         }
 
-        /* ===== الأزرار ===== */
         .btn {
             padding: 8px 20px;
             border: none;
@@ -392,75 +373,22 @@
             transform: scale(1.02);
         }
 
-        .btn-primary {
-            background: var(--primary);
-            color: white;
-        }
+        .btn-primary { background: var(--primary); color: white; }
+        .btn-primary:hover { background: var(--primary-dark); }
+        .btn-success { background: #00cc66; color: white; }
+        .btn-success:hover { background: #00aa55; }
+        .btn-danger { background: #ff3333; color: white; }
+        .btn-danger:hover { background: #cc0000; }
+        .btn-warning { background: #ffaa00; color: white; }
+        .btn-warning:hover { background: #cc8800; }
+        .btn-info { background: #3399ff; color: white; }
+        .btn-info:hover { background: #2277cc; }
+        .btn-purple { background: #9966ff; color: white; }
+        .btn-purple:hover { background: #7744cc; }
+        .btn-pink { background: #ff66aa; color: white; }
+        .btn-pink:hover { background: #cc4488; }
+        .btn-sm { padding: 4px 12px; font-size: 11px; }
 
-        .btn-primary:hover {
-            background: var(--primary-dark);
-        }
-
-        .btn-success {
-            background: #00cc66;
-            color: white;
-        }
-
-        .btn-success:hover {
-            background: #00aa55;
-        }
-
-        .btn-danger {
-            background: #ff3333;
-            color: white;
-        }
-
-        .btn-danger:hover {
-            background: #cc0000;
-        }
-
-        .btn-warning {
-            background: #ffaa00;
-            color: white;
-        }
-
-        .btn-warning:hover {
-            background: #cc8800;
-        }
-
-        .btn-info {
-            background: #3399ff;
-            color: white;
-        }
-
-        .btn-info:hover {
-            background: #2277cc;
-        }
-
-        .btn-purple {
-            background: #9966ff;
-            color: white;
-        }
-
-        .btn-purple:hover {
-            background: #7744cc;
-        }
-
-        .btn-pink {
-            background: #ff66aa;
-            color: white;
-        }
-
-        .btn-pink:hover {
-            background: #cc4488;
-        }
-
-        .btn-sm {
-            padding: 4px 12px;
-            font-size: 11px;
-        }
-
-        /* ===== Toast ===== */
         .toast {
             position: fixed;
             bottom: 30px;
@@ -477,30 +405,15 @@
             font-size: 14px;
         }
 
-        .toast.show {
-            display: block;
-        }
-
-        .toast.success {
-            border-color: #00cc66;
-        }
-
-        .toast.error {
-            border-color: #ff3333;
-        }
+        .toast.show { display: block; }
+        .toast.success { border-color: #00cc66; }
+        .toast.error { border-color: #ff3333; }
 
         @keyframes slideUp {
-            from {
-                opacity: 0;
-                transform: translateY(20px);
-            }
-            to {
-                opacity: 1;
-                transform: translateY(0);
-            }
+            from { opacity: 0; transform: translateY(20px); }
+            to { opacity: 1; transform: translateY(0); }
         }
 
-        /* ===== الحالات الفارغة ===== */
         .empty-state {
             text-align: center;
             padding: 25px;
@@ -513,7 +426,6 @@
             margin-bottom: 10px;
         }
 
-        /* ===== كود البرمجة ===== */
         .code-block-item {
             background: #0a0a1a;
             border-radius: var(--radius);
@@ -566,7 +478,6 @@
             margin: 0;
         }
 
-        /* ===== شجرة المحتوى ===== */
         .content-tree {
             display: flex;
             flex-direction: column;
@@ -660,62 +571,22 @@
             transition: var(--transition);
         }
 
-        /* ===== التجاوب ===== */
         @media (max-width: 768px) {
-            .form-grid {
-                grid-template-columns: 1fr;
-            }
-
-            .admin-dashboard {
-                grid-template-columns: repeat(2, 1fr);
-                gap: 10px;
-            }
-
-            .admin-tabs button {
-                font-size: 11px;
-                padding: 6px 10px;
-            }
-
-            .stat-card .number {
-                font-size: 22px;
-            }
-
-            .stat-card .icon-big {
-                font-size: 26px;
-            }
-
-            .tree-node .node-header {
-                flex-direction: column;
-                align-items: stretch;
-                gap: 8px;
-            }
-
-            .tree-node .node-header .node-actions {
-                justify-content: center;
-            }
+            .form-grid { grid-template-columns: 1fr; }
+            .admin-dashboard { grid-template-columns: repeat(2, 1fr); gap: 10px; }
+            .admin-tabs button { font-size: 11px; padding: 6px 10px; }
+            .stat-card .number { font-size: 22px; }
+            .stat-card .icon-big { font-size: 26px; }
+            .tree-node .node-header { flex-direction: column; align-items: stretch; gap: 8px; }
+            .tree-node .node-header .node-actions { justify-content: center; }
         }
 
         @media (max-width: 480px) {
-            .admin-dashboard {
-                grid-template-columns: 1fr 1fr;
-                gap: 8px;
-            }
-
-            .stat-card {
-                padding: 12px 10px;
-            }
-
-            .stat-card .number {
-                font-size: 18px;
-            }
-
-            .container {
-                padding: 10px;
-            }
-
-            .card {
-                padding: 15px;
-            }
+            .admin-dashboard { grid-template-columns: 1fr 1fr; gap: 8px; }
+            .stat-card { padding: 12px 10px; }
+            .stat-card .number { font-size: 18px; }
+            .container { padding: 10px; }
+            .card { padding: 15px; }
         }
     </style>
 </head>
@@ -1058,21 +929,21 @@
     <!-- ===== Toast ===== -->
     <div id="toast" class="toast"></div>
 
-    <script src="data.js"></script>
     <script>
         // ============================================
-        // نظام الإدارة المتطور - admin.html
+        // نظام الإدارة المتطور - admin.html (المصحح)
         // ============================================
 
         const ADMIN_PASSWORD = '0000';
 
-        // ===== الهيكل الكامل للموقع =====        let siteStructure = {
-            pages: [], // {id, name, link, desc, categories: []}
-            categories: [], // {id, name, icon, pageId, desc, order, items: []}
-            commands: [], // {id, command, meaning, categoryId, note, order}
-            rules: [], // {id, english, arabic, categoryId, order}
-            interiors: [], // {id, name, image, categoryId, desc, order}
-            codes: [] // {id, name, type, parent, categoryId, content, desc}
+        // ===== تعريف الهيكل الكامل للموقع =====
+        let siteStructure = {
+            pages: [],
+            categories: [],
+            commands: [],
+            rules: [],
+            interiors: [],
+            codes: []
         };
 
         // ===== تحميل البيانات =====
@@ -1081,7 +952,12 @@
             if (saved) {
                 try {
                     const parsed = JSON.parse(saved);
-                    Object.assign(siteStructure, parsed);
+                    siteStructure.pages = parsed.pages || [];
+                    siteStructure.categories = parsed.categories || [];
+                    siteStructure.commands = parsed.commands || [];
+                    siteStructure.rules = parsed.rules || [];
+                    siteStructure.interiors = parsed.interiors || [];
+                    siteStructure.codes = parsed.codes || [];
                 } catch (e) {
                     initDefaultStructure();
                 }
@@ -1091,7 +967,6 @@
         }
 
         function initDefaultStructure() {
-            // صفحة افتراضية
             const pageId = Date.now() + 1;
             siteStructure.pages = [{
                 id: pageId,
@@ -1100,7 +975,6 @@
                 desc: "الصفحة الرئيسية للدليل"
             }];
 
-            // قسم افتراضي
             const catId = Date.now() + 2;
             siteStructure.categories = [{
                 id: catId,
@@ -1123,6 +997,7 @@
             localStorage.setItem('siteStructure', JSON.stringify(siteStructure));
         }
 
+        // ===== تحميل البيانات عند بدء التشغيل =====
         loadStructure();
 
         // ===== تسجيل الدخول =====
@@ -1161,28 +1036,39 @@
         function updateSelects() {
             // الصفحات
             const pageSelect = document.getElementById('newCategoryPage');
-            pageSelect.innerHTML = siteStructure.pages.map(p =>
-                `<option value="${p.id}">📄 ${p.name}</option>`
-            ).join('');
+            if (pageSelect) {
+                pageSelect.innerHTML = siteStructure.pages.map(p =>
+                    `<option value="${p.id}">📄 ${p.name}</option>`
+                ).join('');
+            }
 
             // الأقسام
             const catOptions = siteStructure.categories.map(c =>
-                `<option value="${c.id}">${c.icon} ${c.name}</option>`
+                `<option value="${c.id}">${c.icon || '📁'} ${c.name}</option>`
             ).join('');
 
-            document.getElementById('newCommandCategory').innerHTML = catOptions;
-            document.getElementById('newRuleCategory').innerHTML = catOptions;
-            document.getElementById('newInteriorCategory').innerHTML = catOptions;
-            document.getElementById('newCodeCategory').innerHTML = catOptions;
+            const cmdCat = document.getElementById('newCommandCategory');
+            if (cmdCat) cmdCat.innerHTML = catOptions;
+
+            const ruleCat = document.getElementById('newRuleCategory');
+            if (ruleCat) ruleCat.innerHTML = catOptions;
+
+            const intCat = document.getElementById('newInteriorCategory');
+            if (intCat) intCat.innerHTML = catOptions;
+
+            const codeCat = document.getElementById('newCodeCategory');
+            if (codeCat) codeCat.innerHTML = catOptions;
 
             // المرتبط بـ للأكواد
             const parentSelect = document.getElementById('newCodeParent');
-            parentSelect.innerHTML = `
-                <option value="">لا يوجد</option>
-                ${siteStructure.interiors.map(i => `<option value="interior_${i.id}">🏠 ${i.name}</option>`).join('')}
-                ${siteStructure.commands.map(c => `<option value="command_${c.id}">📋 ${c.command}</option>`).join('')}
-                ${siteStructure.categories.map(c => `<option value="category_${c.id}">${c.icon} ${c.name}</option>`).join('')}
-            `;
+            if (parentSelect) {
+                parentSelect.innerHTML = `
+                    <option value="">لا يوجد</option>
+                    ${siteStructure.interiors.map(i => `<option value="interior_${i.id}">🏠 ${i.name}</option>`).join('')}
+                    ${siteStructure.commands.map(c => `<option value="command_${c.id}">📋 ${c.command}</option>`).join('')}
+                    ${siteStructure.categories.map(c => `<option value="category_${c.id}">${c.icon || '📁'} ${c.name}</option>`).join('')}
+                `;
+            }
         }
 
         // ===== تفعيل التبويبات =====
@@ -1193,7 +1079,8 @@
                     tabs.forEach(t => t.classList.remove('active'));
                     this.classList.add('active');
                     document.querySelectorAll('.tab-content').forEach(tc => tc.classList.remove('active'));
-                    document.getElementById(this.dataset.tab).classList.add('active');
+                    const target = document.getElementById(this.dataset.tab);
+                    if (target) target.classList.add('active');
                 };
             });
         }
@@ -1201,6 +1088,8 @@
         // ===== عرض هيكل الموقع =====
         function renderTree() {
             const container = document.getElementById('siteTree');
+            if (!container) return;
+
             if (siteStructure.pages.length === 0) {
                 container.innerHTML = `<div class="empty-state"><span class="big-icon">🌳</span>لا توجد صفحات</div>`;
                 return;
@@ -1223,7 +1112,7 @@
                             ${pageCats.map(cat => `
                                 <div class="tree-node" style="margin:5px 0 5px 20px;">
                                     <div class="node-header" onclick="toggleNode(this)">
-                                        <span class="node-title">${cat.icon} ${cat.name}</span>
+                                        <span class="node-title">${cat.icon || '📁'} ${cat.name}</span>
                                         <div class="node-actions">
                                             <button class="btn btn-sm btn-warning" onclick="event.stopPropagation();editCategoryById(${cat.id})">✏️</button>
                                             <button class="btn btn-sm btn-danger" onclick="event.stopPropagation();deleteCategoryById(${cat.id})">🗑️</button>
@@ -1339,11 +1228,14 @@
         // ===== عرض الصفحات =====
         function renderPages(filter = '') {
             const container = document.getElementById('pagesList');
+            if (!container) return;
+
             let items = siteStructure.pages;
             if (filter) {
                 items = items.filter(p => p.name.includes(filter) || p.link.includes(filter));
             }
-            document.getElementById('pagesCount').textContent = items.length + ' صفحة';
+            const countEl = document.getElementById('pagesCount');
+            if (countEl) countEl.textContent = items.length + ' صفحة';
 
             if (items.length === 0) {
                 container.innerHTML = `<div class="empty-state"><span class="big-icon">📄</span>لا توجد صفحات</div>`;
@@ -1367,6 +1259,8 @@
         // ===== عرض الأقسام =====
         function renderCategories(filter = '') {
             const container = document.getElementById('categoriesList');
+            if (!container) return;
+
             let items = siteStructure.categories;
             if (filter) {
                 items = items.filter(c =>
@@ -1374,7 +1268,8 @@
                     (c.desc || '').includes(filter)
                 );
             }
-            document.getElementById('categoriesCount').textContent = items.length + ' قسم';
+            const countEl = document.getElementById('categoriesCount');
+            if (countEl) countEl.textContent = items.length + ' قسم';
 
             if (items.length === 0) {
                 container.innerHTML = `<div class="empty-state"><span class="big-icon">📂</span>لا توجد أقسام</div>`;
@@ -1401,6 +1296,8 @@
         // ===== عرض الأوامر =====
         function renderCommands(filter = '') {
             const container = document.getElementById('commandsList');
+            if (!container) return;
+
             let items = siteStructure.commands;
             if (filter) {
                 items = items.filter(c =>
@@ -1408,7 +1305,8 @@
                     c.meaning.includes(filter)
                 );
             }
-            document.getElementById('commandsCount').textContent = items.length + ' أمر';
+            const countEl = document.getElementById('commandsCount');
+            if (countEl) countEl.textContent = items.length + ' أمر';
 
             if (items.length === 0) {
                 container.innerHTML = `<div class="empty-state"><span class="big-icon">📋</span>لا توجد أوامر</div>`;
@@ -1435,6 +1333,8 @@
         // ===== عرض القوانين =====
         function renderRules(filter = '') {
             const container = document.getElementById('rulesList');
+            if (!container) return;
+
             let items = siteStructure.rules;
             if (filter) {
                 items = items.filter(r =>
@@ -1442,7 +1342,8 @@
                     r.arabic.includes(filter)
                 );
             }
-            document.getElementById('rulesCount').textContent = items.length + ' قانون';
+            const countEl = document.getElementById('rulesCount');
+            if (countEl) countEl.textContent = items.length + ' قانون';
 
             if (items.length === 0) {
                 container.innerHTML = `<div class="empty-state"><span class="big-icon">📜</span>لا توجد قوانين</div>`;
@@ -1469,6 +1370,8 @@
         // ===== عرض الانترو =====
         function renderInteriors(filter = '') {
             const container = document.getElementById('interiorsList');
+            if (!container) return;
+
             let items = siteStructure.interiors;
             if (filter) {
                 items = items.filter(i =>
@@ -1476,7 +1379,8 @@
                     (i.desc || '').includes(filter)
                 );
             }
-            document.getElementById('interiorsCount').textContent = items.length + ' انترو';
+            const countEl = document.getElementById('interiorsCount');
+            if (countEl) countEl.textContent = items.length + ' انترو';
 
             if (items.length === 0) {
                 container.innerHTML = `<div class="empty-state"><span class="big-icon">🏠</span>لا توجد انترو</div>`;
@@ -1503,6 +1407,8 @@
         // ===== عرض الأكواد =====
         function renderCodes(filter = '') {
             const container = document.getElementById('codesList');
+            if (!container) return;
+
             let items = siteStructure.codes;
             if (filter) {
                 items = items.filter(c =>
@@ -1511,7 +1417,8 @@
                     (c.content || '').includes(filter)
                 );
             }
-            document.getElementById('codesCount').textContent = items.length + ' كود';
+            const countEl = document.getElementById('codesCount');
+            if (countEl) countEl.textContent = items.length + ' كود';
 
             if (items.length === 0) {
                 container.innerHTML = `<div class="empty-state"><span class="big-icon">💻</span>لا توجد أكواد</div>`;
@@ -1552,22 +1459,30 @@
             };
             const config = map[type];
             if (config) {
-                const value = document.getElementById(config.input).value.trim();
-                config.render(value);
+                const input = document.getElementById(config.input);
+                if (input) {
+                    const value = input.value.trim();
+                    config.render(value);
+                }
             }
         }
 
         // ===== تحديث الإحصائيات =====
         function updateStats() {
-            document.getElementById('statPages').textContent = siteStructure.pages.length;
-            document.getElementById('statCategories').textContent = siteStructure.categories.length;
-            document.getElementById('statCommands').textContent = siteStructure.commands.length;
-            document.getElementById('statRules').textContent = siteStructure.rules.length;
-            document.getElementById('statInteriors').textContent = siteStructure.interiors.length;
-            document.getElementById('statCodes').textContent = siteStructure.codes.length;
+            const setStat = (id, value) => {
+                const el = document.getElementById(id);
+                if (el) el.textContent = value;
+            };
+
+            setStat('statPages', siteStructure.pages.length);
+            setStat('statCategories', siteStructure.categories.length);
+            setStat('statCommands', siteStructure.commands.length);
+            setStat('statRules', siteStructure.rules.length);
+            setStat('statInteriors', siteStructure.interiors.length);
+            setStat('statCodes', siteStructure.codes.length);
 
             const size = new Blob([JSON.stringify(siteStructure)]).size / 1024;
-            document.getElementById('statSize').textContent = size.toFixed(1);
+            setStat('statSize', size.toFixed(1));
         }
 
         // ============================================
@@ -1615,10 +1530,8 @@
             const page = siteStructure.pages.find(p => p.id === id);
             if (!page) return;
             if (confirm(`⚠️ هل أنت متأكد من حذف الصفحة "${page.name}" وجميع أقسامها؟`)) {
-                // حذف الأقسام التابعة
                 const catsToDelete = siteStructure.categories.filter(c => c.pageId === id);
                 catsToDelete.forEach(c => {
-                    // حذف المحتوى التابع لكل قسم
                     siteStructure.commands = siteStructure.commands.filter(cmd => cmd.categoryId !== c.id);
                     siteStructure.rules = siteStructure.rules.filter(r => r.categoryId !== c.id);
                     siteStructure.interiors = siteStructure.interiors.filter(i => i.categoryId !== c.id);
@@ -1936,7 +1849,12 @@
                 try {
                     const data = JSON.parse(e.target.result);
                     if (data.structure) {
-                        Object.assign(siteStructure, data.structure);
+                        siteStructure.pages = data.structure.pages || [];
+                        siteStructure.categories = data.structure.categories || [];
+                        siteStructure.commands = data.structure.commands || [];
+                        siteStructure.rules = data.structure.rules || [];
+                        siteStructure.interiors = data.structure.interiors || [];
+                        siteStructure.codes = data.structure.codes || [];
                         saveStructure();
                         loadAllData();
                         showToast('✅ تم استيراد البيانات بنجاح', 'success');
@@ -1985,6 +1903,7 @@
         // ============================================
         function showToast(message, type = 'success') {
             const toast = document.getElementById('toast');
+            if (!toast) return;
             toast.textContent = message;
             toast.className = 'toast show ' + type;
             clearTimeout(toast._timeout);
@@ -1997,12 +1916,24 @@
         // تشغيل عند التحميل
         // ============================================
         document.addEventListener('DOMContentLoaded', function() {
-            document.getElementById('adminPassword').focus();
+            const pwd = document.getElementById('adminPassword');
+            if (pwd) pwd.focus();
         });
 
-        document.getElementById('adminPassword').addEventListener('keydown', function(e) {
-            if (e.key === 'Enter') loginAdmin();
+        // ===== السماح بدخول بـ Enter =====
+        document.addEventListener('keydown', function(e) {
+            if (e.key === 'Enter') {
+                const pwd = document.getElementById('adminPassword');
+                if (pwd && document.activeElement === pwd) {
+                    loginAdmin();
+                }
+            }
         });
+
+        console.log('✅ لوحة الإدارة جاهزة!');
+        console.log('📊 عدد الصفحات:', siteStructure.pages.length);
+        console.log('📂 عدد الأقسام:', siteStructure.categories.length);
+        console.log('🔑 الرقم السري: 0000');
     </script>
 
 </body>
