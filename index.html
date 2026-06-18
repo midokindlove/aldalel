@@ -1,36 +1,36 @@
 <!DOCTYPE html>
 <html lang="ar" dir="rtl">
 <head>
-<meta charset="UTF-8">
-<meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>MTA SA - أوامر سيرفر سان أندرياس</title>
-<link rel="stylesheet" href="style.css">
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>MTA SA - أوامر سيرفر سان أندرياس</title>
+  <link rel="stylesheet" href="style.css">
 </head>
 <body>
 
 <nav class="navbar">
   <div class="logo">🎮 MTA Commands</div>
   <ul class="nav-links">
-    <li><a href="#home" data-page="home">الرئيسية</a></li>
-    <li><a href="#rules" data-page="rules">القوانين</a></li>
-    <li><a href="#commands" data-page="commands">الأوامر</a></li>
-    <li><a href="#intros" data-page="intros">الانترو</a></li>
-    <li><a href="#chat" data-page="chat">الرد التلقائي</a></li>
-    <li><a href="#admin" data-page="admin">الإدارة</a></li>
+    <li><a data-page="home">الرئيسية</a></li>
+    <li><a data-page="rules">القوانين</a></li>
+    <li><a data-page="commands">الأوامر</a></li>
+    <li><a data-page="intros">الانترو</a></li>
+    <li><a data-page="chat">الرد التلقائي</a></li>
+    <li><a data-page="admin">الإدارة</a></li>
   </ul>
   <button class="menu-toggle">☰</button>
 </nav>
 
 <main id="app-content"></main>
 
-<button id="chat-toggle" title="المساعد الآلي">💬</button>
+<button id="chat-toggle">💬</button>
 
 <div id="chat-box" class="chat-box hidden">
   <div class="chat-header">
-    <span> المساعد الآلي</span>
+    <span>🤖 المساعد الآلي</span>
     <button id="chat-close">✕</button>
   </div>
-  <div id="chat-messages" class="chat-messages"></div>
+  <div id="chat-messages"></div>
   <div class="chat-input">
     <input type="text" id="chat-input-field" placeholder="اكتب سؤالك هنا...">
     <button id="chat-send">إرسال</button>
@@ -40,5 +40,6 @@
 <script src="data.js"></script>
 <script src="app.js"></script>
 <script src="admin.js"></script>
+
 </body>
 </html>
