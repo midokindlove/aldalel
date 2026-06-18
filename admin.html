@@ -3,62 +3,63 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>الإدارة الذكية - الدليل MTA</title>
+    <title>الإدارة الذكية المتطورة - الدليل MTA</title>
     <link rel="stylesheet" href="style.css">
     <link href="https://fonts.googleapis.com/css2?family=Cairo:wght@400;600;700&display=swap" rel="stylesheet">
     <style>
         /* ===== تحسينات إضافية ===== */
         .admin-dashboard {
             display: grid;
-            grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+            grid-template-columns: repeat(auto-fit, minmax(180px, 1fr));
             gap: 15px;
             margin-bottom: 25px;
         }
         .stat-card {
             background: var(--bg-card);
             border-radius: var(--radius);
-            padding: 20px;
+            padding: 18px 15px;
             text-align: center;
             border: 1px solid var(--border-color);
             transition: var(--transition);
+            cursor: default;
         }
         .stat-card:hover {
             border-color: var(--primary);
             transform: translateY(-3px);
         }
         .stat-card .number {
-            font-size: 32px;
+            font-size: 28px;
             font-weight: bold;
             color: var(--primary);
         }
         .stat-card .label {
             color: var(--text-muted);
-            font-size: 14px;
+            font-size: 13px;
             margin-top: 5px;
         }
         .stat-card .icon-big {
-            font-size: 40px;
+            font-size: 32px;
             display: block;
-            margin-bottom: 10px;
+            margin-bottom: 8px;
         }
 
         .admin-tabs {
             display: flex;
-            gap: 8px;
+            gap: 6px;
             flex-wrap: wrap;
             margin-bottom: 20px;
             border-bottom: 2px solid var(--border-color);
             padding-bottom: 10px;
         }
         .admin-tabs button {
-            padding: 10px 20px;
+            padding: 8px 16px;
             border: none;
             border-radius: 8px;
             background: var(--bg-card);
             color: var(--text-light);
             cursor: pointer;
             transition: var(--transition);
-            font-size: 14px;
+            font-size: 13px;
             font-weight: 600;
         }
         .admin-tabs button:hover {
@@ -79,12 +80,12 @@
 
         .search-box {
             width: 100%;
-            padding: 12px 18px;
+            padding: 10px 16px;
             border-radius: 25px;
             border: 1px solid var(--border-color);
             background: var(--bg-dark);
             color: var(--text-light);
-            font-size: 15px;
+            font-size: 14px;
             margin-bottom: 15px;
             outline: none;
             transition: var(--transition);
@@ -94,20 +95,21 @@
         }
 
         .item-list {
-            max-height: 300px;
+            max-height: 350px;
             overflow-y: auto;
             border: 1px solid var(--border-color);
             border-radius: var(--radius);
-            padding: 10px;
+            padding: 8px;
         }
         .item-list .item {
             display: flex;
             justify-content: space-between;
             align-items: center;
-            padding: 10px 12px;
+            padding: 8px 12px;
             border-bottom: 1px solid var(--border-color);
             transition: var(--transition);
             border-radius: 6px;
+            gap: 10px;
         }
         .item-list .item:hover {
             background: var(--bg-card-hover);
@@ -117,11 +119,12 @@
         }
         .item-list .item .info {
             flex: 1;
-            margin-left: 10px;
+            min-width: 0;
         }
         .item-list .item .info .title {
             font-weight: 600;
             color: var(--text-light);
+            font-size: 14px;
         }
         .item-list .item .info .sub {
             font-size: 12px;
@@ -130,9 +133,10 @@
         .item-list .item .actions {
             display: flex;
             gap: 5px;
+            flex-shrink: 0;
         }
         .item-list .item .actions button {
-            padding: 4px 10px;
+            padding: 3px 10px;
             border: none;
             border-radius: 4px;
             cursor: pointer;
@@ -153,24 +157,31 @@
         .btn-sm-delete:hover {
             background: #cc0000;
         }
+        .btn-sm-move {
+            background: #3399ff;
+            color: white;
+        }
+        .btn-sm-move:hover {
+            background: #2277cc;
+        }
 
         .form-grid {
             display: grid;
             grid-template-columns: 1fr 1fr;
-            gap: 15px;
+            gap: 12px;
         }
         .form-grid .full {
             grid-column: 1 / -1;
         }
         .form-grid label {
             color: var(--text-muted);
-            font-size: 13px;
+            font-size: 12px;
             display: block;
-            margin-bottom: 5px;
+            margin-bottom: 4px;
         }
         .form-grid input, .form-grid select, .form-grid textarea {
             width: 100%;
-            padding: 10px 14px;
+            padding: 8px 12px;
             border-radius: 8px;
             border: 1px solid var(--border-color);
             background: var(--bg-dark);
@@ -183,21 +194,22 @@
             border-color: var(--primary);
         }
         .form-grid textarea {
-            height: 80px;
+            height: 70px;
             resize: vertical;
             font-family: 'Courier New', monospace;
             direction: ltr;
             text-align: left;
+            font-size: 12px;
         }
 
         .btn {
-            padding: 10px 24px;
+            padding: 8px 20px;
             border: none;
             border-radius: 8px;
             cursor: pointer;
             font-weight: bold;
             transition: var(--transition);
-            font-size: 14px;
+            font-size: 13px;
         }
         .btn:hover {
             transform: scale(1.02);
@@ -214,6 +226,8 @@
         .btn-info:hover { background: #2277cc; }
         .btn-purple { background: #9966ff; color: white; }
         .btn-purple:hover { background: #7744cc; }
+        .btn-pink { background: #ff66aa; color: white; }
+        .btn-pink:hover { background: #cc4488; }
 
         .toast {
             position: fixed;
@@ -221,13 +235,14 @@
             right: 30px;
             background: var(--bg-card);
             border: 1px solid var(--primary);
-            padding: 15px 25px;
+            padding: 12px 22px;
             border-radius: var(--radius);
             color: var(--text-light);
             box-shadow: var(--shadow);
             z-index: 9999;
             animation: slideUp 0.3s ease;
             display: none;
+            font-size: 14px;
         }
         .toast.show {
             display: block;
@@ -242,13 +257,61 @@
 
         .empty-state {
             text-align: center;
-            padding: 30px;
+            padding: 25px;
             color: var(--text-muted);
         }
         .empty-state .big-icon {
-            font-size: 60px;
+            font-size: 40px;
             display: block;
-            margin-bottom: 15px;
+            margin-bottom: 10px;
+        }
+
+        .code-block-item {
+            background: #0a0a1a;
+            border-radius: var(--radius);
+            padding: 15px;
+            border: 1px solid var(--border-color);
+            margin-top: 10px;
+            position: relative;
+            direction: ltr;
+            text-align: left;
+        }
+        .code-block-item pre {
+            margin: 0;
+            font-family: 'Courier New', monospace;
+            font-size: 12px;
+            color: #66ff99;
+            white-space: pre-wrap;
+            word-break: break-all;
+            line-height: 1.6;
+        }
+        .code-block-item .code-actions {
+            position: absolute;
+            top: 10px;
+            right: 10px;
+            display: flex;
+            gap: 5px;
+        }
+        .code-block-item .code-actions button {
+            padding: 3px 10px;
+            border: none;
+            border-radius: 4px;
+            cursor: pointer;
+            font-size: 11px;
+            transition: var(--transition);
+        }
+
+        .section-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin: 15px 0 10px;
+            flex-wrap: wrap;
+            gap: 10px;
+        }
+        .section-header h4 {
+            color: var(--text-muted);
+            margin: 0;
         }
 
         @media (max-width: 768px) {
@@ -257,10 +320,29 @@
             }
             .admin-dashboard {
                 grid-template-columns: repeat(2, 1fr);
+                gap: 10px;
             }
             .admin-tabs button {
-                font-size: 12px;
-                padding: 8px 12px;
+                font-size: 11px;
+                padding: 6px 10px;
+            }
+            .stat-card .number {
+                font-size: 22px;
+            }
+            .stat-card .icon-big {
+                font-size: 26px;
+            }
+        }
+        @media (max-width: 480px) {
+            .admin-dashboard {
+                grid-template-columns: 1fr 1fr;
+                gap: 8px;
+            }
+            .stat-card {
+                padding: 12px 10px;
+            }
+            .stat-card .number {
+                font-size: 18px;
             }
         }
     </style>
@@ -294,7 +376,7 @@
         </div>
 
         <!-- ===== لوحة التحكم ===== -->
-        <div id="adminPanel" class="admin-panel">
+        <div id="adminPanel" class="admin-panel" style="display:none;">
 
             <!-- ===== الإحصائيات السريعة ===== -->
             <div class="admin-dashboard" id="statsDashboard">
@@ -324,6 +406,11 @@
                     <div class="label">الصفحات</div>
                 </div>
                 <div class="stat-card">
+                    <span class="icon-big">💻</span>
+                    <div class="number" id="statCodes">0</div>
+                    <div class="label">أكواد الانترو</div>
+                </div>
+                <div class="stat-card">
                     <span class="icon-big">💾</span>
                     <div class="number" id="statSize">0</div>
                     <div class="label">حجم البيانات (KB)</div>
@@ -331,7 +418,7 @@
             </div>
 
             <!-- ===== أزرار سريعة ===== -->
-            <div style="display:flex;gap:10px;flex-wrap:wrap;margin-bottom:20px;">
+            <div style="display:flex;gap:8px;flex-wrap:wrap;margin-bottom:20px;">
                 <button class="btn btn-info" onclick="exportDataFile()">📤 تصدير البيانات</button>
                 <button class="btn btn-purple" onclick="document.getElementById('importFile').click()">📥 استيراد البيانات</button>
                 <input type="file" id="importFile" accept=".json" style="display:none;" onchange="importDataFile(event)">
@@ -340,19 +427,19 @@
             </div>
 
             <!-- ===== التبويبات ===== -->
-            <div class="admin-tabs">
+            <div class="admin-tabs" id="adminTabs">
                 <button class="active" data-tab="tabCategories">📂 الأقسام</button>
                 <button data-tab="tabCommands">📋 الأوامر</button>
                 <button data-tab="tabRules">📜 القوانين</button>
                 <button data-tab="tabInteriors">🏠 الانترو</button>
                 <button data-tab="tabPages">📄 الصفحات</button>
-                <button data-tab="tabCode">💻 الكود</button>
+                <button data-tab="tabCodes">💻 الأكواد</button>
             </div>
 
             <!-- ===== تبويب الأقسام ===== -->
             <div id="tabCategories" class="tab-content active">
                 <div class="card">
-                    <h3 style="color:var(--primary);">➕ إضافة قسم جديد</h3>
+                    <h3 style="color:var(--primary);">➕ إدارة الأقسام</h3>
                     <div class="form-grid">
                         <div>
                             <label>اسم القسم</label>
@@ -362,10 +449,17 @@
                             <label>الأيقونة</label>
                             <input type="text" id="newCategoryIcon" placeholder="مثال: 🏦">
                         </div>
+                        <div class="full">
+                            <label>الوصف (اختياري)</label>
+                            <input type="text" id="newCategoryDesc" placeholder="وصف مختصر للقسم">
+                        </div>
                     </div>
-                    <button class="btn btn-success" onclick="addCategory()" style="margin-top:10px;">➕ إضافة القسم</button>
+                    <button class="btn btn-success" onclick="addCategory()">➕ إضافة القسم</button>
                     
-                    <h4 style="color:var(--text-muted);margin:20px 0 10px;">📂 جميع الأقسام</h4>
+                    <div class="section-header">
+                        <h4>📂 جميع الأقسام</h4>
+                        <span style="color:var(--text-muted);font-size:12px;" id="categoriesCount">0 قسم</span>
+                    </div>
                     <input type="text" class="search-box" id="searchCategories" placeholder="🔍 بحث في الأقسام..." oninput="filterItems('categories')">
                     <div class="item-list" id="categoriesList"></div>
                 </div>
@@ -374,7 +468,7 @@
             <!-- ===== تبويب الأوامر ===== -->
             <div id="tabCommands" class="tab-content">
                 <div class="card">
-                    <h3 style="color:#ffaa00;">➕ إضافة أمر جديد</h3>
+                    <h3 style="color:#ffaa00;">➕ إدارة الأوامر</h3>
                     <div class="form-grid">
                         <div>
                             <label>الأمر</label>
@@ -386,12 +480,15 @@
                         </div>
                         <div class="full">
                             <label>القسم</label>
-                            <select id="newCategory"></select>
+                            <select id="newCategorySelect"></select>
                         </div>
                     </div>
                     <button class="btn btn-success" onclick="addCommand()">➕ إضافة الأمر</button>
                     
-                    <h4 style="color:var(--text-muted);margin:20px 0 10px;">📋 جميع الأوامر</h4>
+                    <div class="section-header">
+                        <h4>📋 جميع الأوامر</h4>
+                        <span style="color:var(--text-muted);font-size:12px;" id="commandsCount">0 أمر</span>
+                    </div>
                     <input type="text" class="search-box" id="searchCommands" placeholder="🔍 بحث في الأوامر..." oninput="filterItems('commands')">
                     <div class="item-list" id="commandsList"></div>
                 </div>
@@ -400,7 +497,7 @@
             <!-- ===== تبويب القوانين ===== -->
             <div id="tabRules" class="tab-content">
                 <div class="card">
-                    <h3 style="color:#00cc66;">➕ إضافة قانون جديد</h3>
+                    <h3 style="color:#00cc66;">➕ إدارة القوانين</h3>
                     <div class="form-grid">
                         <div>
                             <label>القانون (English)</label>
@@ -413,7 +510,10 @@
                     </div>
                     <button class="btn btn-success" onclick="addRule()">➕ إضافة القانون</button>
                     
-                    <h4 style="color:var(--text-muted);margin:20px 0 10px;">📜 جميع القوانين</h4>
+                    <div class="section-header">
+                        <h4>📜 جميع القوانين</h4>
+                        <span style="color:var(--text-muted);font-size:12px;" id="rulesCount">0 قانون</span>
+                    </div>
                     <input type="text" class="search-box" id="searchRules" placeholder="🔍 بحث في القوانين..." oninput="filterItems('rules')">
                     <div class="item-list" id="rulesList"></div>
                 </div>
@@ -422,7 +522,7 @@
             <!-- ===== تبويب الانترو ===== -->
             <div id="tabInteriors" class="tab-content">
                 <div class="card">
-                    <h3 style="color:#cc66ff;">➕ إضافة انترو جديد</h3>
+                    <h3 style="color:#cc66ff;">➕ إدارة الانترو</h3>
                     <div class="form-grid">
                         <div>
                             <label>اسم الانترو</label>
@@ -432,10 +532,17 @@
                             <label>رابط الصورة</label>
                             <input type="text" id="newInteriorImage" placeholder="https://example.com/image.png">
                         </div>
+                        <div class="full">
+                            <label>الوصف (اختياري)</label>
+                            <input type="text" id="newInteriorDesc" placeholder="وصف مختصر للانترو">
+                        </div>
                     </div>
                     <button class="btn btn-success" onclick="addInterior()">➕ إضافة الانترو</button>
                     
-                    <h4 style="color:var(--text-muted);margin:20px 0 10px;">🏠 جميع الانترو</h4>
+                    <div class="section-header">
+                        <h4>🏠 جميع الانترو</h4>
+                        <span style="color:var(--text-muted);font-size:12px;" id="interiorsCount">0 انترو</span>
+                    </div>
                     <input type="text" class="search-box" id="searchInteriors" placeholder="🔍 بحث في الانترو..." oninput="filterItems('interiors')">
                     <div class="item-list" id="interiorsList"></div>
                 </div>
@@ -444,7 +551,7 @@
             <!-- ===== تبويب الصفحات ===== -->
             <div id="tabPages" class="tab-content">
                 <div class="card">
-                    <h3 style="color:#3399ff;">➕ إضافة صفحة جديدة</h3>
+                    <h3 style="color:#3399ff;">➕ إدارة الصفحات</h3>
                     <div class="form-grid">
                         <div>
                             <label>اسم الصفحة</label>
@@ -454,22 +561,50 @@
                             <label>رابط الصفحة</label>
                             <input type="text" id="newPageLink" placeholder="مثال: bank.html">
                         </div>
+                        <div class="full">
+                            <label>القسم التابع له</label>
+                            <select id="newPageCategory"></select>
+                        </div>
                     </div>
                     <button class="btn btn-success" onclick="addPage()">➕ إضافة الصفحة</button>
                     
-                    <h4 style="color:var(--text-muted);margin:20px 0 10px;">📄 جميع الصفحات</h4>
+                    <div class="section-header">
+                        <h4>📄 جميع الصفحات</h4>
+                        <span style="color:var(--text-muted);font-size:12px;" id="pagesCount">0 صفحة</span>
+                    </div>
                     <input type="text" class="search-box" id="searchPages" placeholder="🔍 بحث في الصفحات..." oninput="filterItems('pages')">
                     <div class="item-list" id="pagesList"></div>
                 </div>
             </div>
 
-            <!-- ===== تبويب الكود ===== -->
-            <div id="tabCode" class="tab-content">
+            <!-- ===== تبويب الأكواد ===== -->
+            <div id="tabCodes" class="tab-content">
                 <div class="card">
-                    <h3 style="color:#ff66aa;">💻 كود الانترو</h3>
-                    <p style="color:var(--text-muted);margin-bottom:10px;">يمكنك تعديل كود صناعة الانترو في السيرفر</p>
-                    <textarea id="newIntroCode" style="width:100%;height:200px;padding:15px;border-radius:8px;border:1px solid var(--border-color);background:var(--bg-dark);color:#66ff99;font-family:monospace;direction:ltr;text-align:left;font-size:13px;line-height:1.8;"></textarea>
-                    <button class="btn btn-warning" onclick="updateIntroCode()" style="margin-top:10px;">💾 حفظ الكود</button>
+                    <h3 style="color:#ff66aa;">💻 إدارة أكواد الانترو</h3>
+                    <p style="color:var(--text-muted);margin-bottom:15px;">يمكنك إضافة أكواد متعددة لكل انترو مع إمكانية تعديل الاسم والحذف</p>
+                    
+                    <div class="form-grid">
+                        <div>
+                            <label>اسم الكود</label>
+                            <input type="text" id="newCodeName" placeholder="مثال: كود قصر">
+                        </div>
+                        <div>
+                            <label>الانترو المرتبط</label>
+                            <select id="newCodeInterior"></select>
+                        </div>
+                        <div class="full">
+                            <label>الكود</label>
+                            <textarea id="newCodeContent" placeholder="أدخل الكود هنا..."></textarea>
+                        </div>
+                    </div>
+                    <button class="btn btn-success" onclick="addCode()">➕ إضافة كود</button>
+                    
+                    <div class="section-header">
+                        <h4>💻 جميع الأكواد</h4>
+                        <span style="color:var(--text-muted);font-size:12px;" id="codesCount">0 كود</span>
+                    </div>
+                    <input type="text" class="search-box" id="searchCodes" placeholder="🔍 بحث في الأكواد..." oninput="filterItems('codes')">
+                    <div class="item-list" id="codesList"></div>
                 </div>
             </div>
 
@@ -482,31 +617,50 @@
 
     <script src="data.js"></script>
     <script>
-        const ADMIN_PASSWORD = '0000';
-        let customPages = [];
-        let allData = {};
+        // ============================================
+        // نظام الإدارة المتطور - admin.html
+        // ============================================
 
-        // ===== تحميل الصفحات المخصصة =====
-        function loadCustomPages() {
-            const saved = localStorage.getItem('customPages');
-            if (saved) {
+        const ADMIN_PASSWORD = '0000';
+        
+        // ===== هيكل البيانات الإضافية =====
+        let customPages = [];
+        let customCodes = [];
+
+        // ===== تحميل البيانات المخصصة =====
+        function loadCustomData() {
+            // تحميل الصفحات
+            const savedPages = localStorage.getItem('customPages');
+            if (savedPages) {
                 try {
-                    customPages = JSON.parse(saved);
+                    customPages = JSON.parse(savedPages);
                 } catch(e) {
                     customPages = getDefaultPages();
                 }
             } else {
                 customPages = getDefaultPages();
             }
+
+            // تحميل الأكواد
+            const savedCodes = localStorage.getItem('customCodes');
+            if (savedCodes) {
+                try {
+                    customCodes = JSON.parse(savedCodes);
+                } catch(e) {
+                    customCodes = [];
+                }
+            } else {
+                customCodes = [];
+            }
         }
 
         function getDefaultPages() {
             return [
-                { name: "الرئيسية", link: "index.html" },
-                { name: "الأوامر", link: "commands.html" },
-                { name: "القوانين", link: "rules.html" },
-                { name: "الانترو", link: "intro.html" },
-                { name: "الإدارة", link: "admin.html" }
+                { name: "الرئيسية", link: "index.html", category: "عام" },
+                { name: "الأوامر", link: "commands.html", category: "عام" },
+                { name: "القوانين", link: "rules.html", category: "عام" },
+                { name: "الانترو", link: "intro.html", category: "عام" },
+                { name: "الإدارة", link: "admin.html", category: "عام" }
             ];
         }
 
@@ -514,7 +668,11 @@
             localStorage.setItem('customPages', JSON.stringify(customPages));
         }
 
-        loadCustomPages();
+        function saveCustomCodes() {
+            localStorage.setItem('customCodes', JSON.stringify(customCodes));
+        }
+
+        loadCustomData();
 
         // ===== تسجيل الدخول =====
         function loginAdmin() {
@@ -536,25 +694,41 @@
 
         // ===== تحميل جميع البيانات =====
         function loadAllData() {
-            // تحديث القائمة المنسدلة للأقسام
-            const select = document.getElementById('newCategory');
-            select.innerHTML = siteData.categories.map(cat => 
-                `<option value="${cat.name}">${cat.icon} ${cat.name}</option>`
-            ).join('');
-
-            // تعبئة كود الانترو
-            document.getElementById('newIntroCode').value = siteData.introCode || '';
-
+            // تحديث القوائم المنسدلة
+            updateSelects();
+            
             // عرض جميع القوائم
             renderCategories();
             renderCommands();
             renderRules();
             renderInteriors();
             renderPages();
+            renderCodes();
             updateStats();
 
             // تفعيل التبويبات
             setupTabs();
+        }
+
+        // ===== تحديث القوائم المنسدلة =====
+        function updateSelects() {
+            const categoryOptions = siteData.categories.map(cat => 
+                `<option value="${cat.name}">${cat.icon} ${cat.name}</option>`
+            ).join('');
+
+            // قائمة الأقسام للأوامر
+            const cmdSelect = document.getElementById('newCategorySelect');
+            cmdSelect.innerHTML = categoryOptions;
+
+            // قائمة الأقسام للصفحات
+            const pageSelect = document.getElementById('newPageCategory');
+            pageSelect.innerHTML = `<option value="عام">📂 عام</option>` + categoryOptions;
+
+            // قائمة الانترو للأكواد
+            const codeSelect = document.getElementById('newCodeInterior');
+            codeSelect.innerHTML = siteData.interiors.map(int => 
+                `<option value="${int.name}">🏠 ${int.name}</option>`
+            ).join('');
         }
 
         // ===== تفعيل التبويبات =====
@@ -576,8 +750,14 @@
             const container = document.getElementById('categoriesList');
             let items = siteData.categories;
             if (filter) {
-                items = items.filter(cat => cat.name.includes(filter) || cat.icon.includes(filter));
+                items = items.filter(cat => 
+                    cat.name.includes(filter) || 
+                    (cat.icon || '').includes(filter) ||
+                    (cat.desc || '').includes(filter)
+                );
             }
+            document.getElementById('categoriesCount').textContent = items.length + ' قسم';
+            
             if (items.length === 0) {
                 container.innerHTML = `<div class="empty-state"><span class="big-icon">📂</span>لا توجد أقسام</div>`;
                 return;
@@ -585,8 +765,8 @@
             container.innerHTML = items.map((cat, index) => `
                 <div class="item">
                     <div class="info">
-                        <div class="title">${cat.icon} ${cat.name}</div>
-                        <div class="sub">ID: ${cat.id}</div>
+                        <div class="title">${cat.icon || '📁'} ${cat.name}</div>
+                        <div class="sub">${cat.desc || 'ID: ' + cat.id}</div>
                     </div>
                     <div class="actions">
                         <button class="btn-sm-edit" onclick="editCategory(${index})">✏️</button>
@@ -607,6 +787,8 @@
                     cmd.category.includes(filter)
                 );
             }
+            document.getElementById('commandsCount').textContent = items.length + ' أمر';
+            
             if (items.length === 0) {
                 container.innerHTML = `<div class="empty-state"><span class="big-icon">📋</span>لا توجد أوامر</div>`;
                 return;
@@ -635,6 +817,8 @@
                     rule.arabic.includes(filter)
                 );
             }
+            document.getElementById('rulesCount').textContent = items.length + ' قانون';
+            
             if (items.length === 0) {
                 container.innerHTML = `<div class="empty-state"><span class="big-icon">📜</span>لا توجد قوانين</div>`;
                 return;
@@ -658,8 +842,13 @@
             const container = document.getElementById('interiorsList');
             let items = siteData.interiors;
             if (filter) {
-                items = items.filter(int => int.name.includes(filter));
+                items = items.filter(int => 
+                    int.name.includes(filter) ||
+                    (int.desc || '').includes(filter)
+                );
             }
+            document.getElementById('interiorsCount').textContent = items.length + ' انترو';
+            
             if (items.length === 0) {
                 container.innerHTML = `<div class="empty-state"><span class="big-icon">🏠</span>لا توجد انترو</div>`;
                 return;
@@ -668,7 +857,7 @@
                 <div class="item">
                     <div class="info">
                         <div class="title">🏠 ${int.name}</div>
-                        <div class="sub" style="font-size:11px;color:#666;">${int.image.substring(0,50)}...</div>
+                        <div class="sub">${int.desc || int.image.substring(0,40) + '...'}</div>
                     </div>
                     <div class="actions">
                         <button class="btn-sm-edit" onclick="editInterior(${index})">✏️</button>
@@ -685,9 +874,12 @@
             if (filter) {
                 items = items.filter(page => 
                     page.name.includes(filter) || 
-                    page.link.includes(filter)
+                    page.link.includes(filter) ||
+                    (page.category || '').includes(filter)
                 );
             }
+            document.getElementById('pagesCount').textContent = items.length + ' صفحة';
+            
             if (items.length === 0) {
                 container.innerHTML = `<div class="empty-state"><span class="big-icon">📄</span>لا توجد صفحات</div>`;
                 return;
@@ -696,11 +888,52 @@
                 <div class="item">
                     <div class="info">
                         <div class="title">📄 ${page.name}</div>
-                        <div class="sub">${page.link}</div>
+                        <div class="sub">${page.link} · ${page.category || 'عام'}</div>
                     </div>
                     <div class="actions">
                         <button class="btn-sm-edit" onclick="editPage(${index})">✏️</button>
                         <button class="btn-sm-delete" onclick="deletePage(${index})">🗑️</button>
+                        <button class="btn-sm-move" onclick="movePage(${index}, -1)">⬆</button>
+                        <button class="btn-sm-move" onclick="movePage(${index}, 1)">⬇</button>
+                    </div>
+                </div>
+            `).join('');
+        }
+
+        // ===== عرض الأكواد =====
+        function renderCodes(filter = '') {
+            const container = document.getElementById('codesList');
+            let items = customCodes;
+            if (filter) {
+                items = items.filter(code => 
+                    code.name.includes(filter) || 
+                    code.interior.includes(filter) ||
+                    (code.content || '').includes(filter)
+                );
+            }
+            document.getElementById('codesCount').textContent = items.length + ' كود';
+            
+            if (items.length === 0) {
+                container.innerHTML = `<div class="empty-state"><span class="big-icon">💻</span>لا توجد أكواد</div>`;
+                return;
+            }
+            container.innerHTML = items.map((code, index) => `
+                <div class="item" style="flex-direction:column;align-items:stretch;">
+                    <div style="display:flex;justify-content:space-between;align-items:center;width:100%;">
+                        <div class="info">
+                            <div class="title">💻 ${code.name}</div>
+                            <div class="sub">${code.interior || 'غير مرتبط'}</div>
+                        </div>
+                        <div class="actions">
+                            <button class="btn-sm-edit" onclick="editCode(${index})">✏️</button>
+                            <button class="btn-sm-delete" onclick="deleteCode(${index})">🗑️</button>
+                        </div>
+                    </div>
+                    <div class="code-block-item" style="margin-top:5px;">
+                        <pre>${code.content || '// لا يوجد كود'}</pre>
+                        <div class="code-actions">
+                            <button onclick="copyCodeText('${encodeURIComponent(code.content || '')}')" style="background:var(--primary);color:white;border:none;padding:2px 10px;border-radius:4px;cursor:pointer;">📋 نسخ</button>
+                        </div>
                     </div>
                 </div>
             `).join('');
@@ -713,7 +946,8 @@
                 'commands': { input: 'searchCommands', render: renderCommands },
                 'rules': { input: 'searchRules', render: renderRules },
                 'interiors': { input: 'searchInteriors', render: renderInteriors },
-                'pages': { input: 'searchPages', render: renderPages }
+                'pages': { input: 'searchPages', render: renderPages },
+                'codes': { input: 'searchCodes', render: renderCodes }
             };
             const config = searchMap[type];
             if (config) {
@@ -729,25 +963,34 @@
             document.getElementById('statRules').textContent = siteData.rules.length;
             document.getElementById('statInteriors').textContent = siteData.interiors.length;
             document.getElementById('statPages').textContent = customPages.length;
+            document.getElementById('statCodes').textContent = customCodes.length;
             
-            // حساب حجم البيانات
-            const size = new Blob([JSON.stringify(siteData)]).size / 1024;
+            const size = new Blob([JSON.stringify({siteData, customPages, customCodes})]).size / 1024;
             document.getElementById('statSize').textContent = size.toFixed(1);
         }
 
-        // ===== إدارة الأقسام =====
+        // ============================================
+        // إدارة الأقسام
+        // ============================================
         function addCategory() {
             const name = document.getElementById('newCategoryName').value.trim();
             const icon = document.getElementById('newCategoryIcon').value.trim() || '📁';
+            const desc = document.getElementById('newCategoryDesc').value.trim();
             if (!name) { showToast('❌ الرجاء إدخال اسم القسم', 'error'); return; }
             
-            siteData.categories.push({ id: siteData.categories.length + 1, name, icon });
+            siteData.categories.push({ 
+                id: siteData.categories.length + 1, 
+                name, 
+                icon, 
+                desc: desc || `قسم ${name}`
+            });
             saveData();
             renderCategories();
             updateStats();
-            updateCategorySelect();
+            updateSelects();
             document.getElementById('newCategoryName').value = '';
             document.getElementById('newCategoryIcon').value = '';
+            document.getElementById('newCategoryDesc').value = '';
             showToast('✅ تم إضافة القسم بنجاح', 'success');
         }
 
@@ -756,32 +999,37 @@
             const newName = prompt('✏️ تعديل اسم القسم:', cat.name);
             if (newName && newName.trim()) {
                 cat.name = newName.trim();
-                const newIcon = prompt('✏️ تعديل الأيقونة:', cat.icon);
-                if (newIcon) cat.icon = newIcon;
+                const newIcon = prompt('✏️ تعديل الأيقونة:', cat.icon || '📁');
+                if (newIcon !== null) cat.icon = newIcon;
+                const newDesc = prompt('✏️ تعديل الوصف:', cat.desc || '');
+                if (newDesc !== null) cat.desc = newDesc;
                 saveData();
                 renderCategories();
                 updateStats();
-                updateCategorySelect();
+                updateSelects();
                 showToast('✅ تم تعديل القسم بنجاح', 'success');
             }
         }
 
         function deleteCategory(index) {
-            if (confirm(`⚠️ هل أنت متأكد من حذف القسم "${siteData.categories[index].name}"؟`)) {
+            const cat = siteData.categories[index];
+            if (confirm(`⚠️ هل أنت متأكد من حذف القسم "${cat.name}"؟`)) {
                 siteData.categories.splice(index, 1);
                 saveData();
                 renderCategories();
                 updateStats();
-                updateCategorySelect();
+                updateSelects();
                 showToast('✅ تم حذف القسم بنجاح', 'success');
             }
         }
 
-        // ===== إدارة الأوامر =====
+        // ============================================
+        // إدارة الأوامر
+        // ============================================
         function addCommand() {
             const command = document.getElementById('newCommand').value.trim();
             const meaning = document.getElementById('newMeaning').value.trim();
-            const category = document.getElementById('newCategory').value;
+            const category = document.getElementById('newCategorySelect').value;
             if (!command || !meaning) { showToast('❌ الرجاء إدخال الأمر والمعنى', 'error'); return; }
             
             siteData.commands.push({ category, command, meaning });
@@ -799,7 +1047,9 @@
             if (newCmd && newCmd.trim()) {
                 cmd.command = newCmd.trim();
                 const newMeaning = prompt('✏️ تعديل المعنى:', cmd.meaning);
-                if (newMeaning) cmd.meaning = newMeaning;
+                if (newMeaning !== null) cmd.meaning = newMeaning;
+                const newCategory = prompt('✏️ تعديل القسم:', cmd.category);
+                if (newCategory !== null) cmd.category = newCategory;
                 saveData();
                 renderCommands();
                 updateStats();
@@ -817,7 +1067,9 @@
             }
         }
 
-        // ===== إدارة القوانين =====
+        // ============================================
+        // إدارة القوانين
+        // ============================================
         function addRule() {
             const english = document.getElementById('newRuleEn').value.trim();
             const arabic = document.getElementById('newRuleAr').value.trim();
@@ -838,7 +1090,7 @@
             if (newEn && newEn.trim()) {
                 rule.english = newEn.trim();
                 const newAr = prompt('✏️ تعديل المعنى (Arabic):', rule.arabic);
-                if (newAr) rule.arabic = newAr;
+                if (newAr !== null) rule.arabic = newAr;
                 saveData();
                 renderRules();
                 updateStats();
@@ -856,18 +1108,23 @@
             }
         }
 
-        // ===== إدارة الانترو =====
+        // ============================================
+        // إدارة الانترو
+        // ============================================
         function addInterior() {
             const name = document.getElementById('newInteriorName').value.trim();
             const image = document.getElementById('newInteriorImage').value.trim();
+            const desc = document.getElementById('newInteriorDesc').value.trim();
             if (!name || !image) { showToast('❌ الرجاء إدخال اسم الانترو ورابط الصورة', 'error'); return; }
             
-            siteData.interiors.push({ name, image });
+            siteData.interiors.push({ name, image, desc: desc || `انترو ${name}` });
             saveData();
             renderInteriors();
             updateStats();
+            updateSelects();
             document.getElementById('newInteriorName').value = '';
             document.getElementById('newInteriorImage').value = '';
+            document.getElementById('newInteriorDesc').value = '';
             showToast('✅ تم إضافة الانترو بنجاح', 'success');
         }
 
@@ -877,10 +1134,13 @@
             if (newName && newName.trim()) {
                 int.name = newName.trim();
                 const newImage = prompt('✏️ تعديل رابط الصورة:', int.image);
-                if (newImage) int.image = newImage;
+                if (newImage !== null) int.image = newImage;
+                const newDesc = prompt('✏️ تعديل الوصف:', int.desc || '');
+                if (newDesc !== null) int.desc = newDesc;
                 saveData();
                 renderInteriors();
                 updateStats();
+                updateSelects();
                 showToast('✅ تم تعديل الانترو بنجاح', 'success');
             }
         }
@@ -891,17 +1151,21 @@
                 saveData();
                 renderInteriors();
                 updateStats();
+                updateSelects();
                 showToast('✅ تم حذف الانترو بنجاح', 'success');
             }
         }
 
-        // ===== إدارة الصفحات =====
+        // ============================================
+        // إدارة الصفحات
+        // ============================================
         function addPage() {
             const name = document.getElementById('newPageName').value.trim();
             const link = document.getElementById('newPageLink').value.trim();
+            const category = document.getElementById('newPageCategory').value;
             if (!name || !link) { showToast('❌ الرجاء إدخال اسم الصفحة والرابط', 'error'); return; }
             
-            customPages.push({ name, link });
+            customPages.push({ name, link, category });
             saveCustomPages();
             renderPages();
             updateStats();
@@ -916,7 +1180,9 @@
             if (newName && newName.trim()) {
                 page.name = newName.trim();
                 const newLink = prompt('✏️ تعديل رابط الصفحة:', page.link);
-                if (newLink) page.link = newLink;
+                if (newLink !== null) page.link = newLink;
+                const newCategory = prompt('✏️ تعديل القسم:', page.category || 'عام');
+                if (newCategory !== null) page.category = newCategory;
                 saveCustomPages();
                 renderPages();
                 updateStats();
@@ -934,27 +1200,85 @@
             }
         }
 
-        // ===== تحديث قائمة الأقسام =====
-        function updateCategorySelect() {
-            const select = document.getElementById('newCategory');
-            select.innerHTML = siteData.categories.map(cat => 
-                `<option value="${cat.name}">${cat.icon} ${cat.name}</option>`
-            ).join('');
+        function movePage(index, direction) {
+            const newIndex = index + direction;
+            if (newIndex < 0 || newIndex >= customPages.length) return;
+            const temp = customPages[index];
+            customPages[index] = customPages[newIndex];
+            customPages[newIndex] = temp;
+            saveCustomPages();
+            renderPages();
         }
 
-        // ===== تحديث كود الانترو =====
-        function updateIntroCode() {
-            const code = document.getElementById('newIntroCode').value;
-            siteData.introCode = code;
-            saveData();
-            showToast('✅ تم حفظ كود الانترو بنجاح', 'success');
+        // ============================================
+        // إدارة الأكواد
+        // ============================================
+        function addCode() {
+            const name = document.getElementById('newCodeName').value.trim();
+            const interior = document.getElementById('newCodeInterior').value;
+            const content = document.getElementById('newCodeContent').value.trim();
+            if (!name || !content) { showToast('❌ الرجاء إدخال اسم الكود والمحتوى', 'error'); return; }
+            
+            customCodes.push({ name, interior, content });
+            saveCustomCodes();
+            renderCodes();
+            updateStats();
+            document.getElementById('newCodeName').value = '';
+            document.getElementById('newCodeContent').value = '';
+            showToast('✅ تم إضافة الكود بنجاح', 'success');
         }
 
-        // ===== تصدير البيانات =====
+        function editCode(index) {
+            const code = customCodes[index];
+            const newName = prompt('✏️ تعديل اسم الكود:', code.name);
+            if (newName && newName.trim()) {
+                code.name = newName.trim();
+                const newInterior = prompt('✏️ تعديل الانترو المرتبط:', code.interior || '');
+                if (newInterior !== null) code.interior = newInterior;
+                const newContent = prompt('✏️ تعديل محتوى الكود:', code.content || '');
+                if (newContent !== null) code.content = newContent;
+                saveCustomCodes();
+                renderCodes();
+                updateStats();
+                showToast('✅ تم تعديل الكود بنجاح', 'success');
+            }
+        }
+
+        function deleteCode(index) {
+            if (confirm(`⚠️ هل أنت متأكد من حذف الكود "${customCodes[index].name}"؟`)) {
+                customCodes.splice(index, 1);
+                saveCustomCodes();
+                renderCodes();
+                updateStats();
+                showToast('✅ تم حذف الكود بنجاح', 'success');
+            }
+        }
+
+        function copyCodeText(encodedContent) {
+            const content = decodeURIComponent(encodedContent);
+            navigator.clipboard.writeText(content).then(() => {
+                showToast('✅ تم نسخ الكود', 'success');
+            }).catch(() => {
+                const textarea = document.createElement('textarea');
+                textarea.value = content;
+                textarea.style.position = 'fixed';
+                textarea.style.left = '-9999px';
+                document.body.appendChild(textarea);
+                textarea.select();
+                document.execCommand('copy');
+                document.body.removeChild(textarea);
+                showToast('✅ تم نسخ الكود', 'success');
+            });
+        }
+
+        // ============================================
+        // تصدير واستيراد البيانات
+        // ============================================
         function exportDataFile() {
             const allData = {
                 siteData: siteData,
                 customPages: customPages,
+                customCodes: customCodes,
                 exportedAt: new Date().toISOString()
             };
             const data = JSON.stringify(allData, null, 2);
@@ -968,7 +1292,6 @@
             showToast('📤 تم تصدير البيانات بنجاح', 'success');
         }
 
-        // ===== استيراد البيانات =====
         function importDataFile(event) {
             const file = event.target.files[0];
             if (!file) return;
@@ -985,6 +1308,10 @@
                         customPages = data.customPages;
                         saveCustomPages();
                     }
+                    if (data.customCodes) {
+                        customCodes = data.customCodes;
+                        saveCustomCodes();
+                    }
                     loadAllData();
                     showToast('✅ تم استيراد البيانات بنجاح', 'success');
                 } catch(err) {
@@ -995,16 +1322,18 @@
             event.target.value = '';
         }
 
-        // ===== إعادة ضبط البيانات =====
+        // ============================================
+        // إعادة ضبط وحذف البيانات
+        // ============================================
         function resetData() {
             if (confirm('⚠️ هل أنت متأكد من إعادة ضبط البيانات إلى الإعدادات الافتراضية؟')) {
                 localStorage.removeItem('mtaData');
                 localStorage.removeItem('customPages');
+                localStorage.removeItem('customCodes');
                 location.reload();
             }
         }
 
-        // ===== حذف جميع البيانات =====
         function clearAllData() {
             if (confirm('🚨 تحذير شديد! هل أنت متأكد من حذف جميع البيانات؟')) {
                 if (confirm('تأكيد نهائي: حذف جميع البيانات؟')) {
@@ -1012,16 +1341,23 @@
                     siteData.rules = [];
                     siteData.interiors = [];
                     siteData.introCode = '';
+                    siteData.categories = [
+                        { id: 1, name: "عام", icon: "📂", desc: "القسم العام" }
+                    ];
                     customPages = getDefaultPages();
+                    customCodes = [];
                     saveData();
                     saveCustomPages();
+                    saveCustomCodes();
                     loadAllData();
                     showToast('🗑️ تم حذف جميع البيانات', 'success');
                 }
             }
         }
 
-        // ===== Toast Notification =====
+        // ============================================
+        // Toast Notification
+        // ============================================
         function showToast(message, type = 'success') {
             const toast = document.getElementById('toast');
             toast.textContent = message;
@@ -1032,17 +1368,16 @@
             }, 3000);
         }
 
-        // ===== تشغيل عند التحميل =====
+        // ============================================
+        // تشغيل عند التحميل
+        // ============================================
         document.addEventListener('DOMContentLoaded', function() {
             document.getElementById('adminPassword').focus();
-            
-            // تحقق إذا كان مسجل الدخول مسبقاً
-            if (document.getElementById('adminPanel').style.display === 'block') {
-                loadAllData();
-            }
         });
 
-        // ===== السماح بدخول بـ Enter =====
+        // ============================================
+        // السماح بدخول بـ Enter
+        // ============================================
         document.getElementById('adminPassword').addEventListener('keydown', function(e) {
             if (e.key === 'Enter') loginAdmin();
         });
