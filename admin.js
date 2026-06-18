@@ -1,5 +1,6 @@
 // ============================================
-// لوحة الإدارة - MTA Commands
+// الدليل - لوحة الإدارة
+// MTA Commands Guide - Admin Panel
 // ============================================
 
 let adminCurrentSection = 'home';
@@ -9,7 +10,7 @@ const ADMIN_PASSWORD = '00000';
 let isAdminLoggedIn = false;
 
 // ============================================
-// صفحة الإدارة الرئيسية
+// التهيئة وتسجيل الدخول
 // ============================================
 
 function renderAdminPage() {
@@ -23,24 +24,21 @@ function initAdminLogin() {
   if (!isAdminLoggedIn) {
     const passwordInput = document.getElementById('admin-password');
     if (passwordInput) {
+      passwordInput.focus();
       passwordInput.addEventListener('keypress', (e) => {
         if (e.key === 'Enter') loginAdmin();
       });
-      passwordInput.focus();
     }
   }
 }
 
 function renderAdminLogin() {
   return `
-    <div class="page active">
-      <div class="admin-login">
-        <div style="font-size: 4rem; margin-bottom: 1rem;">🔐</div>
-        <h1>لوحة الإدارة</h1>
-        <p style="margin-bottom: 2rem; color: #b0b0b0;">يرجى إدخال كلمة المرور للوصول</p>
-        <input type="password" id="admin-password" placeholder="كلمة المرور">
-        <button class="btn" onclick="loginAdmin()" style="width: 100%; margin-top: 1rem;">دخول</button>
-      </div>
+    <div class="admin-login">
+      <h1>🔐 لوحة الإدارة</h1>
+      <p>يرجى إدخال كلمة المرور للوصول إلى لوحة التحكم</p>
+      <input type="password" id="admin-password" placeholder="كلمة المرور">
+      <button class="btn" onclick="loginAdmin()" style="width: 100%;">دخول</button>
     </div>
   `;
 }
@@ -66,53 +64,51 @@ function logoutAdmin() {
 }
 
 // ============================================
-// لوحة التحكم
+// لوحة التحكم الرئيسية
 // ============================================
 
 function renderAdminDashboard() {
   return `
-    <div class="page active">
-      <div class="admin-topbar">
-        <div>
-          <h1 style="margin: 0; font-size: 1.8rem;">⚙️ لوحة الإدارة</h1>
-          <p style="color: #b0b0b0; margin: 0.25rem 0 0 0; font-size: 0.9rem;">مرحباً بك في لوحة التحكم</p>
-        </div>
-        <button class="btn btn-danger" onclick="logoutAdmin()">🚪 خروج</button>
+    <div class="admin-topbar">
+      <div>
+        <h2 style="margin: 0; font-size: 1.4rem;">️ لوحة الإدارة</h2>
+        <p style="color: var(--text-secondary); margin: 0.25rem 0 0 0; font-size: 0.9rem;">مرحباً بك في لوحة التحكم</p>
       </div>
+      <button class="btn btn-danger btn-sm" onclick="logoutAdmin()">🚪 خروج</button>
+    </div>
+    
+    <div class="admin-layout">
+      <aside class="admin-sidebar">
+        <div class="sidebar-title">الأقسام</div>
+        <button class="sidebar-btn ${adminCurrentSection === 'home' ? 'active' : ''}" onclick="switchAdminSection('home')">
+          <span class="sidebar-icon">🏠</span>
+          <span>الرئيسية</span>
+        </button>
+        <button class="sidebar-btn ${adminCurrentSection === 'commands' ? 'active' : ''}" onclick="switchAdminSection('commands')">
+          <span class="sidebar-icon">⌨️</span>
+          <span>الأوامر</span>
+        </button>
+        <button class="sidebar-btn ${adminCurrentSection === 'rules' ? 'active' : ''}" onclick="switchAdminSection('rules')">
+          <span class="sidebar-icon">📜</span>
+          <span>القوانين</span>
+        </button>
+        <button class="sidebar-btn ${adminCurrentSection === 'intros' ? 'active' : ''}" onclick="switchAdminSection('intros')">
+          <span class="sidebar-icon">🎬</span>
+          <span>الانترو</span>
+        </button>
+        <button class="sidebar-btn ${adminCurrentSection === 'autoreplies' ? 'active' : ''}" onclick="switchAdminSection('autoreplies')">
+          <span class="sidebar-icon">🤖</span>
+          <span>الرد التلقائي</span>
+        </button>
+        <button class="sidebar-btn ${adminCurrentSection === 'tools' ? 'active' : ''}" onclick="switchAdminSection('tools')">
+          <span class="sidebar-icon">🔧</span>
+          <span>الأدوات</span>
+        </button>
+      </aside>
       
-      <div class="admin-layout">
-        <aside class="admin-sidebar">
-          <div class="sidebar-title">الأقسام</div>
-          <button class="sidebar-btn ${adminCurrentSection === 'home' ? 'active' : ''}" onclick="switchAdminSection('home')">
-            <span class="sidebar-icon">🏠</span>
-            <span>الرئيسية</span>
-          </button>
-          <button class="sidebar-btn ${adminCurrentSection === 'rules' ? 'active' : ''}" onclick="switchAdminSection('rules')">
-            <span class="sidebar-icon">📜</span>
-            <span>القوانين</span>
-          </button>
-          <button class="sidebar-btn ${adminCurrentSection === 'commands' ? 'active' : ''}" onclick="switchAdminSection('commands')">
-            <span class="sidebar-icon">⌨️</span>
-            <span>الأوامر</span>
-          </button>
-          <button class="sidebar-btn ${adminCurrentSection === 'intros' ? 'active' : ''}" onclick="switchAdminSection('intros')">
-            <span class="sidebar-icon"></span>
-            <span>الانترو</span>
-          </button>
-          <button class="sidebar-btn ${adminCurrentSection === 'autoreplies' ? 'active' : ''}" onclick="switchAdminSection('autoreplies')">
-            <span class="sidebar-icon">🤖</span>
-            <span>الرد التلقائي</span>
-          </button>
-          <button class="sidebar-btn ${adminCurrentSection === 'tools' ? 'active' : ''}" onclick="switchAdminSection('tools')">
-            <span class="sidebar-icon">🔧</span>
-            <span>الأدوات</span>
-          </button>
-        </aside>
-        
-        <main class="admin-content" id="admin-section-content">
-          ${renderAdminSection(adminCurrentSection)}
-        </main>
-      </div>
+      <main class="admin-content" id="admin-section-content">
+        ${renderAdminSection(adminCurrentSection)}
+      </main>
     </div>
   `;
 }
@@ -135,12 +131,12 @@ function switchAdminSection(section) {
 function renderAdminSection(section) {
   switch(section) {
     case 'home': return renderAdminHomeSection();
-    case 'rules': return renderAdminRulesSection();
     case 'commands': return renderAdminCommandsSection();
+    case 'rules': return renderAdminRulesSection();
     case 'intros': return renderAdminIntrosSection();
     case 'autoreplies': return renderAdminAutorepliesSection();
     case 'tools': return renderAdminToolsSection();
-    default: return '<p>قسم غير موجود</p>';
+    default: return '<div class="empty-state">قسم غير موجود</div>';
   }
 }
 
@@ -162,7 +158,7 @@ function searchInSection(query) {
 }
 
 // ============================================
-// قسم الصفحة الرئيسية
+// قسم الصفحة الرئيسية (الاختصارات)
 // ============================================
 
 function renderAdminHomeSection() {
@@ -179,11 +175,11 @@ function renderAdminHomeSection() {
       </div>
       
       <div class="inline-form">
-        <h3>➕ إضافة اختصار جديد</h3>
+        <h3> إضافة اختصار جديد</h3>
         <div class="form-row">
-          <input type="text" id="shortcut-icon" placeholder="الأيقونة " style="width: 100px;">
+          <input type="text" id="shortcut-icon" placeholder="الأيقونة (إيموجي)" style="width: 120px;">
           <input type="text" id="shortcut-title" placeholder="العنوان" style="flex: 1;">
-          <input type="text" id="shortcut-url" placeholder="الرابط أو الصفحة" style="flex: 1;">
+          <input type="text" id="shortcut-url" placeholder="الرابط أو الصفحة (اختياري)" style="flex: 1;">
           <button class="btn" onclick="addShortcut()">إضافة</button>
         </div>
       </div>
@@ -202,7 +198,7 @@ function renderAdminHomeSection() {
             <div class="table-row">
               <div style="width: 60px; font-size: 1.5rem;">${s.icon}</div>
               <div style="flex: 1; font-weight: bold;">${s.title}</div>
-              <div style="flex: 1; color: #b0b0b0;">${s.url || s.page || '-'}</div>
+              <div style="flex: 1; color: var(--text-secondary); font-size: 0.9rem;">${s.url || s.page || '-'}</div>
               <div style="width: 80px;">
                 <button class="btn btn-danger btn-sm" onclick="deleteShortcut(${idx})">🗑️</button>
               </div>
@@ -233,119 +229,6 @@ function addShortcut() {
 function deleteShortcut(index) {
   if (confirm('هل أنت متأكد من حذف هذا الاختصار؟')) {
     dataManager.deleteShortcut(index);
-    refreshAdminPage();
-  }
-}
-
-// ============================================
-// قسم القوانين
-// ============================================
-
-function renderAdminRulesSection() {
-  const sections = dataManager.data.rules.sections;
-  
-  const filteredSections = adminCurrentTab === 'all' 
-    ? sections 
-    : sections.filter(s => s.id === adminCurrentTab);
-  
-  const finalSections = adminSearchQuery
-    ? filteredSections.map(s => ({
-        ...s,
-        items: s.items.filter(i => i.toLowerCase().includes(adminSearchQuery))
-      })).filter(s => s.items.length > 0)
-    : filteredSections;
-  
-  return `
-    <div class="admin-panel">
-      <div class="panel-header">
-        <h2>📜 إدارة القوانين</h2>
-        <input type="text" placeholder="🔍 بحث..." value="${adminSearchQuery}" oninput="searchInSection(this.value)" style="width: 250px; margin: 0;">
-      </div>
-      
-      <div class="tabs-container">
-        <button class="tab-btn ${adminCurrentTab === 'all' ? 'active' : ''}" onclick="switchTab('all')">
-          الكل (${sections.length})
-        </button>
-        ${sections.map(s => `
-          <button class="tab-btn ${adminCurrentTab === s.id ? 'active' : ''}" onclick="switchTab('${s.id}')">
-            ${s.title} (${s.items.length})
-          </button>
-        `).join('')}
-      </div>
-      
-      ${adminCurrentTab === 'all' ? `
-        <div class="inline-form">
-          <h3>➕ إضافة قسم جديد</h3>
-          <div class="form-row">
-            <input type="text" id="rule-section-title" placeholder="عنوان القسم" style="flex: 1;">
-            <button class="btn" onclick="addRuleSection()">إضافة</button>
-          </div>
-        </div>
-      ` : ''}
-      
-      ${finalSections.length === 0 ? '<div class="empty-state">لا توجد نتائج</div>' : ''}
-      
-      ${finalSections.map(section => `
-        <div class="section-block">
-          <div class="section-block-header">
-            <h3>📁 ${section.title}</h3>
-            <button class="btn btn-danger btn-sm" onclick="deleteRuleSection('${section.id}')">🗑️ حذف القسم</button>
-          </div>
-          
-          <div class="inline-form compact">
-            <div class="form-row">
-              <input type="text" id="rule-item-${section.id}" placeholder="نص القانون الجديد" style="flex: 1;">
-              <button class="btn" onclick="addRuleItem('${section.id}')">إضافة</button>
-            </div>
-          </div>
-          
-          <div class="items-list">
-            ${section.items.length === 0 ? '<p style="color: #b0b0b0; padding: 1rem; text-align: center;">لا توجد قوانين</p>' : ''}
-            ${section.items.map((item, index) => {
-              const origIdx = dataManager.data.rules.sections.find(s => s.id === section.id).items.indexOf(item);
-              return `
-                <div class="list-item">
-                  <span class="list-item-icon">✓</span>
-                  <span class="list-item-text">${item}</span>
-                  <button class="btn btn-danger btn-sm" onclick="deleteRuleItem('${section.id}', ${origIdx})">🗑️</button>
-                </div>
-              `;
-            }).join('')}
-          </div>
-        </div>
-      `).join('')}
-      
-      <div class="results-info">عرض ${finalSections.length} قسم</div>
-    </div>
-  `;
-}
-
-function addRuleSection() {
-  const title = document.getElementById('rule-section-title').value.trim();
-  if (!title) { alert('⚠️ أدخل عنوان القسم'); return; }
-  dataManager.addRuleSection(title);
-  refreshAdminPage();
-}
-
-function deleteRuleSection(id) {
-  if (confirm('حذف القسم وجميع قوانينه؟')) {
-    dataManager.deleteRuleSection(id);
-    adminCurrentTab = 'all';
-    refreshAdminPage();
-  }
-}
-
-function addRuleItem(sectionId) {
-  const input = document.getElementById(`rule-item-${sectionId}`);
-  const text = input.value.trim();
-  if (!text) { alert('⚠️ أدخل نص القانون'); return; }
-  dataManager.addRuleItem(sectionId, text);
-  refreshAdminPage();
-}
-
-function deleteRuleItem(sectionId, index) {
-  if (confirm('حذف هذا القانون؟')) {
-    dataManager.deleteRuleItem(sectionId, index);
     refreshAdminPage();
   }
 }
@@ -405,12 +288,12 @@ function renderAdminCommandsSection() {
         <div class="section-block">
           <div class="section-block-header">
             <h3>📁 ${section.title}</h3>
-            <button class="btn btn-danger btn-sm" onclick="deleteCommandSection('${section.id}')">🗑️ حذف القسم</button>
+            <button class="btn btn-danger btn-sm" onclick="deleteCommandSection('${section.id}')">️ حذف القسم</button>
           </div>
           
           <div class="inline-form compact">
             <div class="form-row">
-              <input type="text" id="cmd-cmd-${section.id}" placeholder="الأمر (/help)" style="flex: 1;">
+              <input type="text" id="cmd-cmd-${section.id}" placeholder="الأمر (مثال: /help)" style="flex: 1;">
               <input type="text" id="cmd-desc-${section.id}" placeholder="الوصف" style="flex: 1;">
               <button class="btn" onclick="addCommand('${section.id}')">إضافة</button>
             </div>
@@ -428,10 +311,10 @@ function renderAdminCommandsSection() {
               return `
                 <div class="table-row">
                   <div style="flex: 1;"><code class="command-code">${cmd.command}</code></div>
-                  <div style="flex: 2; color: #b0b0b0;">${cmd.description}</div>
+                  <div style="flex: 2; color: var(--text-secondary);">${cmd.description}</div>
                   <div style="width: 120px; display: flex; gap: 0.25rem;">
                     <button class="btn btn-sm" onclick="showEditCommand('${section.id}', ${origIdx})">✏️</button>
-                    <button class="btn btn-danger btn-sm" onclick="deleteCommand('${section.id}', ${origIdx})">️</button>
+                    <button class="btn btn-danger btn-sm" onclick="deleteCommand('${section.id}', ${origIdx})">🗑️</button>
                   </div>
                 </div>
               `;
@@ -449,7 +332,7 @@ function renderAdminCommandsSection() {
 
 function addCommandSection() {
   const title = document.getElementById('command-section-title').value.trim();
-  if (!title) { alert('⚠️ أدخل عنوان القسم'); return; }
+  if (!title) { alert('️ أدخل عنوان القسم'); return; }
   dataManager.addCommandSection(title);
   refreshAdminPage();
 }
@@ -476,7 +359,7 @@ function showEditCommand(sectionId, index) {
   const cmd = section.commands[index];
   const editArea = document.getElementById(`edit-area-${sectionId}`);
   editArea.innerHTML = `
-    <div class="inline-form compact" style="margin-top: 1rem; border-top: 2px solid #00ff88;">
+    <div class="inline-form compact" style="margin-top: 1rem; border-top: 2px solid var(--primary);">
       <h3>✏️ تعديل الأمر</h3>
       <div class="form-row">
         <input type="text" id="edit-cmd-${sectionId}" value="${cmd.command}" style="flex: 1;">
@@ -504,6 +387,119 @@ function deleteCommand(sectionId, index) {
 }
 
 // ============================================
+// قسم القوانين
+// ============================================
+
+function renderAdminRulesSection() {
+  const sections = dataManager.data.rules.sections;
+  
+  const filteredSections = adminCurrentTab === 'all' 
+    ? sections 
+    : sections.filter(s => s.id === adminCurrentTab);
+  
+  const finalSections = adminSearchQuery
+    ? filteredSections.map(s => ({
+        ...s,
+        items: s.items.filter(i => i.toLowerCase().includes(adminSearchQuery))
+      })).filter(s => s.items.length > 0)
+    : filteredSections;
+  
+  return `
+    <div class="admin-panel">
+      <div class="panel-header">
+        <h2> إدارة القوانين</h2>
+        <input type="text" placeholder="🔍 بحث..." value="${adminSearchQuery}" oninput="searchInSection(this.value)" style="width: 250px; margin: 0;">
+      </div>
+      
+      <div class="tabs-container">
+        <button class="tab-btn ${adminCurrentTab === 'all' ? 'active' : ''}" onclick="switchTab('all')">
+          الكل (${sections.length})
+        </button>
+        ${sections.map(s => `
+          <button class="tab-btn ${adminCurrentTab === s.id ? 'active' : ''}" onclick="switchTab('${s.id}')">
+            ${s.title} (${s.items.length})
+          </button>
+        `).join('')}
+      </div>
+      
+      ${adminCurrentTab === 'all' ? `
+        <div class="inline-form">
+          <h3> إضافة قسم جديد</h3>
+          <div class="form-row">
+            <input type="text" id="rule-section-title" placeholder="عنوان القسم" style="flex: 1;">
+            <button class="btn" onclick="addRuleSection()">إضافة</button>
+          </div>
+        </div>
+      ` : ''}
+      
+      ${finalSections.length === 0 ? '<div class="empty-state">لا توجد نتائج</div>' : ''}
+      
+      ${finalSections.map(section => `
+        <div class="section-block">
+          <div class="section-block-header">
+            <h3>📁 ${section.title}</h3>
+            <button class="btn btn-danger btn-sm" onclick="deleteRuleSection('${section.id}')">🗑️ حذف القسم</button>
+          </div>
+          
+          <div class="inline-form compact">
+            <div class="form-row">
+              <input type="text" id="rule-item-${section.id}" placeholder="نص القانون الجديد" style="flex: 1;">
+              <button class="btn" onclick="addRuleItem('${section.id}')">إضافة</button>
+            </div>
+          </div>
+          
+          <div class="items-list">
+            ${section.items.length === 0 ? '<div class="empty-state">لا توجد قوانين</div>' : ''}
+            ${section.items.map((item, index) => {
+              const origIdx = dataManager.data.rules.sections.find(s => s.id === section.id).items.indexOf(item);
+              return `
+                <div class="list-item">
+                  <span class="list-item-icon">✓</span>
+                  <span class="list-item-text">${item}</span>
+                  <button class="btn btn-danger btn-sm" onclick="deleteRuleItem('${section.id}', ${origIdx})">🗑️</button>
+                </div>
+              `;
+            }).join('')}
+          </div>
+        </div>
+      `).join('')}
+      
+      <div class="results-info">عرض ${finalSections.length} قسم</div>
+    </div>
+  `;
+}
+
+function addRuleSection() {
+  const title = document.getElementById('rule-section-title').value.trim();
+  if (!title) { alert('⚠️ أدخل عنوان القسم'); return; }
+  dataManager.addRuleSection(title);
+  refreshAdminPage();
+}
+
+function deleteRuleSection(id) {
+  if (confirm('حذف القسم وجميع قوانينه؟')) {
+    dataManager.deleteRuleSection(id);
+    adminCurrentTab = 'all';
+    refreshAdminPage();
+  }
+}
+
+function addRuleItem(sectionId) {
+  const input = document.getElementById(`rule-item-${sectionId}`);
+  const text = input.value.trim();
+  if (!text) { alert('⚠️ أدخل نص القانون'); return; }
+  dataManager.addRuleItem(sectionId, text);
+  refreshAdminPage();
+}
+
+function deleteRuleItem(sectionId, index) {
+  if (confirm('حذف هذا القانون؟')) {
+    dataManager.deleteRuleItem(sectionId, index);
+    refreshAdminPage();
+  }
+}
+
+// ============================================
 // قسم الانترو
 // ============================================
 
@@ -517,7 +513,7 @@ function renderAdminIntrosSection() {
     <div class="admin-panel">
       <div class="panel-header">
         <h2>🎬 إدارة الانترو</h2>
-        <input type="text" placeholder=" بحث..." value="${adminSearchQuery}" oninput="searchInSection(this.value)" style="width: 250px; margin: 0;">
+        <input type="text" placeholder="🔍 بحث..." value="${adminSearchQuery}" oninput="searchInSection(this.value)" style="width: 250px; margin: 0;">
       </div>
       
       <div class="inline-form">
@@ -533,7 +529,6 @@ function renderAdminIntrosSection() {
       
       <div class="image-grid-admin">
         ${filtered.map(img => {
-          const idx = images.indexOf(img);
           return `
             <div class="image-card-admin">
               <img src="${img.url}" alt="${img.caption}">
@@ -541,7 +536,7 @@ function renderAdminIntrosSection() {
                 <strong>${img.caption}</strong>
                 <small>${img.url}</small>
               </div>
-              <div style="padding: 0 1rem 1rem;">
+              <div style="padding: 0 0.85rem 0.85rem;">
                 <button class="btn btn-danger btn-sm" onclick="deleteIntro('${img.id}')">🗑️ حذف</button>
               </div>
             </div>
@@ -585,12 +580,12 @@ function renderAdminAutorepliesSection() {
   return `
     <div class="admin-panel">
       <div class="panel-header">
-        <h2>🤖 إدارة الرد التلقائي</h2>
+        <h2> إدارة الرد التلقائي</h2>
         <input type="text" placeholder="🔍 بحث..." value="${adminSearchQuery}" oninput="searchInSection(this.value)" style="width: 250px; margin: 0;">
       </div>
       
       <div class="inline-form">
-        <h3> إضافة رد تلقائي</h3>
+        <h3>➕ إضافة رد تلقائي</h3>
         <div class="form-row">
           <input type="text" id="autoreply-keywords" placeholder="الكلمات (مفصولة بفاصلة)" style="flex: 1;">
         </div>
@@ -617,7 +612,7 @@ function renderAdminAutorepliesSection() {
                   ${reply.keywords.map(k => `<span class="keyword-tag">${k}</span>`).join('')}
                 </div>
               </div>
-              <div style="flex: 2; color: #00ff88;">${reply.reply}</div>
+              <div style="flex: 2; color: var(--text-secondary); font-size: 0.9rem;">${reply.reply}</div>
               <div style="width: 80px;">
                 <button class="btn btn-danger btn-sm" onclick="deleteAutoReply(${idx})">🗑️</button>
               </div>
@@ -683,7 +678,7 @@ function renderAdminToolsSection() {
       </div>
       
       <div class="info-box">
-        <h3>️ ملاحظات</h3>
+        <h3>ℹ️ ملاحظات مهمة</h3>
         <ul>
           <li>التعديلات تُحفظ تلقائياً في المتصفح (localStorage)</li>
           <li>قم بتصدير البيانات بشكل دوري كاحتياط</li>
@@ -705,7 +700,7 @@ function exportData() {
   const url = URL.createObjectURL(blob);
   const a = document.createElement('a');
   a.href = url;
-  a.download = 'mta-data-' + new Date().toISOString().split('T')[0] + '.json';
+  a.download = 'aldaleel-data-' + new Date().toISOString().split('T')[0] + '.json';
   a.click();
   URL.revokeObjectURL(url);
   alert('✅ تم التصدير بنجاح!');
