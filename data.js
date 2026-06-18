@@ -1,6 +1,7 @@
 // ============================================
-// الدليل - قاعدة البيانات
+// الدليل - قاعدة البيانات الكاملة
 // MTA Commands Guide - Data
+// مع نظام بحث ورد تلقائي ذكي
 // ============================================
 
 const defaultData = {
@@ -8,10 +9,10 @@ const defaultData = {
   home: {
     shortcuts: [
       { title: "رابط الديسكورد", url: "https://discord.gg/your-server", icon: "💬" },
-      { title: "القوانين", page: "rules", icon: "" },
-      { title: "الأوامر", page: "commands", icon: "⌨️" },
-      { title: "الانترو", page: "intros", icon: "🎬" },
-      { title: "الرد التلقائي", page: "chat", icon: "🤖" }
+      { title: "القوانين", page: "rules", icon: "📜" },
+      { title: "الأوامر", page: "commands", icon: "️" },
+      { title: "الانترو", page: "intros", icon: "" },
+      { title: "الرد التلقائي", page: "chat", icon: "" }
     ],
     welcomeMessage: "مرحباً بك في الدليل"
   },
@@ -708,91 +709,19 @@ const defaultData = {
     ]
   },
 
-  // ===== الرد التلقائي الذكي =====
+  // ===== الرد التلقائي - ردود ترحيبية فقط =====
   autoReplies: [
     {
       keywords: ["مرحبا", "اهلا", "السلام", "هلا", "هاي", "hello", "hi", "مرحباً"],
-      reply: "أهلاً وسهلاً بك! 👋\nكيف يمكنني مساعدتك؟\n\nيمكنك سؤالي عن:\n• الأوامر (اكتب اسم القسم مثل: فاكشن، سيارات، شات)\n• القوانين\n• أي شيء آخر!"
+      reply: "أهلاً وسهلاً بك! 👋\nكيف يمكنني مساعدتك؟\n\nيمكنك سؤالي عن:\n• الأوامر (اكتب اسم القسم مثل: فاكشن، سيارات، شات)\n• القوانين (اكتب اسم القانون مثل: DM, VDM)\n• أي أمر معين (اكتب اسم الأمر)\n\n💡 البوت يتعرف تلقائياً على كل البيانات الموجودة في الموقع!"
     },
     {
       keywords: ["شكرا", "شكراً", "thanks", "thank you", "مشكور", "تسلم"],
       reply: "عفواً! 😊\nسعيد بمساعدتك. إذا احتجت أي شيء آخر، أنا هنا!"
     },
     {
-      keywords: ["فاكشن", "factions", "faction", "عصابة", "فاكشنات"],
-      reply: "📋 أوامر الفاكشنات:\n\n• Showfactions = رؤية قائمة الفاكشنات\n• makefaction = صنع فاكشن جديد\n• delfaction = حذف فاكشن\n• setfactionrank = رفع رتبة لاعب\n• setfactionleader = دخول فاكشن على شكل ليدر\n• respawnfaction = رسبنة سيارات فاكشن\n• rf = صنع/حذف راديو لفاكشن\n\n📜 قوانين متعلقة:\n• TK = تقتل شخص من الفاكشن اللي انت فيه\n• Dos = ديوتي بدون شارة"
-    },
-    {
-      keywords: ["سيارة", "سيارات", "vehicles", "car", "cars", "مركبة"],
-      reply: "🚗 أوامر السيارات:\n\n• veh = صنع سيارة مؤقتة\n• Fixveh = اصلاح سيارة\n• delveh [id] = حذف سيارة\n• Setvehplate = تغيير لوحة السيارة\n• setcolor = تعديل الوان\n• blowveh = تفجير سيارة\n• respawnall = رسبنة جميع السيارات\n• apark = بارك لسيارة دون ركوبها\n\n💡 استخدم 'Nearbyvehicles' لمعرفة ايدهات السيارات حولك"
-    },
-    {
-      keywords: ["شات", "chat", "رسالة", "تحدث", "كلام"],
-      reply: "💬 أوامر الشات:\n\n• ooc = التحدث في الشات العام\n• w = تهمس لشخص\n• pm = رسالة خاصة\n• ho = رسالة بدون ظهور اسمك\n• Clearchat = مسح الشات\n• showchat = اخفاء/اظهار الشات\n• f = شات الوظيفة\n• fl = شات الليدرات"
-    },
-    {
-      keywords: ["سلاح", "weapons", "weapon", "gun"],
-      reply: "🔫 أوامر السلاح:\n\n• Makegun = صنع سلاح\n• Makeammo = صنع رصاص\n• Disarm = حذف جميع اسلحة لاعب\n• gunlist = معرفة معلومات عن السلاح\n• gunmaker = فتح لوحة الاسلحة\n\n⚠️ استخدم الأسلحة وفقاً للقوانين!"
-    },
-    {
-      keywords: ["عقاب", "punishments", "باند", "ban", "سجن", "jail", "kick", "طرد", "punish"],
-      reply: "⚖️ أوامر العقاب:\n\n• Jail = سجن لاعب\n• Pkick = طرد اللاعب\n• pban = حظر لمدة محددة\n• warn = تحذير (3 = باند)\n• ck = اعطاء سي كي\n• Slap = اعطاء سلاب\n\n القوانين المهمة:\n• DM = القتل بدون سبب\n• VDM = دعس الاشخاص بالسيارة\n• RDM = قتل متكرر\n• MG = اختلاط المعلومات"
-    },
-    {
-      keywords: ["قوانين", "قانون", "rules", "law", "rule"],
-      reply: "📜 القوانين الأساسية:\n\n• DM = القتل بدون سبب مقنع\n• VDM = استخدام سيارة ودعس الاشخاص\n• RDM = قتل نفس الشخص بدون توقف\n• MG = اختلاط الشات او المعلومات\n• PG = تكون خارق الطبيعة\n• CK = موت شخصية او اعدام\n• RK = قتل الانتقام\n• MA = تعدد الحسابات\n\n📖 راجع صفحة القوانين للتفاصيل الكاملة!"
-    },
-    {
-      keywords: ["انتقال", "teleport", "goto", "نقل"],
-      reply: "🌀 أوامر الانتقال:\n\n• Goto = الانتقال الى شخص\n• Gethere = سحب شخص\n• Gotoplace = الانتقال الى مكان\n• Gotoveh = الانتقال الى سيارة\n• gotoint = انتقال لانترو\n• gotogate = انتقال لبوابة\n\n الأماكن: igs, bank, ls, lv, sf, ash, dmv, sfpd, cityhall"
-    },
-    {
-      keywords: ["انترو", "interiors", "منزل", "بيت", "house", "home", "داخلية"],
-      reply: "🏠 أوامر الانترو (المنازل):\n\n• addint = صنع انترو جديد\n• Delint = حذف انترو\n• Setintprice = تغيير سعر البيت\n• sellproperty = بيع منزلك للسيرفر\n• Getkey = عمل نسخة مفتاح\n• togint = غلق البيت\n\n💡 استخدم 'Nearbyints' لمعرفة ايدي البيت القريب"
-    },
-    {
-      keywords: ["شوب", "shops", "shop", "بائع", "محل", "store"],
-      reply: "🏪 أوامر البائعين:\n\n• Makeshop = صنع شوب\n• Delshop = حذف شوب\n• Moveshop = نقل بائع\n• makefuel = صنع بائع بنزين\n• restock = تعبئة المحل\n\n💡 استخدم 'Nearbyshops' لمعرفة ايدي الشوب القريب"
-    },
-    {
-      keywords: ["ريبورت", "reports", "report", "بلاغ", "شكوى"],
-      reply: "📝 أوامر الريبورت:\n\n• Ar = قبول ريبورت\n• Ri = قراءة ريبورت\n• Di = رفع ريبورت\n• Cr = قفل ريبورت\n• FR = الغاء ريبورت\n• Getpoint = معرفة نقاطك\n\n⚠️ تأكد من وجود دليل قبل رفع ريبورت!"
-    },
-    {
-      keywords: ["تخفي", "stealth", "hide", "اختفاء", "invis"],
-      reply: "👻 أوامر التخفي:\n\n• hideadmin = تشغيل شارة بدون ظهور\n• Disappear = اخفاء نفسك\n• Supervise = اختفاء جزئي\n• freecam = تخفي واختراق جدران\n• Fakeme = ظهور باسم فيك\n\n⚠️ استخدم التخفي بمسؤولية!"
-    },
-    {
-      keywords: ["راديو", "radio"],
-      reply: "📻 أوامر الراديو:\n\n• tuneradio = دخول تردد راديو\n• toggleradio = قفل/تشغيل الراديو\n• rf = صنع/حذف راديو لفاكشن\n• srd = قفل جميع راديو السيارات\n• setvol 100 = التحكم بالصوت"
-    },
-    {
-      keywords: ["اسعاف", "ems", "صحة", "doctor", "طبيب", "علاج"],
-      reply: "🏥 أوامر الاسعاف:\n\n• cpr = حركة انعاش\n• mrevive = امر انعاش\n• heal 100 = اعطاء دم\n• backup = عمل باك اب\n\n💡 استخدم 'Revive' لإنعاش شخص"
-    },
-    {
-      keywords: ["شرطة", "police", "جندي", "military", "عسكري", "cop"],
-      reply: " أوامر الشرطة/الجندي:\n\n• ticket = اعطاء مخالفات\n• takelicense = سحب رخصة\n• fingerprint = تشوف بصمة الشخص\n• mdc = قائمة البلاغات\n• throwspikes = رمي الاشواك\n• togspeedcamera 120 = ردار السرعة\n• handsup = امر الاستسلام"
-    },
-    {
-      keywords: ["صحافة", "press", "صحفي", "بث", "tv", "camera"],
-      reply: "📰 أوامر الصحافة:\n\n• interview = اعطاء ميك\n• starttv = عمل بث مباشر\n• endtv = انهاء البث\n• movetv = تحريك الكاميرا\n• i = للتحدث"
-    },
-    {
-      keywords: ["محكمة", "court", "قاضي", "زواج", "marry", "طلاق", "divorce"],
-      reply: "⚖️ أوامر المحكمة:\n\n• changename = تغيير اسم\n• marry = امر زواج\n• divorce = امر طلاق"
-    },
-    {
-      keywords: ["مطار", "airport", "طائرة", "plane", "fly"],
-      reply: "✈️ أوامر المطار:\n\n• fuel = طلب تعبئة بنزين للطائرة\n• air = التحدث في الراديو الجوي\n• maps = رؤية تخطيط المطارات"
-    },
-    {
-      keywords: ["صيانة", "mechanic", "ميكانيكي", "تصليح", "fix"],
-      reply: "🔧 أوامر الصيانة:\n\n• towbike = سحب دراجة\n• veh = تصليح سيارة\n• Edveh = التعديل على السيارة\n\n💡 يمكنك أيضاً استخدام 'Fixveh' لإصلاح سريع"
-    },
-    {
-      keywords: ["مود", "mode", "resource", "res", "script"],
-      reply: "️ أوامر المود:\n\n• startres = تشغيل مود\n• stopres = ايقاف مود\n• restartres = عمل ريستارت لمود\n• mods = اظهار مود السيارات"
+      keywords: ["مساعدة", "help", "help me", "مساعد", "كيف", "how"],
+      reply: "أنا هنا لمساعدتك! 🤖\n\nيمكنك سؤالي عن:\n• أي قسم أوامر (فاكشن، سيارات، شات...)\n• أي قانون (DM, VDM, RDM...)\n• أي أمر معين (Goto, Fixveh, Jail...)\n\n💡 جرب كتابة أي كلمة وسأبحث لك في كل البيانات!"
     },
     {
       keywords: ["ديسكورد", "discord", "discord.gg"],
@@ -803,12 +732,8 @@ const defaultData = {
       reply: "🎮 للدخول للسيرفر:\n1. افتح MTA:SA\n2. اضغط Quick Connect\n3. اكتب IP السيرفر\n\nأو انضم عبر الديسكورد للحصول على الرابط!"
     },
     {
-      keywords: ["مساعدة", "help", "help me", "مساعد", "كيف", "how"],
-      reply: " أنا هنا لمساعدتك!\n\nيمكنك سؤالي عن:\n• أي قسم أوامر (فاكشن، سيارات، شات...)\n• القوانين ومعانيها\n• كيفية استخدام أمر معين\n\n💡 جرب كتابة اسم القسم مباشرة!"
-    },
-    {
       keywords: ["ادمن", "admin", "إدارة", "مسؤول"],
-      reply: "👑 للتواصل مع الإدارة:\n\n• استخدم /report في اللعبة\n• أو انضم للديسكورد\n• أو راسلنا مباشرة\n\n⚠️ الاحترام متبادل!"
+      reply: " للتواصل مع الإدارة:\n\n• استخدم /report في اللعبة\n• أو انضم للديسكورد\n• أو راسلنا مباشرة\n\n️ الاحترام متبادل!"
     }
   ]
 };
@@ -986,14 +911,14 @@ class DataManager {
     return false;
   }
 
-  // ===== البحث الذكي =====
+  // ===== البحث الذكي الشامل =====
   search(query) {
     const results = [];
     const q = query.toLowerCase().trim();
     
     if (!q) return results;
 
-    // البحث في الأوامر
+    // 1. البحث في الأوامر
     this.data.commands.sections.forEach(section => {
       const sectionMatch = section.title.toLowerCase().includes(q) ||
                           section.keywords.some(k => k.toLowerCase().includes(q));
@@ -1006,13 +931,14 @@ class DataManager {
             type: 'command',
             section: section.title,
             sectionId: section.id,
-            data: cmd
+            data: cmd,
+            score: sectionMatch ? 10 : 5
           });
         }
       });
     });
 
-    // البحث في القوانين
+    // 2. البحث في القوانين
     this.data.rules.sections.forEach(section => {
       const sectionMatch = section.title.toLowerCase().includes(q) ||
                           section.keywords.some(k => k.toLowerCase().includes(q));
@@ -1022,72 +948,113 @@ class DataManager {
           results.push({
             type: 'rule',
             section: section.title,
-            data: item
+            data: item,
+            score: sectionMatch ? 10 : 5
           });
         }
       });
     });
 
+    // ترتيب النتائج حسب الأهمية
+    results.sort((a, b) => b.score - a.score);
+    
     return results;
   }
 
-  // ===== الرد التلقائي الذكي =====
+  // ===== الرد التلقائي الذكي - يتعرف على كل البيانات تلقائياً =====
   getAutoReply(message) {
     const msg = message.toLowerCase().trim();
     
     if (!msg) return "مرحباً! كيف يمكنني مساعدتك؟";
 
-    // البحث عن أفضل تطابق
-    let bestMatch = null;
-    let bestScore = 0;
-
+    // أولاً: البحث عن تطابق تام في الردود المخصصة
     for (let autoReply of this.data.autoReplies) {
       for (let keyword of autoReply.keywords) {
         const kw = keyword.toLowerCase();
-        
-        // تطابق تام
-        if (msg === kw) {
+        if (msg === kw || msg.includes(kw)) {
           return autoReply.reply;
         }
-        
-        // يحتوي على الكلمة
-        if (msg.includes(kw)) {
-          const score = kw.length;
-          if (score > bestScore) {
-            bestScore = score;
-            bestMatch = autoReply;
-          }
-        }
       }
     }
 
-    if (bestMatch) {
-      return bestMatch.reply;
-    }
-
-    // إذا لم يجد تطابق، ابحث في الأوامر والقوانين
+    // ثانياً: البحث الذكي في كل البيانات
     const searchResults = this.search(msg);
     
-    if (searchResults.length > 0) {
-      const limited = searchResults.slice(0, 5);
-      let response = `🔍 وجدت ${searchResults.length} نتيجة:\n\n`;
-      
-      limited.forEach((result, index) => {
-        if (result.type === 'command') {
-          response += `${index + 1}. ${result.data.command} - ${result.data.description}\n`;
-        } else {
-          response += `${index + 1}. ${result.data}\n`;
-        }
-      });
-      
-      if (searchResults.length > 5) {
-        response += `\n... و ${searchResults.length - 5} نتائج أخرى`;
-      }
-      
-      return response;
+    if (searchResults.length === 0) {
+      return "عذراً، لم أجد معلومات عن هذا الموضوع. 🤔\n\nجرب:\n• كتابة اسم قسم (سيارات، شات، فاكشن...)\n• كتابة اسم أمر معين (مثل: Goto, Fixveh)\n• سؤال عن قانون معين (مثل: DM, VDM)";
     }
 
-    return "عذراً، لم أفهم سؤالك. 🤔\n\nجرب:\n• كتابة اسم قسم (فاكشن، سيارات، شات...)\n• سؤال عن قانون معين\n• طلب مساعدة";
+    // تجميع النتائج حسب النوع والقسم
+    const commandsBySection = {};
+    const rulesBySection = {};
+    let totalCommands = 0;
+    let totalRules = 0;
+
+    searchResults.forEach(result => {
+      if (result.type === 'command') {
+        if (!commandsBySection[result.section]) {
+          commandsBySection[result.section] = [];
+        }
+        commandsBySection[result.section].push(result.data);
+        totalCommands++;
+      } else if (result.type === 'rule') {
+        if (!rulesBySection[result.section]) {
+          rulesBySection[result.section] = [];
+        }
+        rulesBySection[result.section].push(result.data);
+        totalRules++;
+      }
+    });
+
+    // بناء الرد
+    let response = '';
+
+    // إذا كانت النتائج كثيرة، نعرض أهمها فقط
+    const maxPerSection = 8;
+
+    // عرض الأوامر
+    if (totalCommands > 0) {
+      response += `⌨️ أوامر (${totalCommands}):\n\n`;
+      
+      const sections = Object.keys(commandsBySection);
+      const sectionsToShow = sections.slice(0, 3); // أول 3 أقسام فقط
+      
+      sectionsToShow.forEach(sectionTitle => {
+        const cmds = commandsBySection[sectionTitle].slice(0, maxPerSection);
+        response += `📁 ${sectionTitle}:\n`;
+        cmds.forEach(cmd => {
+          response += `• ${cmd.command} = ${cmd.description}\n`;
+        });
+        if (commandsBySection[sectionTitle].length > maxPerSection) {
+          response += `... و ${commandsBySection[sectionTitle].length - maxPerSection} أوامر أخرى\n`;
+        }
+        response += '\n';
+      });
+    }
+
+    // عرض القوانين
+    if (totalRules > 0) {
+      response += ` قوانين (${totalRules}):\n\n`;
+      
+      const sections = Object.keys(rulesBySection);
+      sections.forEach(sectionTitle => {
+        const rules = rulesBySection[sectionTitle].slice(0, maxPerSection);
+        rules.forEach(rule => {
+          response += `• ${rule}\n`;
+        });
+        if (rulesBySection[sectionTitle].length > maxPerSection) {
+          response += `... و ${rulesBySection[sectionTitle].length - maxPerSection} قوانين أخرى\n`;
+        }
+      });
+    }
+
+    // إضافة ملاحظة إذا كانت هناك نتائج أكثر
+    const totalResults = totalCommands + totalRules;
+    if (totalResults > 10) {
+      response += `\n💡 هناك ${totalResults - 10} نتائج أخرى. استخدم البحث في الموقع لعرض الكل.`;
+    }
+
+    return response;
   }
 }
 
