@@ -1,0 +1,98 @@
+<!DOCTYPE html>
+<html lang="ar" dir="rtl">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>MTA Arabic Server - الصفحة الرئيسية</title>
+  <meta name="description" content="موقع أوامر سيرفر MTA San Andreas العربي">
+  <link rel="stylesheet" href="css/style.css">
+  <link href="https://fonts.googleapis.com/css2?family=Tajawal:wght@400;500;700;900&display=swap" rel="stylesheet">
+</head>
+<body>
+
+  <!-- شريط التنقل -->
+  <nav class="navbar">
+    <a href="index.html" class="logo">🎮 MTA Arabic</a>
+    <ul class="nav-links">
+      <li><a href="index.html" class="active">الرئيسية</a></li>
+      <li><a href="rules.html">القوانين</a></li>
+      <li><a href="commands.html">الأوامر</a></li>
+      <li><a href="intros.html">الانترو</a></li>
+      <li><a href="admin.html">الإدارة</a></li>
+    </ul>
+    <a href="#" id="discordLink" class="discord-btn" target="_blank">💬 Discord</a>
+  </nav>
+
+  <!-- المحتوى الرئيسي -->
+  <div class="container">
+    
+    <!-- Hero -->
+    <section class="hero">
+      <h1 class="hero-title" id="serverName">MTA Arabic Server</h1>
+      <p class="hero-subtitle">أهلاً بك في الموقع الرسمي للسيرفر - جميع الأوامر والقوانين في مكان واحد</p>
+      <div class="hero-actions">
+        <a href="#" id="joinServerBtn" class="btn">🎮 دخول السيرفر</a>
+        <a href="commands.html" class="btn btn-secondary">📖 تصفح الأوامر</a>
+      </div>
+    </section>
+
+    <!-- الاختصارات -->
+    <section>
+      <h2 class="section-title">⚡ اختصارات سريعة</h2>
+      <p style="color: var(--text-muted); margin-bottom: 1rem;">اضغط على أي اختصار للحصول على المعلومة فوراً</p>
+      <div class="shortcuts-grid" id="shortcutsGrid">
+        <!-- يتم تعبئتها من JS -->
+      </div>
+    </section>
+
+    <!-- روابط سريعة -->
+    <section style="margin-top: 3rem;">
+      <h2 class="section-title">🔗 روابط مهمة</h2>
+      <div class="grid">
+        <a href="rules.html" class="card" style="text-decoration: none; color: inherit;">
+          <div style="font-size: 2.5rem; margin-bottom: 0.5rem;">⚖️</div>
+          <h3 style="margin-bottom: 0.5rem;">قوانين السيرفر</h3>
+          <p style="color: var(--text-muted);">تعرف على جميع القوانين قبل اللعب</p>
+        </a>
+        <a href="commands.html" class="card" style="text-decoration: none; color: inherit;">
+          <div style="font-size: 2.5rem; margin-bottom: 0.5rem;">📖</div>
+          <h3 style="margin-bottom: 0.5rem;">الأوامر</h3>
+          <p style="color: var(--text-muted);">جميع أوامر السيرفر مقسمة حسب الفئة</p>
+        </a>
+        <a href="intros.html" class="card" style="text-decoration: none; color: inherit;">
+          <div style="font-size: 2.5rem; margin-bottom: 0.5rem;">🎬</div>
+          <h3 style="margin-bottom: 0.5rem;">معرض الانترو</h3>
+          <p style="color: var(--text-muted);">شاهد أجمل لقطات وانترو السيرفر</p>
+        </a>
+      </div>
+    </section>
+
+  </div>
+
+  <!-- Footer -->
+  <footer class="footer">
+    <p>© 2026 MTA Arabic Server - جميع الحقوق محفوظة</p>
+  </footer>
+
+  <!-- زر الشات العائم -->
+  <button class="chat-fab" id="chatFab" title="محادثة مع البوت">💬</button>
+
+  <!-- نافذة الشات -->
+  <div class="chat-window" id="chatWindow">
+    <div class="chat-header">
+      <span>🤖 بوت السيرفر</span>
+      <button onclick="toggleChat()" style="background: transparent; border: none; color: var(--bg-dark); font-size: 1.5rem; cursor: pointer;">✕</button>
+    </div>
+    <div class="chat-messages" id="chatMessages"></div>
+    <div class="chat-input-area">
+      <input type="text" id="chatInput" placeholder="اكتب سؤالك هنا..." onkeypress="if(event.key==='Enter') sendChatMessage()">
+      <button onclick="sendChatMessage()">إرسال</button>
+    </div>
+  </div>
+
+  <!-- ملفات JS -->
+  <script src="js/data-loader.js"></script>
+  <script src="js/chatbot.js"></script>
+  <script src="js/main.js"></script>
+</body>
+</html>
