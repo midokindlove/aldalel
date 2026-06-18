@@ -1,28 +1,28 @@
 // ============================================
-// قاعدة بيانات الموقع - MTA Commands
-// مع بيانات كاملة وذكاء في الرد التلقائي
+// الدليل - قاعدة البيانات
+// MTA Commands Guide - Data
 // ============================================
 
 const defaultData = {
-  // الصفحة الرئيسية
+  // ===== الصفحة الرئيسية =====
   home: {
     shortcuts: [
       { title: "رابط الديسكورد", url: "https://discord.gg/your-server", icon: "💬" },
-      { title: "القوانين", page: "rules", icon: "📜" },
-      { title: "الأوامر", page: "commands", icon: "️" },
-      { title: "الانترو", page: "intros", icon: "" },
-      { title: "الرد التلقائي", page: "chat", icon: "" }
+      { title: "القوانين", page: "rules", icon: "" },
+      { title: "الأوامر", page: "commands", icon: "⌨️" },
+      { title: "الانترو", page: "intros", icon: "🎬" },
+      { title: "الرد التلقائي", page: "chat", icon: "🤖" }
     ],
-    welcomeMessage: "مرحباً بك في موقع أوامر MTA - سان أندرياس"
+    welcomeMessage: "مرحباً بك في الدليل"
   },
 
-  // القوانين
+  // ===== القوانين =====
   rules: {
     sections: [
       {
         id: "rules-general",
-        title: "القوانين العامة",
-        keywords: ["قوانين", "قانون", "rules", "law"],
+        title: "قوانين السيرفر",
+        keywords: ["قوانين", "قانون", "rules", "law", "rule"],
         items: [
           "AR = استخدام الرتبة للمصلحة الشخصية (Aim Rank)",
           "ATA = نقل ممتلكات شخصية الى اخرى (alt to alt)",
@@ -77,13 +77,13 @@ const defaultData = {
     ]
   },
 
-  // الأوامر - 38 قسم
+  // ===== الأوامر - 38 قسم =====
   commands: {
     sections: [
       {
         id: "cmd-info",
         title: "أوامر المعلومات الأساسية",
-        keywords: ["معلومات", "check", "find", "معرفة", "بيانات"],
+        keywords: ["معلومات", "check", "find", "معرفة", "بيانات", "player", "لاعب"],
         commands: [
           { command: "Check", description: "معرفة معلومات شخص" },
           { command: "Changename", description: "تغيير اسم شخص" },
@@ -101,7 +101,7 @@ const defaultData = {
       {
         id: "cmd-factions",
         title: "أوامر الفاكشنات (Factions)",
-        keywords: ["فاكشن", "factions", "faction", "عصابة", "شرطة", "اسعاف"],
+        keywords: ["فاكشن", "factions", "faction", "عصابة", "شرطة", "اسعاف", "فاكشنات"],
         commands: [
           { command: "Showfactions", description: "رؤية قائمة الفاكشنات" },
           { command: "delfaction", description: "حذف فاكشن" },
@@ -133,7 +133,7 @@ const defaultData = {
       {
         id: "cmd-interiors",
         title: "أوامر الانترو (Interiors)",
-        keywords: ["انترو", "interiors", "منزل", "بيت", "house"],
+        keywords: ["انترو", "interiors", "منزل", "بيت", "house", "home", "داخلية"],
         commands: [
           { command: "ints / interiors", description: "رؤية البيوت الموجودة" },
           { command: "setintentrance", description: "نقل سهم او بيت" },
@@ -163,7 +163,7 @@ const defaultData = {
       {
         id: "cmd-shops",
         title: "أوامر البائعين (Shops)",
-        keywords: ["شوب", "shops", "shop", "بائع", "محل"],
+        keywords: ["شوب", "shops", "shop", "بائع", "محل", "store"],
         commands: [
           { command: "Makeshop", description: "صنع شوب" },
           { command: "Delshop", description: "حذف شوب" },
@@ -233,7 +233,7 @@ const defaultData = {
       {
         id: "cmd-vehicles",
         title: "أوامر السيارات (Vehicles)",
-        keywords: ["سيارة", "vehicles", "car", "مركبة"],
+        keywords: ["سيارة", "vehicles", "car", "cars", "مركبة"],
         commands: [
           { command: "respawnall", description: "رسبنة جميع السيارات" },
           { command: "Aunimpound", description: "ازالة السيارات من الحجز" },
@@ -288,7 +288,7 @@ const defaultData = {
       {
         id: "cmd-stealth",
         title: "أوامر التخفي (Stealth)",
-        keywords: ["تخفي", "stealth", "hide", "اختفاء"],
+        keywords: ["تخفي", "stealth", "hide", "اختفاء", "invis"],
         commands: [
           { command: "hideadmin", description: "تشغيل شارة بدون ظهور" },
           { command: "Disappear", description: "اخفاء نفسك" },
@@ -333,7 +333,7 @@ const defaultData = {
       {
         id: "cmd-chat",
         title: "أوامر الشات (Chat)",
-        keywords: ["شات", "chat", "رسالة", "تحدث"],
+        keywords: ["شات", "chat", "رسالة", "تحدث", "كلام"],
         commands: [
           { command: "ho", description: "رسالة في الشات بدون ظهور اسمك" },
           { command: "g", description: "شات السبورت" },
@@ -360,7 +360,7 @@ const defaultData = {
       {
         id: "cmd-weapons",
         title: "أوامر السلاح (Weapons)",
-        keywords: ["سلاح", "weapons", "weapon", "gun", "سلاح"],
+        keywords: ["سلاح", "weapons", "weapon", "gun"],
         commands: [
           { command: "Makegun", description: "صنع سلاح" },
           { command: "Makeammo", description: "صنع رصاص" },
@@ -461,7 +461,7 @@ const defaultData = {
       {
         id: "cmd-punishments",
         title: "أوامر العقاب (Punishments)",
-        keywords: ["عقاب", "punishments", "punish", "باند", "سجن", "kick", "ban"],
+        keywords: ["عقاب", "punishments", "punish", "باند", "سجن", "kick", "ban", "طرد"],
         commands: [
           { command: "Jail", description: "سجن واحد" },
           { command: "ojail", description: "سجن لاعب بلا اتصال" },
@@ -564,7 +564,7 @@ const defaultData = {
       {
         id: "cmd-police",
         title: "أوامر الجندي/الشرطة (Police/Military)",
-        keywords: ["شرطة", "police", "جندي", "military", "عسكري"],
+        keywords: ["شرطة", "police", "جندي", "military", "عسكري", "cop"],
         commands: [
           { command: "setwalk 62", description: "مسك صلاح" },
           { command: "togattach", description: "حمل السلاح على الصدر" },
@@ -618,7 +618,7 @@ const defaultData = {
       {
         id: "cmd-mechanic",
         title: "أوامر الصيانة (Mechanic)",
-        keywords: ["صيانة", "mechanic", "ميكانيكي", "تصليح"],
+        keywords: ["صيانة", "mechanic", "ميكانيكي", "تصليح", "fix"],
         commands: [
           { command: "towbike", description: "سحب دراجة" },
           { command: "veh", description: "تصليح سيارة" },
@@ -628,7 +628,7 @@ const defaultData = {
       {
         id: "cmd-teleport",
         title: "أوامر الانتقال (Teleport)",
-        keywords: ["انتقال", "teleport", "goto", "انتقال"],
+        keywords: ["انتقال", "teleport", "goto", "نقل"],
         commands: [
           { command: "Gotoplace", description: "الانتقال الى مكان (igs/bank/ls/lv/sf/ash/dmv/1str/sfpd/cityhall)" },
           { command: "goto", description: "انتقال لشخص" },
@@ -642,7 +642,7 @@ const defaultData = {
       {
         id: "cmd-mode",
         title: "أوامر المود (Mode)",
-        keywords: ["مود", "mode", "resource", "res"],
+        keywords: ["مود", "mode", "resource", "res", "script"],
         commands: [
           { command: "startres", description: "تشغيل مود" },
           { command: "stopres", description: "ايقاف مود" },
@@ -687,7 +687,7 @@ const defaultData = {
     ]
   },
 
-  // الانترو
+  // ===== الانترو =====
   intros: {
     images: [
       {
@@ -708,156 +708,107 @@ const defaultData = {
     ]
   },
 
-  // بيانات الرد التلقائي - ذكي ومفصل
+  // ===== الرد التلقائي الذكي =====
   autoReplies: [
-    // الترحيب
-    { 
-      keywords: ["مرحبا", "اهلا", "السلام", "هلا", "هاي", "hello", "hi"], 
-      reply: "أهلاً وسهلاً بك! 👋\nكيف يمكنني مساعدتك؟ يمكنك سؤالي عن:\n• الأوامر (اكتب اسم القسم مثل: فاكشن، سيارات، شات)\n• القوانين\n• أي شيء آخر!" 
+    {
+      keywords: ["مرحبا", "اهلا", "السلام", "هلا", "هاي", "hello", "hi", "مرحباً"],
+      reply: "أهلاً وسهلاً بك! 👋\nكيف يمكنني مساعدتك؟\n\nيمكنك سؤالي عن:\n• الأوامر (اكتب اسم القسم مثل: فاكشن، سيارات، شات)\n• القوانين\n• أي شيء آخر!"
     },
-    
-    // الشكر
-    { 
-      keywords: ["شكرا", "شكراً", "thanks", "thank you", "مشكور"], 
-      reply: "عفواً! 😊 سعيد بمساعدتك. إذا احتجت أي شيء آخر، أنا هنا!" 
+    {
+      keywords: ["شكرا", "شكراً", "thanks", "thank you", "مشكور", "تسلم"],
+      reply: "عفواً! 😊\nسعيد بمساعدتك. إذا احتجت أي شيء آخر، أنا هنا!"
     },
-    
-    // الفاكشنات
-    { 
-      keywords: ["فاكشن", "factions", "faction", "عصابة", "شرطة", "اسعاف", "فاكشنات"], 
-      reply: "📋 أوامر الفاكشنات:\n\n• Showfactions = رؤية قائمة الفاكشنات\n• makefaction = صنع فاكشن جديد\n• delfaction = حذف فاكشن\n• setfactionrank = رفع رتبة لاعب\n• setfactionleader = دخول فاكشن على شكل ليدر\n• respawnfaction = رسبنة سيارات فاكشن\n• rf = صنع/حذف راديو لفاكشن\n\n📜 قوانين الفاكشنات:\n• TK = تقتل شخص من الفاكشن اللي انت فيه\n• Dos = ديوتي بدون شارة\n\nلمزيد من التفاصيل، اذهب إلى صفحة الأوامر > فاكشنات" 
+    {
+      keywords: ["فاكشن", "factions", "faction", "عصابة", "فاكشنات"],
+      reply: "📋 أوامر الفاكشنات:\n\n• Showfactions = رؤية قائمة الفاكشنات\n• makefaction = صنع فاكشن جديد\n• delfaction = حذف فاكشن\n• setfactionrank = رفع رتبة لاعب\n• setfactionleader = دخول فاكشن على شكل ليدر\n• respawnfaction = رسبنة سيارات فاكشن\n• rf = صنع/حذف راديو لفاكشن\n\n📜 قوانين متعلقة:\n• TK = تقتل شخص من الفاكشن اللي انت فيه\n• Dos = ديوتي بدون شارة"
     },
-    
-    // السيارات
-    { 
-      keywords: ["سيارة", "سيارات", "vehicles", "car", "cars", "مركبة"], 
-      reply: "🚗 أوامر السيارات:\n\n• veh = صنع سيارة مؤقتة\n• Fixveh = اصلاح سيارة\n• delveh [id] = حذف سيارة\n• Setvehplate = تغيير لوحة السيارة\n• setcolor = تعديل الوان\n• blowveh = تفجير سيارة\n• respawnall = رسبنة جميع السيارات\n• apark = بارك لسيارة دون ركوبها\n\n💡 نصيحة: استخدم 'Nearbyvehicles' لمعرفة ايدهات السيارات حولك" 
+    {
+      keywords: ["سيارة", "سيارات", "vehicles", "car", "cars", "مركبة"],
+      reply: "🚗 أوامر السيارات:\n\n• veh = صنع سيارة مؤقتة\n• Fixveh = اصلاح سيارة\n• delveh [id] = حذف سيارة\n• Setvehplate = تغيير لوحة السيارة\n• setcolor = تعديل الوان\n• blowveh = تفجير سيارة\n• respawnall = رسبنة جميع السيارات\n• apark = بارك لسيارة دون ركوبها\n\n💡 استخدم 'Nearbyvehicles' لمعرفة ايدهات السيارات حولك"
     },
-    
-    // الشات
-    { 
-      keywords: ["شات", "chat", "رسالة", "تحدث", "كلام"], 
-      reply: "💬 أوامر الشات:\n\n• ooc = التحدث في الشات العام\n• w = تهمس لشخص\n• pm = رسالة خاصة\n• ho = رسالة بدون ظهور اسمك\n• Clearchat = مسح الشات\n• showchat = اخفاء/اظهار الشات\n• f = شات الوظيفة\n• fl = شات الليدرات\n\n⚠️ تذكر: احترام القوانين في الشات العام!" 
+    {
+      keywords: ["شات", "chat", "رسالة", "تحدث", "كلام"],
+      reply: "💬 أوامر الشات:\n\n• ooc = التحدث في الشات العام\n• w = تهمس لشخص\n• pm = رسالة خاصة\n• ho = رسالة بدون ظهور اسمك\n• Clearchat = مسح الشات\n• showchat = اخفاء/اظهار الشات\n• f = شات الوظيفة\n• fl = شات الليدرات"
     },
-    
-    // السلاح
-    { 
-      keywords: ["سلاح", "weapons", "weapon", "gun", "سلاح"], 
-      reply: " أوامر السلاح:\n\n• Makegun = صنع سلاح\n• Makeammo = صنع رصاص\n• Disarm = حذف جميع اسلحة لاعب\n• gunlist = معرفة معلومات عن السلاح\n• gunmaker = فتح لوحة الاسلحة\n\n⚠️ استخدم الأسلحة وفقاً للقوانين!" 
+    {
+      keywords: ["سلاح", "weapons", "weapon", "gun"],
+      reply: "🔫 أوامر السلاح:\n\n• Makegun = صنع سلاح\n• Makeammo = صنع رصاص\n• Disarm = حذف جميع اسلحة لاعب\n• gunlist = معرفة معلومات عن السلاح\n• gunmaker = فتح لوحة الاسلحة\n\n⚠️ استخدم الأسلحة وفقاً للقوانين!"
     },
-    
-    // العقوبات
-    { 
-      keywords: ["عقاب", "punishments", "باند", "ban", "سجن", "jail", "kick", "طرد"], 
-      reply: "⚖️ أوامر العقاب:\n\n• Jail = سجن لاعب\n• Pkick = طرد اللاعب\n• pban = حظر لمدة محددة\n• warn = تحذير (3 = باند)\n• ck = اعطاء سي كي\n• Slap = اعطاء سلاب\n\n📜 القوانين المهمة:\n• DM = القتل بدون سبب\n• VDM = دعس الاشخاص بالسيارة\n• RDM = قتل متكرر\n• MG = اختلاط المعلومات" 
+    {
+      keywords: ["عقاب", "punishments", "باند", "ban", "سجن", "jail", "kick", "طرد", "punish"],
+      reply: "⚖️ أوامر العقاب:\n\n• Jail = سجن لاعب\n• Pkick = طرد اللاعب\n• pban = حظر لمدة محددة\n• warn = تحذير (3 = باند)\n• ck = اعطاء سي كي\n• Slap = اعطاء سلاب\n\n القوانين المهمة:\n• DM = القتل بدون سبب\n• VDM = دعس الاشخاص بالسيارة\n• RDM = قتل متكرر\n• MG = اختلاط المعلومات"
     },
-    
-    // القوانين
-    { 
-      keywords: ["قوانين", "قانون", "rules", "law", "rule"], 
-      reply: " القوانين الأساسية:\n\n• DM = القتل بدون سبب مقنع\n• VDM = استخدام سيارة ودعس الاشخاص\n• RDM = قتل نفس الشخص بدون توقف\n• MG = اختلاط الشات او المعلومات (Meta Gaming)\n• PG = تكون خارق الطبيعة (Power Gaming)\n• CK = موت شخصية او اعدام\n• RK = قتل الانتقام\n• MA = تعدد الحسابات\n\n📖 راجع صفحة القوانين للتفاصيل الكاملة!" 
+    {
+      keywords: ["قوانين", "قانون", "rules", "law", "rule"],
+      reply: "📜 القوانين الأساسية:\n\n• DM = القتل بدون سبب مقنع\n• VDM = استخدام سيارة ودعس الاشخاص\n• RDM = قتل نفس الشخص بدون توقف\n• MG = اختلاط الشات او المعلومات\n• PG = تكون خارق الطبيعة\n• CK = موت شخصية او اعدام\n• RK = قتل الانتقام\n• MA = تعدد الحسابات\n\n📖 راجع صفحة القوانين للتفاصيل الكاملة!"
     },
-    
-    // الانتقال
-    { 
-      keywords: ["انتقال", "teleport", "goto", "انتقال", "نقل"], 
-      reply: "🌀 أوامر الانتقال:\n\n• Goto = الانتقال الى شخص\n• Gethere = سحب شخص\n• Gotoplace = الانتقال الى مكان\n• Gotoveh = الانتقال الى سيارة\n• gotoint = انتقال لانترو\n• gotogate = انتقال لبوابة\n\n📍 الأماكن المتاحة: igs, bank, ls, lv, sf, ash, dmv, sfpd, cityhall" 
+    {
+      keywords: ["انتقال", "teleport", "goto", "نقل"],
+      reply: "🌀 أوامر الانتقال:\n\n• Goto = الانتقال الى شخص\n• Gethere = سحب شخص\n• Gotoplace = الانتقال الى مكان\n• Gotoveh = الانتقال الى سيارة\n• gotoint = انتقال لانترو\n• gotogate = انتقال لبوابة\n\n الأماكن: igs, bank, ls, lv, sf, ash, dmv, sfpd, cityhall"
     },
-    
-    // الانترو والمنازل
-    { 
-      keywords: ["انترو", "interiors", "منزل", "بيت", "house", "home"], 
-      reply: " أوامر الانترو (المنازل):\n\n• addint = صنع انترو جديد\n• Delint = حذف انترو\n• Setintprice = تغيير سعر البيت\n• sellproperty = بيع منزلك للسيرفر\n• Getkey = عمل نسخة مفتاح\n• togint = غلق البيت\n\n💡 استخدم 'Nearbyints' لمعرفة ايدي البيت القريب" 
+    {
+      keywords: ["انترو", "interiors", "منزل", "بيت", "house", "home", "داخلية"],
+      reply: "🏠 أوامر الانترو (المنازل):\n\n• addint = صنع انترو جديد\n• Delint = حذف انترو\n• Setintprice = تغيير سعر البيت\n• sellproperty = بيع منزلك للسيرفر\n• Getkey = عمل نسخة مفتاح\n• togint = غلق البيت\n\n💡 استخدم 'Nearbyints' لمعرفة ايدي البيت القريب"
     },
-    
-    // البائعين والشوب
-    { 
-      keywords: ["شوب", "shops", "shop", "بائع", "محل", "store"], 
-      reply: "🏪 أوامر البائعين:\n\n• Makeshop = صنع شوب\n• Delshop = حذف شوب\n• Moveshop = نقل بائع\n• makefuel = صنع بائع بنزين\n• restock = تعبئة المحل\n\n استخدم 'Nearbyshops' لمعرفة ايدي الشوب القريب" 
+    {
+      keywords: ["شوب", "shops", "shop", "بائع", "محل", "store"],
+      reply: "🏪 أوامر البائعين:\n\n• Makeshop = صنع شوب\n• Delshop = حذف شوب\n• Moveshop = نقل بائع\n• makefuel = صنع بائع بنزين\n• restock = تعبئة المحل\n\n💡 استخدم 'Nearbyshops' لمعرفة ايدي الشوب القريب"
     },
-    
-    // الريبورت
-    { 
-      keywords: ["ريبورت", "reports", "report", "بلاغ", "شكوى"], 
-      reply: "📝 أوامر الريبورت:\n\n• Ar = قبول ريبورت\n• Ri = قراءة ريبورت\n• Di = رفع ريبورت\n• Cr = قفل ريبورت\n• FR = الغاء ريبورت\n• Getpoint = معرفة نقاطك\n\n⚠️ تأكد من وجود دليل قبل رفع ريبورت!" 
+    {
+      keywords: ["ريبورت", "reports", "report", "بلاغ", "شكوى"],
+      reply: "📝 أوامر الريبورت:\n\n• Ar = قبول ريبورت\n• Ri = قراءة ريبورت\n• Di = رفع ريبورت\n• Cr = قفل ريبورت\n• FR = الغاء ريبورت\n• Getpoint = معرفة نقاطك\n\n⚠️ تأكد من وجود دليل قبل رفع ريبورت!"
     },
-    
-    // التخفي
-    { 
-      keywords: ["تخفي", "stealth", "hide", "اختفاء", "invis"], 
-      reply: " أوامر التخفي:\n\n• hideadmin = تشغيل شارة بدون ظهور\n• Disappear = اخفاء نفسك\n• Supervise = اختفاء جزئي\n• freecam = تخفي واختراق جدران\n• Fakeme = ظهور باسم فيك\n\n⚠️ استخدم التخفي بمسؤولية!" 
+    {
+      keywords: ["تخفي", "stealth", "hide", "اختفاء", "invis"],
+      reply: "👻 أوامر التخفي:\n\n• hideadmin = تشغيل شارة بدون ظهور\n• Disappear = اخفاء نفسك\n• Supervise = اختفاء جزئي\n• freecam = تخفي واختراق جدران\n• Fakeme = ظهور باسم فيك\n\n⚠️ استخدم التخفي بمسؤولية!"
     },
-    
-    // الراديو
-    { 
-      keywords: ["راديو", "radio"], 
-      reply: "📻 أوامر الراديو:\n\n• tuneradio = دخول تردد راديو\n• toggleradio = قفل/تشغيل الراديو\n• rf = صنع/حذف راديو لفاكشن\n• srd = قفل جميع راديو السيارات\n• setvol 100 = التحكم بالصوت" 
+    {
+      keywords: ["راديو", "radio"],
+      reply: "📻 أوامر الراديو:\n\n• tuneradio = دخول تردد راديو\n• toggleradio = قفل/تشغيل الراديو\n• rf = صنع/حذف راديو لفاكشن\n• srd = قفل جميع راديو السيارات\n• setvol 100 = التحكم بالصوت"
     },
-    
-    // الاسعاف
-    { 
-      keywords: ["اسعاف", "ems", "صحة", "doctor", "طبيب", "علاج"], 
-      reply: "🏥 أوامر الاسعاف:\n\n• cpr = حركة انعاش\n• mrevive = امر انعاش\n• heal 100 = اعطاء دم\n• backup = عمل باك اب\n\n💡 استخدم 'Revive' لإنعاش شخص" 
+    {
+      keywords: ["اسعاف", "ems", "صحة", "doctor", "طبيب", "علاج"],
+      reply: "🏥 أوامر الاسعاف:\n\n• cpr = حركة انعاش\n• mrevive = امر انعاش\n• heal 100 = اعطاء دم\n• backup = عمل باك اب\n\n💡 استخدم 'Revive' لإنعاش شخص"
     },
-    
-    // الشرطة
-    { 
-      keywords: ["شرطة", "police", "جندي", "military", "عسكري", "cop"], 
-      reply: "👮 أوامر الشرطة/الجندي:\n\n• ticket = اعطاء مخالفات\n• takelicense = سحب رخصة\n• fingerprint = تشوف بصمة الشخص\n• mdc = قائمة البلاغات\n• throwspikes = رمي الاشواك\n• togspeedcamera 120 = ردار السرعة\n• handsup = امر الاستسلام" 
+    {
+      keywords: ["شرطة", "police", "جندي", "military", "عسكري", "cop"],
+      reply: " أوامر الشرطة/الجندي:\n\n• ticket = اعطاء مخالفات\n• takelicense = سحب رخصة\n• fingerprint = تشوف بصمة الشخص\n• mdc = قائمة البلاغات\n• throwspikes = رمي الاشواك\n• togspeedcamera 120 = ردار السرعة\n• handsup = امر الاستسلام"
     },
-    
-    // الصحافة
-    { 
-      keywords: ["صحافة", "press", "صحفي", "بث", "tv", "camera"], 
-      reply: "📰 أوامر الصحافة:\n\n• interview = اعطاء ميك\n• starttv = عمل بث مباشر\n• endtv = انهاء البث\n• movetv = تحريك الكاميرا\n• i = للتحدث" 
+    {
+      keywords: ["صحافة", "press", "صحفي", "بث", "tv", "camera"],
+      reply: "📰 أوامر الصحافة:\n\n• interview = اعطاء ميك\n• starttv = عمل بث مباشر\n• endtv = انهاء البث\n• movetv = تحريك الكاميرا\n• i = للتحدث"
     },
-    
-    // المحكمة
-    { 
-      keywords: ["محكمة", "court", "قاضي", "زواج", "marry", "طلاق", "divorce"], 
-      reply: "⚖️ أوامر المحكمة:\n\n• changename = تغيير اسم\n• marry = امر زواج\n• divorce = امر طلاق" 
+    {
+      keywords: ["محكمة", "court", "قاضي", "زواج", "marry", "طلاق", "divorce"],
+      reply: "⚖️ أوامر المحكمة:\n\n• changename = تغيير اسم\n• marry = امر زواج\n• divorce = امر طلاق"
     },
-    
-    // المطار
-    { 
-      keywords: ["مطار", "airport", "طائرة", "plane", "fly"], 
-      reply: "✈️ أوامر المطار:\n\n• fuel = طلب تعبئة بنزين للطائرة\n• air = التحدث في الراديو الجوي\n• maps = رؤية تخطيط المطارات" 
+    {
+      keywords: ["مطار", "airport", "طائرة", "plane", "fly"],
+      reply: "✈️ أوامر المطار:\n\n• fuel = طلب تعبئة بنزين للطائرة\n• air = التحدث في الراديو الجوي\n• maps = رؤية تخطيط المطارات"
     },
-    
-    // الصيانة
-    { 
-      keywords: ["صيانة", "mechanic", "ميكانيكي", "تصليح", "fix"], 
-      reply: "🔧 أوامر الصيانة:\n\n• towbike = سحب دراجة\n• veh = تصليح سيارة\n• Edveh = التعديل على السيارة\n\n💡 يمكنك أيضاً استخدام 'Fixveh' لإصلاح سريع" 
+    {
+      keywords: ["صيانة", "mechanic", "ميكانيكي", "تصليح", "fix"],
+      reply: "🔧 أوامر الصيانة:\n\n• towbike = سحب دراجة\n• veh = تصليح سيارة\n• Edveh = التعديل على السيارة\n\n💡 يمكنك أيضاً استخدام 'Fixveh' لإصلاح سريع"
     },
-    
-    // المودات
-    { 
-      keywords: ["مود", "mode", "resource", "res", "script"], 
-      reply: "️ أوامر المود:\n\n• startres = تشغيل مود\n• stopres = ايقاف مود\n• restartres = عمل ريستارت لمود\n• mods = اظهار مود السيارات" 
+    {
+      keywords: ["مود", "mode", "resource", "res", "script"],
+      reply: "️ أوامر المود:\n\n• startres = تشغيل مود\n• stopres = ايقاف مود\n• restartres = عمل ريستارت لمود\n• mods = اظهار مود السيارات"
     },
-    
-    // الديسكورد
-    { 
-      keywords: ["ديسكورد", "discord", "discord.gg"], 
-      reply: "💬 رابط الديسكورد:\nhttps://discord.gg/your-server\n\nانضم للتواصل مع المجتمع!" 
+    {
+      keywords: ["ديسكورد", "discord", "discord.gg"],
+      reply: "💬 رابط الديسكورد:\nhttps://discord.gg/your-server\n\nانضم للتواصل مع المجتمع!"
     },
-    
-    // السيرفر
-    { 
-      keywords: ["سيرفر", "server", "ip", "اي بي", "دخول", "انضم"], 
-      reply: "🎮 للدخول للسيرفر:\n1. افتح MTA:SA\n2. اضغط Quick Connect\n3. اكتب IP السيرفر\n\nأو انضم عبر الديسكورد للحصول على الرابط!" 
+    {
+      keywords: ["سيرفر", "server", "ip", "اي بي", "دخول", "انضم"],
+      reply: "🎮 للدخول للسيرفر:\n1. افتح MTA:SA\n2. اضغط Quick Connect\n3. اكتب IP السيرفر\n\nأو انضم عبر الديسكورد للحصول على الرابط!"
     },
-    
-    // المساعدة العامة
-    { 
-      keywords: ["مساعدة", "help", "help me", "مساعد", "كيف", "how"], 
-      reply: " أنا هنا لمساعدتك!\n\nيمكنك سؤالي عن:\n• أي قسم أوامر (فاكشن، سيارات، شات...)\n• القوانين ومعانيها\n• كيفية استخدام أمر معين\n\n💡 جرب كتابة اسم القسم مباشرة!" 
+    {
+      keywords: ["مساعدة", "help", "help me", "مساعد", "كيف", "how"],
+      reply: " أنا هنا لمساعدتك!\n\nيمكنك سؤالي عن:\n• أي قسم أوامر (فاكشن، سيارات، شات...)\n• القوانين ومعانيها\n• كيفية استخدام أمر معين\n\n💡 جرب كتابة اسم القسم مباشرة!"
     },
-    
-    // الادمن
-    { 
-      keywords: ["ادمن", "admin", "إدارة", "مسؤول"], 
-      reply: "👑 للتواصل مع الإدارة:\n\n• استخدم /report في اللعبة\n• أو انضم للديسكورد\n• أو راسلنا مباشرة\n\n⚠️ الاحترام متبادل!" 
+    {
+      keywords: ["ادمن", "admin", "إدارة", "مسؤول"],
+      reply: "👑 للتواصل مع الإدارة:\n\n• استخدم /report في اللعبة\n• أو انضم للديسكورد\n• أو راسلنا مباشرة\n\n⚠️ الاحترام متبادل!"
     }
   ]
 };
@@ -868,7 +819,7 @@ const defaultData = {
 
 class DataManager {
   constructor() {
-    this.storageKey = 'mta_website_data';
+    this.storageKey = 'aldaleel_mta_data';
     this.data = this.loadData();
   }
 
@@ -916,7 +867,7 @@ class DataManager {
     }
   }
 
-  // CRUD للقوانين
+  // ===== CRUD للقوانين =====
   addRuleSection(title, keywords = []) {
     const id = 'rules-' + Date.now();
     this.data.rules.sections.push({ id, title, keywords, items: [] });
@@ -949,7 +900,7 @@ class DataManager {
     return false;
   }
 
-  // CRUD للأوامر
+  // ===== CRUD للأوامر =====
   addCommandSection(title, keywords = []) {
     const id = 'cmd-' + Date.now();
     this.data.commands.sections.push({ id, title, keywords, commands: [] });
@@ -992,7 +943,7 @@ class DataManager {
     return false;
   }
 
-  // CRUD للانترو
+  // ===== CRUD للانترو =====
   addIntro(url, caption) {
     const id = 'intro-' + Date.now();
     this.data.intros.images.push({ id, url, caption });
@@ -1005,7 +956,7 @@ class DataManager {
     this.saveData();
   }
 
-  // الصفحة الرئيسية
+  // ===== الصفحة الرئيسية =====
   addShortcut(title, url, icon) {
     this.data.home.shortcuts.push({ title, url, icon });
     this.saveData();
@@ -1020,7 +971,7 @@ class DataManager {
     return false;
   }
 
-  // الرد التلقائي
+  // ===== الرد التلقائي =====
   addAutoReply(keywords, reply) {
     this.data.autoReplies.push({ keywords, reply });
     this.saveData();
@@ -1035,10 +986,7 @@ class DataManager {
     return false;
   }
 
-  // ============================================
-  // البحث الذكي - يبحث في كل شيء
-  // ============================================
-
+  // ===== البحث الذكي =====
   search(query) {
     const results = [];
     const q = query.toLowerCase().trim();
@@ -1047,7 +995,6 @@ class DataManager {
 
     // البحث في الأوامر
     this.data.commands.sections.forEach(section => {
-      // البحث في عنوان القسم والكلمات المفتاحية
       const sectionMatch = section.title.toLowerCase().includes(q) ||
                           section.keywords.some(k => k.toLowerCase().includes(q));
       
@@ -1084,10 +1031,7 @@ class DataManager {
     return results;
   }
 
-  // ============================================
-  // الرد التلقائي الذكي - يفهم السياق
-  // ============================================
-
+  // ===== الرد التلقائي الذكي =====
   getAutoReply(message) {
     const msg = message.toLowerCase().trim();
     
@@ -1108,7 +1052,7 @@ class DataManager {
         
         // يحتوي على الكلمة
         if (msg.includes(kw)) {
-          const score = kw.length; // الكلمات الأطول أولوية
+          const score = kw.length;
           if (score > bestScore) {
             bestScore = score;
             bestMatch = autoReply;
@@ -1125,7 +1069,6 @@ class DataManager {
     const searchResults = this.search(msg);
     
     if (searchResults.length > 0) {
-      // اعرض أول 5 نتائج
       const limited = searchResults.slice(0, 5);
       let response = `🔍 وجدت ${searchResults.length} نتيجة:\n\n`;
       
