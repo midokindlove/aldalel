@@ -1,1107 +1,834 @@
-/* ============================================
-   إعادة تصميم كامل - MTA Commands
-   تصميم احترافي حديث بـ Glassmorphism
-   ============================================ */
+// ============================================
+// لوحة الإدارة - نظام Tabs مع بحث وفلترة
+// ============================================
 
-* {
-  margin: 0;
-  padding: 0;
-  box-sizing: border-box;
-}
+let adminCurrentSection = 'home';
+let adminCurrentTab = 'all';
+let adminSearchQuery = '';
 
-:root {
-  --primary: #00ff88;
-  --primary-dark: #00cc6a;
-  --secondary: #00d4ff;
-  --danger: #ff4757;
-  --danger-dark: #ff3838;
-  --bg-dark: #0a0e27;
-  --bg-card: rgba(26, 26, 46, 0.7);
-  --bg-hover: rgba(0, 255, 136, 0.05);
-  --text-primary: #ffffff;
-  --text-secondary: #b0b0b0;
-  --border: rgba(0, 255, 136, 0.2);
-  --shadow: 0 8px 32px rgba(0, 0, 0, 0.3);
-  --shadow-glow: 0 0 30px rgba(0, 255, 136, 0.3);
-}
+// ============================================
+// صفحة الإدارة الرئيسية
+// ============================================
 
-body {
-  font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
-  background: linear-gradient(135deg, #0a0e27 0%, #1a1a2e 50%, #16213e 100%);
-  color: var(--text-primary);
-  min-height: 100vh;
-  direction: rtl;
-  line-height: 1.6;
-  position: relative;
-  overflow-x: hidden;
-}
-
-/* خلفية متحركة */
-body::before {
-  content: '';
-  position: fixed;
-  top: 0;
-  left: 0;
-  width: 100%;
-  height: 100%;
-  background: 
-    radial-gradient(circle at 20% 50%, rgba(0, 255, 136, 0.1) 0%, transparent 50%),
-    radial-gradient(circle at 80% 80%, rgba(0, 212, 255, 0.1) 0%, transparent 50%),
-    radial-gradient(circle at 40% 20%, rgba(255, 71, 87, 0.05) 0%, transparent 50%);
-  pointer-events: none;
-  z-index: 0;
-}
-
-/* ============================================
-   شريط التنقل
-   ============================================ */
-
-.navbar {
-  background: rgba(10, 14, 39, 0.95);
-  backdrop-filter: blur(20px);
-  padding: 1rem 2rem;
-  display: flex;
-  justify-content: space-between;
-  align-items: center;
-  position: sticky;
-  top: 0;
-  z-index: 1000;
-  box-shadow: 0 4px 30px rgba(0, 0, 0, 0.5);
-  border-bottom: 2px solid var(--primary);
-}
-
-.logo {
-  font-size: 1.8rem;
-  font-weight: bold;
-  background: linear-gradient(135deg, var(--primary), var(--secondary));
-  -webkit-background-clip: text;
-  -webkit-text-fill-color: transparent;
-  background-clip: text;
-  text-shadow: 0 0 30px rgba(0, 255, 136, 0.5);
-}
-
-.nav-links {
-  display: flex;
-  list-style: none;
-  gap: 0.5rem;
-}
-
-.nav-links a {
-  color: var(--text-secondary);
-  text-decoration: none;
-  padding: 0.75rem 1.5rem;
-  border-radius: 10px;
-  transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
-  cursor: pointer;
-  font-weight: 500;
-  position: relative;
-  overflow: hidden;
-}
-
-.nav-links a::before {
-  content: '';
-  position: absolute;
-  top: 0;
-  left: -100%;
-  width: 100%;
-  height: 100%;
-  background: linear-gradient(90deg, transparent, rgba(0, 255, 136, 0.2), transparent);
-  transition: left 0.5s;
-}
-
-.nav-links a:hover::before {
-  left: 100%;
-}
-
-.nav-links a:hover,
-.nav-links a.active {
-  background: linear-gradient(135deg, var(--primary), var(--primary-dark));
-  color: var(--bg-dark);
-  box-shadow: 0 4px 20px rgba(0, 255, 136, 0.4);
-  transform: translateY(-2px);
-}
-
-.menu-toggle {
-  display: none;
-  background: none;
-  border: none;
-  color: var(--primary);
-  font-size: 1.8rem;
-  cursor: pointer;
-  transition: transform 0.3s;
-}
-
-.menu-toggle:hover {
-  transform: scale(1.1);
-}
-
-/* ============================================
-   المحتوى الرئيسي
-   ============================================ */
-
-#app-content {
-  max-width: 1400px;
-  margin: 2rem auto;
-  padding: 0 2rem;
-  position: relative;
-  z-index: 1;
-}
-
-.page {
-  display: none;
-  animation: fadeInUp 0.6s cubic-bezier(0.4, 0, 0.2, 1);
-}
-
-.page.active {
-  display: block;
-}
-
-@keyframes fadeInUp {
-  from { 
-    opacity: 0; 
-    transform: translateY(30px); 
+function renderAdminPage() {
+  if (!isAdminLoggedIn) {
+    return renderAdminLogin();
   }
-  to { 
-    opacity: 1; 
-    transform: translateY(0); 
+  return renderAdminDashboard();
+}
+
+function initAdminLogin() {
+  if (!isAdminLoggedIn) {
+    const passwordInput = document.getElementById('admin-password');
+    if (passwordInput) {
+      passwordInput.addEventListener('keypress', (e) => {
+        if (e.key === 'Enter') loginAdmin();
+      });
+      passwordInput.focus();
+    }
   }
 }
 
-/* ============================================
-   العناوين
-   ============================================ */
-
-h1, h2, h3 {
-  background: linear-gradient(135deg, var(--primary), var(--secondary));
-  -webkit-background-clip: text;
-  -webkit-text-fill-color: transparent;
-  background-clip: text;
-  margin-bottom: 1.5rem;
-  font-weight: 700;
+function renderAdminLogin() {
+  return `
+    <div class="page active">
+      <div class="admin-login">
+        <div style="font-size: 4rem; margin-bottom: 1rem;">🔐</div>
+        <h1>لوحة الإدارة</h1>
+        <p style="margin-bottom: 2rem; color: #b0b0b0;">
+          يرجى إدخال كلمة المرور للوصول
+        </p>
+        <input type="password" id="admin-password" placeholder="كلمة المرور">
+        <button class="btn" onclick="loginAdmin()" style="width: 100%; margin-top: 1rem;">دخول</button>
+      </div>
+    </div>
+  `;
 }
 
-h1 { 
-  font-size: 3rem;
-  text-shadow: 0 0 40px rgba(0, 255, 136, 0.3);
-}
-
-h2 { 
-  font-size: 2.2rem;
-}
-
-h3 { 
-  font-size: 1.6rem;
-}
-
-/* ============================================
-   البطاقات
-   ============================================ */
-
-.card {
-  background: var(--bg-card);
-  backdrop-filter: blur(10px);
-  border: 1px solid var(--border);
-  border-radius: 16px;
-  padding: 2rem;
-  margin-bottom: 1.5rem;
-  transition: all 0.4s cubic-bezier(0.4, 0, 0.2, 1);
-  box-shadow: var(--shadow);
-  position: relative;
-  overflow: hidden;
-}
-
-.card::before {
-  content: '';
-  position: absolute;
-  top: 0;
-  left: 0;
-  width: 100%;
-  height: 3px;
-  background: linear-gradient(90deg, var(--primary), var(--secondary));
-  transform: scaleX(0);
-  transition: transform 0.4s;
-}
-
-.card:hover::before {
-  transform: scaleX(1);
-}
-
-.card:hover {
-  border-color: var(--primary);
-  box-shadow: var(--shadow), var(--shadow-glow);
-  transform: translateY(-8px);
-}
-
-/* ============================================
-   الأزرار
-   ============================================ */
-
-.btn {
-  background: linear-gradient(135deg, var(--primary), var(--primary-dark));
-  color: var(--bg-dark);
-  border: none;
-  padding: 0.875rem 2rem;
-  border-radius: 10px;
-  cursor: pointer;
-  font-weight: 700;
-  transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
-  font-size: 1rem;
-  box-shadow: 0 4px 15px rgba(0, 255, 136, 0.3);
-  position: relative;
-  overflow: hidden;
-}
-
-.btn::before {
-  content: '';
-  position: absolute;
-  top: 50%;
-  left: 50%;
-  width: 0;
-  height: 0;
-  border-radius: 50%;
-  background: rgba(255, 255, 255, 0.3);
-  transform: translate(-50%, -50%);
-  transition: width 0.6s, height 0.6s;
-}
-
-.btn:hover::before {
-  width: 300px;
-  height: 300px;
-}
-
-.btn:hover {
-  transform: translateY(-3px);
-  box-shadow: 0 8px 25px rgba(0, 255, 136, 0.5);
-}
-
-.btn:active {
-  transform: translateY(-1px);
-}
-
-.btn-danger {
-  background: linear-gradient(135deg, var(--danger), var(--danger-dark));
-  box-shadow: 0 4px 15px rgba(255, 71, 87, 0.3);
-}
-
-.btn-danger:hover {
-  box-shadow: 0 8px 25px rgba(255, 71, 87, 0.5);
-}
-
-.btn-sm {
-  padding: 0.5rem 1rem;
-  font-size: 0.875rem;
-}
-
-/* ============================================
-   حقول الإدخال
-   ============================================ */
-
-input, textarea, select {
-  background: rgba(10, 14, 39, 0.8);
-  backdrop-filter: blur(10px);
-  border: 2px solid var(--border);
-  color: var(--text-primary);
-  padding: 0.875rem 1.25rem;
-  border-radius: 10px;
-  width: 100%;
-  font-size: 1rem;
-  margin-bottom: 1rem;
-  transition: all 0.3s;
-}
-
-input:focus, textarea:focus, select:focus {
-  outline: none;
-  border-color: var(--primary);
-  box-shadow: 0 0 0 3px rgba(0, 255, 136, 0.1);
-  background: rgba(10, 14, 39, 0.95);
-}
-
-input::placeholder, textarea::placeholder {
-  color: var(--text-secondary);
-}
-
-/* ============================================
-   الشات العائم
-   ============================================ */
-
-#chat-toggle {
-  position: fixed;
-  bottom: 2rem;
-  left: 2rem;
-  width: 70px;
-  height: 70px;
-  border-radius: 50%;
-  background: linear-gradient(135deg, var(--primary), var(--secondary));
-  border: none;
-  font-size: 2rem;
-  cursor: pointer;
-  box-shadow: 0 8px 30px rgba(0, 255, 136, 0.5);
-  transition: all 0.4s cubic-bezier(0.4, 0, 0.2, 1);
-  z-index: 999;
-  animation: pulse 2s infinite;
-}
-
-@keyframes pulse {
-  0%, 100% {
-    box-shadow: 0 8px 30px rgba(0, 255, 136, 0.5);
-  }
-  50% {
-    box-shadow: 0 8px 50px rgba(0, 255, 136, 0.8);
+function loginAdmin() {
+  const password = document.getElementById('admin-password').value;
+  if (password === ADMIN_PASSWORD) {
+    isAdminLoggedIn = true;
+    loadPage('admin');
+  } else {
+    alert('❌ كلمة المرور غير صحيحة!');
   }
 }
 
-#chat-toggle:hover {
-  transform: scale(1.15) rotate(10deg);
-  box-shadow: 0 12px 40px rgba(0, 255, 136, 0.7);
-}
-
-.chat-box {
-  position: fixed;
-  bottom: 7rem;
-  left: 2rem;
-  width: 400px;
-  height: 550px;
-  background: rgba(10, 14, 39, 0.98);
-  backdrop-filter: blur(20px);
-  border: 2px solid var(--primary);
-  border-radius: 20px;
-  display: flex;
-  flex-direction: column;
-  z-index: 998;
-  box-shadow: 0 20px 60px rgba(0, 255, 136, 0.3);
-  animation: slideUp 0.4s cubic-bezier(0.4, 0, 0.2, 1);
-}
-
-@keyframes slideUp {
-  from {
-    opacity: 0;
-    transform: translateY(20px);
-  }
-  to {
-    opacity: 1;
-    transform: translateY(0);
+function logoutAdmin() {
+  if (confirm('هل تريد تسجيل الخروج؟')) {
+    isAdminLoggedIn = false;
+    loadPage('home');
   }
 }
 
-.chat-box.hidden {
-  display: none;
+// ============================================
+// لوحة التحكم - تخطيط منظم
+// ============================================
+
+function renderAdminDashboard() {
+  return `
+    <div class="page active">
+      <div class="admin-topbar">
+        <div>
+          <h1 style="margin: 0;">⚙️ لوحة الإدارة</h1>
+          <p style="color: #b0b0b0; margin: 0.25rem 0 0 0; font-size: 0.9rem;">مرحباً بك في لوحة التحكم</p>
+        </div>
+        <button class="btn btn-danger" onclick="logoutAdmin()">🚪 خروج</button>
+      </div>
+      
+      <div class="admin-layout">
+        <!-- القائمة الجانبية -->
+        <aside class="admin-sidebar">
+          <div class="sidebar-title">القائمة</div>
+          <button class="sidebar-btn ${adminCurrentSection === 'home' ? 'active' : ''}" onclick="switchAdminSection('home', this)">
+            <span class="sidebar-icon">🏠</span>
+            <span>الرئيسية</span>
+          </button>
+          <button class="sidebar-btn ${adminCurrentSection === 'rules' ? 'active' : ''}" onclick="switchAdminSection('rules', this)">
+            <span class="sidebar-icon">📜</span>
+            <span>القوانين</span>
+          </button>
+          <button class="sidebar-btn ${adminCurrentSection === 'commands' ? 'active' : ''}" onclick="switchAdminSection('commands', this)">
+            <span class="sidebar-icon">⌨️</span>
+            <span>الأوامر</span>
+          </button>
+          <button class="sidebar-btn ${adminCurrentSection === 'intros' ? 'active' : ''}" onclick="switchAdminSection('intros', this)">
+            <span class="sidebar-icon">🎬</span>
+            <span>الانترو</span>
+          </button>
+          <button class="sidebar-btn ${adminCurrentSection === 'autoreplies' ? 'active' : ''}" onclick="switchAdminSection('autoreplies', this)">
+            <span class="sidebar-icon">🤖</span>
+            <span>الرد التلقائي</span>
+          </button>
+          <button class="sidebar-btn ${adminCurrentSection === 'tools' ? 'active' : ''}" onclick="switchAdminSection('tools', this)">
+            <span class="sidebar-icon">🔧</span>
+            <span>الأدوات</span>
+          </button>
+        </aside>
+        
+        <!-- المحتوى الرئيسي -->
+        <main class="admin-content" id="admin-section-content">
+          ${renderAdminSection(adminCurrentSection)}
+        </main>
+      </div>
+    </div>
+  `;
 }
 
-.chat-header {
-  background: linear-gradient(135deg, var(--primary), var(--secondary));
-  color: var(--bg-dark);
-  padding: 1.25rem;
-  border-radius: 18px 18px 0 0;
-  display: flex;
-  justify-content: space-between;
-  align-items: center;
-  font-weight: 700;
-  font-size: 1.1rem;
+// ============================================
+// التنقل بين الأقسام
+// ============================================
+
+function switchAdminSection(section, btn) {
+  adminCurrentSection = section;
+  adminCurrentTab = 'all';
+  adminSearchQuery = '';
+  document.getElementById('admin-section-content').innerHTML = renderAdminSection(section);
+  
+  document.querySelectorAll('.sidebar-btn').forEach(b => b.classList.remove('active'));
+  if (btn) btn.classList.add('active');
 }
 
-.chat-header button {
-  background: rgba(0, 0, 0, 0.2);
-  border: none;
-  color: var(--bg-dark);
-  font-size: 1.5rem;
-  cursor: pointer;
-  width: 35px;
-  height: 35px;
-  border-radius: 50%;
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  transition: all 0.3s;
-}
-
-.chat-header button:hover {
-  background: rgba(0, 0, 0, 0.3);
-  transform: rotate(90deg);
-}
-
-.chat-messages {
-  flex: 1;
-  overflow-y: auto;
-  padding: 1.5rem;
-}
-
-.chat-message {
-  margin-bottom: 1rem;
-  padding: 1rem 1.25rem;
-  border-radius: 15px;
-  max-width: 80%;
-  animation: messageSlide 0.3s ease;
-  word-wrap: break-word;
-}
-
-@keyframes messageSlide {
-  from {
-    opacity: 0;
-    transform: translateY(10px);
+function renderAdminSection(section) {
+  switch(section) {
+    case 'home': return renderAdminHomeSection();
+    case 'rules': return renderAdminRulesSection();
+    case 'commands': return renderAdminCommandsSection();
+    case 'intros': return renderAdminIntrosSection();
+    case 'autoreplies': return renderAdminAutorepliesSection();
+    case 'tools': return renderAdminToolsSection();
+    default: return '<p>قسم غير موجود</p>';
   }
-  to {
-    opacity: 1;
-    transform: translateY(0);
-  }
 }
 
-.chat-message.user {
-  background: linear-gradient(135deg, var(--primary), var(--primary-dark));
-  color: var(--bg-dark);
-  margin-left: auto;
-  text-align: left;
-  font-weight: 600;
-}
-
-.chat-message.bot {
-  background: rgba(26, 26, 46, 0.8);
-  border: 1px solid var(--border);
-  margin-right: auto;
-  text-align: right;
-}
-
-.chat-input {
-  display: flex;
-  padding: 1.25rem;
-  gap: 0.75rem;
-  border-top: 1px solid var(--border);
-  background: rgba(10, 14, 39, 0.5);
-}
-
-.chat-input input {
-  flex: 1;
-  margin-bottom: 0;
-}
-
-/* ============================================
-   القائمة الجانبية للموبايل
-   ============================================ */
-
-@media (max-width: 768px) {
-  .nav-links {
-    display: none;
-    position: absolute;
-    top: 100%;
-    right: 0;
-    left: 0;
-    background: rgba(10, 14, 39, 0.98);
-    backdrop-filter: blur(20px);
-    flex-direction: column;
-    padding: 1rem;
-    gap: 0.5rem;
-    border-bottom: 2px solid var(--primary);
-  }
-
-  .nav-links.active {
-    display: flex;
-  }
-
-  .menu-toggle {
-    display: block;
-  }
-
-  .chat-box {
-    width: calc(100% - 2rem);
-    left: 1rem;
-    right: 1rem;
-  }
-
-  h1 { font-size: 2rem; }
-  h2 { font-size: 1.6rem; }
-}
-
-/* ============================================
-   قائمة الأوامر
-   ============================================ */
-
-.command-item {
-  background: rgba(26, 26, 46, 0.6);
-  padding: 1.25rem;
-  margin-bottom: 0.75rem;
-  border-radius: 10px;
-  border-right: 4px solid var(--primary);
-  transition: all 0.3s;
-}
-
-.command-item:hover {
-  background: rgba(26, 26, 46, 0.8);
-  border-right-width: 6px;
-  transform: translateX(-5px);
-}
-
-.command-code {
-  font-family: 'Courier New', monospace;
-  background: linear-gradient(135deg, rgba(0, 255, 136, 0.2), rgba(0, 212, 255, 0.2));
-  padding: 0.5rem 1rem;
-  border-radius: 6px;
-  color: var(--primary);
-  font-weight: 700;
-  display: inline-block;
-  border: 1px solid var(--border);
-}
-
-/* ============================================
-   لوحة الإدارة - تصميم احترافي
-   ============================================ */
-
-.admin-login {
-  max-width: 450px;
-  margin: 4rem auto;
-  text-align: center;
-  background: var(--bg-card);
-  backdrop-filter: blur(20px);
-  padding: 3rem;
-  border-radius: 20px;
-  border: 2px solid var(--border);
-  box-shadow: var(--shadow);
-}
-
-.admin-topbar {
-  display: flex;
-  justify-content: space-between;
-  align-items: center;
-  margin-bottom: 2rem;
-  padding: 1.5rem 2rem;
-  background: var(--bg-card);
-  backdrop-filter: blur(20px);
-  border-radius: 16px;
-  border: 1px solid var(--border);
-  box-shadow: var(--shadow);
-}
-
-.admin-layout {
-  display: grid;
-  grid-template-columns: 280px 1fr;
-  gap: 2rem;
-  min-height: calc(100vh - 200px);
-}
-
-/* Sidebar */
-.admin-sidebar {
-  background: var(--bg-card);
-  backdrop-filter: blur(20px);
-  border-radius: 16px;
-  border: 1px solid var(--border);
-  padding: 1.5rem;
-  height: fit-content;
-  position: sticky;
-  top: 100px;
-  box-shadow: var(--shadow);
-}
-
-.sidebar-title {
-  font-size: 0.875rem;
-  text-transform: uppercase;
-  letter-spacing: 2px;
-  color: var(--text-secondary);
-  margin-bottom: 1.5rem;
-  padding-bottom: 1rem;
-  border-bottom: 2px solid var(--border);
-  font-weight: 700;
-}
-
-.sidebar-btn {
-  width: 100%;
-  background: transparent;
-  border: none;
-  color: var(--text-secondary);
-  padding: 1rem 1.25rem;
-  border-radius: 10px;
-  cursor: pointer;
-  font-size: 1rem;
-  text-align: right;
-  transition: all 0.3s;
-  display: flex;
-  align-items: center;
-  gap: 1rem;
-  margin-bottom: 0.5rem;
-  font-weight: 500;
-}
-
-.sidebar-btn:hover {
-  background: var(--bg-hover);
-  color: var(--primary);
-  transform: translateX(-5px);
-}
-
-.sidebar-btn.active {
-  background: linear-gradient(135deg, var(--primary), var(--primary-dark));
-  color: var(--bg-dark);
-  font-weight: 700;
-  box-shadow: 0 4px 15px rgba(0, 255, 136, 0.3);
-}
-
-.sidebar-icon {
-  font-size: 1.5rem;
-}
-
-/* Content Area */
-.admin-content {
-  min-height: 600px;
-}
-
-.admin-panel {
-  background: var(--bg-card);
-  backdrop-filter: blur(20px);
-  border-radius: 16px;
-  border: 1px solid var(--border);
-  padding: 2rem;
-  box-shadow: var(--shadow);
-  margin-bottom: 2rem;
-}
-
-.panel-header {
-  display: flex;
-  justify-content: space-between;
-  align-items: center;
-  margin-bottom: 2rem;
-  padding-bottom: 1.5rem;
-  border-bottom: 2px solid var(--border);
-}
-
-.panel-header h2 {
-  margin: 0;
-}
-
-/* Search Box */
-.search-box-inline {
-  position: relative;
-}
-
-.search-box-inline input {
-  padding-right: 3rem;
-  margin: 0;
-  width: 300px;
-}
-
-/* Tabs */
-.tabs-container {
-  display: flex;
-  gap: 0.5rem;
-  margin-bottom: 2rem;
-  flex-wrap: wrap;
-  padding: 1rem;
-  background: rgba(10, 14, 39, 0.5);
-  border-radius: 12px;
-  border: 1px solid var(--border);
-}
-
-.tab-btn {
-  background: transparent;
-  border: 2px solid var(--border);
-  color: var(--text-secondary);
-  padding: 0.75rem 1.5rem;
-  border-radius: 8px;
-  cursor: pointer;
-  font-size: 0.9rem;
-  transition: all 0.3s;
-  font-weight: 600;
-}
-
-.tab-btn:hover {
-  border-color: var(--primary);
-  color: var(--primary);
-}
-
-.tab-btn.active {
-  background: linear-gradient(135deg, var(--primary), var(--primary-dark));
-  border-color: var(--primary);
-  color: var(--bg-dark);
-  box-shadow: 0 4px 15px rgba(0, 255, 136, 0.3);
-}
-
-/* Inline Forms */
-.inline-form {
-  background: rgba(10, 14, 39, 0.5);
-  padding: 1.5rem;
-  border-radius: 12px;
-  border: 1px solid var(--border);
-  margin-bottom: 2rem;
-}
-
-.inline-form h3 {
-  margin-bottom: 1rem;
-  font-size: 1.2rem;
-}
-
-.inline-form.compact {
-  padding: 1rem;
-  margin-bottom: 1rem;
-}
-
-.form-row {
-  display: flex;
-  gap: 1rem;
-  align-items: center;
-}
-
-.form-row input,
-.form-row textarea {
-  margin-bottom: 0;
-}
-
-/* Data Tables */
-.data-table {
-  background: rgba(10, 14, 39, 0.3);
-  border-radius: 12px;
-  overflow: hidden;
-  border: 1px solid var(--border);
-}
-
-.table-header {
-  display: flex;
-  padding: 1rem 1.5rem;
-  background: rgba(0, 255, 136, 0.1);
-  font-weight: 700;
-  color: var(--primary);
-  border-bottom: 2px solid var(--border);
-}
-
-.table-row {
-  display: flex;
-  padding: 1rem 1.5rem;
-  border-bottom: 1px solid var(--border);
-  transition: all 0.3s;
-  align-items: center;
-}
-
-.table-row:last-child {
-  border-bottom: none;
-}
-
-.table-row:hover {
-  background: var(--bg-hover);
-}
-
-/* Items List */
-.items-list {
-  margin-top: 1rem;
-}
-
-.list-item {
-  display: flex;
-  align-items: center;
-  padding: 1rem;
-  background: rgba(10, 14, 39, 0.3);
-  border-radius: 8px;
-  margin-bottom: 0.5rem;
-  border: 1px solid var(--border);
-  transition: all 0.3s;
-}
-
-.list-item:hover {
-  background: var(--bg-hover);
-  border-color: var(--primary);
-  transform: translateX(-5px);
-}
-
-.list-item-icon {
-  color: var(--primary);
-  font-size: 1.5rem;
-  margin-left: 1rem;
-}
-
-.list-item-text {
-  flex: 1;
-}
-
-/* Section Blocks */
-.section-block {
-  background: rgba(10, 14, 39, 0.3);
-  border-radius: 12px;
-  padding: 1.5rem;
-  margin-bottom: 1.5rem;
-  border: 1px solid var(--border);
-}
-
-.section-block-header {
-  display: flex;
-  justify-content: space-between;
-  align-items: center;
-  margin-bottom: 1.5rem;
-  padding-bottom: 1rem;
-  border-bottom: 2px solid var(--border);
-}
-
-.section-block-header h3 {
-  margin: 0;
-}
-
-/* Image Grid Admin */
-.image-grid-admin {
-  display: grid;
-  grid-template-columns: repeat(auto-fill, minmax(280px, 1fr));
-  gap: 1.5rem;
-  margin-top: 1.5rem;
-}
-
-.image-card-admin {
-  background: rgba(10, 14, 39, 0.5);
-  border-radius: 12px;
-  overflow: hidden;
-  border: 1px solid var(--border);
-  transition: all 0.3s;
-}
-
-.image-card-admin:hover {
-  border-color: var(--primary);
-  transform: translateY(-5px);
-  box-shadow: var(--shadow-glow);
-}
-
-.image-card-admin img {
-  width: 100%;
-  height: 200px;
-  object-fit: cover;
-}
-
-.image-card-info {
-  padding: 1rem;
-}
-
-.image-card-info strong {
-  display: block;
-  margin-bottom: 0.5rem;
-  color: var(--primary);
-}
-
-.image-card-info small {
-  color: var(--text-secondary);
-  font-size: 0.875rem;
-  word-break: break-all;
-}
-
-/* Tools Grid */
-.tools-grid {
-  display: grid;
-  grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
-  gap: 1.5rem;
-  margin-top: 1.5rem;
-}
-
-.tool-card {
-  background: rgba(10, 14, 39, 0.5);
-  border-radius: 12px;
-  padding: 2rem;
-  text-align: center;
-  border: 1px solid var(--border);
-  transition: all 0.3s;
-}
-
-.tool-card:hover {
-  border-color: var(--primary);
-  transform: translateY(-5px);
-  box-shadow: var(--shadow-glow);
-}
-
-.tool-icon {
-  font-size: 4rem;
-  margin-bottom: 1rem;
-}
-
-.tool-card h3 {
-  margin-bottom: 0.5rem;
-}
-
-.tool-card p {
-  color: var(--text-secondary);
-  margin-bottom: 1.5rem;
-}
-
-/* Keyword Tags */
-.keyword-tag {
-  background: linear-gradient(135deg, rgba(0, 255, 136, 0.2), rgba(0, 212, 255, 0.2));
-  color: var(--primary);
-  padding: 0.25rem 0.75rem;
-  border-radius: 20px;
-  font-size: 0.875rem;
-  border: 1px solid var(--border);
-  display: inline-block;
-}
-
-/* Empty State */
-.empty-state {
-  text-align: center;
-  padding: 3rem;
-  color: var(--text-secondary);
-  font-size: 1.1rem;
-}
-
-/* Results Info */
-.results-info {
-  margin-top: 1.5rem;
-  padding: 1rem;
-  background: rgba(0, 255, 136, 0.1);
-  border-radius: 8px;
-  text-align: center;
-  color: var(--primary);
-  font-weight: 600;
-}
-
-/* Info Box */
-.info-box {
-  background: rgba(0, 212, 255, 0.1);
-  border: 2px solid rgba(0, 212, 255, 0.3);
-  border-radius: 12px;
-  padding: 1.5rem;
-  margin-top: 2rem;
-}
-
-.info-box h3 {
-  color: var(--secondary);
-  margin-bottom: 1rem;
-}
-
-.info-box ul {
-  list-style: none;
-  padding: 0;
-}
-
-.info-box li {
-  padding: 0.5rem 0;
-  padding-right: 1.5rem;
-  position: relative;
-}
-
-.info-box li::before {
-  content: '→';
-  position: absolute;
-  right: 0;
-  color: var(--secondary);
-  font-weight: bold;
-}
-
-/* Images Grid */
-.image-grid {
-  display: grid;
-  grid-template-columns: repeat(auto-fill, minmax(280px, 1fr));
-  gap: 1.5rem;
-}
-
-.image-grid img {
-  width: 100%;
-  height: 220px;
-  object-fit: cover;
-  border-radius: 12px;
-  border: 2px solid var(--border);
-  transition: all 0.4s;
-}
-
-.image-grid img:hover {
-  border-color: var(--primary);
-  transform: scale(1.05);
-  box-shadow: var(--shadow-glow);
-}
-
-/* Search Box */
-.search-box {
-  position: relative;
-  margin-bottom: 2rem;
-}
-
-.search-box input {
-  padding-right: 3.5rem;
-  font-size: 1.1rem;
-}
-
-/* Stats Cards */
-.admin-stats {
-  display: grid;
-  grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
-  gap: 1.5rem;
-  margin-bottom: 2rem;
-}
-
-.stat-card {
-  background: var(--bg-card);
-  backdrop-filter: blur(20px);
-  border-radius: 16px;
-  padding: 1.5rem;
-  border: 1px solid var(--border);
-  display: flex;
-  align-items: center;
-  gap: 1rem;
-  transition: all 0.3s;
-}
-
-.stat-card:hover {
-  border-color: var(--primary);
-  transform: translateY(-5px);
-  box-shadow: var(--shadow-glow);
-}
-
-.stat-icon {
-  font-size: 3rem;
-}
-
-.stat-info {
-  flex: 1;
-}
-
-.stat-number {
-  font-size: 2rem;
-  font-weight: 700;
-  color: var(--primary);
-}
-
-.stat-label {
-  color: var(--text-secondary);
-  font-size: 0.9rem;
-}
-
-/* Scrollbar */
-::-webkit-scrollbar {
-  width: 12px;
-}
-
-::-webkit-scrollbar-track {
-  background: var(--bg-dark);
-}
-
-::-webkit-scrollbar-thumb {
-  background: linear-gradient(135deg, var(--primary), var(--secondary));
-  border-radius: 10px;
-}
-
-::-webkit-scrollbar-thumb:hover {
-  background: linear-gradient(135deg, var(--primary-dark), var(--primary));
-}
-
-/* Responsive */
-@media (max-width: 1024px) {
-  .admin-layout {
-    grid-template-columns: 1fr;
+// ============================================
+// تبديل التبويب
+// ============================================
+
+function switchTab(tab) {
+  adminCurrentTab = tab;
+  refreshCurrentSection();
+}
+
+function refreshCurrentSection() {
+  document.getElementById('admin-section-content').innerHTML = renderAdminSection(adminCurrentSection);
+}
+
+// ============================================
+// البحث
+// ============================================
+
+function searchInSection(query) {
+  adminSearchQuery = query.toLowerCase();
+  refreshCurrentSection();
+}
+
+// ============================================
+// قسم الصفحة الرئيسية
+// ============================================
+
+function renderAdminHomeSection() {
+  const shortcuts = dataManager.data.home.shortcuts;
+  
+  // فلترة حسب البحث
+  const filteredShortcuts = adminSearchQuery 
+    ? shortcuts.filter(s => 
+        s.title.toLowerCase().includes(adminSearchQuery) ||
+        (s.url && s.url.toLowerCase().includes(adminSearchQuery))
+      )
+    : shortcuts;
+  
+  return `
+    <div class="admin-panel">
+      <div class="panel-header">
+        <h2>🏠 الصفحة الرئيسية - الاختصارات</h2>
+        <div class="search-box-inline">
+          <input type="text" id="search-input" placeholder="🔍 بحث..." value="${adminSearchQuery}" oninput="searchInSection(this.value)">
+        </div>
+      </div>
+      
+      <!-- نموذج الإضافة مباشر -->
+      <div class="inline-form">
+        <h3>➕ إضافة اختصار جديد</h3>
+        <div class="form-row">
+          <input type="text" id="shortcut-icon" placeholder="الأيقونة 🎮" style="width: 80px;">
+          <input type="text" id="shortcut-title" placeholder="العنوان" style="flex: 1;">
+          <input type="text" id="shortcut-url" placeholder="الرابط (اختياري)" style="flex: 1;">
+          <button class="btn" onclick="addShortcut()">إضافة</button>
+        </div>
+      </div>
+      
+      <!-- القائمة -->
+      <div class="data-table">
+        <div class="table-header">
+          <div style="width: 60px;">الأيقونة</div>
+          <div style="flex: 1;">العنوان</div>
+          <div style="flex: 1;">الرابط</div>
+          <div style="width: 80px;">إجراء</div>
+        </div>
+        ${filteredShortcuts.length === 0 ? '<div class="empty-state">لا توجد نتائج</div>' : ''}
+        ${filteredShortcuts.map((shortcut, index) => {
+          const originalIndex = shortcuts.indexOf(shortcut);
+          return `
+            <div class="table-row">
+              <div style="width: 60px; font-size: 1.5rem;">${shortcut.icon}</div>
+              <div style="flex: 1; font-weight: bold;">${shortcut.title}</div>
+              <div style="flex: 1; color: #b0b0b0; font-size: 0.9rem;">${shortcut.url || shortcut.page || '-'}</div>
+              <div style="width: 80px;">
+                <button class="btn btn-danger btn-sm" onclick="deleteShortcut(${originalIndex})">🗑️</button>
+              </div>
+            </div>
+          `;
+        }).join('')}
+      </div>
+      
+      <div class="results-info">
+        عرض ${filteredShortcuts.length} من ${shortcuts.length} اختصار
+      </div>
+    </div>
+  `;
+}
+
+function addShortcut() {
+  const title = document.getElementById('shortcut-title').value.trim();
+  const icon = document.getElementById('shortcut-icon').value.trim();
+  const url = document.getElementById('shortcut-url').value.trim();
+  
+  if (!title || !icon) {
+    alert('⚠️ يرجى إدخال العنوان والأيقونة');
+    return;
   }
   
-  .admin-sidebar {
-    position: static;
+  dataManager.addShortcut(title, url || null, icon);
+  refreshAdminPage();
+}
+
+function deleteShortcut(index) {
+  if (confirm('هل أنت متأكد من حذف هذا الاختصار؟')) {
+    dataManager.deleteShortcut(index);
+    refreshAdminPage();
   }
 }
 
-@media (max-width: 768px) {
-  .panel-header {
-    flex-direction: column;
-    gap: 1rem;
-    align-items: stretch;
+// ============================================
+// قسم القوانين - مع Tabs
+// ============================================
+
+function renderAdminRulesSection() {
+  const sections = dataManager.data.rules.sections;
+  
+  // فلترة حسب التبويب
+  const filteredSections = adminCurrentTab === 'all' 
+    ? sections 
+    : sections.filter(s => s.id === adminCurrentTab);
+  
+  // فلترة حسب البحث
+  const finalSections = adminSearchQuery
+    ? filteredSections.map(section => ({
+        ...section,
+        items: section.items.filter(item => item.toLowerCase().includes(adminSearchQuery))
+      })).filter(section => section.items.length > 0)
+    : filteredSections;
+  
+  return `
+    <div class="admin-panel">
+      <div class="panel-header">
+        <h2>📜 إدارة القوانين</h2>
+        <div class="search-box-inline">
+          <input type="text" id="search-input" placeholder="🔍 بحث..." value="${adminSearchQuery}" oninput="searchInSection(this.value)">
+        </div>
+      </div>
+      
+      <!-- Tabs -->
+      <div class="tabs-container">
+        <button class="tab-btn ${adminCurrentTab === 'all' ? 'active' : ''}" onclick="switchTab('all')">
+          الكل (${sections.length})
+        </button>
+        ${sections.map(section => `
+          <button class="tab-btn ${adminCurrentTab === section.id ? 'active' : ''}" onclick="switchTab('${section.id}')">
+            ${section.title} (${section.items.length})
+          </button>
+        `).join('')}
+      </div>
+      
+      <!-- إضافة قسم جديد -->
+      ${adminCurrentTab === 'all' ? `
+        <div class="inline-form">
+          <h3>➕ إضافة قسم قوانين جديد</h3>
+          <div class="form-row">
+            <input type="text" id="rule-section-title" placeholder="عنوان القسم (مثال: القوانين العامة)" style="flex: 1;">
+            <button class="btn" onclick="addRuleSection()">إضافة</button>
+          </div>
+        </div>
+      ` : ''}
+      
+      <!-- عرض الأقسام -->
+      ${finalSections.length === 0 ? '<div class="empty-state">لا توجد نتائج</div>' : ''}
+      
+      ${finalSections.map(section => `
+        <div class="section-block">
+          <div class="section-block-header">
+            <h3>📁 ${section.title}</h3>
+            <button class="btn btn-danger btn-sm" onclick="deleteRuleSection('${section.id}')">🗑️ حذف القسم</button>
+          </div>
+          
+          <!-- إضافة قانون -->
+          <div class="inline-form compact">
+            <div class="form-row">
+              <input type="text" id="rule-item-${section.id}" placeholder="نص القانون الجديد" style="flex: 1;">
+              <button class="btn" onclick="addRuleItem('${section.id}')">إضافة قانون</button>
+            </div>
+          </div>
+          
+          <!-- قائمة القوانين -->
+          <div class="items-list">
+            ${section.items.length === 0 ? '<p style="color: #b0b0b0; padding: 1rem; text-align: center;">لا توجد قوانين في هذا القسم</p>' : ''}
+            ${section.items.map((item, index) => {
+              const originalIndex = dataManager.data.rules.sections.find(s => s.id === section.id).items.indexOf(item);
+              return `
+                <div class="list-item">
+                  <span class="list-item-icon">✓</span>
+                  <span class="list-item-text">${item}</span>
+                  <button class="btn btn-danger btn-sm" onclick="deleteRuleItem('${section.id}', ${originalIndex})">🗑️</button>
+                </div>
+              `;
+            }).join('')}
+          </div>
+        </div>
+      `).join('')}
+      
+      <div class="results-info">
+        عرض ${finalSections.length} قسم
+      </div>
+    </div>
+  `;
+}
+
+function addRuleSection() {
+  const title = document.getElementById('rule-section-title').value.trim();
+  if (!title) {
+    alert('⚠️ يرجى إدخال عنوان القسم');
+    return;
+  }
+  dataManager.addRuleSection(title);
+  refreshAdminPage();
+}
+
+function deleteRuleSection(sectionId) {
+  if (confirm('هل أنت متأكد من حذف هذا القسم وجميع قوانينه؟')) {
+    dataManager.deleteRuleSection(sectionId);
+    adminCurrentTab = 'all';
+    refreshAdminPage();
+  }
+}
+
+function addRuleItem(sectionId) {
+  const input = document.getElementById(`rule-item-${sectionId}`);
+  const text = input.value.trim();
+  if (!text) {
+    alert('⚠️ يرجى إدخال نص القانون');
+    return;
+  }
+  dataManager.addRuleItem(sectionId, text);
+  refreshAdminPage();
+}
+
+function deleteRuleItem(sectionId, index) {
+  if (confirm('هل أنت متأكد من حذف هذا القانون؟')) {
+    dataManager.deleteRuleItem(sectionId, index);
+    refreshAdminPage();
+  }
+}
+
+// ============================================
+// قسم الأوامر - مع Tabs
+// ============================================
+
+function renderAdminCommandsSection() {
+  const sections = dataManager.data.commands.sections;
+  
+  // فلترة حسب التبويب
+  const filteredSections = adminCurrentTab === 'all' 
+    ? sections 
+    : sections.filter(s => s.id === adminCurrentTab);
+  
+  // فلترة حسب البحث
+  const finalSections = adminSearchQuery
+    ? filteredSections.map(section => ({
+        ...section,
+        commands: section.commands.filter(cmd => 
+          cmd.command.toLowerCase().includes(adminSearchQuery) ||
+          cmd.description.toLowerCase().includes(adminSearchQuery)
+        )
+      })).filter(section => section.commands.length > 0)
+    : filteredSections;
+  
+  return `
+    <div class="admin-panel">
+      <div class="panel-header">
+        <h2>⌨️ إدارة الأوامر</h2>
+        <div class="search-box-inline">
+          <input type="text" id="search-input" placeholder="🔍 بحث..." value="${adminSearchQuery}" oninput="searchInSection(this.value)">
+        </div>
+      </div>
+      
+      <!-- Tabs -->
+      <div class="tabs-container">
+        <button class="tab-btn ${adminCurrentTab === 'all' ? 'active' : ''}" onclick="switchTab('all')">
+          الكل (${sections.length})
+        </button>
+        ${sections.map(section => `
+          <button class="tab-btn ${adminCurrentTab === section.id ? 'active' : ''}" onclick="switchTab('${section.id}')">
+            ${section.title} (${section.commands.length})
+          </button>
+        `).join('')}
+      </div>
+      
+      <!-- إضافة قسم جديد -->
+      ${adminCurrentTab === 'all' ? `
+        <div class="inline-form">
+          <h3>➕ إضافة قسم أوامر جديد</h3>
+          <div class="form-row">
+            <input type="text" id="command-section-title" placeholder="عنوان القسم (مثال: أوامر الإدارة)" style="flex: 1;">
+            <button class="btn" onclick="addCommandSection()">إضافة</button>
+          </div>
+        </div>
+      ` : ''}
+      
+      <!-- عرض الأقسام -->
+      ${finalSections.length === 0 ? '<div class="empty-state">لا توجد نتائج</div>' : ''}
+      
+      ${finalSections.map(section => `
+        <div class="section-block">
+          <div class="section-block-header">
+            <h3>📁 ${section.title}</h3>
+            <button class="btn btn-danger btn-sm" onclick="deleteCommandSection('${section.id}')">🗑️ حذف القسم</button>
+          </div>
+          
+          <!-- إضافة أمر -->
+          <div class="inline-form compact">
+            <div class="form-row">
+              <input type="text" id="cmd-cmd-${section.id}" placeholder="الأمر (مثال: /help)" style="flex: 1;">
+              <input type="text" id="cmd-desc-${section.id}" placeholder="الوصف" style="flex: 1;">
+              <button class="btn" onclick="addCommand('${section.id}')">إضافة أمر</button>
+            </div>
+          </div>
+          
+          <!-- قائمة الأوامر -->
+          <div class="data-table">
+            <div class="table-header">
+              <div style="flex: 1;">الأمر</div>
+              <div style="flex: 2;">الوصف</div>
+              <div style="width: 100px;">إجراءات</div>
+            </div>
+            ${section.commands.length === 0 ? '<div class="empty-state">لا توجد أوامر</div>' : ''}
+            ${section.commands.map((cmd, index) => {
+              const originalIndex = dataManager.data.commands.sections.find(s => s.id === section.id).commands.indexOf(cmd);
+              return `
+                <div class="table-row">
+                  <div style="flex: 1;">
+                    <code class="command-code">${cmd.command}</code>
+                  </div>
+                  <div style="flex: 2; color: #b0b0b0;">${cmd.description}</div>
+                  <div style="width: 100px; display: flex; gap: 0.25rem;">
+                    <button class="btn btn-sm" onclick="showEditCommand('${section.id}', ${originalIndex})">✏️</button>
+                    <button class="btn btn-danger btn-sm" onclick="deleteCommand('${section.id}', ${originalIndex})">🗑️</button>
+                  </div>
+                </div>
+              `;
+            }).join('')}
+          </div>
+          
+          <!-- منطقة التعديل -->
+          <div id="edit-area-${section.id}"></div>
+        </div>
+      `).join('')}
+      
+      <div class="results-info">
+        عرض ${finalSections.length} قسم
+      </div>
+    </div>
+  `;
+}
+
+function addCommandSection() {
+  const title = document.getElementById('command-section-title').value.trim();
+  if (!title) {
+    alert('⚠️ يرجى إدخال عنوان القسم');
+    return;
+  }
+  dataManager.addCommandSection(title);
+  refreshAdminPage();
+}
+
+function deleteCommandSection(sectionId) {
+  if (confirm('هل أنت متأكد من حذف هذا القسم وجميع أوامره؟')) {
+    dataManager.deleteCommandSection(sectionId);
+    adminCurrentTab = 'all';
+    refreshAdminPage();
+  }
+}
+
+function addCommand(sectionId) {
+  const command = document.getElementById(`cmd-cmd-${sectionId}`).value.trim();
+  const description = document.getElementById(`cmd-desc-${sectionId}`).value.trim();
+  
+  if (!command || !description) {
+    alert('⚠️ يرجى إدخال الأمر والوصف');
+    return;
   }
   
-  .search-box-inline input {
-    width: 100%;
+  dataManager.addCommand(sectionId, command, description);
+  refreshAdminPage();
+}
+
+function showEditCommand(sectionId, index) {
+  const section = dataManager.data.commands.sections.find(s => s.id === sectionId);
+  if (!section) return;
+  
+  const cmd = section.commands[index];
+  const editArea = document.getElementById(`edit-area-${sectionId}`);
+  
+  editArea.innerHTML = `
+    <div class="inline-form compact" style="margin-top: 1rem; border-top: 2px solid #00ff88;">
+      <h3>✏️ تعديل الأمر</h3>
+      <div class="form-row">
+        <input type="text" id="edit-cmd-${sectionId}" value="${cmd.command}" style="flex: 1;">
+        <input type="text" id="edit-desc-${sectionId}" value="${cmd.description}" style="flex: 1;">
+        <button class="btn" onclick="saveEditCommand('${sectionId}', ${index})">💾 حفظ</button>
+        <button class="btn btn-danger" onclick="document.getElementById('edit-area-${sectionId}').innerHTML = ''">❌</button>
+      </div>
+    </div>
+  `;
+}
+
+function saveEditCommand(sectionId, index) {
+  const command = document.getElementById(`edit-cmd-${sectionId}`).value.trim();
+  const description = document.getElementById(`edit-desc-${sectionId}`).value.trim();
+  
+  if (!command || !description) {
+    alert('⚠️ يرجى إدخال الأمر والوصف');
+    return;
   }
   
-  .form-row {
-    flex-direction: column;
+  dataManager.editCommand(sectionId, index, command, description);
+  refreshAdminPage();
+}
+
+function deleteCommand(sectionId, index) {
+  if (confirm('هل أنت متأكد من حذف هذا الأمر؟')) {
+    dataManager.deleteCommand(sectionId, index);
+    refreshAdminPage();
+  }
+}
+
+// ============================================
+// قسم الانترو
+// ============================================
+
+function renderAdminIntrosSection() {
+  const images = dataManager.data.intros.images;
+  
+  // فلترة حسب البحث
+  const filteredImages = adminSearchQuery 
+    ? images.filter(img => 
+        img.caption.toLowerCase().includes(adminSearchQuery) ||
+        img.url.toLowerCase().includes(adminSearchQuery)
+      )
+    : images;
+  
+  return `
+    <div class="admin-panel">
+      <div class="panel-header">
+        <h2>🎬 إدارة الانترو</h2>
+        <div class="search-box-inline">
+          <input type="text" id="search-input" placeholder="🔍 بحث..." value="${adminSearchQuery}" oninput="searchInSection(this.value)">
+        </div>
+      </div>
+      
+      <!-- إضافة انترو -->
+      <div class="inline-form">
+        <h3>➕ إضافة انترو جديد</h3>
+        <div class="form-row">
+          <input type="text" id="intro-url" placeholder="رابط الصورة" style="flex: 2;">
+          <input type="text" id="intro-caption" placeholder="الوصف" style="flex: 1;">
+          <button class="btn" onclick="addIntro()">إضافة</button>
+        </div>
+      </div>
+      
+      <!-- قائمة الانترو -->
+      ${filteredImages.length === 0 ? '<div class="empty-state">لا توجد نتائج</div>' : ''}
+      
+      <div class="image-grid-admin">
+        ${filteredImages.map(img => {
+          const originalIndex = images.indexOf(img);
+          return `
+            <div class="image-card-admin">
+              <img src="${img.url}" alt="${img.caption}">
+              <div class="image-card-info">
+                <strong>${img.caption}</strong>
+                <small>${img.url}</small>
+              </div>
+              <button class="btn btn-danger btn-sm" onclick="deleteIntro('${img.id}')">🗑️ حذف</button>
+            </div>
+          `;
+        }).join('')}
+      </div>
+      
+      <div class="results-info">
+        عرض ${filteredImages.length} من ${images.length} صورة
+      </div>
+    </div>
+  `;
+}
+
+function addIntro() {
+  const url = document.getElementById('intro-url').value.trim();
+  const caption = document.getElementById('intro-caption').value.trim();
+  
+  if (!url || !caption) {
+    alert('⚠️ يرجى إدخال رابط الصورة والوصف');
+    return;
   }
   
-  .table-header,
-  .table-row {
-    flex-direction: column;
-    align-items: stretch;
+  dataManager.addIntro(url, caption);
+  refreshAdminPage();
+}
+
+function deleteIntro(introId) {
+  if (confirm('هل أنت متأكد من حذف هذه الصورة؟')) {
+    dataManager.deleteIntro(introId);
+    refreshAdminPage();
+  }
+}
+
+// ============================================
+// قسم الرد التلقائي
+// ============================================
+
+function renderAdminAutorepliesSection() {
+  const replies = dataManager.data.autoReplies;
+  
+  // فلترة حسب البحث
+  const filteredReplies = adminSearchQuery 
+    ? replies.filter(reply => 
+        reply.keywords.some(k => k.toLowerCase().includes(adminSearchQuery)) ||
+        reply.reply.toLowerCase().includes(adminSearchQuery)
+      )
+    : replies;
+  
+  return `
+    <div class="admin-panel">
+      <div class="panel-header">
+        <h2>🤖 إدارة الرد التلقائي</h2>
+        <div class="search-box-inline">
+          <input type="text" id="search-input" placeholder="🔍 بحث..." value="${adminSearchQuery}" oninput="searchInSection(this.value)">
+        </div>
+      </div>
+      
+      <!-- إضافة رد -->
+      <div class="inline-form">
+        <h3>➕ إضافة رد تلقائي جديد</h3>
+        <div class="form-row">
+          <input type="text" id="autoreply-keywords" placeholder="الكلمات (مفصولة بفاصلة)" style="flex: 1;">
+        </div>
+        <div class="form-row">
+          <textarea id="autoreply-text" placeholder="نص الرد" rows="2" style="flex: 1;"></textarea>
+          <button class="btn" onclick="addAutoReply()">إضافة</button>
+        </div>
+      </div>
+      
+      <!-- قائمة الردود -->
+      ${filteredReplies.length === 0 ? '<div class="empty-state">لا توجد نتائج</div>' : ''}
+      
+      <div class="data-table">
+        <div class="table-header">
+          <div style="flex: 1;">الكلمات المفتاحية</div>
+          <div style="flex: 2;">الرد</div>
+          <div style="width: 80px;">إجراء</div>
+        </div>
+        ${filteredReplies.map((reply, index) => {
+          const originalIndex = replies.indexOf(reply);
+          return `
+            <div class="table-row">
+              <div style="flex: 1;">
+                <div style="display: flex; flex-wrap: wrap; gap: 0.25rem;">
+                  ${reply.keywords.map(k => `<span class="keyword-tag">${k}</span>`).join('')}
+                </div>
+              </div>
+              <div style="flex: 2; color: #00ff88;">${reply.reply}</div>
+              <div style="width: 80px;">
+                <button class="btn btn-danger btn-sm" onclick="deleteAutoReply(${originalIndex})">🗑️</button>
+              </div>
+            </div>
+          `;
+        }).join('')}
+      </div>
+      
+      <div class="results-info">
+        عرض ${filteredReplies.length} من ${replies.length} رد
+      </div>
+    </div>
+  `;
+}
+
+function addAutoReply() {
+  const keywordsStr = document.getElementById('autoreply-keywords').value.trim();
+  const reply = document.getElementById('autoreply-text').value.trim();
+  
+  if (!keywordsStr || !reply) {
+    alert('⚠️ يرجى إدخال الكلمات المفتاحية والرد');
+    return;
   }
   
-  .table-header > div,
-  .table-row > div {
-    width: 100% !important;
-    margin-bottom: 0.5rem;
+  const keywords = keywordsStr.split(',').map(k => k.trim()).filter(k => k);
+  dataManager.addAutoReply(keywords, reply);
+  refreshAdminPage();
+}
+
+function deleteAutoReply(index) {
+  if (confirm('هل أنت متأكد من حذف هذا الرد التلقائي؟')) {
+    dataManager.deleteAutoReply(index);
+    refreshAdminPage();
+  }
+}
+
+// ============================================
+// قسم الأدوات
+// ============================================
+
+function renderAdminToolsSection() {
+  return `
+    <div class="admin-panel">
+      <div class="panel-header">
+        <h2>🔧 الأدوات</h2>
+      </div>
+      
+      <div class="tools-grid">
+        <div class="tool-card">
+          <div class="tool-icon">📥</div>
+          <h3>تصدير البيانات</h3>
+          <p>تحميل نسخة احتياطية من جميع البيانات كملف JSON</p>
+          <button class="btn" onclick="exportData()">📥 تصدير</button>
+        </div>
+        
+        <div class="tool-card">
+          <div class="tool-icon">📤</div>
+          <h3>استيراد البيانات</h3>
+          <p>استعادة البيانات من ملف JSON محفوظ مسبقاً</p>
+          <button class="btn" onclick="document.getElementById('import-file').click()">📤 استيراد</button>
+          <input type="file" id="import-file" style="display: none;" accept=".json" onchange="importData(event)">
+        </div>
+        
+        <div class="tool-card">
+          <div class="tool-icon">🔄</div>
+          <h3>إعادة تعيين</h3>
+          <p>حذف جميع البيانات والعودة للبيانات الافتراضية</p>
+          <button class="btn btn-danger" onclick="resetAllData()">🔄 إعادة تعيين</button>
+        </div>
+      </div>
+      
+      <div class="info-box">
+        <h3>ℹ️ ملاحظات مهمة</h3>
+        <ul>
+          <li>جميع التعديلات تُحفظ تلقائياً في متصفحك (localStorage)</li>
+          <li>قم بتصدير البيانات بشكل دوري كاحتياط</li>
+          <li>عند مسح بيانات المتصفح، ستفقد التعديلات</li>
+          <li>يمكنك نقل البيانات بين الأجهزة عبر التصدير والاستيراد</li>
+        </ul>
+      </div>
+    </div>
+  `;
+}
+
+// ============================================
+// أدوات البيانات
+// ============================================
+
+function exportData() {
+  const data = dataManager.exportData();
+  const blob = new Blob([data], { type: 'application/json' });
+  const url = URL.createObjectURL(blob);
+  const a = document.createElement('a');
+  a.href = url;
+  a.download = 'mta-data-' + new Date().toISOString().split('T')[0] + '.json';
+  a.click();
+  URL.revokeObjectURL(url);
+  alert('✅ تم تصدير البيانات بنجاح!');
+}
+
+function importData(event) {
+  const file = event.target.files[0];
+  if (!file) return;
+  
+  const reader = new FileReader();
+  reader.onload = (e) => {
+    if (confirm('⚠️ سيتم استبدال جميع البيانات الحالية. هل أنت متأكد؟')) {
+      const success = dataManager.importData(e.target.result);
+      if (success) {
+        alert('✅ تم استيراد البيانات بنجاح!');
+        refreshAdminPage();
+      } else {
+        alert('❌ خطأ في استيراد البيانات!');
+      }
+    }
+  };
+  reader.readAsText(file);
+}
+
+function resetAllData() {
+  if (confirm('⚠️ هل أنت متأكد من إعادة تعيين كل البيانات؟')) {
+    if (confirm('⚠️ تأكيد أخير: هذه العملية لا يمكن التراجع عنها!')) {
+      dataManager.resetData();
+      refreshAdminPage();
+      alert('✅ تم إعادة تعيين البيانات بنجاح!');
+    }
+  }
+}
+
+function refreshAdminPage() {
+  if (currentPage === 'admin' && isAdminLoggedIn) {
+    loadPage('admin');
   }
 }
