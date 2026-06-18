@@ -1,5 +1,6 @@
 // ============================================
-// لوحة الإدارة - نظام Tabs حقيقي
+// لوحة الإدارة - MTA Commands
+// نظام Tabs حقيقي - قسم واحد في كل مرة
 // ============================================
 
 let adminCurrentSection = 'home';
@@ -33,9 +34,9 @@ function renderAdminLogin() {
   return `
     <div class="page active">
       <div class="admin-login">
-        <div style="font-size: 4rem; margin-bottom: 1rem;"></div>
+        <div style="font-size: 4rem; margin-bottom: 1rem;">🔐</div>
         <h1>لوحة الإدارة</h1>
-        <p style="margin-bottom: 2rem; color: #b0b0b0;">يرجى إدخال كلمة المرور</p>
+        <p style="margin-bottom: 2rem; color: #b0b0b0;">يرجى إدخال كلمة المرور للوصول</p>
         <input type="password" id="admin-password" placeholder="كلمة المرور">
         <button class="btn" onclick="loginAdmin()" style="width: 100%; margin-top: 1rem;">دخول</button>
       </div>
@@ -79,6 +80,7 @@ function renderAdminDashboard() {
       </div>
       
       <div class="admin-layout">
+        <!-- Sidebar -->
         <aside class="admin-sidebar">
           <div class="sidebar-title">الأقسام</div>
           <button class="sidebar-btn ${adminCurrentSection === 'home' ? 'active' : ''}" onclick="switchAdminSection('home')">
@@ -94,7 +96,7 @@ function renderAdminDashboard() {
             <span>الأوامر</span>
           </button>
           <button class="sidebar-btn ${adminCurrentSection === 'intros' ? 'active' : ''}" onclick="switchAdminSection('intros')">
-            <span class="sidebar-icon"></span>
+            <span class="sidebar-icon">🎬</span>
             <span>الانترو</span>
           </button>
           <button class="sidebar-btn ${adminCurrentSection === 'autoreplies' ? 'active' : ''}" onclick="switchAdminSection('autoreplies')">
@@ -107,6 +109,7 @@ function renderAdminDashboard() {
           </button>
         </aside>
         
+        <!-- Content Area -->
         <main class="admin-content" id="admin-section-content">
           ${renderAdminSection(adminCurrentSection)}
         </main>
@@ -145,7 +148,7 @@ function renderAdminSection(section) {
 }
 
 // ============================================
-// التبديل بين التبويبات الداخلية
+// التبويب الداخلي
 // ============================================
 
 function switchTab(tab) {
@@ -171,7 +174,6 @@ function searchInSection(query) {
 
 function renderAdminHomeSection() {
   const shortcuts = dataManager.data.home.shortcuts;
-  
   const filtered = adminSearchQuery 
     ? shortcuts.filter(s => s.title.toLowerCase().includes(adminSearchQuery))
     : shortcuts;
@@ -186,7 +188,7 @@ function renderAdminHomeSection() {
       <div class="inline-form">
         <h3>➕ إضافة اختصار جديد</h3>
         <div class="form-row">
-          <input type="text" id="shortcut-icon" placeholder="الأيقونة " style="width: 100px;">
+          <input type="text" id="shortcut-icon" placeholder="الأيقونة 🎮" style="width: 100px;">
           <input type="text" id="shortcut-title" placeholder="العنوان" style="flex: 1;">
           <input type="text" id="shortcut-url" placeholder="الرابط أو الصفحة" style="flex: 1;">
           <button class="btn" onclick="addShortcut()">إضافة</button>
@@ -227,7 +229,7 @@ function addShortcut() {
   const url = document.getElementById('shortcut-url').value.trim();
   
   if (!title || !icon) {
-    alert('️ يرجى إدخال العنوان والأيقونة');
+    alert('⚠️ يرجى إدخال العنوان والأيقونة');
     return;
   }
   
@@ -236,7 +238,7 @@ function addShortcut() {
 }
 
 function deleteShortcut(index) {
-  if (confirm('هل أنت متأكد؟')) {
+  if (confirm('هل أنت متأكد من حذف هذا الاختصار؟')) {
     dataManager.deleteShortcut(index);
     refreshAdminPage();
   }
@@ -454,7 +456,7 @@ function renderAdminCommandsSection() {
 
 function addCommandSection() {
   const title = document.getElementById('command-section-title').value.trim();
-  if (!title) { alert('️ أدخل عنوان القسم'); return; }
+  if (!title) { alert('⚠️ أدخل عنوان القسم'); return; }
   dataManager.addCommandSection(title);
   refreshAdminPage();
 }
@@ -562,7 +564,7 @@ function renderAdminIntrosSection() {
 function addIntro() {
   const url = document.getElementById('intro-url').value.trim();
   const caption = document.getElementById('intro-caption').value.trim();
-  if (!url || !caption) { alert('️ أدخل الرابط والوصف'); return; }
+  if (!url || !caption) { alert('⚠️ أدخل الرابط والوصف'); return; }
   dataManager.addIntro(url, caption);
   refreshAdminPage();
 }
@@ -660,7 +662,7 @@ function renderAdminToolsSection() {
   return `
     <div class="admin-panel">
       <div class="panel-header">
-        <h2> الأدوات</h2>
+        <h2>🔧 الأدوات</h2>
       </div>
       
       <div class="tools-grid">
@@ -688,7 +690,7 @@ function renderAdminToolsSection() {
       </div>
       
       <div class="info-box">
-        <h3>️ ملاحظات</h3>
+        <h3>ℹ️ ملاحظات</h3>
         <ul>
           <li>التعديلات تُحفظ تلقائياً في المتصفح (localStorage)</li>
           <li>قم بتصدير البيانات بشكل دوري كاحتياط</li>
@@ -713,7 +715,7 @@ function exportData() {
   a.download = 'mta-data-' + new Date().toISOString().split('T')[0] + '.json';
   a.click();
   URL.revokeObjectURL(url);
-  alert('✅ تم التصدير!');
+  alert('✅ تم التصدير بنجاح!');
 }
 
 function importData(event) {
@@ -723,10 +725,10 @@ function importData(event) {
   reader.onload = (e) => {
     if (confirm('⚠️ سيتم استبدال البيانات الحالية. متأكد؟')) {
       if (dataManager.importData(e.target.result)) {
-        alert('✅ تم الاستيراد!');
+        alert('✅ تم الاستيراد بنجاح!');
         refreshAdminPage();
       } else {
-        alert('❌ خطأ!');
+        alert('❌ خطأ في الاستيراد!');
       }
     }
   };
@@ -734,11 +736,11 @@ function importData(event) {
 }
 
 function resetAllData() {
-  if (confirm('⚠️ إعادة تعيين كل البيانات؟')) {
-    if (confirm('⚠️ تأكيد أخير - لا يمكن التراجع!')) {
+  if (confirm('⚠️ هل أنت متأكد من إعادة تعيين كل البيانات؟')) {
+    if (confirm('⚠️ تأكيد أخير - هذه العملية لا يمكن التراجع عنها!')) {
       dataManager.resetData();
       refreshAdminPage();
-      alert('✅ تم!');
+      alert('✅ تم إعادة التعيين بنجاح!');
     }
   }
 }
