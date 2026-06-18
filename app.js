@@ -5,20 +5,12 @@
 
 let currentPage = 'home';
 
-// ============================================
-// التهيئة عند تحميل الصفحة
-// ============================================
-
 document.addEventListener('DOMContentLoaded', () => {
   initNavigation();
   initFloatChat();
   initMenuToggle();
   loadPage('home');
 });
-
-// ============================================
-// نظام التنقل
-// ============================================
 
 function initNavigation() {
   const navLinks = document.querySelectorAll('.nav-links a');
@@ -76,10 +68,6 @@ function loadPage(page) {
   window.scrollTo({ top: 0, behavior: 'smooth' });
 }
 
-// ============================================
-// الصفحة الرئيسية
-// ============================================
-
 function renderHomePage() {
   const data = dataManager.data.home;
   
@@ -107,10 +95,6 @@ function renderHomePage() {
     </div>
   `;
 }
-
-// ============================================
-// صفحة الأوامر
-// ============================================
 
 function renderCommandsPage() {
   return `
@@ -272,10 +256,6 @@ function showCopyFeedback(element, command) {
   }, 2000);
 }
 
-// ============================================
-// صفحة القوانين
-// ============================================
-
 function renderRulesPage() {
   const data = dataManager.data.rules;
   
@@ -303,15 +283,11 @@ function renderRulesPage() {
   `).join('');
   
   return `
-    <h1 class="page-title"> قوانين السيرفر</h1>
+    <h1 class="page-title">📜 قوانين السيرفر</h1>
     <p class="page-subtitle">يرجى قراءة القوانين بعناية قبل اللعب في السيرفر</p>
     ${sectionsHtml}
   `;
 }
-
-// ============================================
-// صفحة الانترو
-// ============================================
 
 function renderIntrosPage() {
   const data = dataManager.data.intros;
@@ -336,7 +312,7 @@ function renderIntrosPage() {
 }
 
 // ============================================
-// صفحة الرد التلقائي
+// صفحة الرد التلقائي - محسّنة
 // ============================================
 
 function renderChatPage() {
@@ -386,10 +362,10 @@ function sendChatPageMessage() {
   typingDiv.className = 'chat-message bot';
   typingDiv.id = 'typing-indicator';
   typingDiv.innerHTML = `
-    <div class="msg-avatar"></div>
+    <div class="msg-avatar">🤖</div>
     <div class="msg-bubble">
       <div class="msg-header">المساعد الآلي</div>
-      <div class="typing-indicator"><span></span><span></span><span></span></div>
+      <div class="msg-text"><div class="typing-indicator"><span></span><span></span><span></span></div></div>
     </div>
   `;
   messagesContainer.appendChild(typingDiv);
@@ -401,7 +377,7 @@ function sendChatPageMessage() {
     
     const reply = dataManager.getAutoReply(message);
     addChatPageMessage(reply, 'bot');
-  }, 800);
+  }, 700);
 }
 
 function addChatPageMessage(text, sender) {
@@ -412,12 +388,11 @@ function addChatPageMessage(text, sender) {
   messageDiv.className = `chat-message ${sender}`;
   
   if (sender === 'bot') {
-    const formattedText = text.split('\n').map(line => `<p>${line}</p>`).join('');
     messageDiv.innerHTML = `
       <div class="msg-avatar">🤖</div>
       <div class="msg-bubble">
         <div class="msg-header">المساعد الآلي</div>
-        <div class="msg-text">${formattedText}</div>
+        <div class="msg-text">${text}</div>
       </div>
     `;
   } else {
@@ -489,11 +464,10 @@ function addFloatChatMessage(text, sender) {
   messageDiv.className = `chat-message ${sender}`;
   
   if (sender === 'bot') {
-    const formattedText = text.split('\n').map(line => `<p>${line}</p>`).join('');
     messageDiv.innerHTML = `
       <div class="msg-avatar"></div>
       <div class="msg-bubble">
-        <div class="msg-text">${formattedText}</div>
+        <div class="msg-text">${text}</div>
       </div>
     `;
   } else {
@@ -507,10 +481,6 @@ function addFloatChatMessage(text, sender) {
   messagesContainer.appendChild(messageDiv);
   messagesContainer.scrollTop = messagesContainer.scrollHeight;
 }
-
-// ============================================
-// قائمة الموبايل
-// ============================================
 
 function initMenuToggle() {
   const menuToggle = document.getElementById('menuToggle');
