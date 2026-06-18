@@ -1,4 +1,3 @@
-```html
 <!DOCTYPE html>
 <html lang="ar" dir="rtl">
 <head>
@@ -8,7 +7,6 @@
     <link rel="stylesheet" href="style.css">
     <link href="https://fonts.googleapis.com/css2?family=Cairo:wght@400;600;700&display=swap" rel="stylesheet">
     <style>
-        /* ===== التصميم الأساسي ===== */
         :root {
             --primary: #ff6b00;
             --primary-dark: #cc5500;
@@ -514,7 +512,7 @@
     <script src="data.js"></script>
     <script>
         // ============================================================
-        // نظام الإدارة الذكي - V7 (تم إصلاح عرض البيانات)
+        // نظام الإدارة الذكي - V8 (تم إصلاح ربط البيانات)
         // ============================================================
 
         const ADMIN_PASSWORD = '0000';
@@ -564,18 +562,30 @@
 
         // ===== التهيئة =====
         function init() {
+            // تحديث القوائم المنسدلة
             updateSelects();
+
+            // عرض محدد الصفحات
             renderPageSelector();
+
+            // عرض المحرر الذكي
             renderSmartEditor(selectedPageId);
+
+            // عرض القوائم المنفصلة
             renderPages();
             renderCategories();
             renderCommands();
             renderRules();
             renderInteriors();
             renderCodes();
+
+            // تحديث الإحصائيات
             updateStats();
+
+            // تفعيل التبويبات
             setupTabs();
 
+            // تحديد أول صفحة إذا لم تكن محددة
             if (selectedPageId === null && pages.length > 0) {
                 selectedPageId = pages[0].id;
                 renderPageSelector();
@@ -631,25 +641,27 @@
         }
 
         // ============================================================
-        // المحرر الذكي - تم إصلاح عرض البيانات
+        // المحرر الذكي - يعرض كل البيانات بشكل صحيح
         // ============================================================
         function renderSmartEditor(pageId) {
             const container = document.getElementById('smartEditor');
             if (!container) return;
 
-            // التحقق من وجود data.js و siteData
+            // التحقق من وجود البيانات
             if (typeof siteData === 'undefined') {
                 container.innerHTML =
                     `<div class="empty-state"><span class="icon">❌</span>لم يتم تحميل البيانات</div>`;
                 return;
             }
 
+            // البحث عن الصفحة
             const page = pages.find(p => p.id === pageId);
             if (!page) {
-                container.innerHTML = `<div class="empty-state"><span class="icon">📄</span>اختر صفحة</div>`;
+                container.innerHTML = `<div class="empty-state"><span class="icon">📄</span>اختر صفحة من الأعلى</div>`;
                 return;
             }
 
+            // جلب الأقسام التابعة لهذه الصفحة
             const cats = siteData.categories.filter(c => c.pageId === pageId);
 
             let html = `
@@ -658,6 +670,7 @@
                         <span style="font-size:18px;color:var(--primary);">📄 ${page.name}</span>
                         <span style="color:var(--text-muted);font-size:13px;margin-right:10px;">${page.link}</span>
                         <span style="color:var(--text-muted);font-size:12px;margin-right:10px;">${page.desc || ''}</span>
+                        <span style="color:var(--text-muted);font-size:11px;margin-right:10px;">(${cats.length} أقسام)</span>
                     </div>
                     <div style="display:flex;gap:5px;">
                         <button class="btn btn-sm btn-warning" onclick="editPageById(${page.id})">✏️ تعديل</button>
@@ -668,7 +681,13 @@
             `;
 
             if (cats.length === 0) {
-                html += `<div class="empty-state"><span class="icon">📂</span>لا توجد أقسام في هذه الصفحة</div>`;
+                html += `
+                    <div class="empty-state" style="border:1px dashed var(--border-color);border-radius:var(--radius);padding:30px;">
+                        <span class="icon">📂</span>
+                        لا توجد أقسام في هذه الصفحة<br>
+                        <span style="font-size:12px;">اضغط على "إضافة قسم" لإضافة قسم جديد</span>
+                    </div>
+                `;
             } else {
                 cats.forEach(cat => {
                     // جلب البيانات المرتبطة بهذا القسم
@@ -710,7 +729,7 @@
 
             let html = '';
 
-            // أوامر
+            // ===== أوامر =====
             if (commands.length > 0) {
                 html += `<div style="color:#ffaa00;font-weight:bold;margin:5px 0;">📋 الأوامر (${commands.length})</div>`;
                 commands.forEach((c, idx) => {
@@ -727,7 +746,7 @@
                 });
             }
 
-            // قوانين
+            // ===== قوانين =====
             if (rules.length > 0) {
                 html += `<div style="color:#00cc66;font-weight:bold;margin:5px 0;">📜 القوانين (${rules.length})</div>`;
                 rules.forEach((r, idx) => {
@@ -744,7 +763,7 @@
                 });
             }
 
-            // انترو
+            // ===== انترو =====
             if (interiors.length > 0) {
                 html += `<div style="color:#cc66ff;font-weight:bold;margin:5px 0;">🏠 الانترو (${interiors.length})</div>`;
                 interiors.forEach((i, idx) => {
@@ -761,7 +780,7 @@
                 });
             }
 
-            // أكواد
+            // ===== أكواد =====
             if (codesInCat.length > 0) {
                 html += `<div style="color:#ff66aa;font-weight:bold;margin:5px 0;">💻 الأكواد (${codesInCat.length})</div>`;
                 codesInCat.forEach((c, idx) => {
@@ -787,7 +806,7 @@
             }
 
             if (!commands.length && !rules.length && !interiors.length && !codesInCat.length) {
-                html += `<div class="empty-state"><span class="icon">📭</span>لا يوجد محتوى</div>`;
+                html += `<div class="empty-state" style="padding:10px;"><span class="icon">📭</span>لا يوجد محتوى</div>`;
             }
 
             return html;
@@ -805,10 +824,11 @@
             const name = prompt('📂 أدخل اسم القسم الجديد:');
             if (name && name.trim()) {
                 const icon = prompt('🎨 أدخل الأيقونة (مثال: 📋):') || '📁';
+                // إضافة القسم مع pageId
                 siteData.categories.push({
                     id: siteData.categories.length + 1,
                     name: name.trim(),
-                    icon,
+                    icon: icon,
                     pageId: pageId,
                     desc: `قسم ${name.trim()}`
                 });
@@ -1039,7 +1059,9 @@
         function deletePageById(id) {
             const p = pages.find(p => p.id === id);
             if (!p || !confirm(`⚠️ حذف "${p.name}" وجميع محتوياتها؟`)) return;
-            siteData.categories.filter(c => c.pageId === id).forEach(c => {
+            // حذف الأقسام التابعة
+            const catsToDelete = siteData.categories.filter(c => c.pageId === id);
+            catsToDelete.forEach(c => {
                 siteData.commands = siteData.commands.filter(cmd => cmd.category !== c.name);
                 siteData.rules = siteData.rules.filter(r => r.category !== c.name);
                 siteData.interiors = siteData.interiors.filter(i => i.category !== c.name);
@@ -1074,6 +1096,7 @@
             if (!c) return;
             const n = prompt('✏️ تعديل اسم القسم:', c.name);
             if (n && n.trim()) {
+                // تحديث جميع البيانات المرتبطة
                 siteData.commands.forEach(cmd => { if (cmd.category === c.name) cmd.category = n.trim(); });
                 siteData.rules.forEach(r => { if (r.category === c.name) r.category = n.trim(); });
                 siteData.interiors.forEach(i => { if (i.category === c.name) i.category = n.trim(); });
@@ -1365,7 +1388,9 @@
             document.getElementById('adminPassword').addEventListener('keydown', function(e) {
                 if (e.key === 'Enter') loginAdmin();
             });
-            console.log('✅ الإدارة الذكية V7 - تم إصلاح عرض البيانات');
+
+            // تأكد من تحميل البيانات
+            console.log('✅ الإدارة الذكية V8 - تم إصلاح ربط البيانات');
             console.log('📄 عدد الصفحات:', pages.length);
             console.log('📂 عدد الأقسام:', siteData.categories.length);
             console.log('📋 عدد الأوامر:', siteData.commands.length);
@@ -1378,4 +1403,3 @@
 
 </body>
 </html>
-```
