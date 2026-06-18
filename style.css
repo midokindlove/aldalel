@@ -7,6 +7,37 @@
     <link rel="stylesheet" href="style.css">
     <link href="https://fonts.googleapis.com/css2?family=Cairo:wght@400;600;700&display=swap" rel="stylesheet">
     <style>
+        /* ===== المتغيرات ===== */
+        :root {
+            --primary: #ff6b00;
+            --primary-dark: #cc5500;
+            --secondary: #1a1a2e;
+            --bg-dark: #0d0d1a;
+            --bg-card: #1a1a2e;
+            --bg-card-hover: #252540;
+            --text-light: #e0e0e0;
+            --text-muted: #8888aa;
+            --border-color: #333355;
+            --shadow: 0 8px 32px rgba(0,0,0,0.5);
+            --radius: 12px;
+            --transition: all 0.3s ease;
+        }
+
+        /* ===== الأساسيات ===== */
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: 'Cairo', 'Tahoma', sans-serif;
+            background: var(--bg-dark);
+            color: var(--text-light);
+            min-height: 100vh;
+            line-height: 1.6;
+        }
+
         /* ===== شاشة تسجيل الدخول ===== */
         .login-screen {
             position: fixed;
@@ -469,7 +500,7 @@
             opacity: 0.5;
         }
 
-        /* ===== Modal (النافذة المنبثقة) ===== */
+        /* ===== Modal ===== */
         .modal-overlay {
             display: none;
             position: fixed;
@@ -595,7 +626,7 @@
             justify-content: flex-start;
         }
 
-        /* ===== Toast (الإشعارات) ===== */
+        /* ===== Toast ===== */
         .toast-container {
             position: fixed;
             top: 20px;
@@ -688,6 +719,29 @@
             margin: 0 auto 30px;
         }
 
+        .card {
+            background: var(--bg-card);
+            border-radius: var(--radius);
+            padding: 25px;
+            margin-bottom: 20px;
+            border: 1px solid var(--border-color);
+            box-shadow: var(--shadow);
+            transition: var(--transition);
+        }
+
+        .card:hover {
+            border-color: var(--primary);
+        }
+
+        .card-title {
+            font-size: 22px;
+            color: var(--primary);
+            margin-bottom: 15px;
+            display: flex;
+            align-items: center;
+            gap: 10px;
+        }
+
         /* ===== التجاوب ===== */
         @media (max-width: 900px) {
             .admin-wrapper.active {
@@ -732,6 +786,16 @@
             .modal {
                 max-width: 100%;
             }
+        }
+
+        @keyframes fadeIn {
+            from { opacity: 0; }
+            to { opacity: 1; }
+        }
+
+        @keyframes pulse {
+            0%, 100% { transform: scale(1); }
+            50% { transform: scale(1.2); color: var(--primary); }
         }
     </style>
 </head>
@@ -840,7 +904,10 @@
     <!-- ===== Toast Container ===== -->
     <div class="toast-container" id="toastContainer"></div>
 
+    <!-- ===== تحميل ملف data.js ===== -->
     <script src="data.js"></script>
+    
+    <!-- ===== كود لوحة التحكم ===== -->
     <script>
         // ============================================
         // المتغيرات العامة
@@ -918,10 +985,47 @@
         // تحديث العدادات
         // ============================================
         function updateCounts() {
-            document.getElementById('countCommands').textContent = siteData.commands.length;
-            document.getElementById('countRules').textContent = siteData.rules.length;
-            document.getElementById('countInteriors').textContent = siteData.interiors.length;
-            document.getElementById('countCategories').textContent = siteData.categories.length;
+            // التأكد من وجود البيانات
+            if (typeof siteData === 'undefined') {
+                console.error('siteData غير معرف!');
+                return;
+            }
+            
+            // تحديث العدادات مع التحقق من وجود المصفوفات
+            const commandsCount = Array.isArray(siteData.commands) ? siteData.commands.length : 0;
+            const rulesCount = Array.isArray(siteData.rules) ? siteData.rules.length : 0;
+            const interiorsCount = Array.isArray(siteData.interiors) ? siteData.interiors.length : 0;
+            const categoriesCount = Array.isArray(siteData.categories) ? siteData.categories.length : 0;
+            
+            // تحديث العناصر في الواجهة
+            const cmdEl = document.getElementById('countCommands');
+            const rulesEl = document.getElementById('countRules');
+            const intEl = document.getElementById('countInteriors');
+            const catEl = document.getElementById('countCategories');
+            
+            if (cmdEl) cmdEl.textContent = commandsCount;
+            if (rulesEl) rulesEl.textContent = rulesCount;
+            if (intEl) intEl.textContent = interiorsCount;
+            if (catEl) catEl.textContent = categoriesCount;
+            
+            console.log('تم تحديث العدادات:', {
+                commands: commandsCount,
+                rules: rulesCount,
+                interiors: interiorsCount,
+                categories: categoriesCount
+            });
+        }
+
+        // ============================================
+        // حفظ البيانات في localStorage
+        // ============================================
+        function saveDataToStorage() {
+            if (typeof siteData !== 'undefined') {
+                localStorage.setItem('mtaData', JSON.stringify(siteData));
+                localStorage.setItem('mtaDataLastModified', new Date().toLocaleString('ar'));
+                updateCounts();
+                console.log('✅ تم حفظ البيانات في localStorage');
+            }
         }
 
         // ============================================
@@ -938,28 +1042,28 @@
                     <div class="stat-card">
                         <div class="stat-icon">📋</div>
                         <div class="stat-info">
-                            <h3>${siteData.commands.length}</h3>
+                            <h3>${Array.isArray(siteData.commands) ? siteData.commands.length : 0}</h3>
                             <p>إجمالي الأوامر</p>
                         </div>
                     </div>
                     <div class="stat-card">
                         <div class="stat-icon">📜</div>
                         <div class="stat-info">
-                            <h3>${siteData.rules.length}</h3>
+                            <h3>${Array.isArray(siteData.rules) ? siteData.rules.length : 0}</h3>
                             <p>إجمالي القوانين</p>
                         </div>
                     </div>
                     <div class="stat-card">
                         <div class="stat-icon">🏠</div>
                         <div class="stat-info">
-                            <h3>${siteData.interiors.length}</h3>
+                            <h3>${Array.isArray(siteData.interiors) ? siteData.interiors.length : 0}</h3>
                             <p>إجمالي الانترو</p>
                         </div>
                     </div>
                     <div class="stat-card">
                         <div class="stat-icon">📂</div>
                         <div class="stat-info">
-                            <h3>${siteData.categories.length}</h3>
+                            <h3>${Array.isArray(siteData.categories) ? siteData.categories.length : 0}</h3>
                             <p>التصنيفات</p>
                         </div>
                     </div>
@@ -1011,7 +1115,7 @@
                     </div>
                     <select id="filterCommandCategory" onchange="filterAdminTable('commands')" style="padding:10px 16px;border-radius:10px;border:1px solid var(--border-color);background:var(--bg-card);color:var(--text-light);outline:none;">
                         <option value="all">📂 جميع التصنيفات</option>
-                        ${siteData.categories.map(c => `<option value="${c.name}">${c.icon} ${c.name}</option>`).join('')}
+                        ${Array.isArray(siteData.categories) ? siteData.categories.map(c => `<option value="${c.name}">${c.icon} ${c.name}</option>`).join('') : ''}
                     </select>
                 </div>
 
@@ -1030,14 +1134,14 @@
                     </table>
                 </div>
             `;
-            renderCommandsTable(siteData.commands);
+            renderCommandsTable(siteData.commands || []);
         }
 
         function renderCommandsTable(commands) {
             const tbody = document.getElementById('commandsTableBody');
             if (!tbody) return;
             
-            if (commands.length === 0) {
+            if (!commands || commands.length === 0) {
                 tbody.innerHTML = `<tr><td colspan="5"><div class="empty-state">
                     <span class="empty-icon">📋</span>
                     <p>لا توجد أوامر</p>
@@ -1046,7 +1150,7 @@
             }
             
             tbody.innerHTML = commands.map((cmd, idx) => {
-                const realIdx = siteData.commands.indexOf(cmd);
+                const realIdx = (siteData.commands || []).indexOf(cmd);
                 return `
                 <tr>
                     <td>${realIdx + 1}</td>
@@ -1071,7 +1175,7 @@
             const title = document.getElementById('modalTitle');
             const body = document.getElementById('modalBody');
             
-            const item = index >= 0 ? siteData.commands[index] : { command: '', meaning: '', category: siteData.categories[0]?.name || '' };
+            const item = index >= 0 ? siteData.commands[index] : { command: '', meaning: '', category: (siteData.categories[0] || {}).name || '' };
             
             title.innerHTML = index >= 0 ? '✏️ تعديل أمر' : '➕ إضافة أمر جديد';
             
@@ -1087,7 +1191,7 @@
                 <div class="form-group">
                     <label>🔹 التصنيف</label>
                     <select id="cmd_category">
-                        ${siteData.categories.map(c => `<option value="${c.name}" ${c.name === item.category ? 'selected' : ''}>${c.icon} ${c.name}</option>`).join('')}
+                        ${Array.isArray(siteData.categories) ? siteData.categories.map(c => `<option value="${c.name}" ${c.name === item.category ? 'selected' : ''}>${c.icon} ${c.name}</option>`).join('') : ''}
                     </select>
                 </div>
             `;
@@ -1128,14 +1232,14 @@
                     </table>
                 </div>
             `;
-            renderRulesTable(siteData.rules);
+            renderRulesTable(siteData.rules || []);
         }
 
         function renderRulesTable(rules) {
             const tbody = document.getElementById('rulesTableBody');
             if (!tbody) return;
             
-            if (rules.length === 0) {
+            if (!rules || rules.length === 0) {
                 tbody.innerHTML = `<tr><td colspan="4"><div class="empty-state">
                     <span class="empty-icon">📜</span>
                     <p>لا توجد قوانين</p>
@@ -1144,7 +1248,7 @@
             }
             
             tbody.innerHTML = rules.map((rule) => {
-                const realIdx = siteData.rules.indexOf(rule);
+                const realIdx = (siteData.rules || []).indexOf(rule);
                 return `
                 <tr>
                     <td>${realIdx + 1}</td>
@@ -1220,14 +1324,14 @@
                     </table>
                 </div>
             `;
-            renderInteriorsTable(siteData.interiors);
+            renderInteriorsTable(siteData.interiors || []);
         }
 
         function renderInteriorsTable(interior) {
             const tbody = document.getElementById('interiorsTableBody');
             if (!tbody) return;
             
-            if (interior.length === 0) {
+            if (!interior || interior.length === 0) {
                 tbody.innerHTML = `<tr><td colspan="5"><div class="empty-state">
                     <span class="empty-icon">🏠</span>
                     <p>لا توجد انترو</p>
@@ -1236,7 +1340,7 @@
             }
             
             tbody.innerHTML = interior.map((int) => {
-                const realIdx = siteData.interiors.indexOf(int);
+                const realIdx = (siteData.interiors || []).indexOf(int);
                 return `
                 <tr>
                     <td>${realIdx + 1}</td>
@@ -1317,14 +1421,14 @@
                     </table>
                 </div>
             `;
-            renderCategoriesTable(siteData.categories);
+            renderCategoriesTable(siteData.categories || []);
         }
 
         function renderCategoriesTable(categories) {
             const tbody = document.getElementById('categoriesTableBody');
             if (!tbody) return;
             
-            if (categories.length === 0) {
+            if (!categories || categories.length === 0) {
                 tbody.innerHTML = `<tr><td colspan="5"><div class="empty-state">
                     <span class="empty-icon">📂</span>
                     <p>لا توجد تصنيفات</p>
@@ -1333,8 +1437,8 @@
             }
             
             tbody.innerHTML = categories.map((cat) => {
-                const realIdx = siteData.categories.indexOf(cat);
-                const count = siteData.commands.filter(c => c.category === cat.name).length;
+                const realIdx = (siteData.categories || []).indexOf(cat);
+                const count = (siteData.commands || []).filter(c => c.category === cat.name).length;
                 return `
                 <tr>
                     <td>${cat.id}</td>
@@ -1359,7 +1463,7 @@
             const title = document.getElementById('modalTitle');
             const body = document.getElementById('modalBody');
             
-            const item = index >= 0 ? siteData.categories[index] : { id: siteData.categories.length + 1, name: '', icon: '📁' };
+            const item = index >= 0 ? siteData.categories[index] : { id: (siteData.categories || []).length + 1, name: '', icon: '📁' };
             
             title.innerHTML = index >= 0 ? '✏️ تعديل تصنيف' : '➕ إضافة تصنيف جديد';
             
@@ -1380,17 +1484,17 @@
 
         function deleteCategory(index) {
             const cat = siteData.categories[index];
-            const count = siteData.commands.filter(c => c.category === cat.name).length;
+            const count = (siteData.commands || []).filter(c => c.category === cat.name).length;
             
             if (count > 0) {
                 if (!confirm(`⚠️ هذا التصنيف يحتوي على ${count} أمر.\nهل تريد حذف التصنيف وجميع أوامره؟`)) return;
-                siteData.commands = siteData.commands.filter(c => c.category !== cat.name);
+                siteData.commands = (siteData.commands || []).filter(c => c.category !== cat.name);
             } else {
                 if (!confirm(`هل تريد حذف التصنيف "${cat.name}"؟`)) return;
             }
             
             siteData.categories.splice(index, 1);
-            saveData();
+            saveDataToStorage();
             updateCounts();
             renderCategories();
             showToast('success', 'تم الحذف', 'تم حذف التصنيف بنجاح');
@@ -1421,7 +1525,7 @@
         function saveIntroCode() {
             const code = document.getElementById('introCodeEditor').value;
             siteData.introCode = code;
-            saveData();
+            saveDataToStorage();
             showToast('success', 'تم الحفظ', 'تم حفظ كود الانترو بنجاح');
         }
 
@@ -1435,15 +1539,22 @@
                     <h1>💾 تصدير / استيراد البيانات</h1>
                 </div>
 
-                <div class="card">
+                <div class="card" style="border: 2px solid var(--primary);">
                     <h3 class="card-title">📤 تصدير ملف data.js</h3>
-                    <p style="color:var(--text-muted);margin-bottom:15px;">
-                        قم بتصدير جميع البيانات كملف data.js جديد، ثم استبدل محتوى الملف القديم بهذا المحتوى
-                    </p>
-                    <div style="display:flex;gap:10px;flex-wrap:wrap;margin-bottom:15px;">
-                        <button class="btn btn-primary" onclick="generateDataJs()">🔄 توليد الكود</button>
-                        <button class="btn btn-success" onclick="copyDataJs()">📋 نسخ الكود</button>
-                        <button class="btn btn-info" onclick="downloadDataJs()">⬇️ تحميل الملف</button>
+                    
+                    <div style="background: rgba(255,107,0,0.1); padding: 15px; border-radius: 10px; margin-bottom: 20px;">
+                        <p style="color: var(--text-light); margin-bottom: 10px;">
+                            <strong>⚠️ مهم:</strong> التعديلات تُحفظ تلقائياً في المتصفح (localStorage)
+                        </p>
+                        <p style="color: var(--text-muted); font-size: 14px;">
+                            لتحديث ملف data.js الفعلي، اضغط على الزر أدناه
+                        </p>
+                    </div>
+
+                    <div style="display: grid; grid-template-columns: repeat(auto-fit, minmax(200px, 1fr)); gap: 15px; margin-bottom: 20px;">
+                        <button class="btn btn-primary" onclick="generateDataJs()" style="padding: 15px; font-size: 16px;">🔄 توليد الكود</button>
+                        <button class="btn btn-success" onclick="copyDataJs()" style="padding: 15px; font-size: 16px;">📋 نسخ الكود</button>
+                        <button class="btn btn-info" onclick="downloadDataJs()" style="padding: 15px; font-size: 16px;">⬇️ تحميل الملف</button>
                     </div>
                     <div class="code-export-area" id="dataJsOutput" style="min-height:200px;">اضغط على "توليد الكود" لعرض محتوى data.js الجديد...</div>
                 </div>
@@ -1475,57 +1586,53 @@
         }
 
         function buildDataJsContent() {
-            let code = `// ============================================\n`;
-            code += `// قاعدة بيانات الموقع - MTA San Andreas\n`;
-            code += `// ============================================\n\n`;
-            code += `const siteData = {\n`;
-            
-            // Rules
-            code += `    rules: ${JSON.stringify(siteData.rules, null, 4)},\n\n`;
-            
-            // Categories
-            code += `    categories: ${JSON.stringify(siteData.categories, null, 4)},\n\n`;
-            
-            // Commands
-            code += `    commands: ${JSON.stringify(siteData.commands, null, 4)},\n\n`;
-            
-            // Interiors
-            code += `    interiors: ${JSON.stringify(siteData.interiors, null, 4)},\n\n`;
-            
-            // Intro Code
-            code += `    introCode: \`${siteData.introCode || ''}\`\n`;
-            
-            code += `};\n\n`;
-            
-            // باقي الدوال (نسخها من data.js الأصلي)
-            code += `// ============================================\n`;
-            code += `// دوال حفظ واسترجاع البيانات\n`;
-            code += `// ============================================\n\n`;
-            code += `function saveData() {\n    localStorage.setItem('mtaData', JSON.stringify(siteData));\n}\n\n`;
-            code += `function loadData() {\n    const saved = localStorage.getItem('mtaData');\n    if (saved) {\n        try {\n            const parsed = JSON.parse(saved);\n            Object.assign(siteData, parsed);\n        } catch(e) {\n            console.log('خطأ في تحميل البيانات');\n        }\n    }\n}\n\n`;
-            code += `function exportData() {\n    return JSON.stringify(siteData, null, 2);\n}\n\n`;
-            code += `function importData(jsonData) {\n    try {\n        const parsed = JSON.parse(jsonData);\n        Object.assign(siteData, parsed);\n        saveData();\n        return true;\n    } catch(e) {\n        return false;\n    }\n}\n\n`;
-            code += `loadData();\n\n`;
-            
-            // دوال البحث
-            code += `// ============================================\n`;
-            code += `// دوال البحث والمساعدة\n`;
-            code += `// ============================================\n\n`;
-            code += `function getCommandsByCategory(category) {\n    return siteData.commands.filter(cmd => cmd.category === category);\n}\n\n`;
-            code += `function findCommand(search) {\n    const searchLower = search.toLowerCase();\n    return siteData.commands.filter(cmd => \n        cmd.command.toLowerCase().includes(searchLower) ||\n        cmd.meaning.includes(search)\n    );\n}\n\n`;
-            code += `function findRule(search) {\n    const searchLower = search.toLowerCase();\n    return siteData.rules.filter(rule =>\n        rule.english.toLowerCase().includes(searchLower) ||\n        rule.arabic.includes(search)\n    );\n}\n\n`;
-            code += `function findInterior(search) {\n    const searchLower = search.toLowerCase();\n    return siteData.interiors.filter(int =>\n        int.name.includes(search)\n    );\n}\n\n`;
-            
-            // smartReply
-            code += `function smartReply(query) {\n    const q = query.toLowerCase().trim();\n    let response = [];\n    \n`;
-            code += `    const interiors = findInterior(q);\n    if (interiors.length > 0) {\n        response.push("🏠 **الانترو المطلوب:**");\n        interiors.forEach(int => {\n            response.push(\`<div style="text-align:center;margin:10px 0;">\`);\n            response.push(\`<strong>\${int.name}</strong>\`);\n            response.push(\`<br><img src="\${int.image}" alt="\${int.name}" style="max-width:300px;border-radius:10px;margin:10px 0;border:1px solid #333;">\`);\n            response.push(\`<br><button class="copy-btn" onclick="copyText('\${int.name}')">📋 نسخ الاسم</button>\`);\n            response.push(\`</div>\`);\n        });\n        return response.join('');\n    }\n    \n`;
-            code += `    if (q.includes('قانون') || q.includes('قوانين') || q === 'قوانين') {\n        const rules = siteData.rules.slice(0, 10);\n        response.push("📜 **القوانين:**");\n        rules.forEach(rule => {\n            response.push(\`<div style="margin:5px 0;padding:8px;background:rgba(255,255,255,0.05);border-radius:6px;">\`);\n            response.push(\`<strong>\${rule.english}</strong> = \${rule.arabic}\`);\n            response.push(\` <button class="copy-btn" onclick="copyText('\${rule.english} - \${rule.arabic}')">📋</button>\`);\n            response.push(\`</div>\`);\n        });\n        response.push(\`... وعرض \${siteData.rules.length} قانون كامل في صفحة القوانين\`);\n        return response.join('');\n    }\n    \n`;
-            code += `    const category = siteData.categories.find(c => q.includes(c.name) || c.name.includes(q));\n    if (category) {\n        const cmds = getCommandsByCategory(category.name);\n        response.push(\`📂 **قسم \${category.name} \${category.icon}** (\${cmds.length} أمر):\`);\n        cmds.slice(0, 15).forEach(cmd => {\n            response.push(\`<div style="margin:5px 0;padding:8px;background:rgba(255,255,255,0.05);border-radius:6px;">\`);\n            response.push(\`<code style="color:#ffaa66;direction:ltr;display:inline-block;">\${cmd.command}</code>\`);\n            response.push(\` = \${cmd.meaning}\`);\n            response.push(\` <button class="copy-btn" onclick="copyText('\${cmd.command}')">📋</button>\`);\n            response.push(\`</div>\`);\n        });\n        if (cmds.length > 15) response.push(\`... و \${cmds.length - 15} أمر إضافي\`);\n        return response.join('');\n    }\n    \n`;
-            code += `    const commands = findCommand(q);\n    if (commands.length > 0) {\n        response.push("🔍 **نتائج البحث:**");\n        commands.slice(0, 10).forEach(cmd => {\n            response.push(\`<div style="margin:5px 0;padding:8px;background:rgba(255,255,255,0.05);border-radius:6px;">\`);\n            response.push(\`<code style="color:#ffaa66;direction:ltr;display:inline-block;">\${cmd.command}</code>\`);\n            response.push(\` = \${cmd.meaning} (قسم: \${cmd.category})\`);\n            response.push(\` <button class="copy-btn" onclick="copyText('\${cmd.command}')">📋</button>\`);\n            response.push(\`</div>\`);\n        });\n        if (commands.length > 10) response.push(\`... و \${commands.length - 10} نتيجة إضافية\`);\n        return response.join('');\n    }\n    \n`;
-            code += `    return \`❌ **لم يتم العثور على نتائج**\\n\\n💡 جرب البحث عن:\\n• اسم أمر مثل <code>sellproperty</code>\\n• اسم قسم مثل <code>فاكشن</code>\\n• اسم انترو مثل <code>قصر</code>\\n• كلمة <code>قوانين</code>\`;\n}\n\n`;
-            
-            // copyText
-            code += `function copyText(text) {\n    navigator.clipboard.writeText(text).then(() => {\n        const btns = document.querySelectorAll('.copy-btn');\n        btns.forEach(btn => {\n            if (btn.textContent === '📋' || btn.textContent.includes('نسخ')) {\n                btn.textContent = '✅';\n                btn.classList.add('copied');\n                setTimeout(() => {\n                    btn.textContent = '📋';\n                    btn.classList.remove('copied');\n                }, 2000);\n            }\n        });\n    }).catch(() => {\n        const textarea = document.createElement('textarea');\n        textarea.value = text;\n        textarea.style.position = 'fixed';\n        textarea.style.left = '-9999px';\n        document.body.appendChild(textarea);\n        textarea.select();\n        document.execCommand('copy');\n        document.body.removeChild(textarea);\n        alert('✅ تم نسخ: ' + text);\n    });\n}\n`;
+            let code = `// ============================================
+// قاعدة بيانات الموقع - MTA San Andreas
+// ============================================
+
+const siteData = ${JSON.stringify(siteData, null, 4)};
+
+// ============================================
+// دوال تحميل وحفظ البيانات
+// ============================================
+
+function loadDataFromStorage() {
+    const saved = localStorage.getItem('mtaData');
+    if (saved) {
+        try {
+            const parsed = JSON.parse(saved);
+            Object.assign(siteData, parsed);
+            console.log('✅ تم تحميل البيانات من localStorage');
+        } catch(e) {
+            console.error('❌ خطأ في تحميل البيانات:', e);
+        }
+    }
+}
+
+function saveDataToStorage() {
+    localStorage.setItem('mtaData', JSON.stringify(siteData));
+    localStorage.setItem('mtaDataLastModified', new Date().toLocaleString('ar'));
+    console.log('✅ تم حفظ البيانات في localStorage');
+}
+
+function exportDataAsFile() {
+    const dataStr = JSON.stringify(siteData, null, 4);
+    const blob = new Blob([dataStr], { type: 'application/json' });
+    const url = URL.createObjectURL(blob);
+    const a = document.createElement('a');
+    a.href = url;
+    a.download = 'data.json';
+    a.click();
+    URL.revokeObjectURL(url);
+}
+
+// تحميل البيانات تلقائياً عند تحميل الصفحة
+loadDataFromStorage();
+
+// تصدير للاستخدام الخارجي
+if (typeof module !== 'undefined' && module.exports) {
+    module.exports = { siteData, loadDataFromStorage, saveDataToStorage, exportDataAsFile };
+}`;
             
             return code;
         }
@@ -1571,7 +1678,7 @@
                     if (data.commands) siteData.commands = data.commands;
                     if (data.interiors) siteData.interiors = data.interiors;
                     if (data.introCode) siteData.introCode = data.introCode;
-                    saveData();
+                    saveDataToStorage();
                     updateCounts();
                     showToast('success', 'تم الاستيراد', 'تم استيراد البيانات بنجاح');
                 } catch(err) {
@@ -1613,7 +1720,7 @@
                     showToast('success', 'تمت الإضافة', 'تمت إضافة الأمر بنجاح');
                 }
                 
-                saveData();
+                saveDataToStorage();
                 updateCounts();
                 renderCommands();
             }
@@ -1636,7 +1743,7 @@
                     showToast('success', 'تمت الإضافة', 'تمت إضافة القانون بنجاح');
                 }
                 
-                saveData();
+                saveDataToStorage();
                 updateCounts();
                 renderRules();
             }
@@ -1659,7 +1766,7 @@
                     showToast('success', 'تمت الإضافة', 'تمت إضافة الانترو بنجاح');
                 }
                 
-                saveData();
+                saveDataToStorage();
                 updateCounts();
                 renderInteriors();
             }
@@ -1679,18 +1786,18 @@
                     
                     // تحديث الأوامر التي تستخدم التصنيف القديم
                     if (oldName !== name) {
-                        siteData.commands.forEach(cmd => {
+                        (siteData.commands || []).forEach(cmd => {
                             if (cmd.category === oldName) cmd.category = name;
                         });
                     }
                     showToast('success', 'تم التعديل', 'تم تعديل التصنيف بنجاح');
                 } else {
-                    const newId = Math.max(0, ...siteData.categories.map(c => c.id)) + 1;
+                    const newId = Math.max(0, ...(siteData.categories || []).map(c => c.id)) + 1;
                     siteData.categories.push({ id: newId, name, icon });
                     showToast('success', 'تمت الإضافة', 'تمت إضافة التصنيف بنجاح');
                 }
                 
-                saveData();
+                saveDataToStorage();
                 updateCounts();
                 renderCategories();
             }
@@ -1711,7 +1818,7 @@
             if (!confirm(`هل تريد حذف ${names[type]}؟`)) return;
             
             siteData[type].splice(index, 1);
-            saveData();
+            saveDataToStorage();
             updateCounts();
             
             switch(type) {
@@ -1731,7 +1838,7 @@
                 const search = document.getElementById('searchCommands').value.toLowerCase().trim();
                 const category = document.getElementById('filterCommandCategory').value;
                 
-                let filtered = siteData.commands;
+                let filtered = siteData.commands || [];
                 if (category !== 'all') {
                     filtered = filtered.filter(c => c.category === category);
                 }
@@ -1745,7 +1852,7 @@
             }
             else if (type === 'rules') {
                 const search = document.getElementById('searchRules').value.toLowerCase().trim();
-                let filtered = siteData.rules;
+                let filtered = siteData.rules || [];
                 if (search) {
                     filtered = filtered.filter(r => 
                         r.english.toLowerCase().includes(search) ||
@@ -1756,7 +1863,7 @@
             }
             else if (type === 'interiors') {
                 const search = document.getElementById('searchInteriors').value.toLowerCase().trim();
-                let filtered = siteData.interiors;
+                let filtered = siteData.interiors || [];
                 if (search) {
                     filtered = filtered.filter(i => i.name.toLowerCase().includes(search));
                 }
@@ -1764,7 +1871,7 @@
             }
             else if (type === 'categories') {
                 const search = document.getElementById('searchCategories').value.toLowerCase().trim();
-                let filtered = siteData.categories;
+                let filtered = siteData.categories || [];
                 if (search) {
                     filtered = filtered.filter(c => c.name.toLowerCase().includes(search));
                 }
@@ -1830,6 +1937,20 @@
         document.addEventListener('keydown', (e) => {
             if (e.key === 'Escape') {
                 closeModal();
+            }
+        });
+
+        // تحميل البيانات من localStorage عند بدء التشغيل
+        window.addEventListener('DOMContentLoaded', () => {
+            const savedData = localStorage.getItem('mtaData');
+            if (savedData && typeof siteData !== 'undefined') {
+                try {
+                    const parsed = JSON.parse(savedData);
+                    Object.assign(siteData, parsed);
+                    console.log('✅ تم تحميل البيانات من localStorage');
+                } catch(e) {
+                    console.error('❌ خطأ في تحميل البيانات:', e);
+                }
             }
         });
     </script>
