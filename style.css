@@ -1,13 +1,8 @@
 /* ============================================
-   MTA Commands - تصميم احترافي
+   MTA Commands - CSS منظم
    ============================================ */
 
-* {
-  margin: 0;
-  padding: 0;
-  box-sizing: border-box;
-}
-
+/* ===== المتغيرات العامة ===== */
 :root {
   --primary: #00ff88;
   --primary-dark: #00cc6a;
@@ -20,6 +15,13 @@
   --border: rgba(0, 255, 136, 0.2);
 }
 
+/* ===== إعادة تعيين عامة ===== */
+* {
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box;
+}
+
 body {
   font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
   background: linear-gradient(135deg, #0a0e27 0%, #1a1a2e 100%);
@@ -29,10 +31,7 @@ body {
   line-height: 1.6;
 }
 
-/* ============================================
-   شريط التنقل
-   ============================================ */
-
+/* ===== شريط التنقل الرئيسي ===== */
 .navbar {
   background: rgba(10, 14, 39, 0.95);
   padding: 1rem 2rem;
@@ -82,10 +81,7 @@ body {
   cursor: pointer;
 }
 
-/* ============================================
-   المحتوى الرئيسي
-   ============================================ */
-
+/* ===== المحتوى الرئيسي ===== */
 #app-content {
   max-width: 1400px;
   margin: 2rem auto;
@@ -106,10 +102,7 @@ body {
   to { opacity: 1; transform: translateY(0); }
 }
 
-/* ============================================
-   العناوين
-   ============================================ */
-
+/* ===== العناوين ===== */
 h1, h2, h3 {
   color: var(--primary);
   margin-bottom: 1.5rem;
@@ -119,10 +112,7 @@ h1 { font-size: 2.5rem; }
 h2 { font-size: 2rem; }
 h3 { font-size: 1.5rem; }
 
-/* ============================================
-   البطاقات
-   ============================================ */
-
+/* ===== البطاقات العامة ===== */
 .card {
   background: var(--bg-card);
   border: 1px solid var(--border);
@@ -138,10 +128,7 @@ h3 { font-size: 1.5rem; }
   box-shadow: 0 10px 30px rgba(0, 255, 136, 0.2);
 }
 
-/* ============================================
-   الأزرار
-   ============================================ */
-
+/* ===== الأزرار ===== */
 .btn {
   background: var(--primary);
   color: var(--bg-dark);
@@ -175,10 +162,7 @@ h3 { font-size: 1.5rem; }
   font-size: 0.875rem;
 }
 
-/* ============================================
-   حقول الإدخال
-   ============================================ */
-
+/* ===== حقول الإدخال ===== */
 input, textarea, select {
   background: rgba(10, 14, 39, 0.8);
   border: 2px solid var(--border);
@@ -201,10 +185,7 @@ input::placeholder, textarea::placeholder {
   color: var(--text-secondary);
 }
 
-/* ============================================
-   الشات العائم
-   ============================================ */
-
+/* ===== الشات العائم ===== */
 #chat-toggle {
   position: fixed;
   bottom: 2rem;
@@ -303,10 +284,57 @@ input::placeholder, textarea::placeholder {
   margin-bottom: 0;
 }
 
-/* ============================================
-   قائمة الموبايل
-   ============================================ */
+/* ===== قائمة الأوامر ===== */
+.command-item {
+  background: rgba(26, 26, 46, 0.6);
+  padding: 1rem;
+  margin-bottom: 0.5rem;
+  border-radius: 8px;
+  border-right: 3px solid var(--primary);
+}
 
+.command-code {
+  font-family: 'Courier New', monospace;
+  background: rgba(0, 255, 136, 0.1);
+  padding: 0.25rem 0.5rem;
+  border-radius: 4px;
+  color: var(--primary);
+  font-weight: bold;
+}
+
+/* ===== شبكة الصور ===== */
+.image-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(250px, 1fr));
+  gap: 1.5rem;
+}
+
+.image-grid img {
+  width: 100%;
+  height: 200px;
+  object-fit: cover;
+  border-radius: 10px;
+  border: 2px solid var(--border);
+  transition: all 0.3s;
+}
+
+.image-grid img:hover {
+  border-color: var(--primary);
+  transform: scale(1.05);
+}
+
+/* ===== صندوق البحث ===== */
+.search-box {
+  position: relative;
+  margin-bottom: 2rem;
+}
+
+.search-box input {
+  padding-right: 3rem;
+  font-size: 1.1rem;
+}
+
+/* ===== الموبايل ===== */
 @media (max-width: 768px) {
   .nav-links {
     display: none;
@@ -339,30 +367,10 @@ input::placeholder, textarea::placeholder {
 }
 
 /* ============================================
-   قائمة الأوامر
+   لوحة الإدارة - أنماط منفصلة
    ============================================ */
 
-.command-item {
-  background: rgba(26, 26, 46, 0.6);
-  padding: 1rem;
-  margin-bottom: 0.5rem;
-  border-radius: 8px;
-  border-right: 3px solid var(--primary);
-}
-
-.command-code {
-  font-family: 'Courier New', monospace;
-  background: rgba(0, 255, 136, 0.1);
-  padding: 0.25rem 0.5rem;
-  border-radius: 4px;
-  color: var(--primary);
-  font-weight: bold;
-}
-
-/* ============================================
-   لوحة الإدارة - تصميم لوحة تحكم حقيقية
-   ============================================ */
-
+/* تسجيل الدخول */
 .admin-login {
   max-width: 400px;
   margin: 4rem auto;
@@ -373,6 +381,7 @@ input::placeholder, textarea::placeholder {
   border: 2px solid var(--border);
 }
 
+/* الشريط العلوي */
 .admin-topbar {
   display: flex;
   justify-content: space-between;
@@ -384,14 +393,14 @@ input::placeholder, textarea::placeholder {
   border: 1px solid var(--border);
 }
 
-/* ===== لوحة التحكم الحقيقية ===== */
+/* التخطيط الرئيسي */
 .admin-layout {
   display: flex;
   gap: 2rem;
   min-height: calc(100vh - 200px);
 }
 
-/* Sidebar - القائمة الجانبية */
+/* القائمة الجانبية */
 .admin-sidebar {
   width: 280px;
   flex-shrink: 0;
@@ -455,7 +464,7 @@ input::placeholder, textarea::placeholder {
   text-align: center;
 }
 
-/* Content Area - منطقة المحتوى */
+/* منطقة المحتوى */
 .admin-content {
   flex: 1;
   min-width: 0;
@@ -484,7 +493,7 @@ input::placeholder, textarea::placeholder {
   margin: 0;
 }
 
-/* Search */
+/* البحث المضمن */
 .search-box-inline {
   display: flex;
   align-items: center;
@@ -496,7 +505,7 @@ input::placeholder, textarea::placeholder {
   width: 300px;
 }
 
-/* Tabs */
+/* التبويبات */
 .tabs-container {
   display: flex;
   gap: 0.5rem;
@@ -531,7 +540,7 @@ input::placeholder, textarea::placeholder {
   color: var(--bg-dark);
 }
 
-/* Inline Forms */
+/* النماذج المضمنة */
 .inline-form {
   background: rgba(10, 14, 39, 0.5);
   padding: 1.5rem;
@@ -562,7 +571,7 @@ input::placeholder, textarea::placeholder {
   margin-bottom: 0;
 }
 
-/* Data Tables */
+/* جداول البيانات */
 .data-table {
   background: rgba(10, 14, 39, 0.3);
   border-radius: 10px;
@@ -596,7 +605,7 @@ input::placeholder, textarea::placeholder {
   background: rgba(0, 255, 136, 0.05);
 }
 
-/* Items List */
+/* قائمة العناصر */
 .items-list {
   margin-top: 1rem;
 }
@@ -627,7 +636,7 @@ input::placeholder, textarea::placeholder {
   flex: 1;
 }
 
-/* Section Blocks */
+/* أقسام الكتل */
 .section-block {
   background: rgba(10, 14, 39, 0.3);
   border-radius: 10px;
@@ -651,7 +660,7 @@ input::placeholder, textarea::placeholder {
   margin: 0;
 }
 
-/* Image Grid */
+/* شبكة صور الانترو */
 .image-grid-admin {
   display: grid;
   grid-template-columns: repeat(auto-fill, minmax(250px, 1fr));
@@ -694,7 +703,7 @@ input::placeholder, textarea::placeholder {
   word-break: break-all;
 }
 
-/* Tools Grid */
+/* شبكة الأدوات */
 .tools-grid {
   display: grid;
   grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
@@ -730,7 +739,7 @@ input::placeholder, textarea::placeholder {
   margin-bottom: 1.5rem;
 }
 
-/* Keyword Tags */
+/* وسوم الكلمات المفتاحية */
 .keyword-tag {
   background: rgba(0, 255, 136, 0.2);
   color: var(--primary);
@@ -742,14 +751,14 @@ input::placeholder, textarea::placeholder {
   margin: 0.25rem;
 }
 
-/* Empty State */
+/* الحالة الفارغة */
 .empty-state {
   text-align: center;
   padding: 3rem;
   color: var(--text-secondary);
 }
 
-/* Results Info */
+/* معلومات النتائج */
 .results-info {
   margin-top: 1.5rem;
   padding: 1rem;
@@ -760,7 +769,7 @@ input::placeholder, textarea::placeholder {
   font-weight: 600;
 }
 
-/* Info Box */
+/* صندوق المعلومات */
 .info-box {
   background: rgba(0, 212, 255, 0.1);
   border: 2px solid rgba(0, 212, 255, 0.3);
@@ -792,39 +801,7 @@ input::placeholder, textarea::placeholder {
   color: var(--secondary);
 }
 
-/* Images Grid */
-.image-grid {
-  display: grid;
-  grid-template-columns: repeat(auto-fill, minmax(250px, 1fr));
-  gap: 1.5rem;
-}
-
-.image-grid img {
-  width: 100%;
-  height: 200px;
-  object-fit: cover;
-  border-radius: 10px;
-  border: 2px solid var(--border);
-  transition: all 0.3s;
-}
-
-.image-grid img:hover {
-  border-color: var(--primary);
-  transform: scale(1.05);
-}
-
-/* Search Box */
-.search-box {
-  position: relative;
-  margin-bottom: 2rem;
-}
-
-.search-box input {
-  padding-right: 3rem;
-  font-size: 1.1rem;
-}
-
-/* Scrollbar */
+/* التمرير */
 ::-webkit-scrollbar {
   width: 10px;
 }
@@ -842,7 +819,7 @@ input::placeholder, textarea::placeholder {
   background: var(--primary-dark);
 }
 
-/* ===== Responsive - لوحة التحكم ===== */
+/* ===== Responsive للوحة الإدارة ===== */
 @media (max-width: 1024px) {
   .admin-layout {
     flex-direction: column;
@@ -862,6 +839,12 @@ input::placeholder, textarea::placeholder {
 }
 
 @media (max-width: 768px) {
+  .admin-topbar {
+    flex-direction: column;
+    gap: 1rem;
+    align-items: stretch;
+  }
+  
   .panel-header {
     flex-direction: column;
     align-items: stretch;
@@ -885,5 +868,10 @@ input::placeholder, textarea::placeholder {
   .table-row > div {
     width: 100% !important;
     margin-bottom: 0.5rem;
+  }
+  
+  .section-block-header {
+    flex-direction: column;
+    align-items: stretch;
   }
 }
