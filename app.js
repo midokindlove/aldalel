@@ -30,6 +30,10 @@ function initNavigation() {
   });
 }
 
+// ============================================
+// تعديل دالة loadPage مع تهيئة البحث الذكي
+// ============================================
+
 function loadPage(page) {
   currentPage = page;
   const app = document.getElementById('app');
@@ -37,6 +41,7 @@ function loadPage(page) {
   switch(page) {
     case 'home':
       app.innerHTML = renderHomePage();
+      setTimeout(() => initSmartSearch(), 50);
       break;
     case 'commands':
       app.innerHTML = renderCommandsPage();
@@ -71,7 +76,7 @@ function loadPage(page) {
 }
 
 // ============================================
-// الصفحة الرئيسية
+// الصفحة الرئيسية - مع مربع البحث الذكي
 // ============================================
 
 function renderHomePage() {
@@ -95,11 +100,127 @@ function renderHomePage() {
     <div class="hero-section">
       <h1>${data.welcomeMessage}</h1>
       <p>اكتشف جميع الأوامر والقوانين والانترو الخاصة بسيرفر MTA - سان أندرياس</p>
+      
+      <!-- مربع البحث الذكي -->
+      <div class="smart-search-box">
+        <input type="text" id="smart-search-input" placeholder="🔍 ابحث عن أي أمر، قانون، انترو..." autocomplete="off">
+        <div id="smart-search-results" class="smart-search-results"></div>
+      </div>
     </div>
     <div class="shortcuts-grid">
       ${shortcutsHtml}
     </div>
   `;
+}
+
+// ============================================
+// دالة تهيئة البحث الذكي
+// ============================================
+
+function initSmartSearch() {
+  const searchInput = document.getElementById('smart-search-input');
+  const resultsContainer = document.getElementById('smart-search-results');
+  
+  if (!searchInput || !resultsContainer) return;
+  
+  searchInput.addEventListener('input', function() {
+    const query = this.value.trim();
+    
+    if (query.length < 2) {
+      resultsContainer.innerHTML = '';
+      resultsContainer.style.display = 'none';
+      return;
+    }
+    
+    const results = dataManager.search(query);
+    
+    if (results.length === 0) {
+      resultsContainer.innerHTML = '<div class="search-no-results">لا توجد نتائج</div>';
+      resultsContainer.style.display = 'block';
+      return;
+    }
+    
+    // تجميع النتائج حسب النوع
+    const commands = results.filter(r => r.type === 'command').slice(0, 5);
+    const rules = results.filter(r => r.type === 'rule').slice(0, 5);
+    const intros = results.filter(r => r.type === 'intro').slice(0, 5);
+    
+    let html = '';
+    
+    // عرض الانترو
+    if (intros.length > 0) {
+      html += `<div class="search-section"><div class="search-section-title">🎬 الانترو</div>`;
+      intros.forEach(intro => {
+        html += `<div class="search-item" onclick="loadPage('intros')">
+          <div class="search-item-icon"></div>
+          <div class="search-item-content">
+            <div class="search-item-name">${intro.name}</div>
+            <div class="search-item-desc">${intro.caption}</div>
+          </div>
+        </div>`;
+      });
+      html += `</div>`;
+    }
+    
+    // عرض الأوامر
+    if (commands.length > 0) {
+      html += `<div class="search-section"><div class="search-section-title">⌨️ الأوامر</div>`;
+      commands.forEach(cmd => {
+        html += `<div class="search-item">
+          <div class="search-item-icon">⌨️</div>
+          <div class="search-item-content">
+            <div class="search-item-name"><code>${cmd.data.command}</code></div>
+            <div class="search-item-desc">${cmd.data.description}</div>
+          </div>
+        </div>`;
+      });
+      html += `</div>`;
+    }
+    
+    // عرض القوانين
+    if (rules.length > 0) {
+      html += `<div class="search-section"><div class="search-section-title">📜 القوانين</div>`;
+      rules.forEach(rule => {
+        html += `<div class="search-item">
+          <div class="search-item-icon">📜</div>
+          <div class="search-item-content">
+            <div class="search-item-desc">${rule.data}</div>
+          </div>
+        </div>`;
+      });
+      html += `</div>`;
+    }
+    
+    // زر عرض الكل
+    if (results.length > 15) {
+      html += `<div class="search-show-all" onclick="showAllResults('${query}')">عرض جميع النتائج (${results.length}) →</div>`;
+    }
+    
+    resultsContainer.innerHTML = html;
+    resultsContainer.style.display = 'block';
+  });
+  
+  // إغلاق النتائج عند النقر خارجها
+  document.addEventListener('click', function(e) {
+    if (!searchInput.contains(e.target) && !resultsContainer.contains(e.target)) {
+      resultsContainer.style.display = 'none';
+    }
+  });
+}
+
+// ============================================
+// دالة لعرض جميع النتائج في صفحة البحث
+// ============================================
+
+function showAllResults(query) {
+  loadPage('commands');
+  setTimeout(() => {
+    const searchInput = document.getElementById('command-search');
+    if (searchInput) {
+      searchInput.value = query;
+      searchCommands(query);
+    }
+  }, 100);
 }
 
 // ============================================
