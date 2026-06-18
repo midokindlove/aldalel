@@ -197,4 +197,112 @@ function renderIntrosPage() {
 function renderChatPage() {
   return `<div class="page active">
     <h1>🤖 الرد التلقائي</h1>
-    <p style="margin-bottom: 2rem; color: #b0b0b0;">اكتب سؤالك وسيرد عليك
+    <p style="margin-bottom: 2rem; color: #b0b0b0;">اكتب سؤالك وسيرد عليك المساعد الآلي</p>
+    <div class="card" style="height: 500px; display: flex; flex-direction: column;">
+      <div id="chat-page-messages" class="chat-messages" style="flex: 1; overflow-y: auto; margin-bottom: 1rem;">
+        <div class="chat-message bot">أهلاً! أنا المساعد الآلي، كيف يمكنني مساعدتك؟</div>
+      </div>
+      <div style="display: flex; gap: 0.5rem;">
+        <input type="text" id="chat-page-input" placeholder="اكتب سؤالك هنا..." style="flex: 1; margin-bottom: 0;">
+        <button class="btn" onclick="sendChatPageMessage()">إرسال</button>
+      </div>
+    </div>
+  </div>`;
+}
+
+function initChatPage() {
+  const input = document.getElementById('chat-page-input');
+  if (input) {
+    input.addEventListener('keypress', (e) => {
+      if (e.key === 'Enter') sendChatPageMessage();
+    });
+  }
+}
+
+function sendChatPageMessage() {
+  const input = document.getElementById('chat-page-input');
+  if (!input) return;
+  
+  const message = input.value.trim();
+  if (!message) return;
+  
+  addChatPageMessage(message, 'user');
+  input.value = '';
+  
+  setTimeout(() => {
+    const reply = dataManager.getAutoReply(message);
+    addChatPageMessage(reply, 'bot');
+  }, 500);
+}
+
+function addChatPageMessage(text, sender) {
+  const messagesContainer = document.getElementById('chat-page-messages');
+  if (!messagesContainer) return;
+  
+  const messageDiv = document.createElement('div');
+  messageDiv.className = `chat-message ${sender}`;
+  messageDiv.textContent = text;
+  messagesContainer.appendChild(messageDiv);
+  messagesContainer.scrollTop = messagesContainer.scrollHeight;
+}
+
+function initChat() {
+  const chatToggle = document.getElementById('chat-toggle');
+  const chatBox = document.getElementById('chat-box');
+  const chatClose = document.getElementById('chat-close');
+  const chatSend = document.getElementById('chat-send');
+  const chatInput = document.getElementById('chat-input-field');
+  
+  chatToggle.addEventListener('click', () => {
+    chatBox.classList.toggle('hidden');
+    if (!chatBox.classList.contains('hidden')) {
+      const messagesContainer = document.getElementById('chat-messages');
+      if (messagesContainer.children.length === 0) {
+        addChatMessage('أهلاً! أنا المساعد الآلي، كيف يمكنني مساعدتك؟', 'bot');
+      }
+    }
+  });
+  
+  chatClose.addEventListener('click', () => {
+    chatBox.classList.add('hidden');
+  });
+  
+  chatSend.addEventListener('click', sendChatMessage);
+  
+  chatInput.addEventListener('keypress', (e) => {
+    if (e.key === 'Enter') sendChatMessage();
+  });
+}
+
+function sendChatMessage() {
+  const input = document.getElementById('chat-input-field');
+  const message = input.value.trim();
+  
+  if (!message) return;
+  
+  addChatMessage(message, 'user');
+  input.value = '';
+  
+  setTimeout(() => {
+    const reply = dataManager.getAutoReply(message);
+    addChatMessage(reply, 'bot');
+  }, 500);
+}
+
+function addChatMessage(text, sender) {
+  const messagesContainer = document.getElementById('chat-messages');
+  const messageDiv = document.createElement('div');
+  messageDiv.className = `chat-message ${sender}`;
+  messageDiv.textContent = text;
+  messagesContainer.appendChild(messageDiv);
+  messagesContainer.scrollTop = messagesContainer.scrollHeight;
+}
+
+function initMenuToggle() {
+  const menuToggle = document.querySelector('.menu-toggle');
+  const navLinks = document.querySelector('.nav-links');
+  
+  menuToggle.addEventListener('click', () => {
+    navLinks.classList.toggle('active');
+  });
+}
