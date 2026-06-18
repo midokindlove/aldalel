@@ -1,11 +1,12 @@
 // ============================================
 // لوحة الإدارة - MTA Commands
-// نظام Tabs حقيقي - قسم واحد في كل مرة
 // ============================================
 
 let adminCurrentSection = 'home';
 let adminCurrentTab = 'all';
 let adminSearchQuery = '';
+const ADMIN_PASSWORD = '00000';
+let isAdminLoggedIn = false;
 
 // ============================================
 // صفحة الإدارة الرئيسية
@@ -65,7 +66,7 @@ function logoutAdmin() {
 }
 
 // ============================================
-// لوحة التحكم - Layout حقيقي
+// لوحة التحكم
 // ============================================
 
 function renderAdminDashboard() {
@@ -80,7 +81,6 @@ function renderAdminDashboard() {
       </div>
       
       <div class="admin-layout">
-        <!-- Sidebar -->
         <aside class="admin-sidebar">
           <div class="sidebar-title">الأقسام</div>
           <button class="sidebar-btn ${adminCurrentSection === 'home' ? 'active' : ''}" onclick="switchAdminSection('home')">
@@ -96,7 +96,7 @@ function renderAdminDashboard() {
             <span>الأوامر</span>
           </button>
           <button class="sidebar-btn ${adminCurrentSection === 'intros' ? 'active' : ''}" onclick="switchAdminSection('intros')">
-            <span class="sidebar-icon">🎬</span>
+            <span class="sidebar-icon"></span>
             <span>الانترو</span>
           </button>
           <button class="sidebar-btn ${adminCurrentSection === 'autoreplies' ? 'active' : ''}" onclick="switchAdminSection('autoreplies')">
@@ -109,7 +109,6 @@ function renderAdminDashboard() {
           </button>
         </aside>
         
-        <!-- Content Area -->
         <main class="admin-content" id="admin-section-content">
           ${renderAdminSection(adminCurrentSection)}
         </main>
@@ -118,17 +117,15 @@ function renderAdminDashboard() {
   `;
 }
 
-// ============================================
-// التبديل بين الأقسام - يعرض قسم واحد فقط
-// ============================================
-
 function switchAdminSection(section) {
   adminCurrentSection = section;
   adminCurrentTab = 'all';
   adminSearchQuery = '';
   
   const content = document.getElementById('admin-section-content');
-  content.innerHTML = renderAdminSection(section);
+  if (content) {
+    content.innerHTML = renderAdminSection(section);
+  }
   
   document.querySelectorAll('.sidebar-btn').forEach(btn => btn.classList.remove('active'));
   const activeBtn = document.querySelector(`.sidebar-btn[onclick="switchAdminSection('${section}')"]`);
@@ -146,10 +143,6 @@ function renderAdminSection(section) {
     default: return '<p>قسم غير موجود</p>';
   }
 }
-
-// ============================================
-// التبويب الداخلي
-// ============================================
 
 function switchTab(tab) {
   adminCurrentTab = tab;
@@ -188,7 +181,7 @@ function renderAdminHomeSection() {
       <div class="inline-form">
         <h3>➕ إضافة اختصار جديد</h3>
         <div class="form-row">
-          <input type="text" id="shortcut-icon" placeholder="الأيقونة 🎮" style="width: 100px;">
+          <input type="text" id="shortcut-icon" placeholder="الأيقونة " style="width: 100px;">
           <input type="text" id="shortcut-title" placeholder="العنوان" style="flex: 1;">
           <input type="text" id="shortcut-url" placeholder="الرابط أو الصفحة" style="flex: 1;">
           <button class="btn" onclick="addShortcut()">إضافة</button>
@@ -438,7 +431,7 @@ function renderAdminCommandsSection() {
                   <div style="flex: 2; color: #b0b0b0;">${cmd.description}</div>
                   <div style="width: 120px; display: flex; gap: 0.25rem;">
                     <button class="btn btn-sm" onclick="showEditCommand('${section.id}', ${origIdx})">✏️</button>
-                    <button class="btn btn-danger btn-sm" onclick="deleteCommand('${section.id}', ${origIdx})">🗑️</button>
+                    <button class="btn btn-danger btn-sm" onclick="deleteCommand('${section.id}', ${origIdx})">️</button>
                   </div>
                 </div>
               `;
@@ -524,7 +517,7 @@ function renderAdminIntrosSection() {
     <div class="admin-panel">
       <div class="panel-header">
         <h2>🎬 إدارة الانترو</h2>
-        <input type="text" placeholder="🔍 بحث..." value="${adminSearchQuery}" oninput="searchInSection(this.value)" style="width: 250px; margin: 0;">
+        <input type="text" placeholder=" بحث..." value="${adminSearchQuery}" oninput="searchInSection(this.value)" style="width: 250px; margin: 0;">
       </div>
       
       <div class="inline-form">
@@ -597,7 +590,7 @@ function renderAdminAutorepliesSection() {
       </div>
       
       <div class="inline-form">
-        <h3>➕ إضافة رد تلقائي</h3>
+        <h3> إضافة رد تلقائي</h3>
         <div class="form-row">
           <input type="text" id="autoreply-keywords" placeholder="الكلمات (مفصولة بفاصلة)" style="flex: 1;">
         </div>
@@ -690,7 +683,7 @@ function renderAdminToolsSection() {
       </div>
       
       <div class="info-box">
-        <h3>ℹ️ ملاحظات</h3>
+        <h3>️ ملاحظات</h3>
         <ul>
           <li>التعديلات تُحفظ تلقائياً في المتصفح (localStorage)</li>
           <li>قم بتصدير البيانات بشكل دوري كاحتياط</li>
