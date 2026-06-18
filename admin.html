@@ -7,7 +7,6 @@
 <link href="https://fonts.googleapis.com/css2?family=Cairo:wght@400;600;700;900&display=swap" rel="stylesheet">
 <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
 <style>
-/* ===== المتغيرات ===== */
 :root {
     --primary: #6366f1;
     --primary-dark: #4f46e5;
@@ -18,6 +17,7 @@
     --info: #3b82f6;
     --purple: #a855f7;
     --pink: #ec4899;
+    --cyan: #06b6d4;
     --bg-main: #0f172a;
     --bg-sidebar: #1e293b;
     --bg-card: #1e293b;
@@ -42,13 +42,11 @@ body {
     overflow-x: hidden;
 }
 
-/* ===== Scrollbar ===== */
 ::-webkit-scrollbar { width: 8px; height: 8px; }
 ::-webkit-scrollbar-track { background: var(--bg-main); }
 ::-webkit-scrollbar-thumb { background: var(--primary); border-radius: 10px; }
 ::-webkit-scrollbar-thumb:hover { background: var(--primary-dark); }
 
-/* ===== Layout ===== */
 .app { display: flex; min-height: 100vh; }
 
 /* ===== Sidebar ===== */
@@ -142,17 +140,6 @@ body {
 }
 
 .nav-item i { width: 20px; text-align: center; font-size: 15px; }
-
-.nav-item .badge {
-    margin-right: auto;
-    background: rgba(255,255,255,0.2);
-    padding: 2px 8px;
-    border-radius: 10px;
-    font-size: 11px;
-    font-weight: 700;
-}
-
-.nav-item.active .badge { background: rgba(255,255,255,0.3); }
 
 .sidebar-footer {
     padding: 16px;
@@ -273,6 +260,47 @@ body {
 .btn-sm { padding: 6px 12px; font-size: 12px; }
 .btn-icon { width: 36px; height: 36px; padding: 0; justify-content: center; }
 
+/* ===== Breadcrumb ===== */
+.breadcrumb {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    padding: 12px 18px;
+    background: var(--bg-card);
+    border: 1px solid var(--border);
+    border-radius: var(--radius);
+    margin-bottom: 20px;
+    flex-wrap: wrap;
+    font-size: 14px;
+}
+
+.breadcrumb-item {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    color: var(--text-muted);
+    cursor: pointer;
+    transition: var(--transition);
+    padding: 4px 10px;
+    border-radius: 6px;
+}
+
+.breadcrumb-item:hover {
+    color: var(--primary);
+    background: var(--bg-card-hover);
+}
+
+.breadcrumb-item.active {
+    color: var(--text);
+    font-weight: 700;
+    cursor: default;
+    background: transparent;
+}
+
+.breadcrumb-item.active:hover { background: transparent; }
+
+.breadcrumb-sep { color: var(--text-dim); font-size: 12px; }
+
 /* ===== Pages ===== */
 .page { display: none; animation: fadeIn 0.4s ease; }
 .page.active { display: block; }
@@ -345,18 +373,6 @@ body {
 
 .stat-card .label { font-size: 13px; color: var(--text-muted); font-weight: 600; }
 
-.stat-card .change {
-    position: absolute;
-    top: 20px;
-    left: 20px;
-    font-size: 11px;
-    padding: 3px 8px;
-    border-radius: 20px;
-    background: rgba(16,185,129,0.15);
-    color: var(--success);
-    font-weight: 700;
-}
-
 /* ===== Cards ===== */
 .card {
     background: var(--bg-card);
@@ -395,42 +411,231 @@ body {
     color: white;
 }
 
-/* ===== Forms ===== */
-.form-grid {
+/* ===== Pages Grid (Level 1) ===== */
+.pages-grid {
     display: grid;
-    grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
-    gap: 14px;
-    margin-bottom: 16px;
+    grid-template-columns: repeat(auto-fill, minmax(260px, 1fr));
+    gap: 16px;
 }
 
-.form-group { display: flex; flex-direction: column; gap: 6px; }
-
-.form-group label {
-    font-size: 12px;
-    font-weight: 700;
-    color: var(--text-muted);
-}
-
-.form-control {
-    padding: 10px 14px;
+.page-card {
+    background: var(--bg-card);
     border: 1px solid var(--border);
+    border-radius: var(--radius);
+    padding: 20px;
+    cursor: pointer;
+    transition: var(--transition);
+    position: relative;
+    overflow: hidden;
+}
+
+.page-card::before {
+    content: '';
+    position: absolute;
+    top: 0;
+    right: 0;
+    width: 100%;
+    height: 4px;
+    background: linear-gradient(90deg, var(--primary), var(--purple));
+    transform: scaleX(0);
+    transform-origin: right;
+    transition: transform 0.3s ease;
+}
+
+.page-card:hover {
+    transform: translateY(-6px);
+    border-color: var(--primary);
+    box-shadow: var(--shadow);
+}
+
+.page-card:hover::before { transform: scaleX(1); }
+
+.page-card .page-icon {
+    width: 56px;
+    height: 56px;
+    background: linear-gradient(135deg, var(--primary), var(--purple));
+    border-radius: 14px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 26px;
+    color: white;
+    margin-bottom: 14px;
+}
+
+.page-card .page-name {
+    font-size: 17px;
+    font-weight: 700;
+    margin-bottom: 4px;
+}
+
+.page-card .page-link {
+    font-size: 12px;
+    color: var(--text-muted);
+    font-family: 'Courier New', monospace;
+    direction: ltr;
+    text-align: right;
+    margin-bottom: 12px;
+}
+
+.page-card .page-desc {
+    font-size: 12px;
+    color: var(--text-muted);
+    margin-bottom: 14px;
+    line-height: 1.6;
+}
+
+.page-card .page-stats {
+    display: flex;
+    gap: 8px;
+    flex-wrap: wrap;
+}
+
+.page-card .mini-stat {
     background: var(--bg-input);
-    color: var(--text);
-    border-radius: 10px;
-    font-family: inherit;
-    font-size: 13px;
-    outline: none;
+    padding: 4px 10px;
+    border-radius: 20px;
+    font-size: 11px;
+    color: var(--text-muted);
+    border: 1px solid var(--border);
+}
+
+.page-card .mini-stat strong { color: var(--primary); margin-left: 4px; }
+
+.page-card .page-actions {
+    position: absolute;
+    top: 12px;
+    left: 12px;
+    display: flex;
+    gap: 4px;
+    opacity: 0;
     transition: var(--transition);
 }
 
-.form-control:focus {
-    border-color: var(--primary);
-    box-shadow: 0 0 0 3px rgba(99,102,241,0.15);
+.page-card:hover .page-actions { opacity: 1; }
+
+/* ===== Categories Grid (Level 2) ===== */
+.categories-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(220px, 1fr));
+    gap: 14px;
 }
 
-textarea.form-control { min-height: 100px; resize: vertical; font-family: 'Courier New', monospace; direction: ltr; text-align: left; }
+.category-card {
+    background: var(--bg-card);
+    border: 1px solid var(--border);
+    border-radius: var(--radius);
+    padding: 18px;
+    cursor: pointer;
+    transition: var(--transition);
+    position: relative;
+    overflow: hidden;
+}
 
-select.form-control { cursor: pointer; }
+.category-card:hover {
+    transform: translateY(-4px);
+    border-color: var(--primary);
+    box-shadow: var(--shadow);
+}
+
+.category-card .cat-icon {
+    font-size: 40px;
+    margin-bottom: 10px;
+    display: block;
+}
+
+.category-card .cat-name {
+    font-size: 16px;
+    font-weight: 700;
+    margin-bottom: 6px;
+}
+
+.category-card .cat-desc {
+    font-size: 12px;
+    color: var(--text-muted);
+    margin-bottom: 12px;
+    line-height: 1.5;
+}
+
+.category-card .cat-counts {
+    display: flex;
+    gap: 6px;
+    flex-wrap: wrap;
+}
+
+.category-card .count-badge {
+    background: var(--bg-input);
+    padding: 3px 8px;
+    border-radius: 15px;
+    font-size: 11px;
+    color: var(--text-muted);
+    border: 1px solid var(--border);
+    display: flex;
+    align-items: center;
+    gap: 4px;
+}
+
+.category-card .count-badge strong { color: var(--primary); }
+
+.category-card .cat-actions {
+    position: absolute;
+    top: 10px;
+    left: 10px;
+    display: flex;
+    gap: 4px;
+    opacity: 0;
+    transition: var(--transition);
+}
+
+.category-card:hover .cat-actions { opacity: 1; }
+
+/* ===== Content Tabs (Level 3) ===== */
+.content-tabs {
+    display: flex;
+    gap: 4px;
+    background: var(--bg-card);
+    border: 1px solid var(--border);
+    border-radius: var(--radius);
+    padding: 6px;
+    margin-bottom: 16px;
+    flex-wrap: wrap;
+}
+
+.content-tab {
+    padding: 10px 18px;
+    border: none;
+    border-radius: 8px;
+    background: transparent;
+    color: var(--text-muted);
+    cursor: pointer;
+    transition: var(--transition);
+    font-size: 13px;
+    font-weight: 600;
+    display: flex;
+    align-items: center;
+    gap: 6px;
+    font-family: inherit;
+}
+
+.content-tab:hover { background: var(--bg-card-hover); color: var(--text); }
+
+.content-tab.active {
+    background: linear-gradient(135deg, var(--primary), var(--primary-dark));
+    color: white;
+}
+
+.content-tab .tab-count {
+    background: rgba(255,255,255,0.2);
+    padding: 2px 8px;
+    border-radius: 10px;
+    font-size: 11px;
+    font-weight: 700;
+}
+
+.content-tab.active .tab-count { background: rgba(255,255,255,0.3); }
+
+.content-panel { display: none; animation: fadeIn 0.3s ease; }
+.content-panel.active { display: block; }
 
 /* ===== Table ===== */
 .table-wrapper { overflow-x: auto; border-radius: 10px; border: 1px solid var(--border); }
@@ -485,6 +690,41 @@ table tbody tr:last-child td { border-bottom: none; }
 }
 
 .action-btns { display: flex; gap: 6px; }
+
+/* ===== Forms ===== */
+.form-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+    gap: 14px;
+    margin-bottom: 16px;
+}
+
+.form-group { display: flex; flex-direction: column; gap: 6px; }
+
+.form-group label {
+    font-size: 12px;
+    font-weight: 700;
+    color: var(--text-muted);
+}
+
+.form-control {
+    padding: 10px 14px;
+    border: 1px solid var(--border);
+    background: var(--bg-input);
+    color: var(--text);
+    border-radius: 10px;
+    font-family: inherit;
+    font-size: 13px;
+    outline: none;
+    transition: var(--transition);
+}
+
+.form-control:focus {
+    border-color: var(--primary);
+    box-shadow: 0 0 0 3px rgba(99,102,241,0.15);
+}
+
+textarea.form-control { min-height: 100px; resize: vertical; font-family: 'Courier New', monospace; direction: ltr; text-align: left; }
 
 /* ===== Empty State ===== */
 .empty-state {
@@ -750,7 +990,7 @@ table tbody tr:last-child td { border-bottom: none; }
 
 .quick-action span { font-size: 13px; font-weight: 700; }
 
-/* ===== Recent Activity ===== */
+/* ===== Activity ===== */
 .activity-list { display: flex; flex-direction: column; gap: 10px; }
 
 .activity-item {
@@ -782,6 +1022,34 @@ table tbody tr:last-child td { border-bottom: none; }
 .activity-title { font-size: 13px; font-weight: 600; }
 .activity-time { font-size: 11px; color: var(--text-muted); margin-top: 2px; }
 
+/* ===== Filter Bar ===== */
+.filter-bar {
+    display: flex;
+    gap: 10px;
+    margin-bottom: 16px;
+    flex-wrap: wrap;
+}
+
+.filter-bar input,
+.filter-bar select {
+    padding: 10px 14px;
+    border: 1px solid var(--border);
+    background: var(--bg-input);
+    color: var(--text);
+    border-radius: 10px;
+    font-family: inherit;
+    font-size: 13px;
+    outline: none;
+    transition: var(--transition);
+    flex: 1;
+    min-width: 180px;
+}
+
+.filter-bar input:focus,
+.filter-bar select:focus {
+    border-color: var(--primary);
+}
+
 /* ===== Responsive ===== */
 @media (max-width: 1024px) {
     .sidebar { transform: translateX(100%); }
@@ -798,6 +1066,8 @@ table tbody tr:last-child td { border-bottom: none; }
     .stats-grid { grid-template-columns: repeat(2, 1fr); }
     .stat-card .value { font-size: 24px; }
     .pin-input { width: 50px; height: 60px; font-size: 22px; }
+    .pages-grid, .categories-grid { grid-template-columns: 1fr; }
+    .content-tab { padding: 8px 12px; font-size: 12px; }
 }
 </style>
 </head>
@@ -848,39 +1118,9 @@ table tbody tr:last-child td { border-bottom: none; }
                     <i class="fas fa-chart-line"></i>
                     <span>لوحة المعلومات</span>
                 </button>
-            </div>
-            
-            <div class="nav-section">
-                <div class="nav-section-title">إدارة المحتوى</div>
-                <button class="nav-item" data-page="pages">
-                    <i class="fas fa-file-lines"></i>
-                    <span>الصفحات</span>
-                    <span class="badge" id="badgePages">0</span>
-                </button>
-                <button class="nav-item" data-page="categories">
-                    <i class="fas fa-folder"></i>
-                    <span>الأقسام</span>
-                    <span class="badge" id="badgeCategories">0</span>
-                </button>
-                <button class="nav-item" data-page="commands">
-                    <i class="fas fa-terminal"></i>
-                    <span>الأوامر</span>
-                    <span class="badge" id="badgeCommands">0</span>
-                </button>
-                <button class="nav-item" data-page="rules">
-                    <i class="fas fa-scale-balanced"></i>
-                    <span>القوانين</span>
-                    <span class="badge" id="badgeRules">0</span>
-                </button>
-                <button class="nav-item" data-page="interiors">
-                    <i class="fas fa-house"></i>
-                    <span>الانترو</span>
-                    <span class="badge" id="badgeInteriors">0</span>
-                </button>
-                <button class="nav-item" data-page="codes">
-                    <i class="fas fa-code"></i>
-                    <span>الأكواد</span>
-                    <span class="badge" id="badgeCodes">0</span>
+                <button class="nav-item" data-page="explorer">
+                    <i class="fas fa-folder-tree"></i>
+                    <span>مستكشف المحتوى</span>
                 </button>
             </div>
             
@@ -926,7 +1166,7 @@ table tbody tr:last-child td { border-bottom: none; }
             <div class="topbar-actions">
                 <div class="search-box">
                     <i class="fas fa-search"></i>
-                    <input type="text" id="globalSearch" placeholder="بحث سريع..." oninput="globalSearchHandler()">
+                    <input type="text" id="globalSearch" placeholder="بحث سريع... (Ctrl+K)" oninput="globalSearchHandler()">
                 </div>
                 <button class="btn btn-ghost btn-icon" onclick="location.reload()" title="تحديث">
                     <i class="fas fa-rotate"></i>
@@ -937,41 +1177,35 @@ table tbody tr:last-child td { border-bottom: none; }
         <!-- ===== Dashboard Page ===== -->
         <div class="page active" id="page-dashboard">
             <div class="stats-grid">
-                <div class="stat-card" style="--accent: var(--info);" onclick="navigateTo('pages')">
+                <div class="stat-card" style="--accent: var(--info);" onclick="navigateTo('explorer')">
                     <div class="icon"><i class="fas fa-file-lines"></i></div>
                     <div class="value" id="statPages">0</div>
                     <div class="label">الصفحات</div>
-                    <div class="change">📄</div>
                 </div>
-                <div class="stat-card" style="--accent: var(--primary);" onclick="navigateTo('categories')">
+                <div class="stat-card" style="--accent: var(--primary);" onclick="navigateTo('explorer')">
                     <div class="icon"><i class="fas fa-folder"></i></div>
                     <div class="value" id="statCategories">0</div>
                     <div class="label">الأقسام</div>
-                    <div class="change">📂</div>
                 </div>
-                <div class="stat-card" style="--accent: var(--warning);" onclick="navigateTo('commands')">
+                <div class="stat-card" style="--accent: var(--warning);" onclick="navigateTo('explorer')">
                     <div class="icon"><i class="fas fa-terminal"></i></div>
                     <div class="value" id="statCommands">0</div>
                     <div class="label">الأوامر</div>
-                    <div class="change">📋</div>
                 </div>
-                <div class="stat-card" style="--accent: var(--success);" onclick="navigateTo('rules')">
+                <div class="stat-card" style="--accent: var(--success);" onclick="navigateTo('explorer')">
                     <div class="icon"><i class="fas fa-scale-balanced"></i></div>
                     <div class="value" id="statRules">0</div>
                     <div class="label">القوانين</div>
-                    <div class="change">📜</div>
                 </div>
-                <div class="stat-card" style="--accent: var(--purple);" onclick="navigateTo('interiors')">
+                <div class="stat-card" style="--accent: var(--purple);" onclick="navigateTo('explorer')">
                     <div class="icon"><i class="fas fa-house"></i></div>
                     <div class="value" id="statInteriors">0</div>
                     <div class="label">الانترو</div>
-                    <div class="change">🏠</div>
                 </div>
-                <div class="stat-card" style="--accent: var(--pink);" onclick="navigateTo('codes')">
+                <div class="stat-card" style="--accent: var(--pink);" onclick="navigateTo('explorer')">
                     <div class="icon"><i class="fas fa-code"></i></div>
                     <div class="value" id="statCodes">0</div>
                     <div class="label">الأكواد</div>
-                    <div class="change">💻</div>
                 </div>
             </div>
             
@@ -980,28 +1214,16 @@ table tbody tr:last-child td { border-bottom: none; }
                     <div class="card-title"><i class="fas fa-bolt"></i> إجراءات سريعة</div>
                 </div>
                 <div class="quick-actions">
-                    <div class="quick-action" onclick="openModal('command')">
-                        <i class="fas fa-plus-circle" style="color: var(--warning);"></i>
-                        <span>إضافة أمر</span>
-                    </div>
-                    <div class="quick-action" onclick="openModal('rule')">
-                        <i class="fas fa-plus-circle" style="color: var(--success);"></i>
-                        <span>إضافة قانون</span>
-                    </div>
-                    <div class="quick-action" onclick="openModal('interior')">
-                        <i class="fas fa-plus-circle" style="color: var(--purple);"></i>
-                        <span>إضافة انترو</span>
-                    </div>
-                    <div class="quick-action" onclick="openModal('category')">
-                        <i class="fas fa-plus-circle" style="color: var(--primary);"></i>
-                        <span>إضافة قسم</span>
+                    <div class="quick-action" onclick="navigateTo('explorer'); setTimeout(()=>openPageModal(),100);">
+                        <i class="fas fa-plus-circle" style="color: var(--info);"></i>
+                        <span>إضافة صفحة</span>
                     </div>
                     <div class="quick-action" onclick="exportAllData()">
-                        <i class="fas fa-download" style="color: var(--info);"></i>
+                        <i class="fas fa-download" style="color: var(--success);"></i>
                         <span>تصدير البيانات</span>
                     </div>
                     <div class="quick-action" onclick="document.getElementById('importFile').click()">
-                        <i class="fas fa-upload" style="color: var(--pink);"></i>
+                        <i class="fas fa-upload" style="color: var(--purple);"></i>
                         <span>استيراد البيانات</span>
                     </div>
                 </div>
@@ -1016,171 +1238,149 @@ table tbody tr:last-child td { border-bottom: none; }
             </div>
         </div>
         
-        <!-- ===== Pages Page ===== -->
-        <div class="page" id="page-pages">
-            <div class="card">
-                <div class="card-header">
-                    <div class="card-title"><i class="fas fa-file-lines"></i> إدارة الصفحات</div>
-                    <button class="btn btn-primary" onclick="openModal('page')">
-                        <i class="fas fa-plus"></i> إضافة صفحة
-                    </button>
-                </div>
-                <div class="table-wrapper">
-                    <table>
-                        <thead>
-                            <tr>
-                                <th>#</th>
-                                <th>اسم الصفحة</th>
-                                <th>الرابط</th>
-                                <th>الوصف</th>
-                                <th>الأقسام</th>
-                                <th>الإجراءات</th>
-                            </tr>
-                        </thead>
-                        <tbody id="pagesTable"></tbody>
-                    </table>
-                </div>
-            </div>
-        </div>
-        
-        <!-- ===== Categories Page ===== -->
-        <div class="page" id="page-categories">
-            <div class="card">
-                <div class="card-header">
-                    <div class="card-title"><i class="fas fa-folder"></i> إدارة الأقسام</div>
-                    <button class="btn btn-primary" onclick="openModal('category')">
-                        <i class="fas fa-plus"></i> إضافة قسم
-                    </button>
-                </div>
-                <div class="table-wrapper">
-                    <table>
-                        <thead>
-                            <tr>
-                                <th>#</th>
-                                <th>الأيقونة</th>
-                                <th>اسم القسم</th>
-                                <th>الصفحة</th>
-                                <th>المحتوى</th>
-                                <th>الإجراءات</th>
-                            </tr>
-                        </thead>
-                        <tbody id="categoriesTable"></tbody>
-                    </table>
-                </div>
-            </div>
-        </div>
-        
-        <!-- ===== Commands Page ===== -->
-        <div class="page" id="page-commands">
-            <div class="card">
-                <div class="card-header">
-                    <div class="card-title"><i class="fas fa-terminal"></i> إدارة الأوامر</div>
-                    <button class="btn btn-primary" onclick="openModal('command')">
-                        <i class="fas fa-plus"></i> إضافة أمر
-                    </button>
-                </div>
-                <div class="form-grid" style="margin-bottom: 16px;">
-                    <input type="text" class="form-control" id="searchCommands" placeholder="🔍 بحث في الأوامر..." oninput="renderCommands()">
-                    <select class="form-control" id="filterCommandCategory" onchange="renderCommands()">
-                        <option value="">📂 جميع الأقسام</option>
-                    </select>
-                </div>
-                <div class="table-wrapper">
-                    <table>
-                        <thead>
-                            <tr>
-                                <th>#</th>
-                                <th>الأمر</th>
-                                <th>المعنى</th>
-                                <th>القسم</th>
-                                <th>الإجراءات</th>
-                            </tr>
-                        </thead>
-                        <tbody id="commandsTable"></tbody>
-                    </table>
-                </div>
-            </div>
-        </div>
-        
-        <!-- ===== Rules Page ===== -->
-        <div class="page" id="page-rules">
-            <div class="card">
-                <div class="card-header">
-                    <div class="card-title"><i class="fas fa-scale-balanced"></i> إدارة القوانين</div>
-                    <button class="btn btn-primary" onclick="openModal('rule')">
-                        <i class="fas fa-plus"></i> إضافة قانون
-                    </button>
-                </div>
-                <div class="form-grid" style="margin-bottom: 16px;">
-                    <input type="text" class="form-control" id="searchRules" placeholder="🔍 بحث في القوانين..." oninput="renderRules()">
-                </div>
-                <div class="table-wrapper">
-                    <table>
-                        <thead>
-                            <tr>
-                                <th>#</th>
-                                <th>القانون (EN)</th>
-                                <th>المعنى (AR)</th>
-                                <th>الإجراءات</th>
-                            </tr>
-                        </thead>
-                        <tbody id="rulesTable"></tbody>
-                    </table>
-                </div>
-            </div>
-        </div>
-        
-        <!-- ===== Interiors Page ===== -->
-        <div class="page" id="page-interiors">
-            <div class="card">
-                <div class="card-header">
-                    <div class="card-title"><i class="fas fa-house"></i> إدارة الانترو</div>
-                    <button class="btn btn-primary" onclick="openModal('interior')">
-                        <i class="fas fa-plus"></i> إضافة انترو
-                    </button>
-                </div>
-                <div class="form-grid" style="margin-bottom: 16px;">
-                    <input type="text" class="form-control" id="searchInteriors" placeholder="🔍 بحث في الانترو..." oninput="renderInteriors()">
-                </div>
-                <div class="table-wrapper">
-                    <table>
-                        <thead>
-                            <tr>
-                                <th>#</th>
-                                <th>الصورة</th>
-                                <th>الاسم</th>
-                                <th>الرابط</th>
-                                <th>الإجراءات</th>
-                            </tr>
-                        </thead>
-                        <tbody id="interiorsTable"></tbody>
-                    </table>
-                </div>
-            </div>
-        </div>
-        
-        <!-- ===== Codes Page ===== -->
-        <div class="page" id="page-codes">
-            <div class="card">
-                <div class="card-header">
-                    <div class="card-title"><i class="fas fa-code"></i> إدارة الأكواد</div>
-                    <div style="display: flex; gap: 8px;">
-                        <button class="btn btn-primary" onclick="openModal('code')">
-                            <i class="fas fa-plus"></i> إضافة كود
+        <!-- ===== Explorer Page (المستكشف الهرمي) ===== -->
+        <div class="page" id="page-explorer">
+            <!-- Breadcrumb -->
+            <div class="breadcrumb" id="breadcrumb"></div>
+            
+            <!-- Level 1: Pages -->
+            <div id="level-pages">
+                <div class="card">
+                    <div class="card-header">
+                        <div class="card-title"><i class="fas fa-file-lines"></i> جميع الصفحات</div>
+                        <button class="btn btn-primary" onclick="openPageModal()">
+                            <i class="fas fa-plus"></i> إضافة صفحة
                         </button>
                     </div>
+                    <div class="pages-grid" id="pagesGrid"></div>
                 </div>
-                <div class="form-grid" style="margin-bottom: 16px;">
-                    <input type="text" class="form-control" id="searchCodes" placeholder="🔍 بحث في الأكواد..." oninput="renderCodes()">
-                    <select class="form-control" id="filterCodeType" onchange="renderCodes()">
-                        <option value="">📦 جميع الأنواع</option>
-                        <option value="interior">انترو</option>
-                        <option value="command">أمر</option>
-                        <option value="script">سكريبت</option>
-                        <option value="other">أخرى</option>
-                    </select>
+            </div>
+            
+            <!-- Level 2: Categories -->
+            <div id="level-categories" style="display:none;">
+                <div class="card">
+                    <div class="card-header">
+                        <div class="card-title" id="categoriesTitle"><i class="fas fa-folder"></i> أقسام الصفحة</div>
+                        <button class="btn btn-primary" onclick="openCategoryModal()">
+                            <i class="fas fa-plus"></i> إضافة قسم
+                        </button>
+                    </div>
+                    <div class="categories-grid" id="categoriesGrid"></div>
                 </div>
-                <div id="codesList"></div>
+            </div>
+            
+            <!-- Level 3: Content -->
+            <div id="level-content" style="display:none;">
+                <div class="card">
+                    <div class="card-header">
+                        <div class="card-title" id="contentTitle"><i class="fas fa-database"></i> محتوى القسم</div>
+                        <div style="display: flex; gap: 6px;">
+                            <button class="btn btn-sm btn-ghost" onclick="openCategoryModal(currentCategoryId, true)">
+                                <i class="fas fa-pen"></i> تعديل القسم
+                            </button>
+                        </div>
+                    </div>
+                    
+                    <!-- Content Tabs -->
+                    <div class="content-tabs">
+                        <button class="content-tab active" data-tab="commands" onclick="switchContentTab('commands')">
+                            <i class="fas fa-terminal"></i> الأوامر
+                            <span class="tab-count" id="countCommands">0</span>
+                        </button>
+                        <button class="content-tab" data-tab="rules" onclick="switchContentTab('rules')">
+                            <i class="fas fa-scale-balanced"></i> القوانين
+                            <span class="tab-count" id="countRules">0</span>
+                        </button>
+                        <button class="content-tab" data-tab="interiors" onclick="switchContentTab('interiors')">
+                            <i class="fas fa-house"></i> الانترو
+                            <span class="tab-count" id="countInteriors">0</span>
+                        </button>
+                        <button class="content-tab" data-tab="codes" onclick="switchContentTab('codes')">
+                            <i class="fas fa-code"></i> الأكواد
+                            <span class="tab-count" id="countCodes">0</span>
+                        </button>
+                    </div>
+                    
+                    <!-- Commands Panel -->
+                    <div class="content-panel active" id="panel-commands">
+                        <div class="filter-bar">
+                            <input type="text" id="searchCommands" placeholder="🔍 بحث في الأوامر..." oninput="renderContentCommands()">
+                            <button class="btn btn-success" onclick="openCommandModal()">
+                                <i class="fas fa-plus"></i> إضافة أمر
+                            </button>
+                        </div>
+                        <div class="table-wrapper">
+                            <table>
+                                <thead>
+                                    <tr>
+                                        <th>#</th>
+                                        <th>الأمر</th>
+                                        <th>المعنى</th>
+                                        <th>الإجراءات</th>
+                                    </tr>
+                                </thead>
+                                <tbody id="commandsTable"></tbody>
+                            </table>
+                        </div>
+                    </div>
+                    
+                    <!-- Rules Panel -->
+                    <div class="content-panel" id="panel-rules">
+                        <div class="filter-bar">
+                            <input type="text" id="searchRules" placeholder="🔍 بحث في القوانين..." oninput="renderContentRules()">
+                            <button class="btn btn-success" onclick="openRuleModal()">
+                                <i class="fas fa-plus"></i> إضافة قانون
+                            </button>
+                        </div>
+                        <div class="table-wrapper">
+                            <table>
+                                <thead>
+                                    <tr>
+                                        <th>#</th>
+                                        <th>القانون (EN)</th>
+                                        <th>المعنى (AR)</th>
+                                        <th>الإجراءات</th>
+                                    </tr>
+                                </thead>
+                                <tbody id="rulesTable"></tbody>
+                            </table>
+                        </div>
+                    </div>
+                    
+                    <!-- Interiors Panel -->
+                    <div class="content-panel" id="panel-interiors">
+                        <div class="filter-bar">
+                            <input type="text" id="searchInteriors" placeholder="🔍 بحث في الانترو..." oninput="renderContentInteriors()">
+                            <button class="btn btn-success" onclick="openInteriorModal()">
+                                <i class="fas fa-plus"></i> إضافة انترو
+                            </button>
+                        </div>
+                        <div class="table-wrapper">
+                            <table>
+                                <thead>
+                                    <tr>
+                                        <th>#</th>
+                                        <th>الصورة</th>
+                                        <th>الاسم</th>
+                                        <th>الإجراءات</th>
+                                    </tr>
+                                </thead>
+                                <tbody id="interiorsTable"></tbody>
+                            </table>
+                        </div>
+                    </div>
+                    
+                    <!-- Codes Panel -->
+                    <div class="content-panel" id="panel-codes">
+                        <div class="filter-bar">
+                            <input type="text" id="searchCodes" placeholder="🔍 بحث في الأكواد..." oninput="renderContentCodes()">
+                            <button class="btn btn-success" onclick="openCodeModal()">
+                                <i class="fas fa-plus"></i> إضافة كود
+                            </button>
+                        </div>
+                        <div id="codesList"></div>
+                    </div>
+                </div>
             </div>
         </div>
         
@@ -1201,14 +1401,6 @@ table tbody tr:last-child td { border-bottom: none; }
                     <div class="quick-action" onclick="document.getElementById('importFile2').click()">
                         <i class="fas fa-upload" style="color: var(--success);"></i>
                         <span>استيراد من ملف</span>
-                    </div>
-                    <div class="quick-action" onclick="exportByType('commands')">
-                        <i class="fas fa-file-code" style="color: var(--warning);"></i>
-                        <span>تصدير الأوامر فقط</span>
-                    </div>
-                    <div class="quick-action" onclick="exportByType('rules')">
-                        <i class="fas fa-file-lines" style="color: var(--success);"></i>
-                        <span>تصدير القوانين فقط</span>
                     </div>
                 </div>
                 <input type="file" id="importFile2" accept=".json" style="display:none;" onchange="importDataFile(event)">
@@ -1298,20 +1490,27 @@ table tbody tr:last-child td { border-bottom: none; }
 <script src="data.js"></script>
 <script>
 // ================================================================
-//  لوحة التحكم الاحترافية - MTA Guide
+//  لوحة التحكم الهرمية - MTA Guide
+//  النظام: صفحة → قسم → بيانات
 // ================================================================
 
 const SECRET_PIN = localStorage.getItem('admin_pin') || '0000';
 let currentModal = { type: null, editIndex: -1 };
 let activityLog = JSON.parse(localStorage.getItem('activity_log') || '[]');
 
+// ===== Explorer State =====
+let explorerLevel = 'pages'; // pages | categories | content
+let currentPageId = null;
+let currentCategoryId = null;
+let currentContentTab = 'commands';
+
 // ===== Default Pages =====
 const DEFAULT_PAGES = [
-    { id: 1, name: 'الرئيسية', link: 'index.html', desc: 'الصفحة الرئيسية مع البوت الذكي' },
-    { id: 2, name: 'الأوامر', link: 'commands.html', desc: 'جميع أوامر السيرفر' },
-    { id: 3, name: 'القوانين', link: 'rules.html', desc: 'قوانين السيرفر' },
-    { id: 4, name: 'الانترو', link: 'intro.html', desc: 'معرض الانترو' },
-    { id: 5, name: 'الإدارة', link: 'admin.html', desc: 'لوحة التحكم' }
+    { id: 1, name: 'الرئيسية', link: 'index.html', desc: 'الصفحة الرئيسية مع البوت الذكي', icon: '🏠' },
+    { id: 2, name: 'الأوامر', link: 'commands.html', desc: 'جميع أوامر السيرفر', icon: '📋' },
+    { id: 3, name: 'القوانين', link: 'rules.html', desc: 'قوانين السيرفر', icon: '📜' },
+    { id: 4, name: 'الانترو', link: 'intro.html', desc: 'معرض الانترو', icon: '🏠' },
+    { id: 5, name: 'الإدارة', link: 'admin.html', desc: 'لوحة التحكم', icon: '⚙️' }
 ];
 
 let pages = JSON.parse(localStorage.getItem('admin_pages') || 'null') || DEFAULT_PAGES;
@@ -1349,7 +1548,6 @@ function logout() {
     }
 }
 
-// ===== Check Session =====
 if (sessionStorage.getItem('admin_logged') === '1') {
     document.getElementById('loginScreen').classList.add('hidden');
     document.addEventListener('DOMContentLoaded', initApp);
@@ -1359,7 +1557,7 @@ if (sessionStorage.getItem('admin_logged') === '1') {
 function initApp() {
     setupNavigation();
     updateAllStats();
-    renderAll();
+    renderExplorer();
     loadSettings();
     renderActivity();
 }
@@ -1386,12 +1584,7 @@ function navigateTo(page) {
     
     const titles = {
         dashboard: { title: 'لوحة المعلومات', subtitle: 'نظرة عامة على بيانات الموقع', icon: 'fa-chart-line' },
-        pages: { title: 'الصفحات', subtitle: 'إدارة صفحات الموقع', icon: 'fa-file-lines' },
-        categories: { title: 'الأقسام', subtitle: 'إدارة أقسام المحتوى', icon: 'fa-folder' },
-        commands: { title: 'الأوامر', subtitle: 'إدارة أوامر السيرفر', icon: 'fa-terminal' },
-        rules: { title: 'القوانين', subtitle: 'إدارة قوانين السيرفر', icon: 'fa-scale-balanced' },
-        interiors: { title: 'الانترو', subtitle: 'إدارة معرض الانترو', icon: 'fa-house' },
-        codes: { title: 'الأكواد', subtitle: 'إدارة الأكواد البرمجية', icon: 'fa-code' },
+        explorer: { title: 'مستكشف المحتوى', subtitle: 'تصفح وإدارة المحتوى بشكل هرمي', icon: 'fa-folder-tree' },
         backup: { title: 'النسخ الاحتياطي', subtitle: 'تصدير واستيراد البيانات', icon: 'fa-database' },
         activity: { title: 'سجل النشاط', subtitle: 'تتبع جميع العمليات', icon: 'fa-clock-rotate-left' },
         settings: { title: 'الإعدادات', subtitle: 'إعدادات النظام', icon: 'fa-gear' }
@@ -1401,7 +1594,10 @@ function navigateTo(page) {
     document.getElementById('pageTitle').innerHTML = `<i class="fas ${t.icon}"></i> ${t.title}`;
     document.getElementById('pageSubtitle').textContent = t.subtitle;
     
-    // Close sidebar on mobile
+    if (page === 'explorer') {
+        renderExplorer();
+    }
+    
     if (window.innerWidth <= 1024) {
         document.getElementById('sidebar').classList.remove('open');
     }
@@ -1419,13 +1615,6 @@ function updateAllStats() {
     document.getElementById('statRules').textContent = siteData.rules.length;
     document.getElementById('statInteriors').textContent = siteData.interiors.length;
     document.getElementById('statCodes').textContent = getCodes().length;
-    
-    document.getElementById('badgePages').textContent = pages.length;
-    document.getElementById('badgeCategories').textContent = siteData.categories.length;
-    document.getElementById('badgeCommands').textContent = siteData.commands.length;
-    document.getElementById('badgeRules').textContent = siteData.rules.length;
-    document.getElementById('badgeInteriors').textContent = siteData.interiors.length;
-    document.getElementById('badgeCodes').textContent = getCodes().length;
 }
 
 // ===== Codes Storage =====
@@ -1437,102 +1626,227 @@ function saveCodes(codes) {
     localStorage.setItem('admin_codes', JSON.stringify(codes));
 }
 
-// ===== Render All =====
-function renderAll() {
-    renderPages();
-    renderCategories();
-    renderCommands();
-    renderRules();
-    renderInteriors();
-    renderCodes();
-    updateCategoryFilters();
+// =================================================================
+//  المستكشف الهرمي (Explorer)
+// =================================================================
+
+function renderExplorer() {
+    renderBreadcrumb();
+    
+    document.getElementById('level-pages').style.display = explorerLevel === 'pages' ? 'block' : 'none';
+    document.getElementById('level-categories').style.display = explorerLevel === 'categories' ? 'block' : 'none';
+    document.getElementById('level-content').style.display = explorerLevel === 'content' ? 'block' : 'none';
+    
+    if (explorerLevel === 'pages') renderPagesGrid();
+    else if (explorerLevel === 'categories') renderCategoriesGrid();
+    else if (explorerLevel === 'content') renderContentLevel();
 }
 
-// ===== Render Pages =====
-function renderPages() {
-    const tbody = document.getElementById('pagesTable');
+function renderBreadcrumb() {
+    const bc = document.getElementById('breadcrumb');
+    let html = '';
+    
+    // Always: Home (Pages)
+    html += `<div class="breadcrumb-item ${explorerLevel === 'pages' ? 'active' : ''}" onclick="goToLevel('pages')">
+        <i class="fas fa-home"></i> الصفحات
+    </div>`;
+    
+    if (explorerLevel === 'categories' || explorerLevel === 'content') {
+        const page = pages.find(p => p.id === currentPageId);
+        if (page) {
+            html += `<span class="breadcrumb-sep"><i class="fas fa-chevron-left"></i></span>`;
+            html += `<div class="breadcrumb-item ${explorerLevel === 'categories' ? 'active' : ''}" onclick="goToLevel('categories')">
+                <i class="fas fa-file-lines"></i> ${page.icon || '📄'} ${page.name}
+            </div>`;
+        }
+    }
+    
+    if (explorerLevel === 'content') {
+        const cat = siteData.categories.find(c => c.id === currentCategoryId);
+        if (cat) {
+            html += `<span class="breadcrumb-sep"><i class="fas fa-chevron-left"></i></span>`;
+            html += `<div class="breadcrumb-item active">
+                <span style="font-size:18px;">${cat.icon || '📁'}</span> ${cat.name}
+            </div>`;
+        }
+    }
+    
+    bc.innerHTML = html;
+}
+
+function goToLevel(level, id = null) {
+    if (level === 'pages') {
+        explorerLevel = 'pages';
+        currentPageId = null;
+        currentCategoryId = null;
+    } else if (level === 'categories') {
+        explorerLevel = 'categories';
+        currentCategoryId = null;
+    } else if (level === 'content') {
+        explorerLevel = 'content';
+    }
+    renderExplorer();
+}
+
+// ===== Level 1: Pages Grid =====
+function renderPagesGrid() {
+    const grid = document.getElementById('pagesGrid');
+    
     if (!pages.length) {
-        tbody.innerHTML = `<tr><td colspan="6"><div class="empty-state"><i class="fas fa-file-lines"></i><h3>لا توجد صفحات</h3><p>ابدأ بإضافة صفحة جديدة</p></div></td></tr>`;
+        grid.innerHTML = `<div class="empty-state" style="grid-column:1/-1;"><i class="fas fa-file-lines"></i><h3>لا توجد صفحات</h3><p>ابدأ بإضافة صفحة جديدة</p></div>`;
         return;
     }
-    tbody.innerHTML = pages.map((p, i) => {
-        const catCount = siteData.categories.filter(c => c.pageId === p.id).length;
+    
+    grid.innerHTML = pages.map(p => {
+        const cats = siteData.categories.filter(c => c.pageId === p.id);
+        const totalItems = cats.reduce((sum, c) => {
+            return sum + 
+                siteData.commands.filter(cmd => cmd.category === c.name).length +
+                siteData.rules.filter(r => r.category === c.name).length +
+                siteData.interiors.filter(i => i.category === c.name).length +
+                getCodes().filter(cd => cd.category === c.name).length;
+        }, 0);
+        
         return `
-            <tr>
-                <td><strong>${i + 1}</strong></td>
-                <td><strong>${p.name}</strong></td>
-                <td><code class="code-text">${p.link}</code></td>
-                <td style="color: var(--text-muted); font-size: 12px;">${p.desc || '-'}</td>
-                <td><span class="badge-tag">${catCount} قسم</span></td>
-                <td>
-                    <div class="action-btns">
-                        <button class="btn btn-sm btn-info btn-icon" onclick="editPage(${i})" title="تعديل"><i class="fas fa-pen"></i></button>
-                        <button class="btn btn-sm btn-danger btn-icon" onclick="deletePage(${i})" title="حذف"><i class="fas fa-trash"></i></button>
-                    </div>
-                </td>
-            </tr>
+            <div class="page-card" onclick="openPage(${p.id})">
+                <div class="page-actions">
+                    <button class="btn btn-sm btn-info btn-icon" onclick="event.stopPropagation(); openPageModal(${p.id})" title="تعديل">
+                        <i class="fas fa-pen"></i>
+                    </button>
+                    <button class="btn btn-sm btn-danger btn-icon" onclick="event.stopPropagation(); deletePage(${p.id})" title="حذف">
+                        <i class="fas fa-trash"></i>
+                    </button>
+                </div>
+                <div class="page-icon">${p.icon || '📄'}</div>
+                <div class="page-name">${p.name}</div>
+                <div class="page-link">${p.link}</div>
+                <div class="page-desc">${p.desc || 'بدون وصف'}</div>
+                <div class="page-stats">
+                    <span class="mini-stat">📂 <strong>${cats.length}</strong> قسم</span>
+                    <span class="mini-stat">📦 <strong>${totalItems}</strong> عنصر</span>
+                </div>
+            </div>
         `;
     }).join('');
 }
 
-// ===== Render Categories =====
-function renderCategories() {
-    const tbody = document.getElementById('categoriesTable');
-    if (!siteData.categories.length) {
-        tbody.innerHTML = `<tr><td colspan="6"><div class="empty-state"><i class="fas fa-folder"></i><h3>لا توجد أقسام</h3></div></td></tr>`;
+function openPage(pageId) {
+    currentPageId = pageId;
+    explorerLevel = 'categories';
+    renderExplorer();
+}
+
+// ===== Level 2: Categories Grid =====
+function renderCategoriesGrid() {
+    const page = pages.find(p => p.id === currentPageId);
+    if (!page) return goToLevel('pages');
+    
+    document.getElementById('categoriesTitle').innerHTML = `<i class="fas fa-folder"></i> أقسام صفحة: <span style="color:var(--primary);">${page.name}</span>`;
+    
+    const grid = document.getElementById('categoriesGrid');
+    const cats = siteData.categories.filter(c => c.pageId === currentPageId);
+    
+    if (!cats.length) {
+        grid.innerHTML = `<div class="empty-state" style="grid-column:1/-1;"><i class="fas fa-folder"></i><h3>لا توجد أقسام</h3><p>ابدأ بإضافة قسم جديد لهذه الصفحة</p></div>`;
         return;
     }
-    tbody.innerHTML = siteData.categories.map((c, i) => {
-        const page = pages.find(p => p.id === c.pageId);
-        const contentCount = siteData.commands.filter(x => x.category === c.name).length +
-                            siteData.rules.filter(x => x.category === c.name).length +
-                            siteData.interiors.filter(x => x.category === c.name).length;
+    
+    grid.innerHTML = cats.map(c => {
+        const cmds = siteData.commands.filter(cmd => cmd.category === c.name).length;
+        const rls = siteData.rules.filter(r => r.category === c.name).length;
+        const ints = siteData.interiors.filter(i => i.category === c.name).length;
+        const cds = getCodes().filter(cd => cd.category === c.name).length;
+        
         return `
-            <tr>
-                <td><strong>${i + 1}</strong></td>
-                <td style="font-size: 22px;">${c.icon || '📁'}</td>
-                <td><strong>${c.name}</strong></td>
-                <td><span class="badge-tag">${page ? page.name : 'غير محدد'}</span></td>
-                <td><span class="badge-tag">${contentCount} عنصر</span></td>
-                <td>
-                    <div class="action-btns">
-                        <button class="btn btn-sm btn-info btn-icon" onclick="editCategory(${i})" title="تعديل"><i class="fas fa-pen"></i></button>
-                        <button class="btn btn-sm btn-danger btn-icon" onclick="deleteCategory(${i})" title="حذف"><i class="fas fa-trash"></i></button>
-                    </div>
-                </td>
-            </tr>
+            <div class="category-card" onclick="openCategory(${c.id})">
+                <div class="cat-actions">
+                    <button class="btn btn-sm btn-info btn-icon" onclick="event.stopPropagation(); openCategoryModal(${c.id}, true)" title="تعديل">
+                        <i class="fas fa-pen"></i>
+                    </button>
+                    <button class="btn btn-sm btn-danger btn-icon" onclick="event.stopPropagation(); deleteCategory(${c.id})" title="حذف">
+                        <i class="fas fa-trash"></i>
+                    </button>
+                </div>
+                <span class="cat-icon">${c.icon || '📁'}</span>
+                <div class="cat-name">${c.name}</div>
+                <div class="cat-desc">${c.desc || 'قسم في هذه الصفحة'}</div>
+                <div class="cat-counts">
+                    <span class="count-badge">📋 <strong>${cmds}</strong></span>
+                    <span class="count-badge">📜 <strong>${rls}</strong></span>
+                    <span class="count-badge">🏠 <strong>${ints}</strong></span>
+                    <span class="count-badge">💻 <strong>${cds}</strong></span>
+                </div>
+            </div>
         `;
     }).join('');
 }
 
-// ===== Render Commands =====
-function renderCommands() {
-    const tbody = document.getElementById('commandsTable');
+function openCategory(catId) {
+    currentCategoryId = catId;
+    explorerLevel = 'content';
+    currentContentTab = 'commands';
+    renderExplorer();
+}
+
+// ===== Level 3: Content =====
+function renderContentLevel() {
+    const cat = siteData.categories.find(c => c.id === currentCategoryId);
+    if (!cat) return goToLevel('categories');
+    
+    document.getElementById('contentTitle').innerHTML = `<i class="fas fa-database"></i> محتوى القسم: <span style="color:var(--primary);">${cat.icon} ${cat.name}</span>`;
+    
+    // Update tab counts
+    document.getElementById('countCommands').textContent = siteData.commands.filter(c => c.category === cat.name).length;
+    document.getElementById('countRules').textContent = siteData.rules.filter(r => r.category === cat.name).length;
+    document.getElementById('countInteriors').textContent = siteData.interiors.filter(i => i.category === cat.name).length;
+    document.getElementById('countCodes').textContent = getCodes().filter(c => c.category === cat.name).length;
+    
+    // Reset to commands tab
+    switchContentTab(currentContentTab);
+}
+
+function switchContentTab(tab) {
+    currentContentTab = tab;
+    document.querySelectorAll('.content-tab').forEach(t => t.classList.remove('active'));
+    document.querySelectorAll('.content-panel').forEach(p => p.classList.remove('active'));
+    
+    document.querySelector(`.content-tab[data-tab="${tab}"]`).classList.add('active');
+    document.getElementById(`panel-${tab}`).classList.add('active');
+    
+    if (tab === 'commands') renderContentCommands();
+    else if (tab === 'rules') renderContentRules();
+    else if (tab === 'interiors') renderContentInteriors();
+    else if (tab === 'codes') renderContentCodes();
+}
+
+// ===== Render Content: Commands =====
+function renderContentCommands() {
+    const cat = siteData.categories.find(c => c.id === currentCategoryId);
+    if (!cat) return;
+    
     const search = (document.getElementById('searchCommands')?.value || '').toLowerCase();
-    const catFilter = document.getElementById('filterCommandCategory')?.value || '';
+    let items = siteData.commands.filter(c => c.category === cat.name);
     
-    let filtered = siteData.commands.filter(c => {
-        const matchSearch = !search || c.command.toLowerCase().includes(search) || c.meaning.includes(search);
-        const matchCat = !catFilter || c.category === catFilter;
-        return matchSearch && matchCat;
-    });
+    if (search) {
+        items = items.filter(c => c.command.toLowerCase().includes(search) || c.meaning.includes(search));
+    }
     
-    if (!filtered.length) {
-        tbody.innerHTML = `<tr><td colspan="5"><div class="empty-state"><i class="fas fa-terminal"></i><h3>لا توجد أوامر</h3></div></td></tr>`;
+    const tbody = document.getElementById('commandsTable');
+    if (!items.length) {
+        tbody.innerHTML = `<tr><td colspan="4"><div class="empty-state"><i class="fas fa-terminal"></i><h3>لا توجد أوامر</h3><p>ابدأ بإضافة أمر جديد</p></div></td></tr>`;
         return;
     }
     
-    tbody.innerHTML = filtered.map((c, i) => {
+    tbody.innerHTML = items.map((c, i) => {
         const realIndex = siteData.commands.indexOf(c);
         return `
             <tr>
                 <td><strong>${i + 1}</strong></td>
                 <td><code class="code-text">${c.command}</code></td>
                 <td>${c.meaning}</td>
-                <td><span class="badge-tag">${c.category}</span></td>
                 <td>
                     <div class="action-btns">
-                        <button class="btn btn-sm btn-info btn-icon" onclick="editCommand(${realIndex})" title="تعديل"><i class="fas fa-pen"></i></button>
+                        <button class="btn btn-sm btn-info btn-icon" onclick="openCommandModal(${realIndex})" title="تعديل"><i class="fas fa-pen"></i></button>
                         <button class="btn btn-sm btn-danger btn-icon" onclick="deleteCommand(${realIndex})" title="حذف"><i class="fas fa-trash"></i></button>
                     </div>
                 </td>
@@ -1541,21 +1855,25 @@ function renderCommands() {
     }).join('');
 }
 
-// ===== Render Rules =====
-function renderRules() {
-    const tbody = document.getElementById('rulesTable');
+// ===== Render Content: Rules =====
+function renderContentRules() {
+    const cat = siteData.categories.find(c => c.id === currentCategoryId);
+    if (!cat) return;
+    
     const search = (document.getElementById('searchRules')?.value || '').toLowerCase();
+    let items = siteData.rules.filter(r => r.category === cat.name);
     
-    let filtered = siteData.rules.filter(r => 
-        !search || r.english.toLowerCase().includes(search) || r.arabic.includes(search)
-    );
+    if (search) {
+        items = items.filter(r => r.english.toLowerCase().includes(search) || r.arabic.includes(search));
+    }
     
-    if (!filtered.length) {
+    const tbody = document.getElementById('rulesTable');
+    if (!items.length) {
         tbody.innerHTML = `<tr><td colspan="4"><div class="empty-state"><i class="fas fa-scale-balanced"></i><h3>لا توجد قوانين</h3></div></td></tr>`;
         return;
     }
     
-    tbody.innerHTML = filtered.map((r, i) => {
+    tbody.innerHTML = items.map((r, i) => {
         const realIndex = siteData.rules.indexOf(r);
         return `
             <tr>
@@ -1564,7 +1882,7 @@ function renderRules() {
                 <td>${r.arabic}</td>
                 <td>
                     <div class="action-btns">
-                        <button class="btn btn-sm btn-info btn-icon" onclick="editRule(${realIndex})" title="تعديل"><i class="fas fa-pen"></i></button>
+                        <button class="btn btn-sm btn-info btn-icon" onclick="openRuleModal(${realIndex})" title="تعديل"><i class="fas fa-pen"></i></button>
                         <button class="btn btn-sm btn-danger btn-icon" onclick="deleteRule(${realIndex})" title="حذف"><i class="fas fa-trash"></i></button>
                     </div>
                 </td>
@@ -1573,31 +1891,34 @@ function renderRules() {
     }).join('');
 }
 
-// ===== Render Interiors =====
-function renderInteriors() {
-    const tbody = document.getElementById('interiorsTable');
+// ===== Render Content: Interiors =====
+function renderContentInteriors() {
+    const cat = siteData.categories.find(c => c.id === currentCategoryId);
+    if (!cat) return;
+    
     const search = (document.getElementById('searchInteriors')?.value || '').toLowerCase();
+    let items = siteData.interiors.filter(i => i.category === cat.name);
     
-    let filtered = siteData.interiors.filter(int => 
-        !search || int.name.toLowerCase().includes(search)
-    );
+    if (search) {
+        items = items.filter(i => i.name.toLowerCase().includes(search));
+    }
     
-    if (!filtered.length) {
-        tbody.innerHTML = `<tr><td colspan="5"><div class="empty-state"><i class="fas fa-house"></i><h3>لا توجد انترو</h3></div></td></tr>`;
+    const tbody = document.getElementById('interiorsTable');
+    if (!items.length) {
+        tbody.innerHTML = `<tr><td colspan="4"><div class="empty-state"><i class="fas fa-house"></i><h3>لا توجد انترو</h3></div></td></tr>`;
         return;
     }
     
-    tbody.innerHTML = filtered.map((int, i) => {
+    tbody.innerHTML = items.map((int, i) => {
         const realIndex = siteData.interiors.indexOf(int);
         return `
             <tr>
                 <td><strong>${i + 1}</strong></td>
                 <td><img src="${int.image}" alt="${int.name}" style="width:60px;height:45px;object-fit:cover;border-radius:6px;border:1px solid var(--border);" onerror="this.src='data:image/svg+xml,%3Csvg xmlns=%22http://www.w3.org/2000/svg%22 width=%2260%22 height=%2245%22%3E%3Crect fill=%22%23333%22 width=%2260%22 height=%2245%22/%3E%3Ctext x=%2250%25%22 y=%2250%25%22 text-anchor=%22middle%22 dy=%22.3em%22 fill=%22%23666%22 font-size=%2214%22%3E🏠%3C/text%3E%3C/svg%3E'"></td>
                 <td><strong>${int.name}</strong></td>
-                <td style="font-size:11px;color:var(--text-muted);max-width:200px;overflow:hidden;text-overflow:ellipsis;white-space:nowrap;">${int.image}</td>
                 <td>
                     <div class="action-btns">
-                        <button class="btn btn-sm btn-info btn-icon" onclick="editInterior(${realIndex})" title="تعديل"><i class="fas fa-pen"></i></button>
+                        <button class="btn btn-sm btn-info btn-icon" onclick="openInteriorModal(${realIndex})" title="تعديل"><i class="fas fa-pen"></i></button>
                         <button class="btn btn-sm btn-danger btn-icon" onclick="deleteInterior(${realIndex})" title="حذف"><i class="fas fa-trash"></i></button>
                     </div>
                 </td>
@@ -1606,180 +1927,220 @@ function renderInteriors() {
     }).join('');
 }
 
-// ===== Render Codes =====
-function renderCodes() {
-    const container = document.getElementById('codesList');
+// ===== Render Content: Codes =====
+function renderContentCodes() {
+    const cat = siteData.categories.find(c => c.id === currentCategoryId);
+    if (!cat) return;
+    
     const search = (document.getElementById('searchCodes')?.value || '').toLowerCase();
-    const typeFilter = document.getElementById('filterCodeType')?.value || '';
+    let items = getCodes().filter(c => c.category === cat.name);
     
-    let codes = getCodes().filter(c => {
-        const matchSearch = !search || c.name.toLowerCase().includes(search) || (c.content || '').toLowerCase().includes(search);
-        const matchType = !typeFilter || c.type === typeFilter;
-        return matchSearch && matchType;
-    });
+    if (search) {
+        items = items.filter(c => c.name.toLowerCase().includes(search) || (c.content || '').toLowerCase().includes(search));
+    }
     
-    if (!codes.length) {
-        container.innerHTML = `<div class="empty-state"><i class="fas fa-code"></i><h3>لا توجد أكواد</h3><p>ابدأ بإضافة كود جديد</p></div>`;
+    const container = document.getElementById('codesList');
+    if (!items.length) {
+        container.innerHTML = `<div class="empty-state"><i class="fas fa-code"></i><h3>لا توجد أكواد</h3></div>`;
         return;
     }
     
     const typeColors = { interior: 'var(--purple)', command: 'var(--warning)', script: 'var(--info)', other: 'var(--text-muted)' };
     const typeNames = { interior: 'انترو', command: 'أمر', script: 'سكريبت', other: 'أخرى' };
     
-    container.innerHTML = codes.map((c, i) => `
-        <div style="background: var(--bg-input); border: 1px solid var(--border); border-radius: 10px; padding: 16px; margin-bottom: 12px;">
-            <div style="display:flex;justify-content:space-between;align-items:center;margin-bottom:10px;flex-wrap:wrap;gap:8px;">
-                <div style="display:flex;align-items:center;gap:10px;">
-                    <i class="fas fa-code" style="color: ${typeColors[c.type]}; font-size: 20px;"></i>
-                    <div>
-                        <strong style="font-size: 15px;">${c.name}</strong>
-                        <div style="font-size: 11px; color: var(--text-muted); margin-top: 2px;">
-                            <span class="badge-tag" style="background: ${typeColors[c.type]}20; color: ${typeColors[c.type]}; border-color: ${typeColors[c.type]};">${typeNames[c.type]}</span>
-                            ${c.category ? `<span class="badge-tag" style="margin-right:4px;">${c.category}</span>` : ''}
+    container.innerHTML = items.map((c) => {
+        const realIndex = getCodes().indexOf(c);
+        return `
+            <div style="background: var(--bg-input); border: 1px solid var(--border); border-radius: 10px; padding: 16px; margin-bottom: 12px;">
+                <div style="display:flex;justify-content:space-between;align-items:center;margin-bottom:10px;flex-wrap:wrap;gap:8px;">
+                    <div style="display:flex;align-items:center;gap:10px;">
+                        <i class="fas fa-code" style="color: ${typeColors[c.type]}; font-size: 20px;"></i>
+                        <div>
+                            <strong style="font-size: 15px;">${c.name}</strong>
+                            <div style="font-size: 11px; color: var(--text-muted); margin-top: 2px;">
+                                <span class="badge-tag" style="background: ${typeColors[c.type]}20; color: ${typeColors[c.type]}; border-color: ${typeColors[c.type]};">${typeNames[c.type]}</span>
+                            </div>
                         </div>
                     </div>
+                    <div class="action-btns">
+                        <button class="btn btn-sm btn-ghost btn-icon" onclick="copyCodeContent(${realIndex})" title="نسخ"><i class="fas fa-copy"></i></button>
+                        <button class="btn btn-sm btn-info btn-icon" onclick="openCodeModal(${realIndex})" title="تعديل"><i class="fas fa-pen"></i></button>
+                        <button class="btn btn-sm btn-danger btn-icon" onclick="deleteCode(${realIndex})" title="حذف"><i class="fas fa-trash"></i></button>
+                    </div>
                 </div>
-                <div class="action-btns">
-                    <button class="btn btn-sm btn-ghost btn-icon" onclick="copyCodeContent(${i})" title="نسخ"><i class="fas fa-copy"></i></button>
-                    <button class="btn btn-sm btn-info btn-icon" onclick="editCode(${i})" title="تعديل"><i class="fas fa-pen"></i></button>
-                    <button class="btn btn-sm btn-danger btn-icon" onclick="deleteCode(${i})" title="حذف"><i class="fas fa-trash"></i></button>
+                ${c.desc ? `<p style="font-size: 12px; color: var(--text-muted); margin-bottom: 8px;">${c.desc}</p>` : ''}
+                <div style="background: #050a12; border-radius: 8px; padding: 12px; border: 1px solid var(--border); max-height: 200px; overflow-y: auto;">
+                    <pre style="margin: 0; font-family: 'Courier New', monospace; font-size: 12px; color: #66ffcc; direction: ltr; text-align: left; white-space: pre-wrap;">${escapeHtml(c.content || '// فارغ')}</pre>
                 </div>
             </div>
-            ${c.desc ? `<p style="font-size: 12px; color: var(--text-muted); margin-bottom: 8px;">${c.desc}</p>` : ''}
-            <div style="background: #050a12; border-radius: 8px; padding: 12px; border: 1px solid var(--border); max-height: 200px; overflow-y: auto;">
-                <pre style="margin: 0; font-family: 'Courier New', monospace; font-size: 12px; color: #66ffcc; direction: ltr; text-align: left; white-space: pre-wrap;">${escapeHtml(c.content || '// فارغ')}</pre>
-            </div>
-        </div>
-    `).join('');
+        `;
+    }).join('');
 }
 
 function escapeHtml(str) {
     return String(str).replace(/&/g, '&amp;').replace(/</g, '&lt;').replace(/>/g, '&gt;');
 }
 
-// ===== Update Category Filters =====
-function updateCategoryFilters() {
-    const select = document.getElementById('filterCommandCategory');
-    if (select) {
-        const current = select.value;
-        select.innerHTML = '<option value="">📂 جميع الأقسام</option>' +
-            siteData.categories.map(c => `<option value="${c.name}">${c.icon || '📁'} ${c.name}</option>`).join('');
-        select.value = current;
-    }
+// =================================================================
+//  Modal System
+// =================================================================
+
+function openPageModal(editId = null) {
+    const isEdit = editId !== null;
+    const p = isEdit ? pages.find(pg => pg.id === editId) : { name: '', link: '', desc: '', icon: '📄' };
+    
+    currentModal = { type: 'page', editId };
+    document.getElementById('modalTitle').innerHTML = `<i class="fas fa-file-lines"></i> ${isEdit ? 'تعديل صفحة' : 'إضافة صفحة'}`;
+    
+    document.getElementById('modalBody').innerHTML = `
+        <div class="form-group"><label>📄 اسم الصفحة</label><input type="text" class="form-control" id="f_pageName" value="${p.name}" placeholder="مثال: الرئيسية"></div>
+        <div class="form-group" style="margin-top:12px;"><label>🎨 الأيقونة (Emoji)</label><input type="text" class="form-control" id="f_pageIcon" value="${p.icon || '📄'}" placeholder="📄"></div>
+        <div class="form-group" style="margin-top:12px;"><label>🔗 الرابط</label><input type="text" class="form-control" id="f_pageLink" value="${p.link}" placeholder="مثال: index.html" dir="ltr"></div>
+        <div class="form-group" style="margin-top:12px;"><label>📝 الوصف</label><input type="text" class="form-control" id="f_pageDesc" value="${p.desc || ''}" placeholder="وصف مختصر"></div>
+    `;
+    
+    document.getElementById('modalOverlay').classList.add('active');
+    setTimeout(() => document.getElementById('f_pageName').focus(), 100);
 }
 
-// ===== Modal System =====
-function openModal(type, editIndex = -1) {
-    currentModal = { type, editIndex };
-    const modal = document.getElementById('modalOverlay');
-    const title = document.getElementById('modalTitle');
-    const body = document.getElementById('modalBody');
-    
-    const isEdit = editIndex >= 0;
-    const titles = {
-        page: { icon: 'fa-file-lines', add: 'إضافة صفحة', edit: 'تعديل صفحة' },
-        category: { icon: 'fa-folder', add: 'إضافة قسم', edit: 'تعديل قسم' },
-        command: { icon: 'fa-terminal', add: 'إضافة أمر', edit: 'تعديل أمر' },
-        rule: { icon: 'fa-scale-balanced', add: 'إضافة قانون', edit: 'تعديل قانون' },
-        interior: { icon: 'fa-house', add: 'إضافة انترو', edit: 'تعديل انترو' },
-        code: { icon: 'fa-code', add: 'إضافة كود', edit: 'تعديل كود' }
-    };
-    
-    const t = titles[type];
-    title.innerHTML = `<i class="fas ${t.icon}"></i> ${isEdit ? t.edit : t.add}`;
-    
-    let html = '';
-    
-    if (type === 'page') {
-        const p = isEdit ? pages[editIndex] : { name: '', link: '', desc: '' };
-        html = `
-            <div class="form-group"><label>📄 اسم الصفحة</label><input type="text" class="form-control" id="f_pageName" value="${p.name}" placeholder="مثال: الرئيسية"></div>
-            <div class="form-group" style="margin-top:12px;"><label>🔗 الرابط</label><input type="text" class="form-control" id="f_pageLink" value="${p.link}" placeholder="مثال: index.html" dir="ltr"></div>
-            <div class="form-group" style="margin-top:12px;"><label>📝 الوصف</label><input type="text" class="form-control" id="f_pageDesc" value="${p.desc || ''}" placeholder="وصف مختصر"></div>
-        `;
-    } else if (type === 'category') {
-        const c = isEdit ? siteData.categories[editIndex] : { name: '', icon: '📁', pageId: pages[0]?.id };
-        html = `
-            <div class="form-grid">
-                <div class="form-group"><label>📂 اسم القسم</label><input type="text" class="form-control" id="f_catName" value="${c.name}" placeholder="مثال: فاكشن"></div>
-                <div class="form-group"><label>🎨 الأيقونة</label><input type="text" class="form-control" id="f_catIcon" value="${c.icon || '📁'}" placeholder="📁"></div>
-            </div>
-            <div class="form-group" style="margin-top:12px;"><label>📄 الصفحة التابعة</label>
-                <select class="form-control" id="f_catPage">
-                    ${pages.map(p => `<option value="${p.id}" ${c.pageId === p.id ? 'selected' : ''}>${p.name}</option>`).join('')}
-                </select>
-            </div>
-        `;
-    } else if (type === 'command') {
-        const c = isEdit ? siteData.commands[editIndex] : { command: '', meaning: '', category: siteData.categories[0]?.name };
-        html = `
-            <div class="form-group"><label>💻 الأمر</label><input type="text" class="form-control" id="f_cmdCommand" value="${c.command}" placeholder="مثال: sellproperty" dir="ltr"></div>
-            <div class="form-group" style="margin-top:12px;"><label>📝 المعنى</label><input type="text" class="form-control" id="f_cmdMeaning" value="${c.meaning}" placeholder="مثال: بيع المنزل"></div>
-            <div class="form-group" style="margin-top:12px;"><label>📂 القسم</label>
-                <select class="form-control" id="f_cmdCategory">
-                    ${siteData.categories.map(cat => `<option value="${cat.name}" ${c.category === cat.name ? 'selected' : ''}>${cat.icon} ${cat.name}</option>`).join('')}
-                </select>
-            </div>
-        `;
-    } else if (type === 'rule') {
-        const r = isEdit ? siteData.rules[editIndex] : { english: '', arabic: '', category: '' };
-        html = `
-            <div class="form-group"><label>🇬🇧 القانون (English)</label><input type="text" class="form-control" id="f_ruleEn" value="${r.english}" placeholder="مثال: DM" dir="ltr"></div>
-            <div class="form-group" style="margin-top:12px;"><label>🇸🇦 المعنى (Arabic)</label><input type="text" class="form-control" id="f_ruleAr" value="${r.arabic}" placeholder="مثال: القتل بدون سبب"></div>
-            <div class="form-group" style="margin-top:12px;"><label>📂 القسم (اختياري)</label>
-                <select class="form-control" id="f_ruleCategory">
-                    <option value="">بدون قسم</option>
-                    ${siteData.categories.map(cat => `<option value="${cat.name}" ${r.category === cat.name ? 'selected' : ''}>${cat.icon} ${cat.name}</option>`).join('')}
-                </select>
-            </div>
-        `;
-    } else if (type === 'interior') {
-        const int = isEdit ? siteData.interiors[editIndex] : { name: '', image: '', category: '' };
-        html = `
-            <div class="form-group"><label>🏠 اسم الانترو</label><input type="text" class="form-control" id="f_intName" value="${int.name}" placeholder="مثال: قصر"></div>
-            <div class="form-group" style="margin-top:12px;"><label>🖼️ رابط الصورة</label><input type="text" class="form-control" id="f_intImage" value="${int.image}" placeholder="https://..." dir="ltr"></div>
-            <div class="form-group" style="margin-top:12px;"><label>📂 القسم (اختياري)</label>
-                <select class="form-control" id="f_intCategory">
-                    <option value="">بدون قسم</option>
-                    ${siteData.categories.map(cat => `<option value="${cat.name}" ${int.category === cat.name ? 'selected' : ''}>${cat.icon} ${cat.name}</option>`).join('')}
-                </select>
-            </div>
-            ${int.image ? `<div style="margin-top:12px;text-align:center;"><img src="${int.image}" style="max-width:200px;max-height:150px;border-radius:10px;border:1px solid var(--border);" onerror="this.style.display='none'"></div>` : ''}
-        `;
-    } else if (type === 'code') {
-        const codes = getCodes();
-        const c = isEdit ? codes[editIndex] : { name: '', type: 'script', category: '', content: '', desc: '' };
-        html = `
-            <div class="form-grid">
-                <div class="form-group"><label>💻 اسم الكود</label><input type="text" class="form-control" id="f_codeName" value="${c.name}" placeholder="مثال: كود صناعة انترو"></div>
-                <div class="form-group"><label>📦 النوع</label>
-                    <select class="form-control" id="f_codeType">
-                        <option value="interior" ${c.type === 'interior' ? 'selected' : ''}>انترو</option>
-                        <option value="command" ${c.type === 'command' ? 'selected' : ''}>أمر</option>
-                        <option value="script" ${c.type === 'script' ? 'selected' : ''}>سكريبت</option>
-                        <option value="other" ${c.type === 'other' ? 'selected' : ''}>أخرى</option>
-                    </select>
-                </div>
-            </div>
-            <div class="form-group" style="margin-top:12px;"><label>📂 القسم (اختياري)</label>
-                <select class="form-control" id="f_codeCategory">
-                    <option value="">بدون قسم</option>
-                    ${siteData.categories.map(cat => `<option value="${cat.name}" ${c.category === cat.name ? 'selected' : ''}>${cat.icon} ${cat.name}</option>`).join('')}
-                </select>
-            </div>
-            <div class="form-group" style="margin-top:12px;"><label>📝 الوصف</label><input type="text" class="form-control" id="f_codeDesc" value="${c.desc || ''}" placeholder="وصف مختصر"></div>
-            <div class="form-group" style="margin-top:12px;"><label>📄 المحتوى</label><textarea class="form-control" id="f_codeContent" rows="10" placeholder="اكتب الكود هنا...">${c.content || ''}</textarea></div>
-        `;
+function openCategoryModal(editId = null, isEdit = false) {
+    if (editId !== null && !isEdit) {
+        // Called from Level 2 grid with category id
+        const cat = siteData.categories.find(c => c.id === editId);
+        currentModal = { type: 'category', editId, isEdit: true };
+    } else if (isEdit && editId !== null) {
+        const cat = siteData.categories.find(c => c.id === editId);
+        currentModal = { type: 'category', editId, isEdit: true };
+    } else {
+        currentModal = { type: 'category', editId: null, isEdit: false };
     }
     
-    body.innerHTML = html;
-    modal.classList.add('active');
+    const isEditMode = currentModal.isEdit;
+    const c = isEditMode ? siteData.categories.find(cat => cat.id === currentModal.editId) : { name: '', icon: '📁', desc: '' };
     
-    // Focus first input
-    setTimeout(() => {
-        const firstInput = body.querySelector('input, textarea');
-        if (firstInput) firstInput.focus();
-    }, 100);
+    document.getElementById('modalTitle').innerHTML = `<i class="fas fa-folder"></i> ${isEditMode ? 'تعديل قسم' : 'إضافة قسم'}`;
+    
+    document.getElementById('modalBody').innerHTML = `
+        <div class="form-grid">
+            <div class="form-group"><label>📂 اسم القسم</label><input type="text" class="form-control" id="f_catName" value="${c.name}" placeholder="مثال: فاكشن"></div>
+            <div class="form-group"><label>🎨 الأيقونة</label><input type="text" class="form-control" id="f_catIcon" value="${c.icon || '📁'}" placeholder="📁"></div>
+        </div>
+        <div class="form-group" style="margin-top:12px;"><label>📝 الوصف</label><input type="text" class="form-control" id="f_catDesc" value="${c.desc || ''}" placeholder="وصف مختصر للقسم"></div>
+        <div class="form-group" style="margin-top:12px;"><label>📄 الصفحة التابعة</label>
+            <select class="form-control" id="f_catPage">
+                ${pages.map(p => `<option value="${p.id}" ${c.pageId === p.id ? 'selected' : ''}>${p.icon || '📄'} ${p.name}</option>`).join('')}
+            </select>
+        </div>
+    `;
+    
+    // Default to current page
+    if (!isEditMode && currentPageId) {
+        document.getElementById('f_catPage').value = currentPageId;
+    }
+    
+    document.getElementById('modalOverlay').classList.add('active');
+    setTimeout(() => document.getElementById('f_catName').focus(), 100);
+}
+
+function openCommandModal(editIndex = -1) {
+    const cat = siteData.categories.find(c => c.id === currentCategoryId);
+    if (!cat) return;
+    
+    const isEdit = editIndex >= 0;
+    const c = isEdit ? siteData.commands[editIndex] : { command: '', meaning: '' };
+    
+    currentModal = { type: 'command', editIndex };
+    document.getElementById('modalTitle').innerHTML = `<i class="fas fa-terminal"></i> ${isEdit ? 'تعديل أمر' : 'إضافة أمر'}`;
+    
+    document.getElementById('modalBody').innerHTML = `
+        <div class="form-group"><label>💻 الأمر</label><input type="text" class="form-control" id="f_cmdCommand" value="${c.command}" placeholder="مثال: sellproperty" dir="ltr"></div>
+        <div class="form-group" style="margin-top:12px;"><label>📝 المعنى</label><input type="text" class="form-control" id="f_cmdMeaning" value="${c.meaning}" placeholder="مثال: بيع المنزل"></div>
+        <div style="margin-top:12px;padding:10px;background:var(--bg-input);border-radius:8px;font-size:12px;color:var(--text-muted);">
+            <i class="fas fa-info-circle"></i> القسم: <strong style="color:var(--primary);">${cat.icon} ${cat.name}</strong>
+        </div>
+    `;
+    
+    document.getElementById('modalOverlay').classList.add('active');
+    setTimeout(() => document.getElementById('f_cmdCommand').focus(), 100);
+}
+
+function openRuleModal(editIndex = -1) {
+    const cat = siteData.categories.find(c => c.id === currentCategoryId);
+    if (!cat) return;
+    
+    const isEdit = editIndex >= 0;
+    const r = isEdit ? siteData.rules[editIndex] : { english: '', arabic: '' };
+    
+    currentModal = { type: 'rule', editIndex };
+    document.getElementById('modalTitle').innerHTML = `<i class="fas fa-scale-balanced"></i> ${isEdit ? 'تعديل قانون' : 'إضافة قانون'}`;
+    
+    document.getElementById('modalBody').innerHTML = `
+        <div class="form-group"><label>🇬🇧 القانون (English)</label><input type="text" class="form-control" id="f_ruleEn" value="${r.english}" placeholder="مثال: DM" dir="ltr"></div>
+        <div class="form-group" style="margin-top:12px;"><label>🇸🇦 المعنى (Arabic)</label><input type="text" class="form-control" id="f_ruleAr" value="${r.arabic}" placeholder="مثال: القتل بدون سبب"></div>
+        <div style="margin-top:12px;padding:10px;background:var(--bg-input);border-radius:8px;font-size:12px;color:var(--text-muted);">
+            <i class="fas fa-info-circle"></i> القسم: <strong style="color:var(--primary);">${cat.icon} ${cat.name}</strong>
+        </div>
+    `;
+    
+    document.getElementById('modalOverlay').classList.add('active');
+    setTimeout(() => document.getElementById('f_ruleEn').focus(), 100);
+}
+
+function openInteriorModal(editIndex = -1) {
+    const cat = siteData.categories.find(c => c.id === currentCategoryId);
+    if (!cat) return;
+    
+    const isEdit = editIndex >= 0;
+    const int = isEdit ? siteData.interiors[editIndex] : { name: '', image: '' };
+    
+    currentModal = { type: 'interior', editIndex };
+    document.getElementById('modalTitle').innerHTML = `<i class="fas fa-house"></i> ${isEdit ? 'تعديل انترو' : 'إضافة انترو'}`;
+    
+    document.getElementById('modalBody').innerHTML = `
+        <div class="form-group"><label>🏠 اسم الانترو</label><input type="text" class="form-control" id="f_intName" value="${int.name}" placeholder="مثال: قصر"></div>
+        <div class="form-group" style="margin-top:12px;"><label>🖼️ رابط الصورة</label><input type="text" class="form-control" id="f_intImage" value="${int.image}" placeholder="https://..." dir="ltr"></div>
+        ${int.image ? `<div style="margin-top:12px;text-align:center;"><img src="${int.image}" style="max-width:200px;max-height:150px;border-radius:10px;border:1px solid var(--border);" onerror="this.style.display='none'"></div>` : ''}
+        <div style="margin-top:12px;padding:10px;background:var(--bg-input);border-radius:8px;font-size:12px;color:var(--text-muted);">
+            <i class="fas fa-info-circle"></i> القسم: <strong style="color:var(--primary);">${cat.icon} ${cat.name}</strong>
+        </div>
+    `;
+    
+    document.getElementById('modalOverlay').classList.add('active');
+    setTimeout(() => document.getElementById('f_intName').focus(), 100);
+}
+
+function openCodeModal(editIndex = -1) {
+    const cat = siteData.categories.find(c => c.id === currentCategoryId);
+    if (!cat) return;
+    
+    const codes = getCodes();
+    const isEdit = editIndex >= 0;
+    const c = isEdit ? codes[editIndex] : { name: '', type: 'script', content: '', desc: '' };
+    
+    currentModal = { type: 'code', editIndex };
+    document.getElementById('modalTitle').innerHTML = `<i class="fas fa-code"></i> ${isEdit ? 'تعديل كود' : 'إضافة كود'}`;
+    
+    document.getElementById('modalBody').innerHTML = `
+        <div class="form-grid">
+            <div class="form-group"><label>💻 اسم الكود</label><input type="text" class="form-control" id="f_codeName" value="${c.name}" placeholder="مثال: كود صناعة انترو"></div>
+            <div class="form-group"><label>📦 النوع</label>
+                <select class="form-control" id="f_codeType">
+                    <option value="interior" ${c.type === 'interior' ? 'selected' : ''}>انترو</option>
+                    <option value="command" ${c.type === 'command' ? 'selected' : ''}>أمر</option>
+                    <option value="script" ${c.type === 'script' ? 'selected' : ''}>سكريبت</option>
+                    <option value="other" ${c.type === 'other' ? 'selected' : ''}>أخرى</option>
+                </select>
+            </div>
+        </div>
+        <div class="form-group" style="margin-top:12px;"><label>📝 الوصف</label><input type="text" class="form-control" id="f_codeDesc" value="${c.desc || ''}" placeholder="وصف مختصر"></div>
+        <div class="form-group" style="margin-top:12px;"><label>📄 المحتوى</label><textarea class="form-control" id="f_codeContent" rows="10" placeholder="اكتب الكود هنا...">${c.content || ''}</textarea></div>
+        <div style="margin-top:12px;padding:10px;background:var(--bg-input);border-radius:8px;font-size:12px;color:var(--text-muted);">
+            <i class="fas fa-info-circle"></i> القسم: <strong style="color:var(--primary);">${cat.icon} ${cat.name}</strong>
+        </div>
+    `;
+    
+    document.getElementById('modalOverlay').classList.add('active');
+    setTimeout(() => document.getElementById('f_codeName').focus(), 100);
 }
 
 function closeModal() {
@@ -1788,37 +2149,39 @@ function closeModal() {
 }
 
 function saveModal() {
-    const { type, editIndex } = currentModal;
-    const isEdit = editIndex >= 0;
+    const { type, editIndex, editId, isEdit } = currentModal;
     
     try {
         if (type === 'page') {
             const name = document.getElementById('f_pageName').value.trim();
+            const icon = document.getElementById('f_pageIcon').value.trim() || '📄';
             const link = document.getElementById('f_pageLink').value.trim();
             const desc = document.getElementById('f_pageDesc').value.trim();
             if (!name || !link) return toast('error', 'خطأ', 'الاسم والرابط مطلوبان');
             
-            if (isEdit) {
-                pages[editIndex] = { ...pages[editIndex], name, link, desc };
+            if (editId !== null) {
+                const p = pages.find(pg => pg.id === editId);
+                p.name = name; p.icon = icon; p.link = link; p.desc = desc;
                 logActivity('تعديل صفحة', `تم تعديل صفحة "${name}"`, 'fa-pen', 'var(--info)');
             } else {
                 const id = pages.length ? Math.max(...pages.map(p => p.id)) + 1 : 1;
-                pages.push({ id, name, link, desc });
+                pages.push({ id, name, icon, link, desc });
                 logActivity('إضافة صفحة', `تمت إضافة صفحة "${name}"`, 'fa-plus', 'var(--success)');
             }
             localStorage.setItem('admin_pages', JSON.stringify(pages));
-            renderPages();
-            toast('success', 'تم الحفظ', isEdit ? 'تم تعديل الصفحة' : 'تمت إضافة الصفحة');
+            renderExplorer();
+            toast('success', 'تم الحفظ', editId !== null ? 'تم تعديل الصفحة' : 'تمت إضافة الصفحة');
         }
         else if (type === 'category') {
             const name = document.getElementById('f_catName').value.trim();
             const icon = document.getElementById('f_catIcon').value.trim() || '📁';
+            const desc = document.getElementById('f_catDesc').value.trim();
             const pageId = parseInt(document.getElementById('f_catPage').value);
             if (!name) return toast('error', 'خطأ', 'اسم القسم مطلوب');
             
-            if (isEdit) {
-                const oldName = siteData.categories[editIndex].name;
-                // Update references
+            if (isEdit && editId !== null) {
+                const cat = siteData.categories.find(c => c.id === editId);
+                const oldName = cat.name;
                 if (oldName !== name) {
                     siteData.commands.forEach(c => { if (c.category === oldName) c.category = name; });
                     siteData.rules.forEach(r => { if (r.category === oldName) r.category = name; });
@@ -1827,89 +2190,96 @@ function saveModal() {
                     codes.forEach(c => { if (c.category === oldName) c.category = name; });
                     saveCodes(codes);
                 }
-                siteData.categories[editIndex] = { ...siteData.categories[editIndex], name, icon, pageId };
+                cat.name = name; cat.icon = icon; cat.desc = desc; cat.pageId = pageId;
                 logActivity('تعديل قسم', `تم تعديل قسم "${name}"`, 'fa-pen', 'var(--info)');
             } else {
                 const id = siteData.categories.length ? Math.max(...siteData.categories.map(c => c.id)) + 1 : 1;
-                siteData.categories.push({ id, name, icon, pageId });
+                siteData.categories.push({ id, name, icon, desc, pageId });
                 logActivity('إضافة قسم', `تمت إضافة قسم "${name}"`, 'fa-plus', 'var(--success)');
             }
             saveData();
-            renderCategories();
-            updateCategoryFilters();
+            renderExplorer();
             toast('success', 'تم الحفظ', isEdit ? 'تم تعديل القسم' : 'تمت إضافة القسم');
         }
         else if (type === 'command') {
+            const cat = siteData.categories.find(c => c.id === currentCategoryId);
+            if (!cat) return;
+            
             const command = document.getElementById('f_cmdCommand').value.trim();
             const meaning = document.getElementById('f_cmdMeaning').value.trim();
-            const category = document.getElementById('f_cmdCategory').value;
             if (!command || !meaning) return toast('error', 'خطأ', 'الأمر والمعنى مطلوبان');
             
-            if (isEdit) {
-                siteData.commands[editIndex] = { command, meaning, category };
+            if (editIndex >= 0) {
+                siteData.commands[editIndex] = { command, meaning, category: cat.name };
                 logActivity('تعديل أمر', `تم تعديل الأمر "${command}"`, 'fa-pen', 'var(--info)');
             } else {
-                siteData.commands.push({ command, meaning, category });
+                siteData.commands.push({ command, meaning, category: cat.name });
                 logActivity('إضافة أمر', `تمت إضافة الأمر "${command}"`, 'fa-plus', 'var(--success)');
             }
             saveData();
-            renderCommands();
-            toast('success', 'تم الحفظ', isEdit ? 'تم تعديل الأمر' : 'تمت إضافة الأمر');
+            renderContentLevel();
+            toast('success', 'تم الحفظ', editIndex >= 0 ? 'تم تعديل الأمر' : 'تمت إضافة الأمر');
         }
         else if (type === 'rule') {
+            const cat = siteData.categories.find(c => c.id === currentCategoryId);
+            if (!cat) return;
+            
             const english = document.getElementById('f_ruleEn').value.trim();
             const arabic = document.getElementById('f_ruleAr').value.trim();
-            const category = document.getElementById('f_ruleCategory').value;
             if (!english || !arabic) return toast('error', 'خطأ', 'القانون والمعنى مطلوبان');
             
-            if (isEdit) {
-                siteData.rules[editIndex] = { english, arabic, category };
+            if (editIndex >= 0) {
+                siteData.rules[editIndex] = { english, arabic, category: cat.name };
                 logActivity('تعديل قانون', `تم تعديل القانون "${english}"`, 'fa-pen', 'var(--info)');
             } else {
-                siteData.rules.push({ english, arabic, category });
+                siteData.rules.push({ english, arabic, category: cat.name });
                 logActivity('إضافة قانون', `تمت إضافة القانون "${english}"`, 'fa-plus', 'var(--success)');
             }
             saveData();
-            renderRules();
-            toast('success', 'تم الحفظ', isEdit ? 'تم تعديل القانون' : 'تمت إضافة القانون');
+            renderContentLevel();
+            toast('success', 'تم الحفظ', editIndex >= 0 ? 'تم تعديل القانون' : 'تمت إضافة القانون');
         }
         else if (type === 'interior') {
+            const cat = siteData.categories.find(c => c.id === currentCategoryId);
+            if (!cat) return;
+            
             const name = document.getElementById('f_intName').value.trim();
             const image = document.getElementById('f_intImage').value.trim();
-            const category = document.getElementById('f_intCategory').value;
             if (!name || !image) return toast('error', 'خطأ', 'الاسم والصورة مطلوبان');
             
-            if (isEdit) {
-                siteData.interiors[editIndex] = { name, image, category };
+            if (editIndex >= 0) {
+                siteData.interiors[editIndex] = { name, image, category: cat.name };
                 logActivity('تعديل انترو', `تم تعديل انترو "${name}"`, 'fa-pen', 'var(--info)');
             } else {
-                siteData.interiors.push({ name, image, category });
+                siteData.interiors.push({ name, image, category: cat.name });
                 logActivity('إضافة انترو', `تمت إضافة انترو "${name}"`, 'fa-plus', 'var(--success)');
             }
             saveData();
-            renderInteriors();
-            toast('success', 'تم الحفظ', isEdit ? 'تم تعديل الانترو' : 'تمت إضافة الانترو');
+            renderContentLevel();
+            toast('success', 'تم الحفظ', editIndex >= 0 ? 'تم تعديل الانترو' : 'تمت إضافة الانترو');
         }
         else if (type === 'code') {
+            const cat = siteData.categories.find(c => c.id === currentCategoryId);
+            if (!cat) return;
+            
             const name = document.getElementById('f_codeName').value.trim();
             const typeCode = document.getElementById('f_codeType').value;
-            const category = document.getElementById('f_codeCategory').value;
             const content = document.getElementById('f_codeContent').value;
             const desc = document.getElementById('f_codeDesc').value.trim();
             if (!name || !content) return toast('error', 'خطأ', 'الاسم والمحتوى مطلوبان');
             
             const codes = getCodes();
-            if (isEdit) {
-                codes[editIndex] = { ...codes[editIndex], name, type: typeCode, category, content, desc };
+            if (editIndex >= 0) {
+                codes[editIndex] = { ...codes[editIndex], name, type: typeCode, category: cat.name, content, desc };
                 logActivity('تعديل كود', `تم تعديل كود "${name}"`, 'fa-pen', 'var(--info)');
             } else {
                 const id = codes.length ? Math.max(...codes.map(c => c.id || 0)) + 1 : 1;
-                codes.push({ id, name, type: typeCode, category, content, desc });
+                codes.push({ id, name, type: typeCode, category: cat.name, content, desc });
                 logActivity('إضافة كود', `تمت إضافة كود "${name}"`, 'fa-plus', 'var(--success)');
             }
             saveCodes(codes);
-            renderCodes();
-            toast('success', 'تم الحفظ', isEdit ? 'تم تعديل الكود' : 'تمت إضافة الكود');
+            renderContentLevel();
+            toast('success', 'تم الحفظ', editIndex >= 0 ? 'تم تعديل الكود' : 'تمت إضافة الكود');
         }
         
         updateAllStats();
@@ -1920,98 +2290,96 @@ function saveModal() {
     }
 }
 
-// ===== Edit Functions =====
-function editPage(i) { openModal('page', i); }
-function editCategory(i) { openModal('category', i); }
-function editCommand(i) { openModal('command', i); }
-function editRule(i) { openModal('rule', i); }
-function editInterior(i) { openModal('interior', i); }
-function editCode(i) { openModal('code', i); }
-
 // ===== Delete Functions =====
-function deletePage(i) {
-    if (!confirm(`⚠️ حذف صفحة "${pages[i].name}" وجميع أقسامها؟`)) return;
-    const pageId = pages[i].id;
-    const cats = siteData.categories.filter(c => c.pageId === pageId).map(c => c.name);
+function deletePage(id) {
+    const page = pages.find(p => p.id === id);
+    if (!page) return;
+    if (!confirm(`⚠️ حذف صفحة "${page.name}" وجميع أقسامها ومحتوياتها؟`)) return;
+    
+    const cats = siteData.categories.filter(c => c.pageId === id).map(c => c.name);
     siteData.commands = siteData.commands.filter(c => !cats.includes(c.category));
     siteData.rules = siteData.rules.filter(r => !cats.includes(r.category));
-    siteData.interiors = siteData.interiors.filter(int => !cats.includes(int.category));
-    siteData.categories = siteData.categories.filter(c => c.pageId !== pageId);
-    pages.splice(i, 1);
+    siteData.interiors = siteData.interiors.filter(i => !cats.includes(i.category));
+    let codes = getCodes().filter(c => !cats.includes(c.category));
+    saveCodes(codes);
+    siteData.categories = siteData.categories.filter(c => c.pageId !== id);
+    pages = pages.filter(p => p.id !== id);
+    
     localStorage.setItem('admin_pages', JSON.stringify(pages));
     saveData();
-    renderAll();
+    renderExplorer();
     updateAllStats();
-    logActivity('حذف صفحة', `تم حذف صفحة`, 'fa-trash', 'var(--danger)');
-    toast('success', 'تم الحذف', 'تم حذف الصفحة بنجاح');
+    logActivity('حذف صفحة', `تم حذف صفحة "${page.name}"`, 'fa-trash', 'var(--danger)');
+    toast('success', 'تم الحذف', 'تم حذف الصفحة وجميع محتوياتها');
 }
 
-function deleteCategory(i) {
-    const cat = siteData.categories[i];
+function deleteCategory(id) {
+    const cat = siteData.categories.find(c => c.id === id);
+    if (!cat) return;
     if (!confirm(`⚠️ حذف قسم "${cat.name}" وجميع محتوياته؟`)) return;
+    
     siteData.commands = siteData.commands.filter(c => c.category !== cat.name);
     siteData.rules = siteData.rules.filter(r => r.category !== cat.name);
-    siteData.interiors = siteData.interiors.filter(int => int.category !== cat.name);
-    const codes = getCodes().filter(c => c.category !== cat.name);
+    siteData.interiors = siteData.interiors.filter(i => i.category !== cat.name);
+    let codes = getCodes().filter(c => c.category !== cat.name);
     saveCodes(codes);
-    siteData.categories.splice(i, 1);
+    siteData.categories = siteData.categories.filter(c => c.id !== id);
+    
     saveData();
-    renderAll();
+    renderExplorer();
     updateAllStats();
     logActivity('حذف قسم', `تم حذف قسم "${cat.name}"`, 'fa-trash', 'var(--danger)');
-    toast('success', 'تم الحذف', 'تم حذف القسم بنجاح');
+    toast('success', 'تم الحذف', 'تم حذف القسم وجميع محتوياته');
 }
 
-function deleteCommand(i) {
+function deleteCommand(index) {
     if (!confirm('⚠️ حذف هذا الأمر؟')) return;
-    const cmd = siteData.commands[i].command;
-    siteData.commands.splice(i, 1);
+    const cmd = siteData.commands[index].command;
+    siteData.commands.splice(index, 1);
     saveData();
-    renderCommands();
+    renderContentLevel();
     updateAllStats();
     logActivity('حذف أمر', `تم حذف الأمر "${cmd}"`, 'fa-trash', 'var(--danger)');
     toast('success', 'تم الحذف', 'تم حذف الأمر');
 }
 
-function deleteRule(i) {
+function deleteRule(index) {
     if (!confirm('⚠️ حذف هذا القانون؟')) return;
-    const rule = siteData.rules[i].english;
-    siteData.rules.splice(i, 1);
+    const rule = siteData.rules[index].english;
+    siteData.rules.splice(index, 1);
     saveData();
-    renderRules();
+    renderContentLevel();
     updateAllStats();
     logActivity('حذف قانون', `تم حذف القانون "${rule}"`, 'fa-trash', 'var(--danger)');
     toast('success', 'تم الحذف', 'تم حذف القانون');
 }
 
-function deleteInterior(i) {
+function deleteInterior(index) {
     if (!confirm('⚠️ حذف هذا الانترو؟')) return;
-    const name = siteData.interiors[i].name;
-    siteData.interiors.splice(i, 1);
+    const name = siteData.interiors[index].name;
+    siteData.interiors.splice(index, 1);
     saveData();
-    renderInteriors();
+    renderContentLevel();
     updateAllStats();
     logActivity('حذف انترو', `تم حذف انترو "${name}"`, 'fa-trash', 'var(--danger)');
     toast('success', 'تم الحذف', 'تم حذف الانترو');
 }
 
-function deleteCode(i) {
+function deleteCode(index) {
     if (!confirm('⚠️ حذف هذا الكود؟')) return;
     const codes = getCodes();
-    const name = codes[i].name;
-    codes.splice(i, 1);
+    const name = codes[index].name;
+    codes.splice(index, 1);
     saveCodes(codes);
-    renderCodes();
+    renderContentLevel();
     updateAllStats();
     logActivity('حذف كود', `تم حذف كود "${name}"`, 'fa-trash', 'var(--danger)');
     toast('success', 'تم الحذف', 'تم حذف الكود');
 }
 
-// ===== Copy Code =====
-function copyCodeContent(i) {
+function copyCodeContent(index) {
     const codes = getCodes();
-    const content = codes[i].content;
-    navigator.clipboard.writeText(content).then(() => {
+    navigator.clipboard.writeText(codes[index].content).then(() => {
         toast('success', 'تم النسخ', 'تم نسخ الكود إلى الحافظة');
     });
 }
@@ -2021,38 +2389,51 @@ function globalSearchHandler() {
     const q = document.getElementById('globalSearch').value.toLowerCase().trim();
     if (!q) return;
     
-    // Search in commands
+    // Find in commands
     const cmd = siteData.commands.find(c => c.command.toLowerCase().includes(q) || c.meaning.includes(q));
     if (cmd) {
-        navigateTo('commands');
-        document.getElementById('searchCommands').value = q;
-        renderCommands();
-        return;
+        const cat = siteData.categories.find(c => c.name === cmd.category);
+        if (cat) {
+            const page = pages.find(p => p.id === cat.pageId);
+            if (page) {
+                navigateTo('explorer');
+                currentPageId = page.id;
+                currentCategoryId = cat.id;
+                explorerLevel = 'content';
+                currentContentTab = 'commands';
+                renderExplorer();
+                document.getElementById('searchCommands').value = q;
+                renderContentCommands();
+                return;
+            }
+        }
     }
     
-    // Search in rules
+    // Find in rules
     const rule = siteData.rules.find(r => r.english.toLowerCase().includes(q) || r.arabic.includes(q));
     if (rule) {
-        navigateTo('rules');
-        document.getElementById('searchRules').value = q;
-        renderRules();
-        return;
-    }
-    
-    // Search in interiors
-    const interior = siteData.interiors.find(int => int.name.toLowerCase().includes(q));
-    if (interior) {
-        navigateTo('interiors');
-        document.getElementById('searchInteriors').value = q;
-        renderInteriors();
-        return;
+        const cat = siteData.categories.find(c => c.name === rule.category);
+        if (cat) {
+            const page = pages.find(p => p.id === cat.pageId);
+            if (page) {
+                navigateTo('explorer');
+                currentPageId = page.id;
+                currentCategoryId = cat.id;
+                explorerLevel = 'content';
+                currentContentTab = 'rules';
+                renderExplorer();
+                document.getElementById('searchRules').value = q;
+                renderContentRules();
+                return;
+            }
+        }
     }
 }
 
 // ===== Export/Import =====
 function exportAllData() {
     const data = {
-        version: '2.0',
+        version: '3.0',
         exportDate: new Date().toISOString(),
         pages: pages,
         categories: siteData.categories,
@@ -2079,18 +2460,6 @@ function exportAllData() {
     toast('success', 'تم التصدير', 'تم حفظ نسخة احتياطية');
 }
 
-function exportByType(type) {
-    const data = siteData[type] || [];
-    const blob = new Blob([JSON.stringify(data, null, 2)], { type: 'application/json' });
-    const url = URL.createObjectURL(blob);
-    const a = document.createElement('a');
-    a.href = url;
-    a.download = `mta_${type}_${new Date().toISOString().slice(0,10)}.json`;
-    a.click();
-    URL.revokeObjectURL(url);
-    toast('success', 'تم التصدير', `تم تصدير ${data.length} عنصر`);
-}
-
 function importDataFile(event) {
     const file = event.target.files[0];
     if (!file) return;
@@ -2099,7 +2468,6 @@ function importDataFile(event) {
     reader.onload = function(e) {
         try {
             const data = JSON.parse(e.target.result);
-            
             if (!confirm('⚠️ سيتم استبدال البيانات الحالية. هل تريد المتابعة؟')) return;
             
             if (data.pages) { pages = data.pages; localStorage.setItem('admin_pages', JSON.stringify(pages)); }
@@ -2115,7 +2483,7 @@ function importDataFile(event) {
             }
             
             saveData();
-            renderAll();
+            renderExplorer();
             updateAllStats();
             loadSettings();
             
@@ -2130,7 +2498,6 @@ function importDataFile(event) {
     event.target.value = '';
 }
 
-// ===== Reset/Clear =====
 function resetToDefault() {
     if (!confirm('⚠️ استعادة البيانات الافتراضية؟ سيتم فقدان جميع التعديلات.')) return;
     if (!confirm('تأكيد نهائي؟')) return;
@@ -2155,7 +2522,7 @@ function clearAllData() {
     saveCodes([]);
     saveData();
     localStorage.removeItem('admin_pages');
-    renderAll();
+    renderExplorer();
     updateAllStats();
     logActivity('حذف الكل', 'تم حذف جميع البيانات', 'fa-trash', 'var(--danger)');
     toast('warning', 'تم الحذف', 'تم حذف جميع البيانات');
@@ -2163,13 +2530,7 @@ function clearAllData() {
 
 // ===== Activity Log =====
 function logActivity(title, message, icon, color) {
-    activityLog.unshift({
-        title,
-        message,
-        icon,
-        color,
-        time: new Date().toISOString()
-    });
+    activityLog.unshift({ title, message, icon, color, time: new Date().toISOString() });
     if (activityLog.length > 50) activityLog = activityLog.slice(0, 50);
     localStorage.setItem('activity_log', JSON.stringify(activityLog));
     renderActivity();
@@ -2230,12 +2591,8 @@ function saveSettings() {
     const siteName = document.getElementById('settingSiteName').value.trim();
     const introCode = document.getElementById('settingIntroCode').value;
     
-    if (pin && pin.length === 4) {
-        localStorage.setItem('admin_pin', pin);
-    }
-    if (siteName) {
-        localStorage.setItem('site_name', siteName);
-    }
+    if (pin && pin.length === 4) localStorage.setItem('admin_pin', pin);
+    if (siteName) localStorage.setItem('site_name', siteName);
     siteData.introCode = introCode;
     saveData();
     
@@ -2274,8 +2631,7 @@ document.addEventListener('keydown', (e) => {
     }
 });
 
-console.log('%c🎛️ MTA Guide Admin Panel v2.0', 'color: #6366f1; font-size: 20px; font-weight: bold;');
-console.log('%c⌨️ اختصارات: Ctrl+K للبحث، Esc لإغلاق النوافذ', 'color: #94a3b8;');
+console.log('%c🎯 MTA Guide Admin Panel v3.0 - Hierarchical', 'color: #6366f1; font-size: 20px; font-weight: bold;');
 </script>
 
 </body>
