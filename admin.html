@@ -22,12 +22,7 @@
             --transition: all 0.3s ease;
         }
 
-        * {
-            margin: 0;
-            padding: 0;
-            box-sizing: border-box;
-        }
-
+        * { margin: 0; padding: 0; box-sizing: border-box; }
         body {
             font-family: 'Cairo', 'Tahoma', sans-serif;
             background: var(--bg-dark);
@@ -53,24 +48,9 @@
             flex-wrap: wrap;
             gap: 10px;
         }
-
-        header .logo {
-            font-size: 24px;
-            font-weight: bold;
-            color: var(--primary);
-            text-decoration: none;
-            display: flex;
-            align-items: center;
-            gap: 10px;
-        }
+        header .logo { font-size: 24px; font-weight: bold; color: var(--primary); text-decoration: none; display: flex; align-items: center; gap: 10px; }
         header .logo span { color: white; }
-
-        nav {
-            display: flex;
-            gap: 8px;
-            flex-wrap: wrap;
-        }
-
+        nav { display: flex; gap: 8px; flex-wrap: wrap; }
         nav a {
             color: var(--text-light);
             text-decoration: none;
@@ -96,24 +76,15 @@
             transition: var(--transition);
         }
         .card:hover { border-color: var(--primary); }
-
-        .card-title {
-            font-size: 22px;
-            color: var(--primary);
-            margin-bottom: 15px;
-            display: flex;
-            align-items: center;
-            gap: 10px;
-        }
+        .card-title { font-size: 22px; color: var(--primary); margin-bottom: 15px; display: flex; align-items: center; gap: 10px; }
 
         /* ===== الإحصائيات ===== */
         .admin-dashboard {
             display: grid;
-            grid-template-columns: repeat(auto-fit, minmax(140px, 1fr));
+            grid-template-columns: repeat(auto-fit, minmax(130px, 1fr));
             gap: 12px;
             margin-bottom: 25px;
         }
-
         .stat-card {
             background: var(--bg-card);
             border-radius: var(--radius);
@@ -137,7 +108,6 @@
             border-bottom: 2px solid var(--border-color);
             padding-bottom: 10px;
         }
-
         .admin-tabs button {
             padding: 8px 16px;
             border: none;
@@ -183,7 +153,6 @@
             border-radius: var(--radius);
             padding: 8px;
         }
-
         .item-list .item {
             display: flex;
             justify-content: space-between;
@@ -213,8 +182,6 @@
         .btn-sm-edit:hover { background: #cc8800; }
         .btn-sm-delete { background: #ff3333; color: white; }
         .btn-sm-delete:hover { background: #cc0000; }
-        .btn-sm-move { background: #3399ff; color: white; }
-        .btn-sm-move:hover { background: #2277cc; }
 
         /* ===== النماذج ===== */
         .form-grid {
@@ -292,14 +259,10 @@
             to { opacity: 1; transform: translateY(0); }
         }
 
-        .empty-state {
-            text-align: center;
-            padding: 25px;
-            color: var(--text-muted);
-        }
+        .empty-state { text-align: center; padding: 25px; color: var(--text-muted); }
         .empty-state .big-icon { font-size: 40px; display: block; margin-bottom: 10px; }
 
-        /* ===== شجرة المحتوى ===== */
+        /* ===== شجرة المحتوى المتطورة ===== */
         .content-tree {
             display: flex;
             flex-direction: column;
@@ -311,7 +274,9 @@
             border-radius: var(--radius);
             border: 1px solid var(--border-color);
             overflow: hidden;
+            transition: var(--transition);
         }
+        .tree-node:hover { border-color: var(--primary); }
 
         .tree-node .node-header {
             display: flex;
@@ -323,7 +288,7 @@
             transition: var(--transition);
         }
         .tree-node .node-header:hover { background: var(--bg-card-hover); }
-        .tree-node .node-header .node-title { font-weight: 600; color: var(--text-light); }
+        .tree-node .node-header .node-title { font-weight: 600; color: var(--text-light); font-size: 15px; }
         .tree-node .node-header .node-actions { display: flex; gap: 5px; }
 
         .tree-node .node-children {
@@ -332,6 +297,10 @@
             display: none;
         }
         .tree-node .node-children.open { display: block; }
+
+        .tree-level-1 { margin-bottom: 5px; }
+        .tree-level-2 { margin-right: 25px; }
+        .tree-level-3 { margin-right: 50px; }
 
         .tree-node .node-child-item {
             display: flex;
@@ -357,17 +326,22 @@
             transition: var(--transition);
         }
 
-        .tree-level-1 { margin-right: 0; }
-        .tree-level-2 { margin-right: 30px; }
-        .tree-level-3 { margin-right: 60px; }
+        .category-badge {
+            display: inline-block;
+            background: var(--bg-card-hover);
+            padding: 2px 10px;
+            border-radius: 12px;
+            font-size: 11px;
+            color: var(--text-muted);
+            border: 1px solid var(--border-color);
+        }
 
-        /* ===== كود ===== */
         .code-block-item {
             background: #0a0a1a;
             border-radius: var(--radius);
-            padding: 15px;
+            padding: 12px;
             border: 1px solid var(--border-color);
-            margin-top: 10px;
+            margin-top: 8px;
             position: relative;
             direction: ltr;
             text-align: left;
@@ -383,17 +357,17 @@
         }
         .code-block-item .code-actions {
             position: absolute;
-            top: 10px;
-            right: 10px;
+            top: 8px;
+            right: 8px;
             display: flex;
             gap: 5px;
         }
         .code-block-item .code-actions button {
-            padding: 3px 10px;
+            padding: 2px 10px;
             border: none;
             border-radius: 4px;
             cursor: pointer;
-            font-size: 11px;
+            font-size: 10px;
             transition: var(--transition);
         }
 
@@ -407,12 +381,32 @@
         }
         .section-header h4 { color: var(--text-muted); margin: 0; }
 
+        .page-selector {
+            display: flex;
+            gap: 10px;
+            flex-wrap: wrap;
+            margin-bottom: 15px;
+        }
+        .page-selector .page-btn {
+            padding: 6px 14px;
+            border: 1px solid var(--border-color);
+            border-radius: 20px;
+            background: var(--bg-dark);
+            color: var(--text-light);
+            cursor: pointer;
+            transition: var(--transition);
+            font-size: 13px;
+        }
+        .page-selector .page-btn:hover { background: var(--bg-card-hover); }
+        .page-selector .page-btn.active { background: var(--primary); border-color: var(--primary); color: white; }
+
         @media (max-width: 768px) {
             .form-grid { grid-template-columns: 1fr; }
             .admin-dashboard { grid-template-columns: repeat(2, 1fr); gap: 10px; }
             .admin-tabs button { font-size: 11px; padding: 6px 10px; }
             .tree-level-2 { margin-right: 15px; }
             .tree-level-3 { margin-right: 30px; }
+            .page-selector .page-btn { font-size: 11px; padding: 4px 10px; }
         }
         @media (max-width: 480px) {
             .admin-dashboard { grid-template-columns: 1fr 1fr; gap: 8px; }
@@ -456,41 +450,13 @@
 
             <!-- ===== الإحصائيات ===== -->
             <div class="admin-dashboard">
-                <div class="stat-card">
-                    <span class="icon-big">📄</span>
-                    <div class="number" id="statPages">0</div>
-                    <div class="label">الصفحات</div>
-                </div>
-                <div class="stat-card">
-                    <span class="icon-big">📂</span>
-                    <div class="number" id="statCategories">0</div>
-                    <div class="label">الأقسام</div>
-                </div>
-                <div class="stat-card">
-                    <span class="icon-big">📋</span>
-                    <div class="number" id="statCommands">0</div>
-                    <div class="label">الأوامر</div>
-                </div>
-                <div class="stat-card">
-                    <span class="icon-big">📜</span>
-                    <div class="number" id="statRules">0</div>
-                    <div class="label">القوانين</div>
-                </div>
-                <div class="stat-card">
-                    <span class="icon-big">🏠</span>
-                    <div class="number" id="statInteriors">0</div>
-                    <div class="label">الانترو</div>
-                </div>
-                <div class="stat-card">
-                    <span class="icon-big">💻</span>
-                    <div class="number" id="statCodes">0</div>
-                    <div class="label">الأكواد</div>
-                </div>
-                <div class="stat-card">
-                    <span class="icon-big">💾</span>
-                    <div class="number" id="statSize">0</div>
-                    <div class="label">حجم البيانات</div>
-                </div>
+                <div class="stat-card"><span class="icon-big">📄</span><div class="number" id="statPages">0</div><div class="label">الصفحات</div></div>
+                <div class="stat-card"><span class="icon-big">📂</span><div class="number" id="statCategories">0</div><div class="label">الأقسام</div></div>
+                <div class="stat-card"><span class="icon-big">📋</span><div class="number" id="statCommands">0</div><div class="label">الأوامر</div></div>
+                <div class="stat-card"><span class="icon-big">📜</span><div class="number" id="statRules">0</div><div class="label">القوانين</div></div>
+                <div class="stat-card"><span class="icon-big">🏠</span><div class="number" id="statInteriors">0</div><div class="label">الانترو</div></div>
+                <div class="stat-card"><span class="icon-big">💻</span><div class="number" id="statCodes">0</div><div class="label">الأكواد</div></div>
+                <div class="stat-card"><span class="icon-big">💾</span><div class="number" id="statSize">0</div><div class="label">حجم البيانات</div></div>
             </div>
 
             <!-- ===== أزرار سريعة ===== -->
@@ -520,6 +486,10 @@
                     <p style="color:var(--text-muted);margin-bottom:15px;">
                         الصفحات ← الأقسام ← المحتوى (أوامر، قوانين، انترو، أكواد)
                     </p>
+
+                    <!-- ===== محدد الصفحات ===== -->
+                    <div class="page-selector" id="pageSelector"></div>
+
                     <div id="siteTree" class="content-tree"></div>
                 </div>
             </div>
@@ -529,18 +499,9 @@
                 <div class="card">
                     <h3 style="color:#3399ff;">📄 إدارة الصفحات</h3>
                     <div class="form-grid">
-                        <div>
-                            <label>اسم الصفحة</label>
-                            <input type="text" id="newPageName" placeholder="مثال: الرئيسية">
-                        </div>
-                        <div>
-                            <label>رابط الصفحة</label>
-                            <input type="text" id="newPageLink" placeholder="مثال: index.html">
-                        </div>
-                        <div class="full">
-                            <label>الوصف</label>
-                            <input type="text" id="newPageDesc" placeholder="وصف الصفحة">
-                        </div>
+                        <div><label>اسم الصفحة</label><input type="text" id="newPageName" placeholder="مثال: الرئيسية"></div>
+                        <div><label>رابط الصفحة</label><input type="text" id="newPageLink" placeholder="مثال: index.html"></div>
+                        <div class="full"><label>الوصف</label><input type="text" id="newPageDesc" placeholder="وصف الصفحة"></div>
                     </div>
                     <button class="btn btn-success" onclick="addPage()">➕ إضافة صفحة</button>
 
@@ -558,22 +519,10 @@
                 <div class="card">
                     <h3 style="color:var(--primary);">📂 إدارة الأقسام</h3>
                     <div class="form-grid">
-                        <div>
-                            <label>اسم القسم</label>
-                            <input type="text" id="newCategoryName" placeholder="مثال: الأوامر">
-                        </div>
-                        <div>
-                            <label>الأيقونة</label>
-                            <input type="text" id="newCategoryIcon" placeholder="مثال: 📋">
-                        </div>
-                        <div>
-                            <label>الصفحة التابع لها</label>
-                            <select id="newCategoryPage"></select>
-                        </div>
-                        <div class="full">
-                            <label>الوصف</label>
-                            <input type="text" id="newCategoryDesc" placeholder="وصف القسم">
-                        </div>
+                        <div><label>اسم القسم</label><input type="text" id="newCategoryName" placeholder="مثال: الأوامر"></div>
+                        <div><label>الأيقونة</label><input type="text" id="newCategoryIcon" placeholder="مثال: 📋"></div>
+                        <div><label>الصفحة التابع لها</label><select id="newCategoryPage"></select></div>
+                        <div class="full"><label>الوصف</label><input type="text" id="newCategoryDesc" placeholder="وصف القسم"></div>
                     </div>
                     <button class="btn btn-success" onclick="addCategory()">➕ إضافة قسم</button>
 
@@ -591,22 +540,10 @@
                 <div class="card">
                     <h3 style="color:#ffaa00;">📋 إدارة الأوامر</h3>
                     <div class="form-grid">
-                        <div>
-                            <label>الأمر</label>
-                            <input type="text" id="newCommand" placeholder="مثال: /heal">
-                        </div>
-                        <div>
-                            <label>المعنى</label>
-                            <input type="text" id="newMeaning" placeholder="معنى الأمر">
-                        </div>
-                        <div>
-                            <label>القسم</label>
-                            <select id="newCommandCategory"></select>
-                        </div>
-                        <div class="full">
-                            <label>ملاحظات</label>
-                            <input type="text" id="newCommandNote" placeholder="ملاحظات عن الأمر">
-                        </div>
+                        <div><label>الأمر</label><input type="text" id="newCommand" placeholder="مثال: /heal"></div>
+                        <div><label>المعنى</label><input type="text" id="newMeaning" placeholder="معنى الأمر"></div>
+                        <div><label>القسم</label><select id="newCommandCategory"></select></div>
+                        <div class="full"><label>ملاحظات</label><input type="text" id="newCommandNote" placeholder="ملاحظات عن الأمر"></div>
                     </div>
                     <button class="btn btn-success" onclick="addCommand()">➕ إضافة أمر</button>
 
@@ -624,18 +561,9 @@
                 <div class="card">
                     <h3 style="color:#00cc66;">📜 إدارة القوانين</h3>
                     <div class="form-grid">
-                        <div>
-                            <label>القانون (English)</label>
-                            <input type="text" id="newRuleEn" placeholder="مثال: DM">
-                        </div>
-                        <div>
-                            <label>المعنى (Arabic)</label>
-                            <input type="text" id="newRuleAr" placeholder="معنى القانون">
-                        </div>
-                        <div>
-                            <label>القسم</label>
-                            <select id="newRuleCategory"></select>
-                        </div>
+                        <div><label>القانون (English)</label><input type="text" id="newRuleEn" placeholder="مثال: DM"></div>
+                        <div><label>المعنى (Arabic)</label><input type="text" id="newRuleAr" placeholder="معنى القانون"></div>
+                        <div><label>القسم</label><select id="newRuleCategory"></select></div>
                     </div>
                     <button class="btn btn-success" onclick="addRule()">➕ إضافة قانون</button>
 
@@ -653,22 +581,10 @@
                 <div class="card">
                     <h3 style="color:#cc66ff;">🏠 إدارة الانترو</h3>
                     <div class="form-grid">
-                        <div>
-                            <label>اسم الانترو</label>
-                            <input type="text" id="newInteriorName" placeholder="مثال: قصر">
-                        </div>
-                        <div>
-                            <label>رابط الصورة</label>
-                            <input type="text" id="newInteriorImage" placeholder="https://example.com/image.png">
-                        </div>
-                        <div>
-                            <label>القسم</label>
-                            <select id="newInteriorCategory"></select>
-                        </div>
-                        <div class="full">
-                            <label>الوصف</label>
-                            <input type="text" id="newInteriorDesc" placeholder="وصف الانترو">
-                        </div>
+                        <div><label>اسم الانترو</label><input type="text" id="newInteriorName" placeholder="مثال: قصر"></div>
+                        <div><label>رابط الصورة</label><input type="text" id="newInteriorImage" placeholder="https://example.com/image.png"></div>
+                        <div><label>القسم</label><select id="newInteriorCategory"></select></div>
+                        <div class="full"><label>الوصف</label><input type="text" id="newInteriorDesc" placeholder="وصف الانترو"></div>
                     </div>
                     <button class="btn btn-success" onclick="addInterior()">➕ إضافة انترو</button>
 
@@ -686,12 +602,8 @@
                 <div class="card">
                     <h3 style="color:#ff66aa;">💻 إدارة الأكواد</h3>
                     <div class="form-grid">
-                        <div>
-                            <label>اسم الكود</label>
-                            <input type="text" id="newCodeName" placeholder="مثال: كود قصر">
-                        </div>
-                        <div>
-                            <label>النوع</label>
+                        <div><label>اسم الكود</label><input type="text" id="newCodeName" placeholder="مثال: كود قصر"></div>
+                        <div><label>النوع</label>
                             <select id="newCodeType">
                                 <option value="interior">انترو</option>
                                 <option value="command">أمر</option>
@@ -699,18 +611,9 @@
                                 <option value="other">أخرى</option>
                             </select>
                         </div>
-                        <div>
-                            <label>القسم</label>
-                            <select id="newCodeCategory"></select>
-                        </div>
-                        <div class="full">
-                            <label>الكود</label>
-                            <textarea id="newCodeContent" placeholder="أدخل الكود هنا..."></textarea>
-                        </div>
-                        <div class="full">
-                            <label>الوصف</label>
-                            <input type="text" id="newCodeDesc" placeholder="وصف الكود">
-                        </div>
+                        <div><label>القسم</label><select id="newCodeCategory"></select></div>
+                        <div class="full"><label>الكود</label><textarea id="newCodeContent" placeholder="أدخل الكود هنا..."></textarea></div>
+                        <div class="full"><label>الوصف</label><input type="text" id="newCodeDesc" placeholder="وصف الكود"></div>
                     </div>
                     <button class="btn btn-success" onclick="addCode()">➕ إضافة كود</button>
 
@@ -732,7 +635,7 @@
     <script src="data.js"></script>
     <script>
         // ============================================================
-        // نظام الإدارة المتطور V2 - يعمل مع data.js
+        // نظام الإدارة المتطور V3 - يعمل مع data.js
         // ============================================================
 
         const ADMIN_PASSWORD = '0000';
@@ -740,6 +643,7 @@
         // ===== هيكل البيانات =====
         let pages = [];
         let codes = [];
+        let selectedPageId = null;
 
         // ===== تحميل البيانات =====
         function loadPages() {
@@ -810,7 +714,8 @@
         // ===== تحميل كل البيانات =====
         function loadAllData() {
             updateSelects();
-            renderTree();
+            renderPageSelector();
+            renderTree(selectedPageId);
             renderPages();
             renderCategories();
             renderCommands();
@@ -863,10 +768,40 @@
             });
         }
 
+        // ===== محدد الصفحات =====
+        function renderPageSelector() {
+            const container = document.getElementById('pageSelector');
+            if (!container) return;
+
+            if (pages.length === 0) {
+                container.innerHTML = '<span style="color:var(--text-muted);">لا توجد صفحات</span>';
+                return;
+            }
+
+            container.innerHTML = pages.map(p =>
+                `<button class="page-btn ${selectedPageId === p.id ? 'active' : ''}" onclick="selectPage(${p.id})">
+                    📄 ${p.name}
+                </button>`
+            ).join('');
+
+            // تحديد أول صفحة إذا لم يتم تحديد أي صفحة
+            if (selectedPageId === null && pages.length > 0) {
+                selectedPageId = pages[0].id;
+                renderPageSelector();
+                renderTree(selectedPageId);
+            }
+        }
+
+        function selectPage(pageId) {
+            selectedPageId = pageId;
+            renderPageSelector();
+            renderTree(pageId);
+        }
+
         // ============================================================
-        // عرض الهيكل (الشجرة)
+        // عرض الهيكل (الشجرة) حسب الصفحة المحددة
         // ============================================================
-        function renderTree() {
+        function renderTree(pageId) {
             const container = document.getElementById('siteTree');
             if (!container) return;
 
@@ -875,39 +810,50 @@
                 return;
             }
 
-            let html = '';
-            pages.forEach(page => {
-                const pageCats = siteData.categories.filter(c => c.pageId === page.id);
+            const page = pages.find(p => p.id === pageId);
+            if (!page) {
+                container.innerHTML = `<div class="empty-state"><span class="big-icon">🌳</span>الصفحة غير موجودة</div>`;
+                return;
+            }
 
-                html += `
-                    <div class="tree-node tree-level-1">
-                        <div class="node-header" onclick="toggleNode(this)">
-                            <span class="node-title">📄 ${page.name}</span>
-                            <div class="node-actions">
-                                <button class="btn btn-sm btn-warning" onclick="event.stopPropagation();editPageById(${page.id})">✏️</button>
-                                <button class="btn btn-sm btn-danger" onclick="event.stopPropagation();deletePageById(${page.id})">🗑️</button>
+            const pageCats = siteData.categories.filter(c => c.pageId === pageId);
+
+            let html = `
+                <div style="background:var(--bg-card);padding:10px 16px;border-radius:8px;margin-bottom:10px;display:flex;justify-content:space-between;align-items:center;flex-wrap:wrap;gap:10px;">
+                    <div>
+                        <span style="font-size:18px;">📄 ${page.name}</span>
+                        <span style="color:var(--text-muted);font-size:13px;margin-right:10px;">${page.link}</span>
+                    </div>
+                    <div style="display:flex;gap:5px;">
+                        <button class="btn btn-sm btn-warning" onclick="editPageById(${page.id})">✏️ تعديل</button>
+                        <button class="btn btn-sm btn-danger" onclick="deletePageById(${page.id})">🗑️ حذف</button>
+                    </div>
+                </div>
+            `;
+
+            if (pageCats.length === 0) {
+                html += `<div style="color:var(--text-muted);padding:20px;text-align:center;">لا توجد أقسام في هذه الصفحة</div>`;
+            } else {
+                pageCats.forEach(cat => {
+                    const commands = siteData.commands.filter(c => c.category === cat.name);
+                    const codesInCat = codes.filter(c => c.category === cat.name);
+
+                    html += `
+                        <div class="tree-node tree-level-1">
+                            <div class="node-header" onclick="toggleNode(this)">
+                                <span class="node-title">${cat.icon || '📁'} ${cat.name}</span>
+                                <div class="node-actions">
+                                    <button class="btn btn-sm btn-warning" onclick="event.stopPropagation();editCategoryByName('${cat.name}')">✏️</button>
+                                    <button class="btn btn-sm btn-danger" onclick="event.stopPropagation();deleteCategoryByName('${cat.name}')">🗑️</button>
+                                </div>
+                            </div>
+                            <div class="node-children open" style="padding:5px 10px;">
+                                ${renderCategoryTreeItems(cat.name)}
                             </div>
                         </div>
-                        <div class="node-children open">
-                            ${pageCats.length === 0 ? '<div style="color:var(--text-muted);padding:10px;">لا توجد أقسام</div>' : ''}
-                            ${pageCats.map(cat => `
-                                <div class="tree-node tree-level-2">
-                                    <div class="node-header" onclick="toggleNode(this)">
-                                        <span class="node-title">${cat.icon || '📁'} ${cat.name}</span>
-                                        <div class="node-actions">
-                                            <button class="btn btn-sm btn-warning" onclick="event.stopPropagation();editCategoryByName('${cat.name}')">✏️</button>
-                                            <button class="btn btn-sm btn-danger" onclick="event.stopPropagation();deleteCategoryByName('${cat.name}')">🗑️</button>
-                                        </div>
-                                    </div>
-                                    <div class="node-children open" style="padding:5px 10px;">
-                                        ${renderCategoryTreeItems(cat.name)}
-                                    </div>
-                                </div>
-                            `).join('')}
-                        </div>
-                    </div>
-                `;
-            });
+                    `;
+                });
+            }
 
             container.innerHTML = html;
         }
@@ -1277,7 +1223,7 @@
             const page = pages.find(p => p.id === id);
             if (!page) return;
 
-            if (confirm(`⚠️ هل أنت متأكد من حذف الصفحة "${page.name}" وجميع أقسامها؟`)) {
+            if (confirm(`⚠️ هل أنت متأكد من حذف الصفحة "${page.name}" وجميع أقسامها ومحتوياتها؟`)) {
                 // حذف الأقسام التابعة
                 const catsToDelete = siteData.categories.filter(c => c.pageId === id);
                 catsToDelete.forEach(c => {
@@ -1684,7 +1630,7 @@
             const pwd = document.getElementById('adminPassword');
             if (pwd) pwd.focus();
 
-            console.log('✅ لوحة الإدارة الذكية V2');
+            console.log('✅ لوحة الإدارة الذكية V3');
             console.log('📄 عدد الصفحات:', pages.length);
             console.log('📂 عدد الأقسام:', siteData.categories.length);
             console.log('📋 عدد الأوامر:', siteData.commands.length);
