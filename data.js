@@ -1,7 +1,7 @@
 // ============================================
 // الدليل - قاعدة البيانات الكاملة
 // MTA Commands Guide - Data
-// مع نظام بحث ورد تلقائي ذكي
+// مع نظام بحث ورد تلقائي ذكي ومنسق
 // ============================================
 
 const defaultData = {
@@ -11,8 +11,8 @@ const defaultData = {
       { title: "رابط الديسكورد", url: "https://discord.gg/your-server", icon: "💬" },
       { title: "القوانين", page: "rules", icon: "📜" },
       { title: "الأوامر", page: "commands", icon: "️" },
-      { title: "الانترو", page: "intros", icon: "" },
-      { title: "الرد التلقائي", page: "chat", icon: "" }
+      { title: "الانترو", page: "intros", icon: "🎬" },
+      { title: "الرد التلقائي", page: "chat", icon: "🤖" }
     ],
     welcomeMessage: "مرحباً بك في الدليل"
   },
@@ -78,7 +78,7 @@ const defaultData = {
     ]
   },
 
-  // ===== الأوامر - 38 قسم =====
+  // ===== الأوامر =====
   commands: {
     sections: [
       {
@@ -691,49 +691,37 @@ const defaultData = {
   // ===== الانترو =====
   intros: {
     images: [
-      {
-        id: "intro-1",
-        url: "https://via.placeholder.com/400x300/00ff88/0a0e27?text=Intro+1",
-        caption: "انترو السيرفر الرئيسي"
-      },
-      {
-        id: "intro-2",
-        url: "https://via.placeholder.com/400x300/00ff88/0a0e27?text=Intro+2",
-        caption: "انترو الأحداث"
-      },
-      {
-        id: "intro-3",
-        url: "https://via.placeholder.com/400x300/00ff88/0a0e27?text=Intro+3",
-        caption: "انترو المسابقات"
-      }
+      { id: "intro-1", url: "https://via.placeholder.com/400x300/00ff88/0a0e27?text=Intro+1", caption: "انترو السيرفر الرئيسي" },
+      { id: "intro-2", url: "https://via.placeholder.com/400x300/00ff88/0a0e27?text=Intro+2", caption: "انترو الأحداث" },
+      { id: "intro-3", url: "https://via.placeholder.com/400x300/00ff88/0a0e27?text=Intro+3", caption: "انترو المسابقات" }
     ]
   },
 
-  // ===== الرد التلقائي - ردود ترحيبية فقط =====
+  // ===== الرد التلقائي =====
   autoReplies: [
     {
       keywords: ["مرحبا", "اهلا", "السلام", "هلا", "هاي", "hello", "hi", "مرحباً"],
-      reply: "أهلاً وسهلاً بك! 👋\nكيف يمكنني مساعدتك؟\n\nيمكنك سؤالي عن:\n• الأوامر (اكتب اسم القسم مثل: فاكشن، سيارات، شات)\n• القوانين (اكتب اسم القانون مثل: DM, VDM)\n• أي أمر معين (اكتب اسم الأمر)\n\n💡 البوت يتعرف تلقائياً على كل البيانات الموجودة في الموقع!"
+      reply: `<p>أهلاً وسهلاً بك! 👋</p><p>كيف يمكنني مساعدتك؟</p><p>يمكنك سؤالي عن:</p><p>• <strong>الأوامر</strong> (اكتب اسم القسم)</p><p>• <strong>القوانين</strong> (اكتب اسم القانون)</p><p>• <strong>أي أمر معين</strong></p><p style="margin-top:0.5rem;color:var(--primary)">💡 البوت يتعرف تلقائياً على كل البيانات!</p>`
     },
     {
       keywords: ["شكرا", "شكراً", "thanks", "thank you", "مشكور", "تسلم"],
-      reply: "عفواً! 😊\nسعيد بمساعدتك. إذا احتجت أي شيء آخر، أنا هنا!"
+      reply: `<p>عفواً! 😊</p><p>سعيد بمساعدتك. إذا احتجت أي شيء آخر، أنا هنا!</p>`
     },
     {
       keywords: ["مساعدة", "help", "help me", "مساعد", "كيف", "how"],
-      reply: "أنا هنا لمساعدتك! 🤖\n\nيمكنك سؤالي عن:\n• أي قسم أوامر (فاكشن، سيارات، شات...)\n• أي قانون (DM, VDM, RDM...)\n• أي أمر معين (Goto, Fixveh, Jail...)\n\n💡 جرب كتابة أي كلمة وسأبحث لك في كل البيانات!"
+      reply: `<p>أنا هنا لمساعدتك! 🤖</p><p>يمكنك سؤالي عن:</p><p>• أي قسم أوامر (فاكشن، سيارات، شات...)</p><p>• أي قانون (DM, VDM, RDM...)</p><p>• أي أمر معين (Goto, Fixveh, Jail...)</p><p style="margin-top:0.5rem;color:var(--primary)">💡 جرب كتابة أي كلمة!</p>`
     },
     {
       keywords: ["ديسكورد", "discord", "discord.gg"],
-      reply: "💬 رابط الديسكورد:\nhttps://discord.gg/your-server\n\nانضم للتواصل مع المجتمع!"
+      reply: `<p>💬 <strong>رابط الديسكورد:</strong></p><p style="color:var(--primary)">https://discord.gg/your-server</p><p>انضم للتواصل مع المجتمع!</p>`
     },
     {
       keywords: ["سيرفر", "server", "ip", "اي بي", "دخول", "انضم"],
-      reply: "🎮 للدخول للسيرفر:\n1. افتح MTA:SA\n2. اضغط Quick Connect\n3. اكتب IP السيرفر\n\nأو انضم عبر الديسكورد للحصول على الرابط!"
+      reply: `<p>🎮 <strong>للدخول للسيرفر:</strong></p><p>1. افتح MTA:SA</p><p>2. اضغط Quick Connect</p><p>3. اكتب IP السيرفر</p><p style="margin-top:0.5rem">أو انضم عبر الديسكورد!</p>`
     },
     {
       keywords: ["ادمن", "admin", "إدارة", "مسؤول"],
-      reply: " للتواصل مع الإدارة:\n\n• استخدم /report في اللعبة\n• أو انضم للديسكورد\n• أو راسلنا مباشرة\n\n️ الاحترام متبادل!"
+      reply: `<p>👑 <strong>للتواصل مع الإدارة:</strong></p><p>• استخدم /report في اللعبة</p><p>• أو انضم للديسكورد</p><p>• أو راسلنا مباشرة</p><p style="margin-top:0.5rem;color:var(--primary)">⚠️ الاحترام متبادل!</p>`
     }
   ]
 };
@@ -751,48 +739,28 @@ class DataManager {
   loadData() {
     const saved = localStorage.getItem(this.storageKey);
     if (saved) {
-      try {
-        return JSON.parse(saved);
-      } catch (e) {
-        console.error('خطأ في تحميل البيانات:', e);
-        return JSON.parse(JSON.stringify(defaultData));
-      }
+      try { return JSON.parse(saved); }
+      catch (e) { return JSON.parse(JSON.stringify(defaultData)); }
     }
     return JSON.parse(JSON.stringify(defaultData));
   }
 
   saveData() {
-    try {
-      localStorage.setItem(this.storageKey, JSON.stringify(this.data));
-      return true;
-    } catch (e) {
-      console.error('خطأ في حفظ البيانات:', e);
-      return false;
-    }
+    try { localStorage.setItem(this.storageKey, JSON.stringify(this.data)); return true; }
+    catch (e) { return false; }
   }
 
-  resetData() {
-    this.data = JSON.parse(JSON.stringify(defaultData));
-    this.saveData();
-  }
-
-  exportData() {
-    return JSON.stringify(this.data, null, 2);
-  }
+  resetData() { this.data = JSON.parse(JSON.stringify(defaultData)); this.saveData(); }
+  exportData() { return JSON.stringify(this.data, null, 2); }
 
   importData(jsonString) {
     try {
-      const imported = JSON.parse(jsonString);
-      this.data = imported;
+      this.data = JSON.parse(jsonString);
       this.saveData();
       return true;
-    } catch (e) {
-      console.error('خطأ في استيراد البيانات:', e);
-      return false;
-    }
+    } catch (e) { return false; }
   }
 
-  // ===== CRUD للقوانين =====
   addRuleSection(title, keywords = []) {
     const id = 'rules-' + Date.now();
     this.data.rules.sections.push({ id, title, keywords, items: [] });
@@ -802,11 +770,7 @@ class DataManager {
 
   addRuleItem(sectionId, ruleText) {
     const section = this.data.rules.sections.find(s => s.id === sectionId);
-    if (section) {
-      section.items.push(ruleText);
-      this.saveData();
-      return true;
-    }
+    if (section) { section.items.push(ruleText); this.saveData(); return true; }
     return false;
   }
 
@@ -817,15 +781,10 @@ class DataManager {
 
   deleteRuleItem(sectionId, itemIndex) {
     const section = this.data.rules.sections.find(s => s.id === sectionId);
-    if (section && section.items[itemIndex]) {
-      section.items.splice(itemIndex, 1);
-      this.saveData();
-      return true;
-    }
+    if (section && section.items[itemIndex]) { section.items.splice(itemIndex, 1); this.saveData(); return true; }
     return false;
   }
 
-  // ===== CRUD للأوامر =====
   addCommandSection(title, keywords = []) {
     const id = 'cmd-' + Date.now();
     this.data.commands.sections.push({ id, title, keywords, commands: [] });
@@ -835,11 +794,7 @@ class DataManager {
 
   addCommand(sectionId, command, description) {
     const section = this.data.commands.sections.find(s => s.id === sectionId);
-    if (section) {
-      section.commands.push({ command, description });
-      this.saveData();
-      return true;
-    }
+    if (section) { section.commands.push({ command, description }); this.saveData(); return true; }
     return false;
   }
 
@@ -850,11 +805,7 @@ class DataManager {
 
   deleteCommand(sectionId, commandIndex) {
     const section = this.data.commands.sections.find(s => s.id === sectionId);
-    if (section && section.commands[commandIndex]) {
-      section.commands.splice(commandIndex, 1);
-      this.saveData();
-      return true;
-    }
+    if (section && section.commands[commandIndex]) { section.commands.splice(commandIndex, 1); this.saveData(); return true; }
     return false;
   }
 
@@ -868,7 +819,6 @@ class DataManager {
     return false;
   }
 
-  // ===== CRUD للانترو =====
   addIntro(url, caption) {
     const id = 'intro-' + Date.now();
     this.data.intros.images.push({ id, url, caption });
@@ -881,33 +831,17 @@ class DataManager {
     this.saveData();
   }
 
-  // ===== الصفحة الرئيسية =====
-  addShortcut(title, url, icon) {
-    this.data.home.shortcuts.push({ title, url, icon });
-    this.saveData();
-  }
+  addShortcut(title, url, icon) { this.data.home.shortcuts.push({ title, url, icon }); this.saveData(); }
 
   deleteShortcut(index) {
-    if (this.data.home.shortcuts[index]) {
-      this.data.home.shortcuts.splice(index, 1);
-      this.saveData();
-      return true;
-    }
+    if (this.data.home.shortcuts[index]) { this.data.home.shortcuts.splice(index, 1); this.saveData(); return true; }
     return false;
   }
 
-  // ===== الرد التلقائي =====
-  addAutoReply(keywords, reply) {
-    this.data.autoReplies.push({ keywords, reply });
-    this.saveData();
-  }
+  addAutoReply(keywords, reply) { this.data.autoReplies.push({ keywords, reply }); this.saveData(); }
 
   deleteAutoReply(index) {
-    if (this.data.autoReplies[index]) {
-      this.data.autoReplies.splice(index, 1);
-      this.saveData();
-      return true;
-    }
+    if (this.data.autoReplies[index]) { this.data.autoReplies.splice(index, 1); this.saveData(); return true; }
     return false;
   }
 
@@ -915,76 +849,53 @@ class DataManager {
   search(query) {
     const results = [];
     const q = query.toLowerCase().trim();
-    
     if (!q) return results;
 
-    // 1. البحث في الأوامر
     this.data.commands.sections.forEach(section => {
       const sectionMatch = section.title.toLowerCase().includes(q) ||
                           section.keywords.some(k => k.toLowerCase().includes(q));
-      
       section.commands.forEach(cmd => {
-        if (sectionMatch || 
-            cmd.command.toLowerCase().includes(q) || 
-            cmd.description.toLowerCase().includes(q)) {
-          results.push({
-            type: 'command',
-            section: section.title,
-            sectionId: section.id,
-            data: cmd,
-            score: sectionMatch ? 10 : 5
-          });
+        if (sectionMatch || cmd.command.toLowerCase().includes(q) || cmd.description.toLowerCase().includes(q)) {
+          results.push({ type: 'command', section: section.title, sectionId: section.id, data: cmd, score: sectionMatch ? 10 : 5 });
         }
       });
     });
 
-    // 2. البحث في القوانين
     this.data.rules.sections.forEach(section => {
       const sectionMatch = section.title.toLowerCase().includes(q) ||
                           section.keywords.some(k => k.toLowerCase().includes(q));
-      
       section.items.forEach(item => {
         if (sectionMatch || item.toLowerCase().includes(q)) {
-          results.push({
-            type: 'rule',
-            section: section.title,
-            data: item,
-            score: sectionMatch ? 10 : 5
-          });
+          results.push({ type: 'rule', section: section.title, data: item, score: sectionMatch ? 10 : 5 });
         }
       });
     });
 
-    // ترتيب النتائج حسب الأهمية
     results.sort((a, b) => b.score - a.score);
-    
     return results;
   }
 
-  // ===== الرد التلقائي الذكي - يتعرف على كل البيانات تلقائياً =====
+  // ===== الرد التلقائي الذكي مع تنسيق HTML =====
   getAutoReply(message) {
     const msg = message.toLowerCase().trim();
     
-    if (!msg) return "مرحباً! كيف يمكنني مساعدتك؟";
+    if (!msg) {
+      return `<p>مرحباً! 👋 كيف يمكنني مساعدتك؟</p><p>يمكنك سؤالي عن:</p><p>• الأوامر (اكتب اسم القسم)</p><p>• القوانين (اكتب اسم القانون)</p><p>• أي أمر معين</p>`;
+    }
 
-    // أولاً: البحث عن تطابق تام في الردود المخصصة
     for (let autoReply of this.data.autoReplies) {
       for (let keyword of autoReply.keywords) {
         const kw = keyword.toLowerCase();
-        if (msg === kw || msg.includes(kw)) {
-          return autoReply.reply;
-        }
+        if (msg === kw || msg.includes(kw)) return autoReply.reply;
       }
     }
 
-    // ثانياً: البحث الذكي في كل البيانات
     const searchResults = this.search(msg);
     
     if (searchResults.length === 0) {
-      return "عذراً، لم أجد معلومات عن هذا الموضوع. 🤔\n\nجرب:\n• كتابة اسم قسم (سيارات، شات، فاكشن...)\n• كتابة اسم أمر معين (مثل: Goto, Fixveh)\n• سؤال عن قانون معين (مثل: DM, VDM)";
+      return `<p>عذراً، لم أجد معلومات عن هذا الموضوع. 🤔</p><p>جرب:</p><p>• كتابة اسم قسم (سيارات، شات، فاكشن...)</p><p>• كتابة اسم أمر (Goto, Fixveh...)</p><p>• سؤال عن قانون (DM, VDM...)</p>`;
     }
 
-    // تجميع النتائج حسب النوع والقسم
     const commandsBySection = {};
     const rulesBySection = {};
     let totalCommands = 0;
@@ -992,71 +903,60 @@ class DataManager {
 
     searchResults.forEach(result => {
       if (result.type === 'command') {
-        if (!commandsBySection[result.section]) {
-          commandsBySection[result.section] = [];
-        }
+        if (!commandsBySection[result.section]) commandsBySection[result.section] = [];
         commandsBySection[result.section].push(result.data);
         totalCommands++;
       } else if (result.type === 'rule') {
-        if (!rulesBySection[result.section]) {
-          rulesBySection[result.section] = [];
-        }
+        if (!rulesBySection[result.section]) rulesBySection[result.section] = [];
         rulesBySection[result.section].push(result.data);
         totalRules++;
       }
     });
 
-    // بناء الرد
     let response = '';
+    const maxPerSection = 6;
 
-    // إذا كانت النتائج كثيرة، نعرض أهمها فقط
-    const maxPerSection = 8;
-
-    // عرض الأوامر
     if (totalCommands > 0) {
-      response += `⌨️ أوامر (${totalCommands}):\n\n`;
-      
+      response += `<p><strong>⌨️ أوامر</strong> <span class="count-badge">${totalCommands}</span></p>`;
       const sections = Object.keys(commandsBySection);
-      const sectionsToShow = sections.slice(0, 3); // أول 3 أقسام فقط
+      const sectionsToShow = sections.slice(0, 3);
       
       sectionsToShow.forEach(sectionTitle => {
         const cmds = commandsBySection[sectionTitle].slice(0, maxPerSection);
-        response += `📁 ${sectionTitle}:\n`;
+        response += `<div class="section-title">📁 ${sectionTitle}</div>`;
         cmds.forEach(cmd => {
-          response += `• ${cmd.command} = ${cmd.description}\n`;
+          response += `<div class="cmd-item"><span class="cmd-name">${cmd.command}</span><span class="cmd-desc">${cmd.description}</span></div>`;
         });
         if (commandsBySection[sectionTitle].length > maxPerSection) {
-          response += `... و ${commandsBySection[sectionTitle].length - maxPerSection} أوامر أخرى\n`;
+          response += `<p style="color:var(--text-muted);font-size:0.8rem;margin-top:0.3rem">... و ${commandsBySection[sectionTitle].length - maxPerSection} أوامر أخرى</p>`;
         }
-        response += '\n';
       });
     }
 
-    // عرض القوانين
     if (totalRules > 0) {
-      response += ` قوانين (${totalRules}):\n\n`;
-      
+      response += `<p style="margin-top:0.8rem"><strong>📜 قوانين</strong> <span class="count-badge">${totalRules}</span></p>`;
       const sections = Object.keys(rulesBySection);
       sections.forEach(sectionTitle => {
         const rules = rulesBySection[sectionTitle].slice(0, maxPerSection);
+        response += `<div class="section-title">📁 ${sectionTitle}</div>`;
         rules.forEach(rule => {
-          response += `• ${rule}\n`;
+          const match = rule.match(/^([A-Z0-9\-]+)\s*=\s*(.+)$/);
+          if (match) {
+            response += `<div class="rule-item"><span class="rule-code">${match[1]}</span> = ${match[2]}</div>`;
+          } else {
+            response += `<div class="rule-item">${rule}</div>`;
+          }
         });
-        if (rulesBySection[sectionTitle].length > maxPerSection) {
-          response += `... و ${rulesBySection[sectionTitle].length - maxPerSection} قوانين أخرى\n`;
-        }
       });
     }
 
-    // إضافة ملاحظة إذا كانت هناك نتائج أكثر
     const totalResults = totalCommands + totalRules;
     if (totalResults > 10) {
-      response += `\n💡 هناك ${totalResults - 10} نتائج أخرى. استخدم البحث في الموقع لعرض الكل.`;
+      response += `<p style="margin-top:0.8rem;color:var(--text-muted);font-size:0.85rem">💡 هناك ${totalResults - 10} نتائج أخرى. استخدم البحث في الموقع لعرض الكل.</p>`;
     }
 
     return response;
   }
 }
 
-// إنشاء نسخة عامة
 const dataManager = new DataManager();
