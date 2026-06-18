@@ -592,7 +592,7 @@ function importData(jsonData) {
 loadData();
 
 // ============================================
-// دوال البحث والمساعدة (تم تعديلها)
+// دوال البحث والمساعدة
 // ============================================
 
 function getCommandsByCategory(category) {
@@ -622,7 +622,7 @@ function findInterior(search) {
     );
 }
 
-// ===== الرد التلقائي الذكي (تم التعديل) =====
+// ===== الرد التلقائي الذكي =====
 function smartReply(query) {
     const q = query.toLowerCase().trim();
     let response = [];
