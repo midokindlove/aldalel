@@ -288,6 +288,149 @@ input::placeholder, textarea::placeholder {
   color: var(--text-primary);
 }
 
+/* ============================================
+   البحث الذكي في الصفحة الرئيسية
+   ============================================ */
+
+.smart-search-box {
+  position: relative;
+  max-width: 600px;
+  margin: 2rem auto;
+}
+
+.smart-search-box input {
+  width: 100%;
+  padding: 1rem 1.5rem;
+  font-size: 1.1rem;
+  border: 2px solid var(--border);
+  border-radius: var(--radius-lg);
+  background: var(--bg-card);
+  color: var(--text-primary);
+  transition: all 0.3s ease;
+  box-shadow: var(--shadow-md);
+}
+
+.smart-search-box input:focus {
+  outline: none;
+  border-color: var(--primary);
+  box-shadow: 0 0 0 4px rgba(0, 255, 136, 0.1), var(--shadow-glow);
+}
+
+.smart-search-results {
+  position: absolute;
+  top: 100%;
+  left: 0;
+  right: 0;
+  margin-top: 0.5rem;
+  background: var(--bg-card);
+  border: 1px solid var(--border);
+  border-radius: var(--radius-lg);
+  box-shadow: var(--shadow-md);
+  max-height: 500px;
+  overflow-y: auto;
+  z-index: 1000;
+  display: none;
+}
+
+.search-section {
+  border-bottom: 1px solid var(--border);
+}
+
+.search-section:last-child {
+  border-bottom: none;
+}
+
+.search-section-title {
+  padding: 0.75rem 1.25rem;
+  background: rgba(0, 255, 136, 0.08);
+  color: var(--primary);
+  font-weight: 700;
+  font-size: 0.9rem;
+  border-bottom: 1px solid var(--border);
+}
+
+.search-item {
+  display: flex;
+  align-items: center;
+  gap: 1rem;
+  padding: 0.85rem 1.25rem;
+  cursor: pointer;
+  transition: all 0.2s ease;
+  border-bottom: 1px solid rgba(0, 255, 136, 0.05);
+}
+
+.search-item:last-child {
+  border-bottom: none;
+}
+
+.search-item:hover {
+  background: rgba(0, 255, 136, 0.08);
+  transform: translateX(-3px);
+}
+
+.search-item-icon {
+  font-size: 1.5rem;
+  width: 40px;
+  height: 40px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  background: rgba(0, 255, 136, 0.1);
+  border-radius: var(--radius-md);
+  flex-shrink: 0;
+}
+
+.search-item-content {
+  flex: 1;
+  min-width: 0;
+}
+
+.search-item-name {
+  font-weight: 700;
+  color: var(--text-primary);
+  margin-bottom: 0.25rem;
+  font-size: 0.95rem;
+}
+
+.search-item-name code {
+  font-family: 'Courier New', monospace;
+  color: var(--primary);
+  background: rgba(0, 255, 136, 0.1);
+  padding: 0.2rem 0.5rem;
+  border-radius: 4px;
+  font-size: 0.9rem;
+}
+
+.search-item-desc {
+  color: var(--text-secondary);
+  font-size: 0.85rem;
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+
+.search-no-results {
+  padding: 1.5rem;
+  text-align: center;
+  color: var(--text-muted);
+  font-size: 0.95rem;
+}
+
+.search-show-all {
+  padding: 1rem 1.25rem;
+  text-align: center;
+  color: var(--primary);
+  font-weight: 700;
+  cursor: pointer;
+  background: rgba(0, 255, 136, 0.05);
+  border-top: 1px solid var(--border);
+  transition: all 0.2s ease;
+}
+
+.search-show-all:hover {
+  background: rgba(0, 255, 136, 0.1);
+}
+
 /* ===== صفحة الأوامر ===== */
 .search-box {
   margin-bottom: 2rem;
@@ -1477,7 +1620,10 @@ input::placeholder, textarea::placeholder {
   background: var(--primary);
 }
 
-/* ===== Responsive ===== */
+/* ============================================
+   Responsive
+   ============================================ */
+
 @media (max-width: 1024px) {
   .admin-layout { flex-direction: column; }
   .admin-sidebar { width: 100%; position: static; }
@@ -1557,6 +1703,26 @@ input::placeholder, textarea::placeholder {
     min-width: auto;
     border-left: none;
     border-bottom: 1px solid rgba(255, 255, 255, 0.1);
+  }
+
+  /* Smart Search Responsive */
+  .smart-search-box {
+    margin: 1.5rem 1rem;
+  }
+  
+  .smart-search-box input {
+    padding: 0.85rem 1rem;
+    font-size: 1rem;
+  }
+  
+  .search-item {
+    padding: 0.75rem 1rem;
+  }
+  
+  .search-item-icon {
+    width: 35px;
+    height: 35px;
+    font-size: 1.2rem;
   }
 
   /* Lightbox Responsive */
