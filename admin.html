@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>لوحة التحكم - الدليل MTA</title>
+    <title>مدير المحتوى - الدليل MTA</title>
     <link rel="stylesheet" href="style.css">
     <link href="https://fonts.googleapis.com/css2?family=Cairo:wght@400;600;700&display=swap" rel="stylesheet">
     <style>
@@ -15,15 +15,16 @@
 
         body {
             font-family: 'Cairo', sans-serif;
-            background: #0d0d1a;
-            color: #e0e0e0;
+            background: #0a0a18;
+            color: #e8e8f0;
             min-height: 100vh;
         }
 
+        /* ===== هيدر ===== */
         header {
-            background: #1a1a2e;
+            background: #12122a;
             padding: 12px 24px;
-            border-bottom: 2px solid #ff6b00;
+            border-bottom: 2px solid #00d4ff;
             display: flex;
             justify-content: space-between;
             align-items: center;
@@ -37,7 +38,7 @@
         header .logo {
             font-size: 22px;
             font-weight: bold;
-            color: #ff6b00;
+            color: #00d4ff;
             text-decoration: none;
         }
 
@@ -52,7 +53,7 @@
         }
 
         nav a {
-            color: #8888aa;
+            color: #7a8ba8;
             text-decoration: none;
             padding: 6px 16px;
             border-radius: 8px;
@@ -63,13 +64,13 @@
 
         nav a:hover {
             color: white;
-            border-color: #ff6b00;
+            border-color: #00d4ff;
         }
 
         nav a.active {
-            background: #ff6b00;
-            color: #0d0d1a;
-            border-color: #ff6b00;
+            background: #00d4ff;
+            color: #0a0a18;
+            border-color: #00d4ff;
         }
 
         .container {
@@ -78,18 +79,19 @@
             padding: 20px;
         }
 
+        /* ===== البطاقات ===== */
         .card {
-            background: #1a1a2e;
-            border-radius: 12px;
+            background: #12122a;
+            border-radius: 14px;
             padding: 24px;
             margin-bottom: 20px;
-            border: 1px solid #333355;
-            box-shadow: 0 8px 32px rgba(0, 0, 0, 0.5);
+            border: 1px solid #1a2a3f;
+            box-shadow: 0 10px 40px rgba(0, 0, 0, 0.6);
         }
 
         .card-title {
             font-size: 20px;
-            color: #ff6b00;
+            color: #00d4ff;
             margin-bottom: 16px;
             display: flex;
             align-items: center;
@@ -99,30 +101,31 @@
         /* ===== تسجيل الدخول ===== */
         .login-box {
             max-width: 400px;
-            margin: 60px auto;
+            margin: 80px auto;
             text-align: center;
         }
 
         .login-box input {
-            width: 200px;
-            padding: 14px;
+            width: 220px;
+            padding: 16px;
             border-radius: 30px;
-            border: 1px solid #333355;
-            background: #0d0d1a;
+            border: 1px solid #1a2a3f;
+            background: #0a0a18;
             color: white;
-            font-size: 22px;
+            font-size: 24px;
             text-align: center;
             outline: none;
             transition: 0.3s;
+            letter-spacing: 6px;
         }
 
         .login-box input:focus {
-            border-color: #ff6b00;
-            box-shadow: 0 0 30px rgba(255, 107, 0, 0.15);
+            border-color: #00d4ff;
+            box-shadow: 0 0 40px rgba(0, 212, 255, 0.15);
         }
 
         .login-box .hint {
-            color: #8888aa;
+            color: #7a8ba8;
             font-size: 12px;
             margin-top: 12px;
         }
@@ -130,7 +133,7 @@
         .btn {
             padding: 8px 24px;
             border: none;
-            border-radius: 8px;
+            border-radius: 10px;
             cursor: pointer;
             font-weight: 600;
             transition: 0.3s;
@@ -142,57 +145,57 @@
         }
 
         .btn-primary {
-            background: #ff6b00;
-            color: #0d0d1a;
+            background: #00d4ff;
+            color: #0a0a18;
         }
 
         .btn-primary:hover {
-            background: #cc5500;
+            background: #0099cc;
         }
 
         .btn-success {
-            background: #22c55e;
-            color: white;
+            background: #00e676;
+            color: #0a0a18;
         }
 
         .btn-success:hover {
-            background: #16a34a;
+            background: #00c853;
         }
 
         .btn-danger {
-            background: #ef4444;
+            background: #ff1744;
             color: white;
         }
 
         .btn-danger:hover {
-            background: #dc2626;
+            background: #d50000;
         }
 
         .btn-warning {
-            background: #f59e0b;
-            color: #0d0d1a;
+            background: #ffd600;
+            color: #0a0a18;
         }
 
         .btn-warning:hover {
-            background: #d97706;
+            background: #ffab00;
         }
 
         .btn-info {
-            background: #3b82f6;
+            background: #2979ff;
             color: white;
         }
 
         .btn-info:hover {
-            background: #2563eb;
+            background: #0d47a1;
         }
 
         .btn-purple {
-            background: #8b5cf6;
+            background: #7c4dff;
             color: white;
         }
 
         .btn-purple:hover {
-            background: #7c3aed;
+            background: #536dfe;
         }
 
         .btn-sm {
@@ -205,19 +208,19 @@
             display: flex;
             gap: 4px;
             flex-wrap: wrap;
-            background: #1a1a2e;
-            border-radius: 12px;
+            background: #12122a;
+            border-radius: 14px;
             padding: 6px;
-            border: 1px solid #333355;
+            border: 1px solid #1a2a3f;
             margin-bottom: 20px;
         }
 
         .tabs button {
-            padding: 8px 20px;
+            padding: 8px 22px;
             border: none;
-            border-radius: 8px;
+            border-radius: 10px;
             background: transparent;
-            color: #8888aa;
+            color: #7a8ba8;
             cursor: pointer;
             transition: 0.3s;
             font-size: 13px;
@@ -226,27 +229,27 @@
 
         .tabs button:hover {
             color: white;
-            background: #252540;
+            background: #1a2538;
         }
 
         .tabs button.active {
-            background: #ff6b00;
-            color: #0d0d1a;
+            background: #00d4ff;
+            color: #0a0a18;
         }
 
         .tab {
             display: none;
-            animation: fadeIn 0.3s ease;
+            animation: fadeUp 0.35s ease;
         }
 
         .tab.active {
             display: block;
         }
 
-        @keyframes fadeIn {
+        @keyframes fadeUp {
             from {
                 opacity: 0;
-                transform: translateY(10px);
+                transform: translateY(12px);
             }
             to {
                 opacity: 1;
@@ -267,10 +270,10 @@
         .form-row select,
         .form-row textarea {
             padding: 10px 14px;
-            border-radius: 8px;
-            border: 1px solid #333355;
-            background: #0d0d1a;
-            color: #e0e0e0;
+            border-radius: 10px;
+            border: 1px solid #1a2a3f;
+            background: #0a0a18;
+            color: #e8e8f0;
             font-size: 13px;
             outline: none;
             transition: 0.3s;
@@ -280,7 +283,8 @@
 
         .form-row input:focus,
         .form-row select:focus {
-            border-color: #ff6b00;
+            border-color: #00d4ff;
+            box-shadow: 0 0 25px rgba(0, 212, 255, 0.08);
         }
 
         .form-row textarea {
@@ -291,10 +295,10 @@
 
         /* ===== القوائم ===== */
         .list {
-            max-height: 400px;
+            max-height: 380px;
             overflow-y: auto;
-            border: 1px solid #333355;
-            border-radius: 8px;
+            border: 1px solid #1a2a3f;
+            border-radius: 10px;
             padding: 6px;
             margin-top: 10px;
         }
@@ -304,14 +308,14 @@
             justify-content: space-between;
             align-items: center;
             padding: 10px 14px;
-            border-bottom: 1px solid #333355;
-            border-radius: 6px;
+            border-bottom: 1px solid #1a2a3f;
+            border-radius: 8px;
             transition: 0.3s;
             gap: 8px;
         }
 
         .item:hover {
-            background: #252540;
+            background: #1a2538;
         }
 
         .item:last-child {
@@ -329,7 +333,7 @@
 
         .item .info .sub {
             font-size: 12px;
-            color: #8888aa;
+            color: #7a8ba8;
         }
 
         .item .actions {
@@ -345,15 +349,15 @@
         }
 
         .block {
-            background: #0d0d1a;
-            border-radius: 10px;
-            border: 1px solid #333355;
+            background: #0a0a18;
+            border-radius: 12px;
+            border: 1px solid #1a2a3f;
             overflow: hidden;
             transition: 0.3s;
         }
 
         .block:hover {
-            border-color: #ff6b00;
+            border-color: #00d4ff;
         }
 
         .block-head {
@@ -361,13 +365,13 @@
             justify-content: space-between;
             align-items: center;
             padding: 10px 16px;
-            background: #1a1a2e;
+            background: #12122a;
             cursor: pointer;
             transition: 0.3s;
         }
 
         .block-head:hover {
-            background: #252540;
+            background: #1a2538;
         }
 
         .block-head .title {
@@ -376,9 +380,9 @@
         }
 
         .block-head .count {
-            background: #ff6b00;
-            color: #0d0d1a;
-            padding: 1px 12px;
+            background: #00d4ff;
+            color: #0a0a18;
+            padding: 1px 14px;
             border-radius: 20px;
             font-size: 11px;
             font-weight: 700;
@@ -386,7 +390,7 @@
 
         .block-body {
             padding: 8px 16px;
-            border-top: 1px solid #333355;
+            border-top: 1px solid #1a2a3f;
             display: none;
         }
 
@@ -399,13 +403,13 @@
             justify-content: space-between;
             align-items: center;
             padding: 6px 10px;
-            border-bottom: 1px solid #333355;
-            border-radius: 4px;
+            border-bottom: 1px solid #1a2a3f;
+            border-radius: 6px;
             gap: 8px;
         }
 
         .child:hover {
-            background: #252540;
+            background: #1a2538;
         }
 
         .child:last-child {
@@ -422,7 +426,7 @@
 
         .child .info .sub {
             font-size: 11px;
-            color: #8888aa;
+            color: #7a8ba8;
         }
 
         /* ===== محدد الصفحات ===== */
@@ -431,39 +435,39 @@
             gap: 8px;
             flex-wrap: wrap;
             padding: 12px;
-            background: #0d0d1a;
-            border-radius: 10px;
-            border: 1px solid #333355;
+            background: #0a0a18;
+            border-radius: 12px;
+            border: 1px solid #1a2a3f;
             margin-bottom: 14px;
         }
 
         .page-picker button {
             padding: 6px 20px;
-            border: 1px solid #333355;
+            border: 1px solid #1a2a3f;
             border-radius: 25px;
             background: transparent;
-            color: #e0e0e0;
+            color: #e8e8f0;
             cursor: pointer;
             transition: 0.3s;
             font-size: 13px;
         }
 
         .page-picker button:hover {
-            background: #252540;
+            background: #1a2538;
         }
 
         .page-picker button.active {
-            background: #ff6b00;
-            color: #0d0d1a;
-            border-color: #ff6b00;
+            background: #00d4ff;
+            color: #0a0a18;
+            border-color: #00d4ff;
         }
 
         /* ===== الكود ===== */
         .code-box {
-            background: #0a0a18;
-            border-radius: 8px;
+            background: #050a12;
+            border-radius: 10px;
             padding: 8px 12px;
-            border: 1px solid #333355;
+            border: 1px solid #1a2a3f;
             margin-top: 4px;
             position: relative;
             direction: ltr;
@@ -483,11 +487,11 @@
             position: absolute;
             top: 4px;
             right: 4px;
-            background: #ff6b00;
-            color: #0d0d1a;
+            background: #00d4ff;
+            color: #0a0a18;
             border: none;
             padding: 2px 12px;
-            border-radius: 4px;
+            border-radius: 6px;
             cursor: pointer;
             font-size: 10px;
             font-weight: 700;
@@ -496,7 +500,7 @@
         .empty {
             text-align: center;
             padding: 30px;
-            color: #8888aa;
+            color: #7a8ba8;
             font-size: 14px;
         }
 
@@ -515,28 +519,28 @@
         }
 
         .stat {
-            background: #1a1a2e;
-            border-radius: 12px;
+            background: #12122a;
+            border-radius: 14px;
             padding: 14px;
             text-align: center;
-            border: 1px solid #333355;
+            border: 1px solid #1a2a3f;
             transition: 0.3s;
         }
 
         .stat:hover {
-            border-color: #ff6b00;
+            border-color: #00d4ff;
             transform: translateY(-3px);
         }
 
         .stat .num {
             font-size: 28px;
             font-weight: 700;
-            color: #ff6b00;
+            color: #00d4ff;
         }
 
         .stat .label {
             font-size: 12px;
-            color: #8888aa;
+            color: #7a8ba8;
             margin-top: 4px;
         }
 
@@ -545,12 +549,12 @@
             position: fixed;
             bottom: 30px;
             right: 30px;
-            background: #1a1a2e;
-            border: 1px solid #ff6b00;
+            background: #12122a;
+            border: 1px solid #00d4ff;
             padding: 14px 28px;
-            border-radius: 12px;
-            color: #e0e0e0;
-            box-shadow: 0 8px 32px rgba(0, 0, 0, 0.5);
+            border-radius: 14px;
+            color: #e8e8f0;
+            box-shadow: 0 10px 40px rgba(0, 0, 0, 0.6);
             z-index: 9999;
             display: none;
             font-size: 14px;
@@ -562,11 +566,11 @@
         }
 
         .toast.success {
-            border-color: #22c55e;
+            border-color: #00e676;
         }
 
         .toast.error {
-            border-color: #ef4444;
+            border-color: #ff1744;
         }
 
         @keyframes slideIn {
@@ -621,13 +625,13 @@
 
         <!-- ===== تسجيل الدخول ===== -->
         <div id="loginBox" class="login-box card">
-            <h2 style="color:#ff6b00;">🔐 لوحة التحكم</h2>
-            <p style="color:#8888aa;margin:10px 0 16px;">أدخل المفتاح السري</p>
+            <h2 style="color:#00d4ff;">🔐 مدير المحتوى</h2>
+            <p style="color:#7a8ba8;margin:10px 0 16px;">أدخل المفتاح السري</p>
             <input type="password" id="passInput" placeholder="••••" maxlength="4" onkeydown="if(event.key==='Enter') login()">
             <br>
-            <button onclick="login()" class="btn btn-primary" style="margin-top:16px;padding:10px 50px;">🚀 دخول</button>
-            <p id="passError" style="color:#ef4444;margin-top:12px;display:none;">❌ المفتاح غير صحيح</p>
-            <div class="hint">🔑 المفتاح: <strong style="color:#ff6b00;">0000</strong></div>
+            <button onclick="login()" class="btn btn-primary" style="margin-top:16px;padding:10px 50px;">🚀 فتح</button>
+            <p id="passError" style="color:#ff1744;margin-top:12px;display:none;">❌ المفتاح غير صحيح</p>
+            <div class="hint">🔑 المفتاح: <strong style="color:#00d4ff;">0000</strong></div>
         </div>
 
         <!-- ===== لوحة التحكم ===== -->
@@ -643,7 +647,7 @@
                 <div class="stat"><div class="num" id="stCodes">0</div><div class="label">💻 أكواد</div></div>
             </div>
 
-            <!-- ===== أدوات ===== -->
+            <!-- ===== أدوات سريعة ===== -->
             <div style="display:flex;gap:10px;flex-wrap:wrap;margin-bottom:20px;">
                 <button class="btn btn-info" onclick="exportData()">📤 تصدير</button>
                 <button class="btn btn-purple" onclick="document.getElementById('importFile').click()">📥 استيراد</button>
@@ -666,8 +670,8 @@
             <!-- ===== المحرر ===== -->
             <div id="tabEditor" class="tab active">
                 <div class="card">
-                    <div class="card-title">🎯 المحرر</div>
-                    <p style="color:#8888aa;font-size:13px;margin-bottom:14px;">اختر صفحة لعرض الأقسام والمحتوى</p>
+                    <div class="card-title">🎯 المحرر المركزي</div>
+                    <p style="color:#7a8ba8;font-size:13px;margin-bottom:14px;">اختر صفحة لعرض الأقسام والمحتوى</p>
 
                     <div class="page-picker" id="pagePicker"></div>
                     <div id="editorContent" class="editor-area"></div>
@@ -677,7 +681,7 @@
             <!-- ===== الصفحات ===== -->
             <div id="tabPages" class="tab">
                 <div class="card">
-                    <div class="card-title" style="color:#3b82f6;">📄 الصفحات</div>
+                    <div class="card-title" style="color:#2979ff;">📄 الصفحات</div>
                     <div class="form-row">
                         <input type="text" id="fPageName" placeholder="اسم الصفحة">
                         <input type="text" id="fPageLink" placeholder="الرابط">
@@ -691,7 +695,7 @@
             <!-- ===== الأقسام ===== -->
             <div id="tabCategories" class="tab">
                 <div class="card">
-                    <div class="card-title" style="color:#ff6b00;">📂 الأقسام</div>
+                    <div class="card-title" style="color:#00d4ff;">📂 الأقسام</div>
                     <div class="form-row">
                         <input type="text" id="fCatName" placeholder="اسم القسم">
                         <input type="text" id="fCatIcon" placeholder="الأيقونة" style="max-width:80px;">
@@ -705,7 +709,7 @@
             <!-- ===== الأوامر ===== -->
             <div id="tabCommands" class="tab">
                 <div class="card">
-                    <div class="card-title" style="color:#f59e0b;">📋 الأوامر</div>
+                    <div class="card-title" style="color:#ffd600;">📋 الأوامر</div>
                     <div class="form-row">
                         <input type="text" id="fCmd" placeholder="الأمر">
                         <input type="text" id="fCmdMeaning" placeholder="المعنى">
@@ -719,7 +723,7 @@
             <!-- ===== القوانين ===== -->
             <div id="tabRules" class="tab">
                 <div class="card">
-                    <div class="card-title" style="color:#22c55e;">📜 القوانين</div>
+                    <div class="card-title" style="color:#00e676;">📜 القوانين</div>
                     <div class="form-row">
                         <input type="text" id="fRuleEn" placeholder="القانون (English)">
                         <input type="text" id="fRuleAr" placeholder="المعنى (Arabic)">
@@ -733,7 +737,7 @@
             <!-- ===== الانترو ===== -->
             <div id="tabInteriors" class="tab">
                 <div class="card">
-                    <div class="card-title" style="color:#8b5cf6;">🏠 الانترو</div>
+                    <div class="card-title" style="color:#7c4dff;">🏠 الانترو</div>
                     <div class="form-row">
                         <input type="text" id="fIntName" placeholder="اسم الانترو">
                         <input type="text" id="fIntImage" placeholder="رابط الصورة">
@@ -747,7 +751,7 @@
             <!-- ===== الأكواد ===== -->
             <div id="tabCodes" class="tab">
                 <div class="card">
-                    <div class="card-title" style="color:#ec4899;">💻 الأكواد</div>
+                    <div class="card-title" style="color:#ff6d00;">💻 الأكواد</div>
                     <div class="form-row">
                         <input type="text" id="fCodeName" placeholder="اسم الكود">
                         <select id="fCodeType">
@@ -778,7 +782,7 @@
 
     <script>
         // ================================================================
-        //  نظام الإدارة - V13 (من الصفر)
+        //  مدير المحتوى - بناء جديد بالكامل
         //  يقرأ البيانات من siteData مباشرة
         // ================================================================
 
@@ -854,7 +858,7 @@
                 document.getElementById('panel').style.display = 'block';
                 document.getElementById('passError').style.display = 'none';
                 init();
-                toast('✅ مرحباً بك');
+                toast('✅ مرحباً بك في مدير المحتوى');
             } else {
                 document.getElementById('passError').style.display = 'block';
                 document.getElementById('passInput').value = '';
@@ -929,7 +933,7 @@
             if (!container) return;
 
             if (!pages.length) {
-                container.innerHTML = '<span style="color:#8888aa;">لا توجد صفحات</span>';
+                container.innerHTML = '<span style="color:#7a8ba8;">لا توجد صفحات</span>';
                 return;
             }
 
@@ -970,11 +974,11 @@
             const categories = siteData.categories.filter(c => c.pageId === pageId);
 
             let html = `
-                <div style="background:#1a1a2e;padding:12px 18px;border-radius:10px;border:1px solid #ff6b00;display:flex;justify-content:space-between;align-items:center;flex-wrap:wrap;gap:8px;margin-bottom:12px;">
+                <div style="background:#12122a;padding:12px 18px;border-radius:12px;border:1px solid #00d4ff;display:flex;justify-content:space-between;align-items:center;flex-wrap:wrap;gap:8px;margin-bottom:12px;">
                     <div>
-                        <span style="font-size:17px;color:#ff6b00;font-weight:700;">📄 ${page.name}</span>
-                        <span style="color:#8888aa;font-size:13px;margin-right:10px;">${page.link}</span>
-                        <span style="color:#8888aa;font-size:12px;">(${categories.length} أقسام)</span>
+                        <span style="font-size:17px;color:#00d4ff;font-weight:700;">📄 ${page.name}</span>
+                        <span style="color:#7a8ba8;font-size:13px;margin-right:10px;">${page.link}</span>
+                        <span style="color:#7a8ba8;font-size:12px;">(${categories.length} أقسام)</span>
                     </div>
                     <div style="display:flex;gap:4px;">
                         <button class="btn btn-sm btn-warning" onclick="editPage(${page.id})">✏️</button>
@@ -1028,7 +1032,7 @@
 
             // الأوامر
             if (commands.length) {
-                html += `<div style="color:#f59e0b;font-weight:600;font-size:12px;margin:4px 0;">📋 أوامر (${commands.length})</div>`;
+                html += `<div style="color:#ffd600;font-weight:600;font-size:12px;margin:4px 0;">📋 أوامر (${commands.length})</div>`;
                 commands.forEach(cmd => {
                     const idx = siteData.commands.indexOf(cmd);
                     html += `
@@ -1048,7 +1052,7 @@
 
             // القوانين
             if (rules.length) {
-                html += `<div style="color:#22c55e;font-weight:600;font-size:12px;margin:4px 0;">📜 قوانين (${rules.length})</div>`;
+                html += `<div style="color:#00e676;font-weight:600;font-size:12px;margin:4px 0;">📜 قوانين (${rules.length})</div>`;
                 rules.forEach(rule => {
                     const idx = siteData.rules.indexOf(rule);
                     html += `
@@ -1068,7 +1072,7 @@
 
             // الانترو
             if (interiors.length) {
-                html += `<div style="color:#8b5cf6;font-weight:600;font-size:12px;margin:4px 0;">🏠 انترو (${interiors.length})</div>`;
+                html += `<div style="color:#7c4dff;font-weight:600;font-size:12px;margin:4px 0;">🏠 انترو (${interiors.length})</div>`;
                 interiors.forEach(interior => {
                     const idx = siteData.interiors.indexOf(interior);
                     html += `
@@ -1088,7 +1092,7 @@
 
             // الأكواد
             if (codes.length) {
-                html += `<div style="color:#ec4899;font-weight:600;font-size:12px;margin:4px 0;">💻 أكواد (${codes.length})</div>`;
+                html += `<div style="color:#ff6d00;font-weight:600;font-size:12px;margin:4px 0;">💻 أكواد (${codes.length})</div>`;
                 codes.forEach(code => {
                     const idx = customCodes.indexOf(code);
                     html += `
@@ -1828,7 +1832,7 @@
 
         document.addEventListener('DOMContentLoaded', function() {
             document.getElementById('passInput').focus();
-            console.log('✅ لوحة التحكم V13 - من الصفر');
+            console.log('✅ مدير المحتوى - بناء جديد بالكامل');
             console.log('📄 عدد الصفحات:', pages.length);
             console.log('📂 عدد الأقسام:', siteData.categories.length);
             console.log('📋 عدد الأوامر:', siteData.commands.length);
