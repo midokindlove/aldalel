@@ -910,6 +910,91 @@ class DataManager {
       return `<p>مرحباً! 👋 كيف يمكنني مساعدتك؟</p><p>يمكنك سؤالي عن:</p><p>• الأوامر (اكتب اسم القسم)</p><p>• القوانين (اكتب اسم القانون)</p><p>• الانترو (اكتب اسم الانترو)</p><p>• أي أمر معين</p>`;
     }
 
+    // البحث الذكي في كل البيانات أولاً
+    const searchResults = this.search(msg);
+    
+    // إذا وجدت نتائج، اعرضها جميعاً (أوامر + قوانين + انترو)
+    if (searchResults.length > 0) {
+      const commandsBySection = {};
+      const rulesBySection = {};
+      const intros = [];
+      let totalCommands = 0;
+      let totalRules = 0;
+
+      searchResults.forEach(result => {
+        if (result.type === 'command') {
+          if (!commandsBySection[result.section]) commandsBySection[result.section] = [];
+          commandsBySection[result.section].push(result.data);
+          totalCommands++;
+        } else if (result.type === 'rule') {
+          if (!rulesBySection[result.section]) rulesBySection[result.section] = [];
+          rulesBySection[result.section].push(result.data);
+          totalRules++;
+        } else if (result.type === 'intro') {
+          intros.push(result.data);
+        }
+      });
+
+      let response = '';
+      const maxPerSection = 6;
+
+      // عرض الانترو أولاً إذا وجدت
+      if (intros.length > 0) {
+        response += `<p><strong>🎬 الانترو المتاح</strong> <span class="count-badge">${intros.length}</span></p>`;
+        intros.slice(0, 6).forEach(intro => {
+          response += `<div class="cmd-row"><span class="cmd-name">${intro.name}</span><span class="cmd-desc">${intro.caption}</span></div>`;
+        });
+        if (intros.length > 6) {
+          response += `<p style="color:var(--text-muted);font-size:0.8rem;margin-top:0.3rem">... و ${intros.length - 6} انترو أخرى. <a href="#intros" style="color:var(--primary);text-decoration:underline">عرض الكل</a></p>`;
+        }
+      }
+
+      // عرض الأوامر
+      if (totalCommands > 0) {
+        response += `<p style="margin-top:0.8rem"><strong>⌨️ أوامر</strong> <span class="count-badge">${totalCommands}</span></p>`;
+        const sections = Object.keys(commandsBySection);
+        const sectionsToShow = sections.slice(0, 3);
+        
+        sectionsToShow.forEach(sectionTitle => {
+          const cmds = commandsBySection[sectionTitle].slice(0, maxPerSection);
+          response += `<div class="section-title">📁 ${sectionTitle}</div>`;
+          cmds.forEach(cmd => {
+            response += `<div class="cmd-row"><span class="cmd-name">${cmd.command}</span><span class="cmd-desc">${cmd.description}</span></div>`;
+          });
+          if (commandsBySection[sectionTitle].length > maxPerSection) {
+            response += `<p style="color:var(--text-muted);font-size:0.8rem;margin-top:0.3rem">... و ${commandsBySection[sectionTitle].length - maxPerSection} أوامر أخرى</p>`;
+          }
+        });
+      }
+
+      // عرض القوانين
+      if (totalRules > 0) {
+        response += `<p style="margin-top:0.8rem"><strong>📜 قوانين</strong> <span class="count-badge">${totalRules}</span></p>`;
+        const sections = Object.keys(rulesBySection);
+        sections.forEach(sectionTitle => {
+          const rules = rulesBySection[sectionTitle].slice(0, maxPerSection);
+          response += `<div class="section-title">📁 ${sectionTitle}</div>`;
+          rules.forEach(rule => {
+            const match = rule.match(/^([A-Z0-9\-]+)\s*=\s*(.+)$/);
+            if (match) {
+              response += `<div class="rule-item"><span class="rule-code">${match[1]}</span> = ${match[2]}</div>`;
+            } else {
+              response += `<div class="rule-item">${rule}</div>`;
+            }
+          });
+        });
+      }
+
+      // ملاحظة إذا كانت النتائج كثيرة
+      const totalResults = totalCommands + totalRules + intros.length;
+      if (totalResults > 10) {
+        response += `<p style="margin-top:0.8rem;color:var(--text-muted);font-size:0.85rem">💡 هناك ${totalResults - 10} نتائج أخرى. استخدم البحث في الموقع لعرض الكل.</p>`;
+      }
+
+      return response;
+    }
+
+    // ثانياً: البحث عن تطابق في الردود المخصصة (فقط إذا لم توجد نتائج من البحث)
     for (let autoReply of this.data.autoReplies) {
       for (let keyword of autoReply.keywords) {
         const kw = keyword.toLowerCase();
@@ -917,86 +1002,8 @@ class DataManager {
       }
     }
 
-    const searchResults = this.search(msg);
-    
-    if (searchResults.length === 0) {
-      return `<p>عذراً، لم أجد معلومات عن هذا الموضوع. 🤔</p><p>جرب:</p><p>• كتابة اسم قسم (سيارات، شات، فاكشن...)</p><p>• كتابة اسم أمر (Goto, Fixveh...)</p><p>• سؤال عن قانون (DM, VDM...)</p><p>• كتابة اسم انترو (قصر، فيلا...)</p>`;
-    }
-
-    const commandsBySection = {};
-    const rulesBySection = {};
-    const intros = [];
-    let totalCommands = 0;
-    let totalRules = 0;
-
-    searchResults.forEach(result => {
-      if (result.type === 'command') {
-        if (!commandsBySection[result.section]) commandsBySection[result.section] = [];
-        commandsBySection[result.section].push(result.data);
-        totalCommands++;
-      } else if (result.type === 'rule') {
-        if (!rulesBySection[result.section]) rulesBySection[result.section] = [];
-        rulesBySection[result.section].push(result.data);
-        totalRules++;
-      } else if (result.type === 'intro') {
-        intros.push(result.data);
-      }
-    });
-
-    let response = '';
-    const maxPerSection = 6;
-
-    // عرض الانترو
-    if (intros.length > 0) {
-      response += `<p><strong>🎬 الانترو</strong> <span class="count-badge">${intros.length}</span></p>`;
-      intros.slice(0, 6).forEach(intro => {
-        response += `<div class="cmd-row"><span class="cmd-name">${intro.name}</span><span class="cmd-desc">${intro.caption}</span></div>`;
-      });
-    }
-
-    // عرض الأوامر
-    if (totalCommands > 0) {
-      response += `<p style="margin-top:0.8rem"><strong>⌨️ أوامر</strong> <span class="count-badge">${totalCommands}</span></p>`;
-      const sections = Object.keys(commandsBySection);
-      const sectionsToShow = sections.slice(0, 3);
-      
-      sectionsToShow.forEach(sectionTitle => {
-        const cmds = commandsBySection[sectionTitle].slice(0, maxPerSection);
-        response += `<div class="section-title">📁 ${sectionTitle}</div>`;
-        cmds.forEach(cmd => {
-          response += `<div class="cmd-row"><span class="cmd-name">${cmd.command}</span><span class="cmd-desc">${cmd.description}</span></div>`;
-        });
-        if (commandsBySection[sectionTitle].length > maxPerSection) {
-          response += `<p style="color:var(--text-muted);font-size:0.8rem;margin-top:0.3rem">... و ${commandsBySection[sectionTitle].length - maxPerSection} أوامر أخرى</p>`;
-        }
-      });
-    }
-
-    // عرض القوانين
-    if (totalRules > 0) {
-      response += `<p style="margin-top:0.8rem"><strong>📜 قوانين</strong> <span class="count-badge">${totalRules}</span></p>`;
-      const sections = Object.keys(rulesBySection);
-      sections.forEach(sectionTitle => {
-        const rules = rulesBySection[sectionTitle].slice(0, maxPerSection);
-        response += `<div class="section-title">📁 ${sectionTitle}</div>`;
-        rules.forEach(rule => {
-          const match = rule.match(/^([A-Z0-9\-]+)\s*=\s*(.+)$/);
-          if (match) {
-            response += `<div class="rule-item"><span class="rule-code">${match[1]}</span> = ${match[2]}</div>`;
-          } else {
-            response += `<div class="rule-item">${rule}</div>`;
-          }
-        });
-      });
-    }
-
-    // ملاحظة إذا كانت النتائج كثيرة
-    const totalResults = totalCommands + totalRules + intros.length;
-    if (totalResults > 10) {
-      response += `<p style="margin-top:0.8rem;color:var(--text-muted);font-size:0.85rem">💡 هناك ${totalResults - 10} نتائج أخرى. استخدم البحث في الموقع لعرض الكل.</p>`;
-    }
-
-    return response;
+    // لم يجد شيئاً
+    return `<p>عذراً، لم أجد معلومات عن هذا الموضوع. 🤔</p><p>جرب:</p><p>• كتابة اسم قسم (سيارات، شات، فاكشن...)</p><p>• كتابة اسم أمر (Goto, Fixveh...)</p><p>• سؤال عن قانون (DM, VDM...)</p><p>• كتابة اسم انترو (قصر، فيلا...)</p>`;
   }
 }
 
