@@ -1,43 +1,43 @@
+```html
 <!DOCTYPE html>
 <html lang="ar" dir="rtl">
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>الإدارة الذكية - الدليل MTA</title>
+    <title>لوحة التحكم - الدليل MTA</title>
     <link rel="stylesheet" href="style.css">
     <link href="https://fonts.googleapis.com/css2?family=Cairo:wght@400;600;700&display=swap" rel="stylesheet">
     <style>
+        /* ===== التصميم الأساسي ===== */
         :root {
             --primary: #ff6b00;
             --primary-dark: #cc5500;
-            --secondary: #1a1a2e;
             --bg-dark: #0d0d1a;
             --bg-card: #1a1a2e;
-            --bg-card-hover: #252540;
-            --text-light: #e0e0e0;
+            --bg-hover: #252540;
+            --text: #e0e0e0;
             --text-muted: #8888aa;
-            --border-color: #333355;
+            --border: #333355;
             --shadow: 0 8px 32px rgba(0,0,0,0.5);
             --radius: 12px;
-            --transition: all 0.3s ease;
         }
 
         * { margin: 0; padding: 0; box-sizing: border-box; }
         body {
             font-family: 'Cairo', 'Tahoma', sans-serif;
             background: var(--bg-dark);
-            color: var(--text-light);
+            color: var(--text);
             min-height: 100vh;
             line-height: 1.6;
         }
 
-        ::-webkit-scrollbar { width: 8px; }
+        ::-webkit-scrollbar { width: 6px; }
         ::-webkit-scrollbar-track { background: var(--bg-dark); }
         ::-webkit-scrollbar-thumb { background: var(--primary); border-radius: 10px; }
 
         header {
-            background: var(--secondary);
-            padding: 15px 20px;
+            background: var(--bg-card);
+            padding: 12px 20px;
             border-bottom: 2px solid var(--primary);
             position: sticky;
             top: 0;
@@ -48,234 +48,99 @@
             flex-wrap: wrap;
             gap: 10px;
         }
-        header .logo { font-size: 24px; font-weight: bold; color: var(--primary); text-decoration: none; display: flex; align-items: center; gap: 10px; }
+        header .logo { font-size: 22px; font-weight: bold; color: var(--primary); text-decoration: none; }
         header .logo span { color: white; }
-        nav { display: flex; gap: 8px; flex-wrap: wrap; }
+        nav { display: flex; gap: 6px; flex-wrap: wrap; }
         nav a {
-            color: var(--text-light);
+            color: var(--text);
             text-decoration: none;
-            padding: 8px 16px;
+            padding: 6px 14px;
             border-radius: 8px;
-            transition: var(--transition);
-            font-size: 14px;
+            transition: 0.3s;
+            font-size: 13px;
             background: rgba(255,255,255,0.05);
-            border: 1px solid transparent;
         }
-        nav a:hover { background: var(--primary); color: white; transform: translateY(-2px); }
-        nav a.active { background: var(--primary); color: white; }
+        nav a:hover, nav a.active { background: var(--primary); color: white; }
 
-        .container { max-width: 1400px; margin: 0 auto; padding: 20px; }
+        .container { max-width: 1400px; margin: 0 auto; padding: 15px; }
 
         .card {
             background: var(--bg-card);
             border-radius: var(--radius);
-            padding: 25px;
-            margin-bottom: 20px;
-            border: 1px solid var(--border-color);
+            padding: 20px;
+            margin-bottom: 15px;
+            border: 1px solid var(--border);
             box-shadow: var(--shadow);
-            transition: var(--transition);
         }
-        .card:hover { border-color: var(--primary); }
 
-        .admin-dashboard {
+        /* ===== الإحصائيات ===== */
+        .stats {
             display: grid;
-            grid-template-columns: repeat(auto-fit, minmax(120px, 1fr));
+            grid-template-columns: repeat(auto-fit, minmax(100px, 1fr));
             gap: 10px;
-            margin-bottom: 20px;
+            margin-bottom: 15px;
         }
-        .stat-card {
+        .stat {
             background: var(--bg-card);
             border-radius: var(--radius);
             padding: 12px;
             text-align: center;
-            border: 1px solid var(--border-color);
-            transition: var(--transition);
+            border: 1px solid var(--border);
+            transition: 0.3s;
         }
-        .stat-card:hover { border-color: var(--primary); transform: translateY(-3px); }
-        .stat-card .number { font-size: 24px; font-weight: bold; color: var(--primary); }
-        .stat-card .label { color: var(--text-muted); font-size: 11px; margin-top: 3px; }
-        .stat-card .icon-big { font-size: 24px; display: block; margin-bottom: 3px; }
+        .stat:hover { border-color: var(--primary); transform: translateY(-3px); }
+        .stat .num { font-size: 24px; font-weight: bold; color: var(--primary); }
+        .stat .label { font-size: 11px; color: var(--text-muted); }
 
-        .admin-tabs {
+        /* ===== التبويبات ===== */
+        .tabs {
             display: flex;
             gap: 6px;
             flex-wrap: wrap;
-            margin-bottom: 20px;
-            border-bottom: 2px solid var(--border-color);
+            margin-bottom: 15px;
+            border-bottom: 2px solid var(--border);
             padding-bottom: 10px;
         }
-        .admin-tabs button {
-            padding: 8px 16px;
+        .tabs button {
+            padding: 6px 14px;
             border: none;
             border-radius: 8px;
             background: var(--bg-card);
-            color: var(--text-light);
+            color: var(--text);
             cursor: pointer;
-            transition: var(--transition);
+            transition: 0.3s;
             font-size: 13px;
             font-weight: 600;
         }
-        .admin-tabs button:hover { background: var(--primary); }
-        .admin-tabs button.active { background: var(--primary); color: white; }
+        .tabs button:hover { background: var(--primary); }
+        .tabs button.active { background: var(--primary); color: white; }
 
-        .tab-content { display: none; animation: fadeIn 0.3s ease; }
-        .tab-content.active { display: block; }
+        .tab { display: none; animation: fadeIn 0.3s; }
+        .tab.active { display: block; }
 
-        @keyframes fadeIn {
-            from { opacity: 0; transform: translateY(10px); }
-            to { opacity: 1; transform: translateY(0); }
-        }
+        @keyframes fadeIn { from { opacity: 0; } to { opacity: 1; } }
 
-        /* ===== المحرر الذكي ===== */
-        .smart-editor {
-            display: flex;
-            flex-direction: column;
-            gap: 10px;
-        }
-
-        .editor-section {
-            background: var(--bg-dark);
-            border-radius: var(--radius);
-            border: 1px solid var(--border-color);
-            overflow: hidden;
-            transition: var(--transition);
-        }
-        .editor-section:hover { border-color: var(--primary); }
-
-        .editor-header {
-            display: flex;
-            justify-content: space-between;
-            align-items: center;
-            padding: 10px 14px;
-            background: var(--bg-card);
-            cursor: pointer;
-            transition: var(--transition);
-        }
-        .editor-header:hover { background: var(--bg-card-hover); }
-        .editor-header .title { font-weight: 600; color: var(--text-light); font-size: 14px; }
-        .editor-header .badge {
-            background: var(--primary);
-            color: white;
-            padding: 1px 10px;
-            border-radius: 20px;
-            font-size: 10px;
-        }
-        .editor-header .actions { display: flex; gap: 4px; }
-
-        .editor-body {
-            padding: 8px 12px;
-            border-top: 1px solid var(--border-color);
-            display: none;
-        }
-        .editor-body.open { display: block; }
-
-        .editor-item {
-            display: flex;
-            justify-content: space-between;
-            align-items: center;
-            padding: 6px 10px;
-            border-bottom: 1px solid var(--border-color);
-            border-radius: 4px;
-            transition: var(--transition);
-        }
-        .editor-item:hover { background: var(--bg-card-hover); }
-        .editor-item:last-child { border-bottom: none; }
-        .editor-item .info { flex: 1; }
-        .editor-item .info .main { font-weight: 500; color: var(--text-light); font-size: 13px; }
-        .editor-item .info .sub { font-size: 11px; color: var(--text-muted); }
-        .editor-item .item-actions { display: flex; gap: 3px; }
-
-        .btn-sm-edit { background: #ffaa00; color: white; border: none; padding: 2px 8px; border-radius: 4px; cursor: pointer; font-size: 10px; transition: var(--transition); }
-        .btn-sm-edit:hover { background: #cc8800; }
-        .btn-sm-delete { background: #ff3333; color: white; border: none; padding: 2px 8px; border-radius: 4px; cursor: pointer; font-size: 10px; transition: var(--transition); }
-        .btn-sm-delete:hover { background: #cc0000; }
-        .btn-sm-add { background: #00cc66; color: white; border: none; padding: 2px 10px; border-radius: 4px; cursor: pointer; font-size: 10px; transition: var(--transition); }
-        .btn-sm-add:hover { background: #00aa55; }
-
-        .toast {
-            position: fixed;
-            bottom: 30px;
-            right: 30px;
-            background: var(--bg-card);
-            border: 1px solid var(--primary);
-            padding: 12px 22px;
-            border-radius: var(--radius);
-            color: var(--text-light);
-            box-shadow: var(--shadow);
-            z-index: 9999;
-            animation: slideUp 0.3s ease;
-            display: none;
-            font-size: 14px;
-        }
-        .toast.show { display: block; }
-        .toast.success { border-color: #00cc66; }
-        .toast.error { border-color: #ff3333; }
-
-        @keyframes slideUp {
-            from { opacity: 0; transform: translateY(20px); }
-            to { opacity: 1; transform: translateY(0); }
-        }
-
-        .empty-state { text-align: center; padding: 20px; color: var(--text-muted); font-size: 13px; }
-        .empty-state .icon { font-size: 30px; display: block; margin-bottom: 8px; }
-
-        .page-selector {
+        /* ===== النماذج ===== */
+        .form-row {
             display: flex;
             gap: 8px;
             flex-wrap: wrap;
-            margin-bottom: 15px;
-            padding: 10px;
-            background: var(--bg-dark);
-            border-radius: var(--radius);
-            border: 1px solid var(--border-color);
+            align-items: center;
+            padding: 6px 0;
         }
-        .page-selector .page-btn {
-            padding: 5px 14px;
-            border: 1px solid var(--border-color);
-            border-radius: 20px;
-            background: var(--bg-dark);
-            color: var(--text-light);
-            cursor: pointer;
-            transition: var(--transition);
-            font-size: 13px;
-        }
-        .page-selector .page-btn:hover { background: var(--bg-card-hover); }
-        .page-selector .page-btn.active { background: var(--primary); border-color: var(--primary); color: white; }
-
-        .code-block-item {
-            background: #0a0a1a;
+        .form-row input, .form-row select, .form-row textarea {
+            padding: 6px 10px;
             border-radius: 6px;
-            padding: 8px;
-            border: 1px solid var(--border-color);
-            margin-top: 4px;
-            position: relative;
-            direction: ltr;
-            text-align: left;
+            border: 1px solid var(--border);
+            background: var(--bg-dark);
+            color: var(--text);
+            font-size: 13px;
+            outline: none;
+            flex: 1;
+            min-width: 100px;
         }
-        .code-block-item pre {
-            margin: 0;
-            font-family: monospace;
-            font-size: 11px;
-            color: #66ff99;
-            white-space: pre-wrap;
-            word-break: break-all;
-            line-height: 1.4;
-        }
-        .code-block-item .code-actions {
-            position: absolute;
-            top: 4px;
-            right: 4px;
-            display: flex;
-            gap: 3px;
-        }
-        .code-block-item .code-actions button {
-            padding: 1px 6px;
-            border: none;
-            border-radius: 3px;
-            cursor: pointer;
-            font-size: 9px;
-            transition: var(--transition);
-        }
+        .form-row input:focus, .form-row select:focus { border-color: var(--primary); }
+        .form-row textarea { min-height: 60px; font-family: monospace; direction: ltr; }
 
         .btn {
             padding: 6px 16px;
@@ -283,10 +148,12 @@
             border-radius: 6px;
             cursor: pointer;
             font-weight: bold;
-            transition: var(--transition);
+            transition: 0.3s;
             font-size: 13px;
         }
         .btn:hover { transform: scale(1.02); }
+        .btn-primary { background: var(--primary); color: white; }
+        .btn-primary:hover { background: var(--primary-dark); }
         .btn-success { background: #00cc66; color: white; }
         .btn-success:hover { background: #00aa55; }
         .btn-danger { background: #ff3333; color: white; }
@@ -295,46 +162,198 @@
         .btn-warning:hover { background: #cc8800; }
         .btn-info { background: #3399ff; color: white; }
         .btn-info:hover { background: #2277cc; }
-        .btn-purple { background: #9966ff; color: white; }
-        .btn-purple:hover { background: #7744cc; }
-        .btn-sm { padding: 3px 12px; font-size: 11px; }
+        .btn-sm { padding: 3px 10px; font-size: 11px; }
 
-        .form-inline {
+        /* ===== قائمة العناصر ===== */
+        .items {
+            max-height: 350px;
+            overflow-y: auto;
+            border: 1px solid var(--border);
+            border-radius: var(--radius);
+            padding: 6px;
+            margin-top: 8px;
+        }
+        .item {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            padding: 6px 10px;
+            border-bottom: 1px solid var(--border);
+            border-radius: 4px;
+            transition: 0.3s;
+        }
+        .item:hover { background: var(--bg-hover); }
+        .item:last-child { border-bottom: none; }
+        .item .info { flex: 1; }
+        .item .info .title { font-weight: 500; font-size: 13px; }
+        .item .info .sub { font-size: 11px; color: var(--text-muted); }
+        .item .actions { display: flex; gap: 4px; }
+
+        /* ===== المحرر الذكي ===== */
+        .smart {
+            display: flex;
+            flex-direction: column;
+            gap: 8px;
+        }
+
+        .section {
+            background: var(--bg-dark);
+            border-radius: var(--radius);
+            border: 1px solid var(--border);
+            overflow: hidden;
+        }
+        .section:hover { border-color: var(--primary); }
+
+        .section-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            padding: 8px 12px;
+            background: var(--bg-card);
+            cursor: pointer;
+            transition: 0.3s;
+        }
+        .section-header:hover { background: var(--bg-hover); }
+        .section-header .title { font-weight: 600; font-size: 14px; }
+        .section-header .badge {
+            background: var(--primary);
+            color: white;
+            padding: 1px 8px;
+            border-radius: 20px;
+            font-size: 10px;
+        }
+
+        .section-body {
+            padding: 6px 12px;
+            border-top: 1px solid var(--border);
+            display: none;
+        }
+        .section-body.open { display: block; }
+
+        .child-item {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            padding: 4px 8px;
+            border-bottom: 1px solid var(--border);
+            border-radius: 4px;
+        }
+        .child-item:hover { background: var(--bg-hover); }
+        .child-item:last-child { border-bottom: none; }
+        .child-item .info { flex: 1; }
+        .child-item .info .main { font-size: 13px; }
+        .child-item .info .sub { font-size: 11px; color: var(--text-muted); }
+
+        .page-selector {
             display: flex;
             gap: 8px;
             flex-wrap: wrap;
-            padding: 6px 0;
-            align-items: center;
-        }
-        .form-inline input, .form-inline select, .form-inline textarea {
-            padding: 6px 10px;
-            border-radius: 6px;
-            border: 1px solid var(--border-color);
+            padding: 8px;
             background: var(--bg-dark);
-            color: var(--text-light);
-            font-size: 13px;
-            outline: none;
-            transition: var(--transition);
-            flex: 1;
-            min-width: 100px;
+            border-radius: var(--radius);
+            border: 1px solid var(--border);
+            margin-bottom: 10px;
         }
-        .form-inline input:focus, .form-inline select:focus, .form-inline textarea:focus { border-color: var(--primary); }
-        .form-inline textarea { min-height: 50px; font-family: monospace; direction: ltr; text-align: left; }
-        .form-inline .btn-add { background: var(--primary); color: white; border: none; padding: 6px 18px; border-radius: 6px; cursor: pointer; font-weight: bold; transition: var(--transition); }
-        .form-inline .btn-add:hover { background: var(--primary-dark); }
+        .page-selector .page-btn {
+            padding: 4px 14px;
+            border: 1px solid var(--border);
+            border-radius: 20px;
+            background: var(--bg-dark);
+            color: var(--text);
+            cursor: pointer;
+            font-size: 13px;
+            transition: 0.3s;
+        }
+        .page-selector .page-btn:hover { background: var(--bg-hover); }
+        .page-selector .page-btn.active { background: var(--primary); border-color: var(--primary); color: white; }
+
+        .code-box {
+            background: #0a0a1a;
+            border-radius: 6px;
+            padding: 6px 10px;
+            border: 1px solid var(--border);
+            margin-top: 4px;
+            position: relative;
+            direction: ltr;
+            text-align: left;
+        }
+        .code-box pre {
+            margin: 0;
+            font-family: monospace;
+            font-size: 11px;
+            color: #66ff99;
+            white-space: pre-wrap;
+            word-break: break-all;
+        }
+        .code-box .copy-btn {
+            position: absolute;
+            top: 4px;
+            right: 4px;
+            background: var(--primary);
+            color: white;
+            border: none;
+            padding: 1px 8px;
+            border-radius: 4px;
+            cursor: pointer;
+            font-size: 9px;
+        }
+
+        .empty {
+            text-align: center;
+            padding: 20px;
+            color: var(--text-muted);
+            font-size: 13px;
+        }
+        .empty .icon { font-size: 30px; display: block; margin-bottom: 6px; }
+
+        .toast {
+            position: fixed;
+            bottom: 20px;
+            right: 20px;
+            background: var(--bg-card);
+            border: 1px solid var(--primary);
+            padding: 10px 20px;
+            border-radius: var(--radius);
+            color: var(--text);
+            box-shadow: var(--shadow);
+            z-index: 9999;
+            display: none;
+            font-size: 14px;
+            animation: slideUp 0.3s;
+        }
+        .toast.show { display: block; }
+        .toast.success { border-color: #00cc66; }
+        .toast.error { border-color: #ff3333; }
+
+        @keyframes slideUp { from { opacity: 0; transform: translateY(20px); } to { opacity: 1; transform: translateY(0); } }
+
+        .login-box {
+            max-width: 380px;
+            margin: 60px auto;
+            text-align: center;
+        }
+        .login-box input {
+            width: 200px;
+            padding: 12px;
+            border-radius: 25px;
+            border: 1px solid var(--border);
+            background: var(--bg-dark);
+            color: var(--text);
+            font-size: 20px;
+            text-align: center;
+            outline: none;
+        }
+        .login-box input:focus { border-color: var(--primary); }
 
         @media (max-width: 768px) {
-            .form-inline { flex-direction: column; }
-            .form-inline input, .form-inline select, .form-inline textarea { min-width: 100%; }
-            .admin-dashboard { grid-template-columns: repeat(2, 1fr); }
-            .admin-tabs button { font-size: 11px; padding: 6px 10px; }
+            .form-row { flex-direction: column; }
+            .form-row input, .form-row select { min-width: 100%; }
+            .stats { grid-template-columns: repeat(3, 1fr); }
         }
         @media (max-width: 480px) {
-            .admin-dashboard { grid-template-columns: 1fr 1fr; gap: 6px; }
-            .stat-card { padding: 10px; }
-            .stat-card .number { font-size: 18px; }
+            .stats { grid-template-columns: 1fr 1fr; }
             .container { padding: 10px; }
-            .card { padding: 15px; }
+            .card { padding: 12px; }
         }
     </style>
 </head>
@@ -354,43 +373,42 @@
     <div class="container">
 
         <!-- ===== تسجيل الدخول ===== -->
-        <div id="adminLogin" class="card" style="text-align:center;max-width:400px;margin:40px auto;">
-            <h2 style="color:var(--primary);">🔐 لوحة الإدارة الذكية</h2>
-            <p style="color:var(--text-muted);margin:10px 0 20px;">أدخل الرقم السري للدخول</p>
-            <input type="password" id="adminPassword" placeholder="🔑 الرقم السري" maxlength="4"
-                   style="width:200px;padding:14px;border-radius:25px;border:1px solid var(--border-color);background:var(--bg-dark);color:var(--text-light);font-size:20px;text-align:center;outline:none;">
+        <div id="loginBox" class="login-box card">
+            <h2 style="color:var(--primary);">🔐 لوحة الإدارة</h2>
+            <p style="color:var(--text-muted);margin:10px 0;">أدخل الرقم السري</p>
+            <input type="password" id="adminPass" placeholder="🔑 الرقم السري" maxlength="4"
+                   onkeydown="if(event.key==='Enter') login()">
             <br>
-            <button onclick="loginAdmin()" style="margin-top:15px;padding:12px 50px;border:none;border-radius:25px;background:var(--primary);color:white;font-size:18px;cursor:pointer;font-weight:bold;">🚀 دخول</button>
-            <p id="loginError" style="color:#ff3333;margin-top:15px;display:none;">❌ الرقم السري غير صحيح</p>
-            <p style="color:var(--text-muted);font-size:12px;margin-top:20px;">🔑 الرقم السري: <strong style="color:var(--primary);">0000</strong></p>
+            <button onclick="login()" class="btn btn-primary" style="margin-top:12px;padding:10px 50px;">🚀 دخول</button>
+            <p id="loginErr" style="color:#ff3333;margin-top:10px;display:none;">❌ الرقم السري غير صحيح</p>
+            <p style="color:var(--text-muted);font-size:12px;margin-top:15px;">🔑 الرقم السري: <strong style="color:var(--primary);">0000</strong></p>
         </div>
 
         <!-- ===== لوحة التحكم ===== -->
-        <div id="adminPanel" class="admin-panel" style="display:none;">
+        <div id="adminPanel" style="display:none;">
 
             <!-- ===== الإحصائيات ===== -->
-            <div class="admin-dashboard">
-                <div class="stat-card"><span class="icon-big">📄</span><div class="number" id="statPages">0</div><div class="label">الصفحات</div></div>
-                <div class="stat-card"><span class="icon-big">📂</span><div class="number" id="statCategories">0</div><div class="label">الأقسام</div></div>
-                <div class="stat-card"><span class="icon-big">📋</span><div class="number" id="statCommands">0</div><div class="label">الأوامر</div></div>
-                <div class="stat-card"><span class="icon-big">📜</span><div class="number" id="statRules">0</div><div class="label">القوانين</div></div>
-                <div class="stat-card"><span class="icon-big">🏠</span><div class="number" id="statInteriors">0</div><div class="label">الانترو</div></div>
-                <div class="stat-card"><span class="icon-big">💻</span><div class="number" id="statCodes">0</div><div class="label">الأكواد</div></div>
-                <div class="stat-card"><span class="icon-big">💾</span><div class="number" id="statSize">0</div><div class="label">KB</div></div>
+            <div class="stats">
+                <div class="stat"><div class="num" id="stPages">0</div><div class="label">📄 صفحات</div></div>
+                <div class="stat"><div class="num" id="stCategories">0</div><div class="label">📂 أقسام</div></div>
+                <div class="stat"><div class="num" id="stCommands">0</div><div class="label">📋 أوامر</div></div>
+                <div class="stat"><div class="num" id="stRules">0</div><div class="label">📜 قوانين</div></div>
+                <div class="stat"><div class="num" id="stInteriors">0</div><div class="label">🏠 انترو</div></div>
+                <div class="stat"><div class="num" id="stCodes">0</div><div class="label">💻 أكواد</div></div>
             </div>
 
             <!-- ===== أزرار سريعة ===== -->
-            <div style="display:flex;gap:8px;flex-wrap:wrap;margin-bottom:20px;">
+            <div style="display:flex;gap:8px;flex-wrap:wrap;margin-bottom:15px;">
                 <button class="btn btn-info" onclick="exportData()">📤 تصدير</button>
-                <button class="btn btn-purple" onclick="document.getElementById('importFile').click()">📥 استيراد</button>
+                <button class="btn btn-purple" style="background:#9966ff;color:white;" onclick="document.getElementById('importFile').click()">📥 استيراد</button>
                 <input type="file" id="importFile" accept=".json" style="display:none;" onchange="importData(event)">
                 <button class="btn btn-warning" onclick="resetAll()">🔄 إعادة ضبط</button>
                 <button class="btn btn-danger" onclick="deleteAll()">🗑️ حذف الكل</button>
             </div>
 
             <!-- ===== التبويبات ===== -->
-            <div class="admin-tabs">
-                <button class="active" data-tab="tabEditor">📝 المحرر الذكي</button>
+            <div class="tabs">
+                <button class="active" data-tab="tabEditor">📝 المحرر</button>
                 <button data-tab="tabPages">📄 الصفحات</button>
                 <button data-tab="tabCategories">📂 الأقسام</button>
                 <button data-tab="tabCommands">📋 الأوامر</button>
@@ -399,92 +417,91 @@
                 <button data-tab="tabCodes">💻 الأكواد</button>
             </div>
 
-            <!-- ===== تبويب المحرر الذكي ===== -->
-            <div id="tabEditor" class="tab-content active">
+            <!-- ===== تبويب المحرر ===== -->
+            <div id="tabEditor" class="tab active">
                 <div class="card">
                     <h3 style="color:var(--primary);">📝 المحرر الذكي</h3>
-                    <p style="color:var(--text-muted);margin-bottom:15px;">اختر صفحة لعرض الأقسام والمحتوى مع إمكانية التعديل المباشر</p>
-
+                    <p style="color:var(--text-muted);font-size:13px;margin-bottom:10px;">اختر صفحة لعرض الأقسام والمحتوى</p>
                     <div class="page-selector" id="pageSelector"></div>
-                    <div id="smartEditor" class="smart-editor"></div>
+                    <div id="editorContent" class="smart"></div>
                 </div>
             </div>
 
             <!-- ===== تبويب الصفحات ===== -->
-            <div id="tabPages" class="tab-content">
+            <div id="tabPages" class="tab">
                 <div class="card">
-                    <h3 style="color:#3399ff;">📄 إدارة الصفحات</h3>
-                    <div class="form-inline">
+                    <h3 style="color:#3399ff;">📄 الصفحات</h3>
+                    <div class="form-row">
                         <input type="text" id="newPageName" placeholder="اسم الصفحة">
                         <input type="text" id="newPageLink" placeholder="الرابط">
                         <input type="text" id="newPageDesc" placeholder="الوصف">
-                        <button class="btn-add" onclick="addPage()">➕ إضافة</button>
+                        <button class="btn btn-success" onclick="addPage()">➕ إضافة</button>
                     </div>
-                    <div id="pagesList" class="editor-body open" style="display:block;border-top:none;padding:10px 0;"></div>
+                    <div class="items" id="pagesList"></div>
                 </div>
             </div>
 
             <!-- ===== تبويب الأقسام ===== -->
-            <div id="tabCategories" class="tab-content">
+            <div id="tabCategories" class="tab">
                 <div class="card">
-                    <h3 style="color:var(--primary);">📂 إدارة الأقسام</h3>
-                    <div class="form-inline">
+                    <h3 style="color:var(--primary);">📂 الأقسام</h3>
+                    <div class="form-row">
                         <input type="text" id="newCatName" placeholder="اسم القسم">
                         <input type="text" id="newCatIcon" placeholder="الأيقونة" style="max-width:80px;">
                         <select id="newCatPage"></select>
-                        <button class="btn-add" onclick="addCategory()">➕ إضافة</button>
+                        <button class="btn btn-success" onclick="addCategory()">➕ إضافة</button>
                     </div>
-                    <div id="categoriesList" class="editor-body open" style="display:block;border-top:none;padding:10px 0;"></div>
+                    <div class="items" id="categoriesList"></div>
                 </div>
             </div>
 
             <!-- ===== تبويب الأوامر ===== -->
-            <div id="tabCommands" class="tab-content">
+            <div id="tabCommands" class="tab">
                 <div class="card">
-                    <h3 style="color:#ffaa00;">📋 إدارة الأوامر</h3>
-                    <div class="form-inline">
+                    <h3 style="color:#ffaa00;">📋 الأوامر</h3>
+                    <div class="form-row">
                         <input type="text" id="newCmd" placeholder="الأمر">
                         <input type="text" id="newCmdMeaning" placeholder="المعنى">
                         <select id="newCmdCategory"></select>
-                        <button class="btn-add" onclick="addCommand()">➕ إضافة</button>
+                        <button class="btn btn-success" onclick="addCommand()">➕ إضافة</button>
                     </div>
-                    <div id="commandsList" class="editor-body open" style="display:block;border-top:none;padding:10px 0;"></div>
+                    <div class="items" id="commandsList"></div>
                 </div>
             </div>
 
             <!-- ===== تبويب القوانين ===== -->
-            <div id="tabRules" class="tab-content">
+            <div id="tabRules" class="tab">
                 <div class="card">
-                    <h3 style="color:#00cc66;">📜 إدارة القوانين</h3>
-                    <div class="form-inline">
+                    <h3 style="color:#00cc66;">📜 القوانين</h3>
+                    <div class="form-row">
                         <input type="text" id="newRuleEn" placeholder="القانون (English)">
                         <input type="text" id="newRuleAr" placeholder="المعنى (Arabic)">
                         <select id="newRuleCategory"></select>
-                        <button class="btn-add" onclick="addRule()">➕ إضافة</button>
+                        <button class="btn btn-success" onclick="addRule()">➕ إضافة</button>
                     </div>
-                    <div id="rulesList" class="editor-body open" style="display:block;border-top:none;padding:10px 0;"></div>
+                    <div class="items" id="rulesList"></div>
                 </div>
             </div>
 
             <!-- ===== تبويب الانترو ===== -->
-            <div id="tabInteriors" class="tab-content">
+            <div id="tabInteriors" class="tab">
                 <div class="card">
-                    <h3 style="color:#cc66ff;">🏠 إدارة الانترو</h3>
-                    <div class="form-inline">
+                    <h3 style="color:#cc66ff;">🏠 الانترو</h3>
+                    <div class="form-row">
                         <input type="text" id="newIntName" placeholder="اسم الانترو">
                         <input type="text" id="newIntImage" placeholder="رابط الصورة">
                         <select id="newIntCategory"></select>
-                        <button class="btn-add" onclick="addInterior()">➕ إضافة</button>
+                        <button class="btn btn-success" onclick="addInterior()">➕ إضافة</button>
                     </div>
-                    <div id="interiorsList" class="editor-body open" style="display:block;border-top:none;padding:10px 0;"></div>
+                    <div class="items" id="interiorsList"></div>
                 </div>
             </div>
 
             <!-- ===== تبويب الأكواد ===== -->
-            <div id="tabCodes" class="tab-content">
+            <div id="tabCodes" class="tab">
                 <div class="card">
-                    <h3 style="color:#ff66aa;">💻 إدارة الأكواد</h3>
-                    <div class="form-inline">
+                    <h3 style="color:#ff66aa;">💻 الأكواد</h3>
+                    <div class="form-row">
                         <input type="text" id="newCodeName" placeholder="اسم الكود">
                         <select id="newCodeType">
                             <option value="interior">انترو</option>
@@ -493,13 +510,13 @@
                             <option value="other">أخرى</option>
                         </select>
                         <select id="newCodeCategory"></select>
-                        <button class="btn-add" onclick="addCode()">➕ إضافة</button>
+                        <button class="btn btn-success" onclick="addCode()">➕ إضافة</button>
                     </div>
-                    <div class="form-inline" style="flex-direction:column;align-items:stretch;">
-                        <textarea id="newCodeContent" placeholder="أدخل الكود هنا..." style="min-height:80px;"></textarea>
+                    <div class="form-row" style="flex-direction:column;align-items:stretch;">
+                        <textarea id="newCodeContent" placeholder="محتوى الكود..."></textarea>
                         <input type="text" id="newCodeDesc" placeholder="وصف الكود">
                     </div>
-                    <div id="codesList" class="editor-body open" style="display:block;border-top:none;padding:10px 0;"></div>
+                    <div class="items" id="codesList"></div>
                 </div>
             </div>
 
@@ -512,112 +529,92 @@
     <script src="data.js"></script>
     <script>
         // ============================================================
-        // نظام الإدارة الذكي - V8 (تم إصلاح ربط البيانات)
+        // لوحة التحكم الذكية - نسخة مبسطة ومتطورة
         // ============================================================
 
-        const ADMIN_PASSWORD = '0000';
+        const PASSWORD = '0000';
+
+        // ===== البيانات =====
         let pages = [];
         let codes = [];
-        let selectedPageId = null;
+        let selectedPage = null;
 
         // ===== تحميل البيانات =====
         function loadPages() {
-            const saved = localStorage.getItem('adminPages');
+            const saved = localStorage.getItem('pages');
             pages = saved ? JSON.parse(saved) : [
-                { id: 1, name: "الرئيسية", link: "index.html", desc: "الصفحة الرئيسية" },
-                { id: 2, name: "الأوامر", link: "commands.html", desc: "جميع الأوامر" },
-                { id: 3, name: "القوانين", link: "rules.html", desc: "قوانين السيرفر" },
-                { id: 4, name: "الانترو", link: "intro.html", desc: "معرض الانترو" },
-                { id: 5, name: "الإدارة", link: "admin.html", desc: "لوحة التحكم" }
+                { id: 1, name: 'الرئيسية', link: 'index.html', desc: 'الصفحة الرئيسية' },
+                { id: 2, name: 'الأوامر', link: 'commands.html', desc: 'جميع الأوامر' },
+                { id: 3, name: 'القوانين', link: 'rules.html', desc: 'قوانين السيرفر' },
+                { id: 4, name: 'الانترو', link: 'intro.html', desc: 'معرض الانترو' },
+                { id: 5, name: 'الإدارة', link: 'admin.html', desc: 'لوحة التحكم' }
             ];
         }
 
-        function savePages() { localStorage.setItem('adminPages', JSON.stringify(pages)); }
+        function savePages() { localStorage.setItem('pages', JSON.stringify(pages)); }
 
         function loadCodes() {
-            const saved = localStorage.getItem('adminCodes');
+            const saved = localStorage.getItem('codes');
             codes = saved ? JSON.parse(saved) : [];
         }
 
-        function saveCodes() { localStorage.setItem('adminCodes', JSON.stringify(codes)); }
+        function saveCodes() { localStorage.setItem('codes', JSON.stringify(codes)); }
 
         loadPages();
         loadCodes();
 
         // ===== تسجيل الدخول =====
-        function loginAdmin() {
-            const pwd = document.getElementById('adminPassword').value;
-            if (pwd === ADMIN_PASSWORD) {
-                document.getElementById('adminLogin').style.display = 'none';
+        function login() {
+            const pass = document.getElementById('adminPass').value;
+            if (pass === PASSWORD) {
+                document.getElementById('loginBox').style.display = 'none';
                 document.getElementById('adminPanel').style.display = 'block';
-                document.getElementById('loginError').style.display = 'none';
+                document.getElementById('loginErr').style.display = 'none';
                 init();
-                showToast('✅ تم الدخول بنجاح', 'success');
+                toast('✅ تم الدخول بنجاح');
             } else {
-                document.getElementById('loginError').style.display = 'block';
-                document.getElementById('adminPassword').value = '';
-                document.getElementById('adminPassword').focus();
+                document.getElementById('loginErr').style.display = 'block';
+                document.getElementById('adminPass').value = '';
+                document.getElementById('adminPass').focus();
             }
         }
 
         // ===== التهيئة =====
         function init() {
-            // تحديث القوائم المنسدلة
             updateSelects();
-
-            // عرض محدد الصفحات
             renderPageSelector();
-
-            // عرض المحرر الذكي
-            renderSmartEditor(selectedPageId);
-
-            // عرض القوائم المنفصلة
+            renderEditor(selectedPage);
             renderPages();
             renderCategories();
             renderCommands();
             renderRules();
             renderInteriors();
             renderCodes();
-
-            // تحديث الإحصائيات
             updateStats();
-
-            // تفعيل التبويبات
             setupTabs();
-
-            // تحديد أول صفحة إذا لم تكن محددة
-            if (selectedPageId === null && pages.length > 0) {
-                selectedPageId = pages[0].id;
-                renderPageSelector();
-                renderSmartEditor(selectedPageId);
-            }
         }
 
-        // ===== تفعيل التبويبات =====
+        // ===== التبويبات =====
         function setupTabs() {
-            document.querySelectorAll('.admin-tabs button').forEach(tab => {
-                tab.onclick = function() {
-                    document.querySelectorAll('.admin-tabs button').forEach(t => t.classList.remove('active'));
+            document.querySelectorAll('.tabs button').forEach(btn => {
+                btn.onclick = function() {
+                    document.querySelectorAll('.tabs button').forEach(b => b.classList.remove('active'));
                     this.classList.add('active');
-                    document.querySelectorAll('.tab-content').forEach(tc => tc.classList.remove('active'));
+                    document.querySelectorAll('.tab').forEach(t => t.classList.remove('active'));
                     document.getElementById(this.dataset.tab).classList.add('active');
                 };
             });
         }
 
-        // ===== تحديث القوائم المنسدلة =====
+        // ===== القوائم المنسدلة =====
         function updateSelects() {
             const pageOpts = pages.map(p => `<option value="${p.id}">📄 ${p.name}</option>`).join('');
             const catOpts = siteData.categories.map(c => `<option value="${c.name}">${c.icon || '📁'} ${c.name}</option>`)
             .join('');
 
-            const selectIds = ['newCatPage', 'newCodeCategory', 'newCmdCategory', 'newRuleCategory', 'newIntCategory'];
-            selectIds.forEach(id => {
+            ['newCatPage', 'newCodeCategory', 'newCmdCategory', 'newRuleCategory', 'newIntCategory'].forEach(id => {
                 const el = document.getElementById(id);
-                if (el) {
-                    if (id === 'newCatPage') el.innerHTML = pageOpts;
-                    else el.innerHTML = catOpts;
-                }
+                if (el) el.innerHTML = id === 'newCatPage' ? pageOpts : catOpts;
             });
         }
 
@@ -625,93 +622,80 @@
         function renderPageSelector() {
             const container = document.getElementById('pageSelector');
             if (!container) return;
-            if (pages.length === 0) {
-                container.innerHTML = '<span style="color:var(--text-muted);">لا توجد صفحات</span>';
-                return;
-            }
+            if (!pages.length) { container.innerHTML = '<span style="color:var(--text-muted);">لا توجد صفحات</span>'; return; }
+
             container.innerHTML = pages.map(p =>
-                `<button class="page-btn ${selectedPageId === p.id ? 'active' : ''}" onclick="selectPage(${p.id})">📄 ${p.name}</button>`
+                `<button class="page-btn ${selectedPage === p.id ? 'active' : ''}" onclick="selectPage(${p.id})">📄 ${p.name}</button>`
             ).join('');
+
+            if (selectedPage === null && pages.length) {
+                selectedPage = pages[0].id;
+                renderPageSelector();
+                renderEditor(selectedPage);
+            }
         }
 
         function selectPage(id) {
-            selectedPageId = id;
+            selectedPage = id;
             renderPageSelector();
-            renderSmartEditor(id);
+            renderEditor(id);
         }
 
         // ============================================================
-        // المحرر الذكي - يعرض كل البيانات بشكل صحيح
+        // المحرر الذكي
         // ============================================================
-        function renderSmartEditor(pageId) {
-            const container = document.getElementById('smartEditor');
+        function renderEditor(pageId) {
+            const container = document.getElementById('editorContent');
             if (!container) return;
 
-            // التحقق من وجود البيانات
-            if (typeof siteData === 'undefined') {
-                container.innerHTML =
-                    `<div class="empty-state"><span class="icon">❌</span>لم يتم تحميل البيانات</div>`;
-                return;
-            }
-
-            // البحث عن الصفحة
             const page = pages.find(p => p.id === pageId);
             if (!page) {
-                container.innerHTML = `<div class="empty-state"><span class="icon">📄</span>اختر صفحة من الأعلى</div>`;
+                container.innerHTML = `<div class="empty"><span class="icon">📄</span>اختر صفحة</div>`;
                 return;
             }
 
-            // جلب الأقسام التابعة لهذه الصفحة
             const cats = siteData.categories.filter(c => c.pageId === pageId);
 
             let html = `
-                <div style="background:var(--bg-card);padding:10px 16px;border-radius:8px;margin-bottom:10px;border:1px solid var(--primary);display:flex;justify-content:space-between;align-items:center;flex-wrap:wrap;gap:10px;">
+                <div style="background:var(--bg-card);padding:8px 14px;border-radius:8px;border:1px solid var(--primary);display:flex;justify-content:space-between;align-items:center;flex-wrap:wrap;gap:8px;margin-bottom:8px;">
                     <div>
-                        <span style="font-size:18px;color:var(--primary);">📄 ${page.name}</span>
-                        <span style="color:var(--text-muted);font-size:13px;margin-right:10px;">${page.link}</span>
-                        <span style="color:var(--text-muted);font-size:12px;margin-right:10px;">${page.desc || ''}</span>
-                        <span style="color:var(--text-muted);font-size:11px;margin-right:10px;">(${cats.length} أقسام)</span>
+                        <span style="font-size:16px;color:var(--primary);">📄 ${page.name}</span>
+                        <span style="color:var(--text-muted);font-size:12px;margin-right:8px;">${page.link}</span>
+                        <span style="color:var(--text-muted);font-size:11px;">(${cats.length} أقسام)</span>
                     </div>
-                    <div style="display:flex;gap:5px;">
-                        <button class="btn btn-sm btn-warning" onclick="editPageById(${page.id})">✏️ تعديل</button>
-                        <button class="btn btn-sm btn-danger" onclick="deletePageById(${page.id})">🗑️ حذف</button>
-                        <button class="btn btn-sm btn-success" onclick="addCategoryToPage(${page.id})">➕ إضافة قسم</button>
+                    <div style="display:flex;gap:4px;">
+                        <button class="btn btn-sm btn-warning" onclick="editPage(${page.id})">✏️</button>
+                        <button class="btn btn-sm btn-danger" onclick="deletePage(${page.id})">🗑️</button>
+                        <button class="btn btn-sm btn-success" onclick="addCategoryToPage(${page.id})">➕ قسم</button>
                     </div>
                 </div>
             `;
 
-            if (cats.length === 0) {
-                html += `
-                    <div class="empty-state" style="border:1px dashed var(--border-color);border-radius:var(--radius);padding:30px;">
-                        <span class="icon">📂</span>
-                        لا توجد أقسام في هذه الصفحة<br>
-                        <span style="font-size:12px;">اضغط على "إضافة قسم" لإضافة قسم جديد</span>
-                    </div>
-                `;
+            if (!cats.length) {
+                html += `<div class="empty"><span class="icon">📂</span>لا توجد أقسام</div>`;
             } else {
                 cats.forEach(cat => {
-                    // جلب البيانات المرتبطة بهذا القسم
-                    const commands = siteData.commands.filter(c => c.category === cat.name);
+                    const cmds = siteData.commands.filter(c => c.category === cat.name);
                     const rules = siteData.rules.filter(r => r.category === cat.name);
-                    const interiors = siteData.interiors.filter(i => i.category === cat.name);
-                    const codesInCat = codes.filter(c => c.category === cat.name);
-                    const total = commands.length + rules.length + interiors.length + codesInCat.length;
+                    const ints = siteData.interiors.filter(i => i.category === cat.name);
+                    const codesIn = codes.filter(c => c.category === cat.name);
+                    const total = cmds.length + rules.length + ints.length + codesIn.length;
 
                     html += `
-                        <div class="editor-section">
-                            <div class="editor-header" onclick="toggleEditor(this)">
+                        <div class="section">
+                            <div class="section-header" onclick="toggleSection(this)">
                                 <span class="title">${cat.icon || '📁'} ${cat.name}</span>
-                                <div style="display:flex;gap:8px;align-items:center;">
-                                    <span class="badge">${total} عنصر</span>
-                                    <span class="actions" onclick="event.stopPropagation();">
-                                        <button class="btn-sm-edit" onclick="editCategoryByName('${cat.name}')">✏️</button>
-                                        <button class="btn-sm-delete" onclick="deleteCategoryByName('${cat.name}')">🗑️</button>
-                                        <button class="btn-sm-add" onclick="addItemToCategory('${cat.name}')">➕</button>
+                                <div style="display:flex;gap:6px;align-items:center;">
+                                    <span class="badge">${total}</span>
+                                    <span onclick="event.stopPropagation();">
+                                        <button class="btn btn-sm btn-warning" onclick="editCategory('${cat.name}')">✏️</button>
+                                        <button class="btn btn-sm btn-danger" onclick="deleteCategory('${cat.name}')">🗑️</button>
+                                        <button class="btn btn-sm btn-success" onclick="addItem('${cat.name}')">➕</button>
                                     </span>
                                 </div>
                             </div>
-                            <div class="editor-body open">
-                                ${renderCategoryItems(cat.name)}
+                            <div class="section-body open">
+                                ${renderCategoryContent(cat.name)}
                             </div>
                         </div>
                     `;
@@ -721,307 +705,163 @@
             container.innerHTML = html;
         }
 
-        function renderCategoryItems(catName) {
-            const commands = siteData.commands.filter(c => c.category === catName);
+        function renderCategoryContent(catName) {
+            const cmds = siteData.commands.filter(c => c.category === catName);
             const rules = siteData.rules.filter(r => r.category === catName);
-            const interiors = siteData.interiors.filter(i => i.category === catName);
-            const codesInCat = codes.filter(c => c.category === catName);
+            const ints = siteData.interiors.filter(i => i.category === catName);
+            const codesIn = codes.filter(c => c.category === catName);
 
             let html = '';
 
-            // ===== أوامر =====
-            if (commands.length > 0) {
-                html += `<div style="color:#ffaa00;font-weight:bold;margin:5px 0;">📋 الأوامر (${commands.length})</div>`;
-                commands.forEach((c, idx) => {
-                    const realIdx = siteData.commands.indexOf(c);
+            if (cmds.length) {
+                html += `<div style="color:#ffaa00;font-weight:bold;font-size:12px;margin:4px 0;">📋 الأوامر (${cmds.length})</div>`;
+                cmds.forEach(c => {
+                    const idx = siteData.commands.indexOf(c);
                     html += `
-                        <div class="editor-item">
+                        <div class="child-item">
                             <div class="info"><div class="main"><code style="color:#ffaa66;">${c.command}</code></div><div class="sub">${c.meaning}</div></div>
-                            <div class="item-actions">
-                                <button class="btn-sm-edit" onclick="editCommandByIndex(${realIdx})">✏️</button>
-                                <button class="btn-sm-delete" onclick="deleteCommandByIndex(${realIdx})">🗑️</button>
+                            <div class="actions">
+                                <button class="btn btn-sm btn-warning" onclick="editCommand(${idx})">✏️</button>
+                                <button class="btn btn-sm btn-danger" onclick="deleteCommand(${idx})">🗑️</button>
                             </div>
                         </div>
                     `;
                 });
             }
 
-            // ===== قوانين =====
-            if (rules.length > 0) {
-                html += `<div style="color:#00cc66;font-weight:bold;margin:5px 0;">📜 القوانين (${rules.length})</div>`;
-                rules.forEach((r, idx) => {
-                    const realIdx = siteData.rules.indexOf(r);
+            if (rules.length) {
+                html += `<div style="color:#00cc66;font-weight:bold;font-size:12px;margin:4px 0;">📜 القوانين (${rules.length})</div>`;
+                rules.forEach(r => {
+                    const idx = siteData.rules.indexOf(r);
                     html += `
-                        <div class="editor-item">
+                        <div class="child-item">
                             <div class="info"><div class="main"><strong style="color:#ffaa66;">${r.english}</strong></div><div class="sub">${r.arabic}</div></div>
-                            <div class="item-actions">
-                                <button class="btn-sm-edit" onclick="editRuleByIndex(${realIdx})">✏️</button>
-                                <button class="btn-sm-delete" onclick="deleteRuleByIndex(${realIdx})">🗑️</button>
+                            <div class="actions">
+                                <button class="btn btn-sm btn-warning" onclick="editRule(${idx})">✏️</button>
+                                <button class="btn btn-sm btn-danger" onclick="deleteRule(${idx})">🗑️</button>
                             </div>
                         </div>
                     `;
                 });
             }
 
-            // ===== انترو =====
-            if (interiors.length > 0) {
-                html += `<div style="color:#cc66ff;font-weight:bold;margin:5px 0;">🏠 الانترو (${interiors.length})</div>`;
-                interiors.forEach((i, idx) => {
-                    const realIdx = siteData.interiors.indexOf(i);
+            if (ints.length) {
+                html += `<div style="color:#cc66ff;font-weight:bold;font-size:12px;margin:4px 0;">🏠 الانترو (${ints.length})</div>`;
+                ints.forEach(i => {
+                    const idx = siteData.interiors.indexOf(i);
                     html += `
-                        <div class="editor-item">
-                            <div class="info"><div class="main">🏠 ${i.name}</div><div class="sub">${i.desc || i.image.substring(0,30)}</div></div>
-                            <div class="item-actions">
-                                <button class="btn-sm-edit" onclick="editInteriorByIndex(${realIdx})">✏️</button>
-                                <button class="btn-sm-delete" onclick="deleteInteriorByIndex(${realIdx})">🗑️</button>
+                        <div class="child-item">
+                            <div class="info"><div class="main">🏠 ${i.name}</div><div class="sub">${i.desc || i.image.substring(0,25)}</div></div>
+                            <div class="actions">
+                                <button class="btn btn-sm btn-warning" onclick="editInterior(${idx})">✏️</button>
+                                <button class="btn btn-sm btn-danger" onclick="deleteInterior(${idx})">🗑️</button>
                             </div>
                         </div>
                     `;
                 });
             }
 
-            // ===== أكواد =====
-            if (codesInCat.length > 0) {
-                html += `<div style="color:#ff66aa;font-weight:bold;margin:5px 0;">💻 الأكواد (${codesInCat.length})</div>`;
-                codesInCat.forEach((c, idx) => {
-                    const realIdx = codes.indexOf(c);
+            if (codesIn.length) {
+                html += `<div style="color:#ff66aa;font-weight:bold;font-size:12px;margin:4px 0;">💻 الأكواد (${codesIn.length})</div>`;
+                codesIn.forEach(c => {
+                    const idx = codes.indexOf(c);
                     html += `
-                        <div class="editor-item" style="flex-direction:column;align-items:stretch;">
+                        <div class="child-item" style="flex-direction:column;align-items:stretch;">
                             <div style="display:flex;justify-content:space-between;align-items:center;width:100%;">
                                 <div class="info"><div class="main">💻 ${c.name}</div><div class="sub">${c.desc || c.type}</div></div>
-                                <div class="item-actions">
-                                    <button class="btn-sm-edit" onclick="editCodeByIndex(${realIdx})">✏️</button>
-                                    <button class="btn-sm-delete" onclick="deleteCodeByIndex(${realIdx})">🗑️</button>
+                                <div class="actions">
+                                    <button class="btn btn-sm btn-warning" onclick="editCode(${idx})">✏️</button>
+                                    <button class="btn btn-sm btn-danger" onclick="deleteCode(${idx})">🗑️</button>
                                 </div>
                             </div>
-                            <div class="code-block-item">
+                            <div class="code-box">
                                 <pre>${c.content || '// لا يوجد كود'}</pre>
-                                <div class="code-actions">
-                                    <button onclick="copyCode('${encodeURIComponent(c.content || '')}')" style="background:var(--primary);color:white;border:none;padding:1px 6px;border-radius:3px;cursor:pointer;font-size:9px;">📋</button>
-                                </div>
+                                <button class="copy-btn" onclick="copyCodeText('${encodeURIComponent(c.content || '')}')">📋</button>
                             </div>
                         </div>
                     `;
                 });
             }
 
-            if (!commands.length && !rules.length && !interiors.length && !codesInCat.length) {
-                html += `<div class="empty-state" style="padding:10px;"><span class="icon">📭</span>لا يوجد محتوى</div>`;
+            if (!cmds.length && !rules.length && !ints.length && !codesIn.length) {
+                html += `<div class="empty" style="padding:10px;"><span class="icon">📭</span>لا يوجد محتوى</div>`;
             }
 
             return html;
         }
 
-        function toggleEditor(header) {
+        function toggleSection(header) {
             const body = header.nextElementSibling;
             if (body) body.classList.toggle('open');
         }
 
         // ============================================================
-        // دوال مساعدة
+        // دوال إضافة سريعة
         // ============================================================
         function addCategoryToPage(pageId) {
-            const name = prompt('📂 أدخل اسم القسم الجديد:');
+            const name = prompt('📂 اسم القسم الجديد:');
             if (name && name.trim()) {
-                const icon = prompt('🎨 أدخل الأيقونة (مثال: 📋):') || '📁';
-                // إضافة القسم مع pageId
-                siteData.categories.push({
-                    id: siteData.categories.length + 1,
-                    name: name.trim(),
-                    icon: icon,
-                    pageId: pageId,
-                    desc: `قسم ${name.trim()}`
-                });
+                const icon = prompt('🎨 الأيقونة:', '📁') || '📁';
+                siteData.categories.push({ id: siteData.categories.length + 1, name: name.trim(), icon, pageId,
+                    desc: `قسم ${name.trim()}` });
                 saveData();
                 init();
-                showToast('✅ تم إضافة القسم بنجاح', 'success');
+                toast('✅ تم إضافة القسم');
             }
         }
 
-        function addItemToCategory(catName) {
-            const type = prompt('📝 اختر نوع المحتوى:\n1- أمر\n2- قانون\n3- انترو\n4- كود', '1');
+        function addItem(catName) {
+            const type = prompt('📝 اختر النوع:\n1- أمر\n2- قانون\n3- انترو\n4- كود', '1');
             if (!type) return;
 
             switch (type) {
                 case '1':
-                    const cmd = prompt('📋 أدخل الأمر:');
-                    const meaning = prompt('📝 أدخل المعنى:');
+                    const cmd = prompt('📋 الأمر:');
+                    const meaning = prompt('📝 المعنى:');
                     if (cmd && meaning) {
                         siteData.commands.push({ category: catName, command: cmd.trim(), meaning: meaning.trim() });
                         saveData();
                         init();
-                        showToast('✅ تم إضافة الأمر بنجاح', 'success');
+                        toast('✅ تم إضافة الأمر');
                     }
                     break;
                 case '2':
-                    const en = prompt('📜 أدخل القانون (English):');
-                    const ar = prompt('📝 أدخل المعنى (Arabic):');
+                    const en = prompt('📜 القانون (English):');
+                    const ar = prompt('📝 المعنى (Arabic):');
                     if (en && ar) {
                         siteData.rules.push({ category: catName, english: en.trim(), arabic: ar.trim() });
                         saveData();
                         init();
-                        showToast('✅ تم إضافة القانون بنجاح', 'success');
+                        toast('✅ تم إضافة القانون');
                     }
                     break;
                 case '3':
-                    const name = prompt('🏠 أدخل اسم الانترو:');
-                    const image = prompt('🔗 أدخل رابط الصورة:');
-                    if (name && image) {
-                        siteData.interiors.push({ category: catName, name: name.trim(), image: image.trim() });
+                    const name = prompt('🏠 اسم الانترو:');
+                    const img = prompt('🔗 رابط الصورة:');
+                    if (name && img) {
+                        siteData.interiors.push({ category: catName, name: name.trim(), image: img.trim() });
                         saveData();
                         init();
-                        showToast('✅ تم إضافة الانترو بنجاح', 'success');
+                        toast('✅ تم إضافة الانترو');
                     }
                     break;
                 case '4':
-                    const cName = prompt('💻 أدخل اسم الكود:');
-                    const cContent = prompt('📝 أدخل محتوى الكود:');
+                    const cName = prompt('💻 اسم الكود:');
+                    const cContent = prompt('📝 محتوى الكود:');
                     if (cName && cContent) {
-                        codes.push({
-                            id: codes.length + 1,
-                            name: cName.trim(),
-                            category: catName,
-                            content: cContent.trim(),
-                            type: 'other',
-                            desc: `كود ${cName.trim()}`
-                        });
+                        codes.push({ id: codes.length + 1, name: cName.trim(), category: catName,
+                            content: cContent.trim(), type: 'other', desc: `كود ${cName.trim()}` });
                         saveCodes();
                         init();
-                        showToast('✅ تم إضافة الكود بنجاح', 'success');
+                        toast('✅ تم إضافة الكود');
                     }
                     break;
-                default:
-                    showToast('❌ خيار غير صحيح', 'error');
+                default: toast('❌ خيار غير صحيح', 'error');
             }
         }
 
         // ============================================================
-        // دوال العرض (قوائم منفصلة)
-        // ============================================================
-        function renderPages() {
-            const container = document.getElementById('pagesList');
-            if (!container) return;
-            if (pages.length === 0) { container.innerHTML =
-                '<div class="empty-state"><span class="icon">📄</span>لا توجد صفحات</div>'; return; }
-            container.innerHTML = pages.map(p => `
-                <div class="editor-item">
-                    <div class="info"><div class="main">📄 ${p.name}</div><div class="sub">${p.link} · ${p.desc || ''}</div></div>
-                    <div class="item-actions">
-                        <button class="btn-sm-edit" onclick="editPageById(${p.id})">✏️</button>
-                        <button class="btn-sm-delete" onclick="deletePageById(${p.id})">🗑️</button>
-                    </div>
-                </div>
-            `).join('');
-        }
-
-        function renderCategories() {
-            const container = document.getElementById('categoriesList');
-            if (!container) return;
-            if (siteData.categories.length === 0) { container.innerHTML =
-                '<div class="empty-state"><span class="icon">📂</span>لا توجد أقسام</div>'; return; }
-            const pageMap = {};
-            pages.forEach(p => pageMap[p.id] = p.name);
-            container.innerHTML = siteData.categories.map(c => `
-                <div class="editor-item">
-                    <div class="info"><div class="main">${c.icon || '📁'} ${c.name}</div><div class="sub">صفحة: ${pageMap[c.pageId] || 'غير معروف'} · ${c.desc || ''}</div></div>
-                    <div class="item-actions">
-                        <button class="btn-sm-edit" onclick="editCategoryByName('${c.name}')">✏️</button>
-                        <button class="btn-sm-delete" onclick="deleteCategoryByName('${c.name}')">🗑️</button>
-                    </div>
-                </div>
-            `).join('');
-        }
-
-        function renderCommands() {
-            const container = document.getElementById('commandsList');
-            if (!container) return;
-            if (siteData.commands.length === 0) { container.innerHTML =
-                '<div class="empty-state"><span class="icon">📋</span>لا توجد أوامر</div>'; return; }
-            container.innerHTML = siteData.commands.map((c, i) => `
-                <div class="editor-item">
-                    <div class="info"><div class="main"><code style="color:#ffaa66;">${c.command}</code></div><div class="sub">${c.meaning} · ${c.category}</div></div>
-                    <div class="item-actions">
-                        <button class="btn-sm-edit" onclick="editCommandByIndex(${i})">✏️</button>
-                        <button class="btn-sm-delete" onclick="deleteCommandByIndex(${i})">🗑️</button>
-                    </div>
-                </div>
-            `).join('');
-        }
-
-        function renderRules() {
-            const container = document.getElementById('rulesList');
-            if (!container) return;
-            if (siteData.rules.length === 0) { container.innerHTML =
-                '<div class="empty-state"><span class="icon">📜</span>لا توجد قوانين</div>'; return; }
-            container.innerHTML = siteData.rules.map((r, i) => `
-                <div class="editor-item">
-                    <div class="info"><div class="main"><strong style="color:#ffaa66;">${r.english}</strong></div><div class="sub">${r.arabic} · ${r.category || 'بدون قسم'}</div></div>
-                    <div class="item-actions">
-                        <button class="btn-sm-edit" onclick="editRuleByIndex(${i})">✏️</button>
-                        <button class="btn-sm-delete" onclick="deleteRuleByIndex(${i})">🗑️</button>
-                    </div>
-                </div>
-            `).join('');
-        }
-
-        function renderInteriors() {
-            const container = document.getElementById('interiorsList');
-            if (!container) return;
-            if (siteData.interiors.length === 0) { container.innerHTML =
-                '<div class="empty-state"><span class="icon">🏠</span>لا توجد انترو</div>'; return; }
-            container.innerHTML = siteData.interiors.map((i, idx) => `
-                <div class="editor-item">
-                    <div class="info"><div class="main">🏠 ${i.name}</div><div class="sub">${i.desc || i.image.substring(0,30)} · ${i.category || 'بدون قسم'}</div></div>
-                    <div class="item-actions">
-                        <button class="btn-sm-edit" onclick="editInteriorByIndex(${idx})">✏️</button>
-                        <button class="btn-sm-delete" onclick="deleteInteriorByIndex(${idx})">🗑️</button>
-                    </div>
-                </div>
-            `).join('');
-        }
-
-        function renderCodes() {
-            const container = document.getElementById('codesList');
-            if (!container) return;
-            if (codes.length === 0) { container.innerHTML =
-                '<div class="empty-state"><span class="icon">💻</span>لا توجد أكواد</div>'; return; }
-            container.innerHTML = codes.map((c, i) => `
-                <div class="editor-item" style="flex-direction:column;align-items:stretch;">
-                    <div style="display:flex;justify-content:space-between;align-items:center;width:100%;">
-                        <div class="info"><div class="main">💻 ${c.name}</div><div class="sub">${c.desc || c.type} · ${c.category || 'بدون قسم'}</div></div>
-                        <div class="item-actions">
-                            <button class="btn-sm-edit" onclick="editCodeByIndex(${i})">✏️</button>
-                            <button class="btn-sm-delete" onclick="deleteCodeByIndex(${i})">🗑️</button>
-                        </div>
-                    </div>
-                    <div class="code-block-item">
-                        <pre>${c.content || '// لا يوجد كود'}</pre>
-                        <div class="code-actions">
-                            <button onclick="copyCode('${encodeURIComponent(c.content || '')}')" style="background:var(--primary);color:white;border:none;padding:1px 6px;border-radius:3px;cursor:pointer;font-size:9px;">📋</button>
-                        </div>
-                    </div>
-                </div>
-            `).join('');
-        }
-
-        // ============================================================
-        // إحصائيات
-        // ============================================================
-        function updateStats() {
-            document.getElementById('statPages').textContent = pages.length;
-            document.getElementById('statCategories').textContent = siteData.categories.length;
-            document.getElementById('statCommands').textContent = siteData.commands.length;
-            document.getElementById('statRules').textContent = siteData.rules.length;
-            document.getElementById('statInteriors').textContent = siteData.interiors.length;
-            document.getElementById('statCodes').textContent = codes.length;
-            const size = new Blob([JSON.stringify({ pages, categories: siteData.categories, commands: siteData.commands,
-                rules: siteData.rules, interiors: siteData.interiors, codes })
-            ]).size / 1024;
-            document.getElementById('statSize').textContent = size.toFixed(1);
-        }
-
-        // ============================================================
-        // دوال CRUD الكاملة
+        // دوال CRUD
         // ============================================================
 
         // ----- صفحات -----
@@ -1029,39 +869,37 @@
             const name = document.getElementById('newPageName').value.trim();
             const link = document.getElementById('newPageLink').value.trim();
             const desc = document.getElementById('newPageDesc').value.trim();
-            if (!name || !link) { showToast('❌ الرجاء إدخال الاسم والرابط', 'error'); return; }
-            const id = pages.length > 0 ? Math.max(...pages.map(p => p.id)) + 1 : 1;
+            if (!name || !link) { toast('❌ أدخل الاسم والرابط', 'error'); return; }
+            const id = pages.length ? Math.max(...pages.map(p => p.id)) + 1 : 1;
             pages.push({ id, name, link, desc: desc || `صفحة ${name}` });
             savePages();
             init();
             document.getElementById('newPageName').value = '';
             document.getElementById('newPageLink').value = '';
             document.getElementById('newPageDesc').value = '';
-            showToast('✅ تم إضافة الصفحة', 'success');
+            toast('✅ تم إضافة الصفحة');
         }
 
-        function editPageById(id) {
+        function editPage(id) {
             const p = pages.find(p => p.id === id);
             if (!p) return;
-            const n = prompt('✏️ تعديل اسم الصفحة:', p.name);
+            const n = prompt('✏️ اسم الصفحة:', p.name);
             if (n && n.trim()) {
                 p.name = n.trim();
-                const l = prompt('✏️ تعديل الرابط:', p.link);
+                const l = prompt('✏️ الرابط:', p.link);
                 if (l !== null) p.link = l;
-                const d = prompt('✏️ تعديل الوصف:', p.desc || '');
+                const d = prompt('✏️ الوصف:', p.desc || '');
                 if (d !== null) p.desc = d;
                 savePages();
                 init();
-                showToast('✅ تم التعديل', 'success');
+                toast('✅ تم التعديل');
             }
         }
 
-        function deletePageById(id) {
+        function deletePage(id) {
             const p = pages.find(p => p.id === id);
             if (!p || !confirm(`⚠️ حذف "${p.name}" وجميع محتوياتها؟`)) return;
-            // حذف الأقسام التابعة
-            const catsToDelete = siteData.categories.filter(c => c.pageId === id);
-            catsToDelete.forEach(c => {
+            siteData.categories.filter(c => c.pageId === id).forEach(c => {
                 siteData.commands = siteData.commands.filter(cmd => cmd.category !== c.name);
                 siteData.rules = siteData.rules.filter(r => r.category !== c.name);
                 siteData.interiors = siteData.interiors.filter(i => i.category !== c.name);
@@ -1069,12 +907,12 @@
             });
             siteData.categories = siteData.categories.filter(c => c.pageId !== id);
             pages = pages.filter(p => p.id !== id);
-            if (selectedPageId === id) selectedPageId = pages.length > 0 ? pages[0].id : null;
+            if (selectedPage === id) selectedPage = pages.length ? pages[0].id : null;
             saveData();
             savePages();
             saveCodes();
             init();
-            showToast('✅ تم الحذف', 'success');
+            toast('✅ تم الحذف');
         }
 
         // ----- أقسام -----
@@ -1082,38 +920,37 @@
             const name = document.getElementById('newCatName').value.trim();
             const icon = document.getElementById('newCatIcon').value.trim() || '📁';
             const pageId = parseInt(document.getElementById('newCatPage').value);
-            if (!name) { showToast('❌ الرجاء إدخال اسم القسم', 'error'); return; }
+            if (!name) { toast('❌ أدخل اسم القسم', 'error'); return; }
             siteData.categories.push({ id: siteData.categories.length + 1, name, icon, pageId, desc: `قسم ${name}` });
             saveData();
             init();
             document.getElementById('newCatName').value = '';
             document.getElementById('newCatIcon').value = '';
-            showToast('✅ تم إضافة القسم', 'success');
+            toast('✅ تم إضافة القسم');
         }
 
-        function editCategoryByName(name) {
+        function editCategory(name) {
             const c = siteData.categories.find(c => c.name === name);
             if (!c) return;
-            const n = prompt('✏️ تعديل اسم القسم:', c.name);
+            const n = prompt('✏️ اسم القسم:', c.name);
             if (n && n.trim()) {
-                // تحديث جميع البيانات المرتبطة
                 siteData.commands.forEach(cmd => { if (cmd.category === c.name) cmd.category = n.trim(); });
                 siteData.rules.forEach(r => { if (r.category === c.name) r.category = n.trim(); });
                 siteData.interiors.forEach(i => { if (i.category === c.name) i.category = n.trim(); });
                 codes.forEach(code => { if (code.category === c.name) code.category = n.trim(); });
                 c.name = n.trim();
-                const ic = prompt('✏️ تعديل الأيقونة:', c.icon || '📁');
+                const ic = prompt('✏️ الأيقونة:', c.icon || '📁');
                 if (ic !== null) c.icon = ic;
-                const d = prompt('✏️ تعديل الوصف:', c.desc || '');
+                const d = prompt('✏️ الوصف:', c.desc || '');
                 if (d !== null) c.desc = d;
                 saveData();
                 saveCodes();
                 init();
-                showToast('✅ تم التعديل', 'success');
+                toast('✅ تم التعديل');
             }
         }
 
-        function deleteCategoryByName(name) {
+        function deleteCategory(name) {
             if (!confirm(`⚠️ حذف القسم "${name}" وجميع محتوياته؟`)) return;
             siteData.commands = siteData.commands.filter(cmd => cmd.category !== name);
             siteData.rules = siteData.rules.filter(r => r.category !== name);
@@ -1123,7 +960,7 @@
             saveData();
             saveCodes();
             init();
-            showToast('✅ تم الحذف', 'success');
+            toast('✅ تم الحذف');
         }
 
         // ----- أوامر -----
@@ -1131,37 +968,37 @@
             const cmd = document.getElementById('newCmd').value.trim();
             const meaning = document.getElementById('newCmdMeaning').value.trim();
             const category = document.getElementById('newCmdCategory').value;
-            if (!cmd || !meaning) { showToast('❌ الرجاء إدخال الأمر والمعنى', 'error'); return; }
+            if (!cmd || !meaning) { toast('❌ أدخل الأمر والمعنى', 'error'); return; }
             siteData.commands.push({ category, command: cmd, meaning });
             saveData();
             init();
             document.getElementById('newCmd').value = '';
             document.getElementById('newCmdMeaning').value = '';
-            showToast('✅ تم إضافة الأمر', 'success');
+            toast('✅ تم إضافة الأمر');
         }
 
-        function editCommandByIndex(i) {
-            const c = siteData.commands[i];
+        function editCommand(idx) {
+            const c = siteData.commands[idx];
             if (!c) return;
-            const cmd = prompt('✏️ تعديل الأمر:', c.command);
+            const cmd = prompt('✏️ الأمر:', c.command);
             if (cmd && cmd.trim()) {
                 c.command = cmd.trim();
-                const m = prompt('✏️ تعديل المعنى:', c.meaning);
+                const m = prompt('✏️ المعنى:', c.meaning);
                 if (m !== null) c.meaning = m;
-                const cat = prompt('✏️ تعديل القسم:', c.category);
+                const cat = prompt('✏️ القسم:', c.category);
                 if (cat !== null) c.category = cat;
                 saveData();
                 init();
-                showToast('✅ تم التعديل', 'success');
+                toast('✅ تم التعديل');
             }
         }
 
-        function deleteCommandByIndex(i) {
+        function deleteCommand(idx) {
             if (!confirm('⚠️ حذف هذا الأمر؟')) return;
-            siteData.commands.splice(i, 1);
+            siteData.commands.splice(idx, 1);
             saveData();
             init();
-            showToast('✅ تم الحذف', 'success');
+            toast('✅ تم الحذف');
         }
 
         // ----- قوانين -----
@@ -1169,37 +1006,37 @@
             const en = document.getElementById('newRuleEn').value.trim();
             const ar = document.getElementById('newRuleAr').value.trim();
             const category = document.getElementById('newRuleCategory').value;
-            if (!en || !ar) { showToast('❌ الرجاء إدخال القانون والمعنى', 'error'); return; }
+            if (!en || !ar) { toast('❌ أدخل القانون والمعنى', 'error'); return; }
             siteData.rules.push({ category, english: en, arabic: ar });
             saveData();
             init();
             document.getElementById('newRuleEn').value = '';
             document.getElementById('newRuleAr').value = '';
-            showToast('✅ تم إضافة القانون', 'success');
+            toast('✅ تم إضافة القانون');
         }
 
-        function editRuleByIndex(i) {
-            const r = siteData.rules[i];
+        function editRule(idx) {
+            const r = siteData.rules[idx];
             if (!r) return;
-            const en = prompt('✏️ تعديل القانون (English):', r.english);
+            const en = prompt('✏️ القانون (English):', r.english);
             if (en && en.trim()) {
                 r.english = en.trim();
-                const ar = prompt('✏️ تعديل المعنى (Arabic):', r.arabic);
+                const ar = prompt('✏️ المعنى (Arabic):', r.arabic);
                 if (ar !== null) r.arabic = ar;
-                const cat = prompt('✏️ تعديل القسم:', r.category || '');
+                const cat = prompt('✏️ القسم:', r.category || '');
                 if (cat !== null) r.category = cat;
                 saveData();
                 init();
-                showToast('✅ تم التعديل', 'success');
+                toast('✅ تم التعديل');
             }
         }
 
-        function deleteRuleByIndex(i) {
+        function deleteRule(idx) {
             if (!confirm('⚠️ حذف هذا القانون؟')) return;
-            siteData.rules.splice(i, 1);
+            siteData.rules.splice(idx, 1);
             saveData();
             init();
-            showToast('✅ تم الحذف', 'success');
+            toast('✅ تم الحذف');
         }
 
         // ----- انترو -----
@@ -1207,39 +1044,39 @@
             const name = document.getElementById('newIntName').value.trim();
             const image = document.getElementById('newIntImage').value.trim();
             const category = document.getElementById('newIntCategory').value;
-            if (!name || !image) { showToast('❌ الرجاء إدخال الاسم والصورة', 'error'); return; }
+            if (!name || !image) { toast('❌ أدخل الاسم والصورة', 'error'); return; }
             siteData.interiors.push({ category, name, image, desc: `انترو ${name}` });
             saveData();
             init();
             document.getElementById('newIntName').value = '';
             document.getElementById('newIntImage').value = '';
-            showToast('✅ تم إضافة الانترو', 'success');
+            toast('✅ تم إضافة الانترو');
         }
 
-        function editInteriorByIndex(i) {
-            const int = siteData.interiors[i];
-            if (!int) return;
-            const n = prompt('✏️ تعديل اسم الانترو:', int.name);
+        function editInterior(idx) {
+            const i = siteData.interiors[idx];
+            if (!i) return;
+            const n = prompt('✏️ اسم الانترو:', i.name);
             if (n && n.trim()) {
-                int.name = n.trim();
-                const img = prompt('✏️ تعديل رابط الصورة:', int.image);
-                if (img !== null) int.image = img;
-                const d = prompt('✏️ تعديل الوصف:', int.desc || '');
-                if (d !== null) int.desc = d;
-                const cat = prompt('✏️ تعديل القسم:', int.category || '');
-                if (cat !== null) int.category = cat;
+                i.name = n.trim();
+                const img = prompt('✏️ رابط الصورة:', i.image);
+                if (img !== null) i.image = img;
+                const d = prompt('✏️ الوصف:', i.desc || '');
+                if (d !== null) i.desc = d;
+                const cat = prompt('✏️ القسم:', i.category || '');
+                if (cat !== null) i.category = cat;
                 saveData();
                 init();
-                showToast('✅ تم التعديل', 'success');
+                toast('✅ تم التعديل');
             }
         }
 
-        function deleteInteriorByIndex(i) {
+        function deleteInterior(idx) {
             if (!confirm('⚠️ حذف هذا الانترو؟')) return;
-            siteData.interiors.splice(i, 1);
+            siteData.interiors.splice(idx, 1);
             saveData();
             init();
-            showToast('✅ تم الحذف', 'success');
+            toast('✅ تم الحذف');
         }
 
         // ----- أكواد -----
@@ -1249,48 +1086,112 @@
             const category = document.getElementById('newCodeCategory').value;
             const content = document.getElementById('newCodeContent').value.trim();
             const desc = document.getElementById('newCodeDesc').value.trim();
-            if (!name || !content) { showToast('❌ الرجاء إدخال الاسم والمحتوى', 'error'); return; }
+            if (!name || !content) { toast('❌ أدخل الاسم والمحتوى', 'error'); return; }
             codes.push({ id: codes.length + 1, name, type, category, content, desc: desc || `كود ${name}` });
             saveCodes();
             init();
             document.getElementById('newCodeName').value = '';
             document.getElementById('newCodeContent').value = '';
             document.getElementById('newCodeDesc').value = '';
-            showToast('✅ تم إضافة الكود', 'success');
+            toast('✅ تم إضافة الكود');
         }
 
-        function editCodeByIndex(i) {
-            const c = codes[i];
+        function editCode(idx) {
+            const c = codes[idx];
             if (!c) return;
-            const n = prompt('✏️ تعديل اسم الكود:', c.name);
+            const n = prompt('✏️ اسم الكود:', c.name);
             if (n && n.trim()) {
                 c.name = n.trim();
-                const cont = prompt('✏️ تعديل المحتوى:', c.content || '');
+                const cont = prompt('✏️ المحتوى:', c.content || '');
                 if (cont !== null) c.content = cont;
-                const d = prompt('✏️ تعديل الوصف:', c.desc || '');
+                const d = prompt('✏️ الوصف:', c.desc || '');
                 if (d !== null) c.desc = d;
-                const cat = prompt('✏️ تعديل القسم:', c.category || '');
+                const cat = prompt('✏️ القسم:', c.category || '');
                 if (cat !== null) c.category = cat;
                 saveCodes();
                 init();
-                showToast('✅ تم التعديل', 'success');
+                toast('✅ تم التعديل');
             }
         }
 
-        function deleteCodeByIndex(i) {
+        function deleteCode(idx) {
             if (!confirm('⚠️ حذف هذا الكود؟')) return;
-            codes.splice(i, 1);
+            codes.splice(idx, 1);
             saveCodes();
             init();
-            showToast('✅ تم الحذف', 'success');
+            toast('✅ تم الحذف');
+        }
+
+        // ============================================================
+        // دوال العرض
+        // ============================================================
+        function renderPages() {
+            const container = document.getElementById('pagesList');
+            if (!container) return;
+            if (!pages.length) { container.innerHTML = '<div class="empty"><span class="icon">📄</span>لا توجد صفحات</div>'; return; }
+            container.innerHTML = pages.map(p =>
+                `<div class="item"><div class="info"><div class="title">📄 ${p.name}</div><div class="sub">${p.link} · ${p.desc || ''}</div></div><div class="actions"><button class="btn btn-sm btn-warning" onclick="editPage(${p.id})">✏️</button><button class="btn btn-sm btn-danger" onclick="deletePage(${p.id})">🗑️</button></div></div>`
+            ).join('');
+        }
+
+        function renderCategories() {
+            const container = document.getElementById('categoriesList');
+            if (!container) return;
+            if (!siteData.categories.length) { container.innerHTML =
+                '<div class="empty"><span class="icon">📂</span>لا توجد أقسام</div>'; return; }
+            const pageMap = {};
+            pages.forEach(p => pageMap[p.id] = p.name);
+            container.innerHTML = siteData.categories.map(c =>
+                `<div class="item"><div class="info"><div class="title">${c.icon || '📁'} ${c.name}</div><div class="sub">صفحة: ${pageMap[c.pageId] || 'غير معروف'} · ${c.desc || ''}</div></div><div class="actions"><button class="btn btn-sm btn-warning" onclick="editCategory('${c.name}')">✏️</button><button class="btn btn-sm btn-danger" onclick="deleteCategory('${c.name}')">🗑️</button></div></div>`
+            ).join('');
+        }
+
+        function renderCommands() {
+            const container = document.getElementById('commandsList');
+            if (!container) return;
+            if (!siteData.commands.length) { container.innerHTML =
+                '<div class="empty"><span class="icon">📋</span>لا توجد أوامر</div>'; return; }
+            container.innerHTML = siteData.commands.map((c, i) =>
+                `<div class="item"><div class="info"><div class="title"><code style="color:#ffaa66;">${c.command}</code></div><div class="sub">${c.meaning} · ${c.category}</div></div><div class="actions"><button class="btn btn-sm btn-warning" onclick="editCommand(${i})">✏️</button><button class="btn btn-sm btn-danger" onclick="deleteCommand(${i})">🗑️</button></div></div>`
+            ).join('');
+        }
+
+        function renderRules() {
+            const container = document.getElementById('rulesList');
+            if (!container) return;
+            if (!siteData.rules.length) { container.innerHTML =
+                '<div class="empty"><span class="icon">📜</span>لا توجد قوانين</div>'; return; }
+            container.innerHTML = siteData.rules.map((r, i) =>
+                `<div class="item"><div class="info"><div class="title"><strong style="color:#ffaa66;">${r.english}</strong></div><div class="sub">${r.arabic} · ${r.category || 'بدون قسم'}</div></div><div class="actions"><button class="btn btn-sm btn-warning" onclick="editRule(${i})">✏️</button><button class="btn btn-sm btn-danger" onclick="deleteRule(${i})">🗑️</button></div></div>`
+            ).join('');
+        }
+
+        function renderInteriors() {
+            const container = document.getElementById('interiorsList');
+            if (!container) return;
+            if (!siteData.interiors.length) { container.innerHTML =
+                '<div class="empty"><span class="icon">🏠</span>لا توجد انترو</div>'; return; }
+            container.innerHTML = siteData.interiors.map((i, idx) =>
+                `<div class="item"><div class="info"><div class="title">🏠 ${i.name}</div><div class="sub">${i.desc || i.image.substring(0,30)} · ${i.category || 'بدون قسم'}</div></div><div class="actions"><button class="btn btn-sm btn-warning" onclick="editInterior(${idx})">✏️</button><button class="btn btn-sm btn-danger" onclick="deleteInterior(${idx})">🗑️</button></div></div>`
+            ).join('');
+        }
+
+        function renderCodes() {
+            const container = document.getElementById('codesList');
+            if (!container) return;
+            if (!codes.length) { container.innerHTML =
+                '<div class="empty"><span class="icon">💻</span>لا توجد أكواد</div>'; return; }
+            container.innerHTML = codes.map((c, i) =>
+                `<div class="item" style="flex-direction:column;align-items:stretch;"><div style="display:flex;justify-content:space-between;align-items:center;width:100%;"><div class="info"><div class="title">💻 ${c.name}</div><div class="sub">${c.desc || c.type} · ${c.category || 'بدون قسم'}</div></div><div class="actions"><button class="btn btn-sm btn-warning" onclick="editCode(${i})">✏️</button><button class="btn btn-sm btn-danger" onclick="deleteCode(${i})">🗑️</button></div></div><div class="code-box"><pre>${c.content || '// لا يوجد كود'}</pre><button class="copy-btn" onclick="copyCodeText('${encodeURIComponent(c.content || '')}')">📋</button></div></div>`
+            ).join('');
         }
 
         // ============================================================
         // أدوات
         // ============================================================
-        function copyCode(encoded) {
+        function copyCodeText(encoded) {
             const content = decodeURIComponent(encoded);
-            navigator.clipboard.writeText(content).then(() => showToast('✅ تم نسخ الكود', 'success'))
+            navigator.clipboard.writeText(content).then(() => toast('✅ تم نسخ الكود'))
                 .catch(() => {
                     const ta = document.createElement('textarea');
                     ta.value = content;
@@ -1300,8 +1201,17 @@
                     ta.select();
                     document.execCommand('copy');
                     document.body.removeChild(ta);
-                    showToast('✅ تم نسخ الكود', 'success');
+                    toast('✅ تم نسخ الكود');
                 });
+        }
+
+        function updateStats() {
+            document.getElementById('stPages').textContent = pages.length;
+            document.getElementById('stCategories').textContent = siteData.categories.length;
+            document.getElementById('stCommands').textContent = siteData.commands.length;
+            document.getElementById('stRules').textContent = siteData.rules.length;
+            document.getElementById('stInteriors').textContent = siteData.interiors.length;
+            document.getElementById('stCodes').textContent = codes.length;
         }
 
         function exportData() {
@@ -1314,7 +1224,7 @@
             a.download = `الدليل_${new Date().toISOString().slice(0,10)}.json`;
             a.click();
             URL.revokeObjectURL(url);
-            showToast('📤 تم التصدير', 'success');
+            toast('📤 تم التصدير');
         }
 
         function importData(event) {
@@ -1335,8 +1245,8 @@
                     if (data.introCode !== undefined) { siteData.introCode = data.introCode; }
                     saveData();
                     init();
-                    showToast('✅ تم الاستيراد', 'success');
-                } catch (err) { showToast('❌ خطأ في الملف', 'error'); }
+                    toast('✅ تم الاستيراد');
+                } catch (err) { toast('❌ خطأ في الملف', 'error'); }
             };
             reader.readAsText(file);
             event.target.value = '';
@@ -1345,8 +1255,8 @@
         function resetAll() {
             if (confirm('⚠️ إعادة ضبط جميع البيانات؟')) {
                 localStorage.removeItem('mtaData');
-                localStorage.removeItem('adminPages');
-                localStorage.removeItem('adminCodes');
+                localStorage.removeItem('pages');
+                localStorage.removeItem('codes');
                 location.reload();
             }
         }
@@ -1358,22 +1268,21 @@
                     siteData.rules = [];
                     siteData.interiors = [];
                     siteData.introCode = '';
-                    siteData.categories = [{ id: 1, name: "عام", icon: "📂", pageId: 1, desc: "القسم العام" }];
-                    pages = [{ id: 1, name: "الرئيسية", link: "index.html", desc: "الصفحة الرئيسية" }];
+                    siteData.categories = [{ id: 1, name: 'عام', icon: '📂', pageId: 1, desc: 'القسم العام' }];
+                    pages = [{ id: 1, name: 'الرئيسية', link: 'index.html', desc: 'الصفحة الرئيسية' }];
                     codes = [];
-                    selectedPageId = 1;
+                    selectedPage = 1;
                     saveData();
                     savePages();
                     saveCodes();
                     init();
-                    showToast('🗑️ تم حذف الكل', 'success');
+                    toast('🗑️ تم حذف الكل');
                 }
             }
         }
 
-        function showToast(msg, type = 'success') {
+        function toast(msg, type = 'success') {
             const t = document.getElementById('toast');
-            if (!t) return;
             t.textContent = msg;
             t.className = 'toast show ' + type;
             clearTimeout(t._timeout);
@@ -1384,22 +1293,12 @@
         // تشغيل
         // ============================================================
         document.addEventListener('DOMContentLoaded', function() {
-            document.getElementById('adminPassword').focus();
-            document.getElementById('adminPassword').addEventListener('keydown', function(e) {
-                if (e.key === 'Enter') loginAdmin();
-            });
-
-            // تأكد من تحميل البيانات
-            console.log('✅ الإدارة الذكية V8 - تم إصلاح ربط البيانات');
-            console.log('📄 عدد الصفحات:', pages.length);
-            console.log('📂 عدد الأقسام:', siteData.categories.length);
-            console.log('📋 عدد الأوامر:', siteData.commands.length);
-            console.log('📜 عدد القوانين:', siteData.rules.length);
-            console.log('🏠 عدد الانترو:', siteData.interiors.length);
-            console.log('💻 عدد الأكواد:', codes.length);
+            document.getElementById('adminPass').focus();
+            console.log('✅ لوحة التحكم الذكية V9');
             console.log('🔑 الرقم السري: 0000');
         });
     </script>
 
 </body>
 </html>
+```
