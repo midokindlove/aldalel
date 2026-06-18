@@ -4,7 +4,260 @@
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>MTA SA - أوامر سيرفر سان أندرياس</title>
-  <link rel="stylesheet" href="style.css">
+  <style>
+    * {
+      margin: 0;
+      padding: 0;
+      box-sizing: border-box;
+    }
+
+    body {
+      font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+      background: linear-gradient(135deg, #0a0e27 0%, #1a1a2e 100%);
+      color: #ffffff;
+      min-height: 100vh;
+      direction: rtl;
+    }
+
+    .navbar {
+      background: rgba(10, 14, 39, 0.95);
+      padding: 1rem 2rem;
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      border-bottom: 2px solid #00ff88;
+    }
+
+    .logo {
+      font-size: 1.5rem;
+      font-weight: bold;
+      color: #00ff88;
+    }
+
+    .nav-links {
+      display: flex;
+      list-style: none;
+      gap: 1rem;
+    }
+
+    .nav-links a {
+      color: #b0b0b0;
+      text-decoration: none;
+      padding: 0.5rem 1rem;
+      border-radius: 8px;
+      cursor: pointer;
+      transition: all 0.3s;
+    }
+
+    .nav-links a:hover,
+    .nav-links a.active {
+      background: #00ff88;
+      color: #0a0e27;
+    }
+
+    .menu-toggle {
+      display: none;
+      background: none;
+      border: none;
+      color: #00ff88;
+      font-size: 1.5rem;
+      cursor: pointer;
+    }
+
+    #app-content {
+      max-width: 1400px;
+      margin: 2rem auto;
+      padding: 0 2rem;
+    }
+
+    .card {
+      background: #1a1a2e;
+      border: 1px solid rgba(0, 255, 136, 0.2);
+      border-radius: 12px;
+      padding: 1.5rem;
+      margin-bottom: 1.5rem;
+    }
+
+    .btn {
+      background: #00ff88;
+      color: #0a0e27;
+      border: none;
+      padding: 0.75rem 1.5rem;
+      border-radius: 8px;
+      cursor: pointer;
+      font-weight: bold;
+    }
+
+    .btn-danger {
+      background: #ff4757;
+      color: white;
+    }
+
+    input, textarea {
+      background: rgba(10, 14, 39, 0.8);
+      border: 2px solid rgba(0, 255, 136, 0.2);
+      color: #ffffff;
+      padding: 0.75rem;
+      border-radius: 8px;
+      width: 100%;
+    }
+
+    .commands-list {
+      display: flex;
+      flex-direction: column;
+      gap: 0.75rem;
+    }
+
+    .command-row {
+      display: flex;
+      background: rgba(10, 14, 39, 0.5);
+      border-radius: 10px;
+      overflow: hidden;
+      cursor: pointer;
+    }
+
+    .command-row:hover {
+      border: 1px solid #00ff88;
+    }
+
+    .command-box {
+      background: rgba(0, 255, 136, 0.15);
+      padding: 1rem;
+      min-width: 200px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+    }
+
+    .command-code {
+      font-family: monospace;
+      color: #00ff88;
+      font-weight: bold;
+    }
+
+    .desc-box {
+      flex: 1;
+      padding: 1rem;
+      display: flex;
+      align-items: center;
+    }
+
+    .command-desc {
+      color: #b0b0b0;
+    }
+
+    #chat-toggle {
+      position: fixed;
+      bottom: 2rem;
+      left: 2rem;
+      width: 60px;
+      height: 60px;
+      border-radius: 50%;
+      background: #00ff88;
+      border: none;
+      font-size: 1.5rem;
+      cursor: pointer;
+    }
+
+    .chat-box {
+      position: fixed;
+      bottom: 6rem;
+      left: 2rem;
+      width: 350px;
+      height: 500px;
+      background: #1a1a2e;
+      border: 2px solid #00ff88;
+      border-radius: 15px;
+      display: flex;
+      flex-direction: column;
+    }
+
+    .chat-box.hidden {
+      display: none;
+    }
+
+    .chat-header {
+      background: #00ff88;
+      color: #0a0e27;
+      padding: 1rem;
+      border-radius: 13px 13px 0 0;
+      display: flex;
+      justify-content: space-between;
+    }
+
+    .chat-messages {
+      flex: 1;
+      overflow-y: auto;
+      padding: 1rem;
+    }
+
+    .chat-message {
+      margin-bottom: 1rem;
+      padding: 0.75rem;
+      border-radius: 10px;
+    }
+
+    .chat-message.user {
+      background: #00ff88;
+      color: #0a0e27;
+      margin-left: auto;
+      text-align: left;
+    }
+
+    .chat-message.bot {
+      background: rgba(26, 26, 46, 0.8);
+      border: 1px solid rgba(0, 255, 136, 0.2);
+    }
+
+    .chat-input {
+      display: flex;
+      padding: 1rem;
+      gap: 0.5rem;
+    }
+
+    .chat-input input {
+      flex: 1;
+      margin-bottom: 0;
+    }
+
+    .copy-toast {
+      position: fixed;
+      bottom: 2rem;
+      right: 2rem;
+      background: #00ff88;
+      color: #0a0e27;
+      padding: 1rem 1.5rem;
+      border-radius: 10px;
+      font-weight: bold;
+      z-index: 10000;
+    }
+
+    @media (max-width: 768px) {
+      .nav-links {
+        display: none;
+        position: absolute;
+        top: 100%;
+        right: 0;
+        left: 0;
+        background: rgba(10, 14, 39, 0.98);
+        flex-direction: column;
+        padding: 1rem;
+      }
+      
+      .nav-links.active {
+        display: flex;
+      }
+      
+      .menu-toggle {
+        display: block;
+      }
+      
+      .chat-box {
+        width: calc(100% - 2rem);
+        left: 1rem;
+      }
+    }
+  </style>
 </head>
 <body>
 
