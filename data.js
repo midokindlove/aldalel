@@ -10,7 +10,7 @@ const defaultData = {
     shortcuts: [
       { title: "رابط الديسكورد", url: "https://discord.gg/your-server", icon: "💬" },
       { title: "القوانين", page: "rules", icon: "📜" },
-      { title: "الأوامر", page: "commands", icon: "️" },
+      { title: "الأوامر", page: "commands", icon: "⌨️" },
       { title: "الانترو", page: "intros", icon: "🎬" },
       { title: "الرد التلقائي", page: "chat", icon: "🤖" }
     ],
@@ -691,9 +691,22 @@ const defaultData = {
   // ===== الانترو =====
   intros: {
     images: [
-      { id: "intro-1", url: "https://via.placeholder.com/400x300/00ff88/0a0e27?text=Intro+1", caption: "انترو السيرفر الرئيسي" },
-      { id: "intro-2", url: "https://via.placeholder.com/400x300/00ff88/0a0e27?text=Intro+2", caption: "انترو الأحداث" },
-      { id: "intro-3", url: "https://via.placeholder.com/400x300/00ff88/0a0e27?text=Intro+3", caption: "انترو المسابقات" }
+      { id: "intro-palace", name: "قصر", url: "https://e.top4top.io/p_2086ggmpm7.png", caption: "انترو قصر" },
+      { id: "intro-office", name: "مكتب", url: "https://f.top4top.io/p_2086djy703.png", caption: "انترو مكتب" },
+      { id: "intro-warehouse", name: "مخزن", url: "https://e.top4top.io/p_2086r5j3j2.png", caption: "انترو مخزن" },
+      { id: "intro-shop1", name: "محل", url: "https://k.top4top.io/p_20869f9kn1.png", caption: "انترو محل 1" },
+      { id: "intro-shop2", name: "محل", url: "https://l.top4top.io/p_2086hmz3i2.png", caption: "انترو محل 2" },
+      { id: "intro-villa", name: "فيلا", url: "https://d.top4top.io/p_2086sajbg6.png", caption: "انترو فيلا" },
+      { id: "intro-workshops", name: "ورش", url: "https://h.top4top.io/p_2086t8ef05.png", caption: "انترو ورش" },
+      { id: "intro-house1", name: "بيت", url: "https://i.top4top.io/p_2086dzm8x1.png", caption: "انترو بيت 1" },
+      { id: "intro-house2", name: "بيت", url: "https://j.top4top.io/p_20867eyhb2.png", caption: "انترو بيت 2" },
+      { id: "intro-rooms", name: "غرف", url: "https://a.top4top.io/p_208663dgi3.png", caption: "انترو غرف" },
+      { id: "intro-government", name: "حكومي", url: "https://k.top4top.io/p_208689i9p1.png", caption: "انترو حكومي" },
+      { id: "intro-showroom", name: "معرض", url: "https://g.top4top.io/p_2086rnurc4.png", caption: "انترو معرض" },
+      { id: "intro-hotel", name: "فندق", url: "https://c.top4top.io/p_208681k105.png", caption: "انترو فندق" },
+      { id: "intro-garage", name: "كراج", url: "https://d.top4top.io/p_2086nyvpa1.png", caption: "انترو كراج" },
+      { id: "intro-bathroom", name: "حمام", url: "https://l.top4top.io/p_2086a06n82.png", caption: "انترو حمام" },
+      { id: "intro-activity", name: "فاعلية", url: "https://b.top4top.io/p_2086toijg4.png", caption: "انترو فاعلية" }
     ]
   },
 
@@ -701,7 +714,7 @@ const defaultData = {
   autoReplies: [
     {
       keywords: ["مرحبا", "اهلا", "السلام", "هلا", "هاي", "hello", "hi", "مرحباً"],
-      reply: `<p>أهلاً وسهلاً بك! 👋</p><p>كيف يمكنني مساعدتك؟</p><p>يمكنك سؤالي عن:</p><p>• <strong>الأوامر</strong> (اكتب اسم القسم)</p><p>• <strong>القوانين</strong> (اكتب اسم القانون)</p><p>• <strong>أي أمر معين</strong></p><p style="margin-top:0.5rem;color:var(--primary)">💡 البوت يتعرف تلقائياً على كل البيانات!</p>`
+      reply: `<p>أهلاً وسهلاً بك! 👋</p><p>كيف يمكنني مساعدتك؟</p><p>يمكنك سؤالي عن:</p><p>• <strong>الأوامر</strong> (اكتب اسم القسم)</p><p>• <strong>القوانين</strong> (اكتب اسم القانون)</p><p>• <strong>الانترو</strong> (اكتب اسم الانترو)</p><p>• <strong>أي أمر معين</strong></p><p style="margin-top:0.5rem;color:var(--primary)">💡 البوت يتعرف تلقائياً على كل البيانات!</p>`
     },
     {
       keywords: ["شكرا", "شكراً", "thanks", "thank you", "مشكور", "تسلم"],
@@ -709,7 +722,7 @@ const defaultData = {
     },
     {
       keywords: ["مساعدة", "help", "help me", "مساعد", "كيف", "how"],
-      reply: `<p>أنا هنا لمساعدتك! 🤖</p><p>يمكنك سؤالي عن:</p><p>• أي قسم أوامر (فاكشن، سيارات، شات...)</p><p>• أي قانون (DM, VDM, RDM...)</p><p>• أي أمر معين (Goto, Fixveh, Jail...)</p><p style="margin-top:0.5rem;color:var(--primary)">💡 جرب كتابة أي كلمة!</p>`
+      reply: `<p>أنا هنا لمساعدتك! 🤖</p><p>يمكنك سؤالي عن:</p><p>• أي قسم أوامر (فاكشن، سيارات، شات...)</p><p>• أي قانون (DM, VDM, RDM...)</p><p>• أي أمر معين (Goto, Fixveh, Jail...)</p><p>• <strong>الانترو</strong> (قصر، فيلا، محل...)</p><p style="margin-top:0.5rem;color:var(--primary)">💡 جرب كتابة أي كلمة!</p>`
     },
     {
       keywords: ["ديسكورد", "discord", "discord.gg"],
@@ -722,6 +735,10 @@ const defaultData = {
     {
       keywords: ["ادمن", "admin", "إدارة", "مسؤول"],
       reply: `<p>👑 <strong>للتواصل مع الإدارة:</strong></p><p>• استخدم /report في اللعبة</p><p>• أو انضم للديسكورد</p><p>• أو راسلنا مباشرة</p><p style="margin-top:0.5rem;color:var(--primary)">⚠️ الاحترام متبادل!</p>`
+    },
+    {
+      keywords: ["انترو", "interior", "منزل", "بيت", "قصر", "فيلا", "محل", "مخزن", "مكتب", "ورش", "غرف", "حكومي", "معرض", "فندق", "كراج", "حمام", "فاعلية"],
+      reply: `<p>🎬 <strong>الانترو المتاح:</strong></p><p>لدينا العديد من الانترو المتاحة:</p><p>• قصر، فيلا، بيت</p><p>• محل، مخزن، مكتب</p><p>• ورش، غرف، حكومي</p><p>• معرض، فندق، كراج</p><p>• حمام، فاعلية</p><p style="margin-top:0.5rem;color:var(--primary)">💡 اذهب لصفحة الانترو لرؤية الصور!</p>`
     }
   ]
 };
@@ -819,9 +836,9 @@ class DataManager {
     return false;
   }
 
-  addIntro(url, caption) {
+  addIntro(url, caption, name = '') {
     const id = 'intro-' + Date.now();
-    this.data.intros.images.push({ id, url, caption });
+    this.data.intros.images.push({ id, url, caption, name });
     this.saveData();
     return id;
   }
@@ -851,6 +868,7 @@ class DataManager {
     const q = query.toLowerCase().trim();
     if (!q) return results;
 
+    // البحث في الأوامر
     this.data.commands.sections.forEach(section => {
       const sectionMatch = section.title.toLowerCase().includes(q) ||
                           section.keywords.some(k => k.toLowerCase().includes(q));
@@ -861,6 +879,7 @@ class DataManager {
       });
     });
 
+    // البحث في القوانين
     this.data.rules.sections.forEach(section => {
       const sectionMatch = section.title.toLowerCase().includes(q) ||
                           section.keywords.some(k => k.toLowerCase().includes(q));
@@ -869,6 +888,14 @@ class DataManager {
           results.push({ type: 'rule', section: section.title, data: item, score: sectionMatch ? 10 : 5 });
         }
       });
+    });
+
+    // البحث في الانترو
+    this.data.intros.images.forEach(intro => {
+      if (intro.name.toLowerCase().includes(q) || 
+          intro.caption.toLowerCase().includes(q)) {
+        results.push({ type: 'intro', section: 'الانترو', data: intro, score: 10 });
+      }
     });
 
     results.sort((a, b) => b.score - a.score);
@@ -880,7 +907,7 @@ class DataManager {
     const msg = message.toLowerCase().trim();
     
     if (!msg) {
-      return `<p>مرحباً! 👋 كيف يمكنني مساعدتك؟</p><p>يمكنك سؤالي عن:</p><p>• الأوامر (اكتب اسم القسم)</p><p>• القوانين (اكتب اسم القانون)</p><p>• أي أمر معين</p>`;
+      return `<p>مرحباً! 👋 كيف يمكنني مساعدتك؟</p><p>يمكنك سؤالي عن:</p><p>• الأوامر (اكتب اسم القسم)</p><p>• القوانين (اكتب اسم القانون)</p><p>• الانترو (اكتب اسم الانترو)</p><p>• أي أمر معين</p>`;
     }
 
     for (let autoReply of this.data.autoReplies) {
@@ -893,11 +920,12 @@ class DataManager {
     const searchResults = this.search(msg);
     
     if (searchResults.length === 0) {
-      return `<p>عذراً، لم أجد معلومات عن هذا الموضوع. 🤔</p><p>جرب:</p><p>• كتابة اسم قسم (سيارات، شات، فاكشن...)</p><p>• كتابة اسم أمر (Goto, Fixveh...)</p><p>• سؤال عن قانون (DM, VDM...)</p>`;
+      return `<p>عذراً، لم أجد معلومات عن هذا الموضوع. 🤔</p><p>جرب:</p><p>• كتابة اسم قسم (سيارات، شات، فاكشن...)</p><p>• كتابة اسم أمر (Goto, Fixveh...)</p><p>• سؤال عن قانون (DM, VDM...)</p><p>• كتابة اسم انترو (قصر، فيلا...)</p>`;
     }
 
     const commandsBySection = {};
     const rulesBySection = {};
+    const intros = [];
     let totalCommands = 0;
     let totalRules = 0;
 
@@ -910,14 +938,25 @@ class DataManager {
         if (!rulesBySection[result.section]) rulesBySection[result.section] = [];
         rulesBySection[result.section].push(result.data);
         totalRules++;
+      } else if (result.type === 'intro') {
+        intros.push(result.data);
       }
     });
 
     let response = '';
     const maxPerSection = 6;
 
+    // عرض الانترو
+    if (intros.length > 0) {
+      response += `<p><strong>🎬 الانترو</strong> <span class="count-badge">${intros.length}</span></p>`;
+      intros.slice(0, 6).forEach(intro => {
+        response += `<div class="cmd-row"><span class="cmd-name">${intro.name}</span><span class="cmd-desc">${intro.caption}</span></div>`;
+      });
+    }
+
+    // عرض الأوامر
     if (totalCommands > 0) {
-      response += `<p><strong>⌨️ أوامر</strong> <span class="count-badge">${totalCommands}</span></p>`;
+      response += `<p style="margin-top:0.8rem"><strong>⌨️ أوامر</strong> <span class="count-badge">${totalCommands}</span></p>`;
       const sections = Object.keys(commandsBySection);
       const sectionsToShow = sections.slice(0, 3);
       
@@ -925,7 +964,7 @@ class DataManager {
         const cmds = commandsBySection[sectionTitle].slice(0, maxPerSection);
         response += `<div class="section-title">📁 ${sectionTitle}</div>`;
         cmds.forEach(cmd => {
-          response += `<div class="cmd-item"><span class="cmd-name">${cmd.command}</span><span class="cmd-desc">${cmd.description}</span></div>`;
+          response += `<div class="cmd-row"><span class="cmd-name">${cmd.command}</span><span class="cmd-desc">${cmd.description}</span></div>`;
         });
         if (commandsBySection[sectionTitle].length > maxPerSection) {
           response += `<p style="color:var(--text-muted);font-size:0.8rem;margin-top:0.3rem">... و ${commandsBySection[sectionTitle].length - maxPerSection} أوامر أخرى</p>`;
@@ -933,6 +972,7 @@ class DataManager {
       });
     }
 
+    // عرض القوانين
     if (totalRules > 0) {
       response += `<p style="margin-top:0.8rem"><strong>📜 قوانين</strong> <span class="count-badge">${totalRules}</span></p>`;
       const sections = Object.keys(rulesBySection);
@@ -950,7 +990,8 @@ class DataManager {
       });
     }
 
-    const totalResults = totalCommands + totalRules;
+    // ملاحظة إذا كانت النتائج كثيرة
+    const totalResults = totalCommands + totalRules + intros.length;
     if (totalResults > 10) {
       response += `<p style="margin-top:0.8rem;color:var(--text-muted);font-size:0.85rem">💡 هناك ${totalResults - 10} نتائج أخرى. استخدم البحث في الموقع لعرض الكل.</p>`;
     }
