@@ -1,725 +1,1838 @@
-/* ============================================
-   التصميم العام - MTA San Andreas Guide
-   ============================================ */
-
-/* ===== المتغيرات ===== */
-:root {
-    --primary: #ff6b00;
-    --primary-dark: #cc5500;
-    --secondary: #1a1a2e;
-    --bg-dark: #0d0d1a;
-    --bg-card: #1a1a2e;
-    --bg-card-hover: #252540;
-    --text-light: #e0e0e0;
-    --text-muted: #8888aa;
-    --border-color: #333355;
-    --shadow: 0 8px 32px rgba(0,0,0,0.5);
-    --radius: 12px;
-    --transition: all 0.3s ease;
-}
-
-/* ===== الأساسيات ===== */
-* {
-    margin: 0;
-    padding: 0;
-    box-sizing: border-box;
-}
-
-body {
-    font-family: 'Cairo', 'Tahoma', sans-serif;
-    background: var(--bg-dark);
-    color: var(--text-light);
-    min-height: 100vh;
-    line-height: 1.6;
-}
-
-/* ===== شريط التمرير ===== */
-::-webkit-scrollbar {
-    width: 8px;
-}
-::-webkit-scrollbar-track {
-    background: var(--bg-dark);
-}
-::-webkit-scrollbar-thumb {
-    background: var(--primary);
-    border-radius: 10px;
-}
-::-webkit-scrollbar-thumb:hover {
-    background: var(--primary-dark);
-}
-
-/* ===== الهيدر ===== */
-header {
-    background: var(--secondary);
-    padding: 15px 20px;
-    border-bottom: 2px solid var(--primary);
-    position: sticky;
-    top: 0;
-    z-index: 1000;
-    display: flex;
-    justify-content: space-between;
-    align-items: center;
-    flex-wrap: wrap;
-    gap: 10px;
-}
-
-header .logo {
-    font-size: 24px;
-    font-weight: bold;
-    color: var(--primary);
-    text-decoration: none;
-    display: flex;
-    align-items: center;
-    gap: 10px;
-}
-
-header .logo span {
-    color: white;
-}
-
-nav {
-    display: flex;
-    gap: 8px;
-    flex-wrap: wrap;
-}
-
-nav a {
-    color: var(--text-light);
-    text-decoration: none;
-    padding: 8px 16px;
-    border-radius: 8px;
-    transition: var(--transition);
-    font-size: 14px;
-    background: rgba(255,255,255,0.05);
-    border: 1px solid transparent;
-}
-
-nav a:hover {
-    background: var(--primary);
-    color: white;
-    transform: translateY(-2px);
-}
-
-nav a.active {
-    background: var(--primary);
-    color: white;
-}
-
-/* ===== الحاوية الرئيسية ===== */
-.container {
-    max-width: 1200px;
-    margin: 0 auto;
-    padding: 20px;
-}
-
-/* ===== البطاقات ===== */
-.card {
-    background: var(--bg-card);
-    border-radius: var(--radius);
-    padding: 25px;
-    margin-bottom: 20px;
-    border: 1px solid var(--border-color);
-    box-shadow: var(--shadow);
-    transition: var(--transition);
-}
-
-.card:hover {
-    border-color: var(--primary);
-}
-
-.card-title {
-    font-size: 22px;
-    color: var(--primary);
-    margin-bottom: 15px;
-    display: flex;
-    align-items: center;
-    gap: 10px;
-}
-
-/* ===== شات البوت ===== */
-.chat-container {
-    background: var(--bg-card);
-    border-radius: var(--radius);
-    border: 1px solid var(--border-color);
-    overflow: hidden;
-    margin-top: 20px;
-}
-
-.chat-messages {
-    height: 400px;
-    overflow-y: auto;
-    padding: 20px;
-    background: var(--bg-dark);
-}
-
-.chat-message {
-    margin-bottom: 15px;
-    padding: 12px 18px;
-    border-radius: var(--radius);
-    max-width: 85%;
-    animation: fadeIn 0.3s ease;
-}
-
-@keyframes fadeIn {
-    from { opacity: 0; transform: translateY(10px); }
-    to { opacity: 1; transform: translateY(0); }
-}
-
-.chat-message.user {
-    background: var(--primary);
-    color: white;
-    margin-left: auto;
-    border-bottom-right-radius: 4px;
-}
-
-.chat-message.bot {
-    background: var(--bg-card-hover);
-    border: 1px solid var(--border-color);
-    margin-right: auto;
-    border-bottom-left-radius: 4px;
-}
-
-.chat-message.bot img {
-    max-width: 100%;
-    border-radius: 8px;
-    margin: 10px 0;
-}
-
-.chat-message .time {
-    font-size: 11px;
-    color: var(--text-muted);
-    margin-top: 5px;
-    display: block;
-}
-
-.chat-input-area {
-    display: flex;
-    padding: 15px;
-    background: var(--bg-dark);
-    border-top: 1px solid var(--border-color);
-    gap: 10px;
-}
-
-.chat-input-area input {
-    flex: 1;
-    padding: 12px 18px;
-    border-radius: 25px;
-    border: 1px solid var(--border-color);
-    background: var(--bg-card);
-    color: var(--text-light);
-    font-size: 16px;
-    outline: none;
-    transition: var(--transition);
-}
-
-.chat-input-area input:focus {
-    border-color: var(--primary);
-    box-shadow: 0 0 20px rgba(255,107,0,0.1);
-}
-
-.chat-input-area input::placeholder {
-    color: var(--text-muted);
-}
-
-.chat-input-area button {
-    padding: 12px 30px;
-    border: none;
-    border-radius: 25px;
-    background: var(--primary);
-    color: white;
-    font-size: 16px;
-    cursor: pointer;
-    transition: var(--transition);
-    font-weight: bold;
-}
-
-.chat-input-area button:hover {
-    background: var(--primary-dark);
-    transform: scale(1.02);
-}
-
-/* ===== الأقسام السريعة ===== */
-.quick-categories {
-    display: grid;
-    grid-template-columns: repeat(auto-fill, minmax(120px, 1fr));
-    gap: 10px;
-    margin: 20px 0;
-}
-
-.quick-categories a {
-    background: var(--bg-card);
-    color: var(--text-light);
-    text-decoration: none;
-    padding: 12px 8px;
-    border-radius: var(--radius);
-    text-align: center;
-    border: 1px solid var(--border-color);
-    transition: var(--transition);
-    font-size: 13px;
-}
-
-.quick-categories a:hover {
-    background: var(--primary);
-    border-color: var(--primary);
-    transform: translateY(-3px);
-    box-shadow: 0 8px 25px rgba(255,107,0,0.3);
-}
-
-.quick-categories a .icon {
-    font-size: 28px;
-    display: block;
-    margin-bottom: 5px;
-}
-
-/* ===== جدول الأوامر ===== */
-.table-container {
-    overflow-x: auto;
-}
-
-table {
-    width: 100%;
-    border-collapse: collapse;
-    font-size: 14px;
-}
-
-table thead {
-    background: var(--primary);
-    color: white;
-}
-
-table th {
-    padding: 14px 16px;
-    text-align: right;
-    font-weight: bold;
-}
-
-table td {
-    padding: 12px 16px;
-    border-bottom: 1px solid var(--border-color);
-    vertical-align: middle;
-}
-
-table tbody tr:hover {
-    background: var(--bg-card-hover);
-}
-
-table .command-text {
-    color: #ffaa66;
-    font-family: 'Courier New', monospace;
-    font-weight: bold;
-    direction: ltr;
-    text-align: left;
-}
-
-table .meaning-text {
-    color: var(--text-light);
-}
-
-table .category-badge {
-    background: var(--bg-card-hover);
-    padding: 3px 12px;
-    border-radius: 20px;
-    font-size: 12px;
-    color: var(--text-muted);
-    border: 1px solid var(--border-color);
-}
-
-/* ===== أزرار النسخ ===== */
-.copy-btn {
-    background: var(--bg-card-hover);
-    border: 1px solid var(--border-color);
-    color: var(--text-light);
-    padding: 4px 12px;
-    border-radius: 6px;
-    cursor: pointer;
-    font-size: 12px;
-    transition: var(--transition);
-}
-
-.copy-btn:hover {
-    background: var(--primary);
-    border-color: var(--primary);
-}
-
-.copy-btn.copied {
-    background: #00cc66;
-    border-color: #00cc66;
-}
-
-/* ===== فلتر البحث ===== */
-.filter-section {
-    display: flex;
-    gap: 10px;
-    flex-wrap: wrap;
-    margin-bottom: 20px;
-}
-
-.filter-section input,
-.filter-section select {
-    padding: 10px 16px;
-    border-radius: 25px;
-    border: 1px solid var(--border-color);
-    background: var(--bg-card);
-    color: var(--text-light);
-    font-size: 15px;
-    outline: none;
-    transition: var(--transition);
-    flex: 1;
-    min-width: 150px;
-}
-
-.filter-section input:focus,
-.filter-section select:focus {
-    border-color: var(--primary);
-}
-
-.filter-section select option {
-    background: var(--bg-dark);
-}
-
-/* ===== معرض الانترو ===== */
-.interior-gallery {
-    display: grid;
-    grid-template-columns: repeat(auto-fill, minmax(200px, 1fr));
-    gap: 20px;
-}
-
-.interior-card {
-    background: var(--bg-card);
-    border-radius: var(--radius);
-    overflow: hidden;
-    border: 1px solid var(--border-color);
-    transition: var(--transition);
-    text-align: center;
-}
-
-.interior-card:hover {
-    transform: translateY(-5px);
-    border-color: var(--primary);
-    box-shadow: 0 8px 30px rgba(255,107,0,0.2);
-}
-
-.interior-card img {
-    width: 100%;
-    height: 150px;
-    object-fit: cover;
-}
-
-.interior-card .name {
-    padding: 12px;
-    font-weight: bold;
-    color: var(--primary);
-}
-
-.interior-card .copy-code {
-    padding: 0 12px 12px;
-}
-
-.interior-card .copy-code button {
-    width: 100%;
-    padding: 8px;
-    border: none;
-    border-radius: 6px;
-    background: var(--primary);
-    color: white;
-    cursor: pointer;
-    transition: var(--transition);
-}
-
-.interior-card .copy-code button:hover {
-    background: var(--primary-dark);
-}
-
-/* ===== كود الانترو ===== */
-.code-block {
-    background: #0a0a1a;
-    border-radius: var(--radius);
-    padding: 20px;
-    overflow-x: auto;
-    font-family: 'Courier New', monospace;
-    font-size: 13px;
-    color: #66ff99;
-    border: 1px solid var(--border-color);
-    position: relative;
-    direction: ltr;
-    text-align: left;
-    white-space: pre-wrap;
-    line-height: 1.8;
-}
-
-.code-block .copy-code-btn {
-    position: absolute;
-    top: 10px;
-    right: 10px;
-    background: var(--primary);
-    color: white;
-    border: none;
-    padding: 6px 14px;
-    border-radius: 6px;
-    cursor: pointer;
-    font-size: 12px;
-}
-
-/* ===== لوحة التحكم ===== */
-.admin-panel {
-    display: none;
-}
-
-.admin-panel.show {
-    display: block;
-}
-
-.admin-login {
-    text-align: center;
-    padding: 40px 20px;
-}
-
-.admin-login input {
-    padding: 14px 20px;
-    border-radius: 25px;
-    border: 1px solid var(--border-color);
-    background: var(--bg-card);
-    color: var(--text-light);
-    font-size: 18px;
-    width: 200px;
-    text-align: center;
-    outline: none;
-    transition: var(--transition);
-}
-
-.admin-login input:focus {
-    border-color: var(--primary);
-}
-
-.admin-login button {
-    padding: 14px 40px;
-    border: none;
-    border-radius: 25px;
-    background: var(--primary);
-    color: white;
-    font-size: 18px;
-    cursor: pointer;
-    transition: var(--transition);
-    margin-top: 15px;
-}
-
-.admin-login button:hover {
-    background: var(--primary-dark);
-}
-
-.admin-controls {
-    display: grid;
-    grid-template-columns: repeat(auto-fill, minmax(250px, 1fr));
-    gap: 15px;
-    margin-top: 20px;
-}
-
-.admin-controls .control-card {
-    background: var(--bg-card);
-    padding: 20px;
-    border-radius: var(--radius);
-    border: 1px solid var(--border-color);
-}
-
-.admin-controls .control-card h4 {
-    color: var(--primary);
-    margin-bottom: 10px;
-}
-
-.admin-controls .control-card input,
-.admin-controls .control-card textarea,
-.admin-controls .control-card select {
-    width: 100%;
-    padding: 10px;
-    border-radius: 8px;
-    border: 1px solid var(--border-color);
-    background: var(--bg-dark);
-    color: var(--text-light);
-    margin-bottom: 10px;
-    outline: none;
-}
-
-.admin-controls .control-card input:focus,
-.admin-controls .control-card textarea:focus {
-    border-color: var(--primary);
-}
-
-.admin-controls .control-card textarea {
-    height: 80px;
-    resize: vertical;
-}
-
-.admin-controls .control-card button {
-    padding: 8px 20px;
-    border: none;
-    border-radius: 8px;
-    cursor: pointer;
-    transition: var(--transition);
-    font-weight: bold;
-}
-
-.btn-add {
-    background: #00cc66;
-    color: white;
-}
-.btn-add:hover {
-    background: #00aa55;
-}
-.btn-delete {
-    background: #ff3333;
-    color: white;
-}
-.btn-delete:hover {
-    background: #cc0000;
-}
-.btn-edit {
-    background: #ffaa00;
-    color: white;
-}
-.btn-edit:hover {
-    background: #cc8800;
-}
-.btn-export {
-    background: #3399ff;
-    color: white;
-}
-.btn-export:hover {
-    background: #2277cc;
-}
-.btn-import {
-    background: #9966ff;
-    color: white;
-}
-.btn-import:hover {
-    background: #7744cc;
-}
-
-.admin-actions {
-    display: flex;
-    gap: 10px;
-    flex-wrap: wrap;
-    margin-top: 20px;
-}
-
-/* ===== الأدوات المساعدة ===== */
-.text-center {
-    text-align: center;
-}
-.text-right {
-    text-align: right;
-}
-.text-left {
-    text-align: left;
-}
-.mt-10 { margin-top: 10px; }
-.mt-20 { margin-top: 20px; }
-.mb-10 { margin-bottom: 10px; }
-.mb-20 { margin-bottom: 20px; }
-.flex-center {
-    display: flex;
-    justify-content: center;
-    align-items: center;
-    gap: 10px;
-}
-.gap-10 { gap: 10px; }
-
-/* ===== التنبيهات ===== */
-.alert {
-    padding: 15px 20px;
-    border-radius: var(--radius);
-    margin-bottom: 15px;
-}
-.alert-success {
-    background: rgba(0,204,102,0.15);
-    border: 1px solid #00cc66;
-    color: #66ff99;
-}
-.alert-danger {
-    background: rgba(255,51,51,0.15);
-    border: 1px solid #ff3333;
-    color: #ff6666;
-}
-.alert-info {
-    background: rgba(51,153,255,0.15);
-    border: 1px solid #3399ff;
-    color: #66bbff;
-}
-
-/* ===== التجاوب مع الشاشات ===== */
-@media (max-width: 768px) {
-    header {
-        flex-direction: column;
-        align-items: stretch;
-        text-align: center;
-    }
-    nav {
-        justify-content: center;
-    }
-    nav a {
-        font-size: 12px;
-        padding: 6px 12px;
-    }
-    .chat-messages {
-        height: 300px;
-    }
-    .chat-message {
-        max-width: 95%;
-    }
-    .quick-categories {
-        grid-template-columns: repeat(auto-fill, minmax(90px, 1fr));
-    }
-    .interior-gallery {
-        grid-template-columns: repeat(auto-fill, minmax(150px, 1fr));
-    }
-    .filter-section {
-        flex-direction: column;
-    }
-    .filter-section input,
-    .filter-section select {
-        min-width: 100%;
-    }
-    .admin-controls {
-        grid-template-columns: 1fr;
-    }
-    table {
-        font-size: 12px;
-    }
-    table th, table td {
-        padding: 8px 10px;
-    }
-    .code-block {
-        font-size: 11px;
-        padding: 15px;
-    }
-}
-
-@media (max-width: 480px) {
-    .container {
-        padding: 10px;
-    }
-    .card {
-        padding: 15px;
-    }
-    .quick-categories {
-        grid-template-columns: repeat(auto-fill, minmax(70px, 1fr));
-    }
-    .quick-categories a {
-        font-size: 11px;
-        padding: 8px 4px;
-    }
-    .quick-categories a .icon {
-        font-size: 20px;
-    }
-    .interior-gallery {
-        grid-template-columns: repeat(auto-fill, minmax(120px, 1fr));
-    }
-    .interior-card img {
-        height: 100px;
-    }
-    .chat-input-area {
-        flex-direction: column;
-    }
-    .chat-input-area button {
-        width: 100%;
-    }
-}
+<!DOCTYPE html>
+<html lang="ar" dir="rtl">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>لوحة التحكم - MTA San Andreas</title>
+    <link rel="stylesheet" href="style.css">
+    <link href="https://fonts.googleapis.com/css2?family=Cairo:wght@400;600;700&display=swap" rel="stylesheet">
+    <style>
+        /* ===== شاشة تسجيل الدخول ===== */
+        .login-screen {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: linear-gradient(135deg, #0d0d1a 0%, #1a1a2e 100%);
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            z-index: 9999;
+        }
+
+        .login-box {
+            background: var(--bg-card);
+            padding: 40px;
+            border-radius: 20px;
+            border: 1px solid var(--border-color);
+            box-shadow: 0 20px 60px rgba(0,0,0,0.5);
+            text-align: center;
+            min-width: 350px;
+            animation: fadeIn 0.5s ease;
+        }
+
+        .login-box .lock-icon {
+            font-size: 60px;
+            margin-bottom: 20px;
+            display: block;
+        }
+
+        .login-box h2 {
+            color: var(--primary);
+            margin-bottom: 10px;
+            font-size: 24px;
+        }
+
+        .login-box p {
+            color: var(--text-muted);
+            margin-bottom: 25px;
+            font-size: 14px;
+        }
+
+        .login-box input {
+            width: 100%;
+            padding: 14px 20px;
+            border-radius: 12px;
+            border: 1px solid var(--border-color);
+            background: var(--bg-dark);
+            color: var(--text-light);
+            font-size: 18px;
+            text-align: center;
+            letter-spacing: 8px;
+            outline: none;
+            transition: var(--transition);
+            margin-bottom: 15px;
+        }
+
+        .login-box input:focus {
+            border-color: var(--primary);
+            box-shadow: 0 0 20px rgba(255,107,0,0.2);
+        }
+
+        .login-box button {
+            width: 100%;
+            padding: 14px;
+            border: none;
+            border-radius: 12px;
+            background: var(--primary);
+            color: white;
+            font-size: 16px;
+            font-weight: bold;
+            cursor: pointer;
+            transition: var(--transition);
+        }
+
+        .login-box button:hover {
+            background: var(--primary-dark);
+            transform: translateY(-2px);
+        }
+
+        .login-error {
+            color: #ff6666;
+            font-size: 13px;
+            margin-top: 10px;
+            min-height: 20px;
+        }
+
+        /* ===== هيكل لوحة التحكم ===== */
+        .admin-wrapper {
+            display: none;
+            min-height: 100vh;
+        }
+
+        .admin-wrapper.active {
+            display: flex;
+        }
+
+        /* ===== الشريط الجانبي ===== */
+        .admin-sidebar {
+            width: 260px;
+            background: var(--secondary);
+            border-left: 1px solid var(--border-color);
+            min-height: 100vh;
+            position: sticky;
+            top: 0;
+            height: 100vh;
+            overflow-y: auto;
+            padding: 20px 0;
+        }
+
+        .sidebar-header {
+            padding: 0 20px 20px;
+            border-bottom: 1px solid var(--border-color);
+            margin-bottom: 15px;
+        }
+
+        .sidebar-header h3 {
+            color: var(--primary);
+            font-size: 18px;
+            margin-bottom: 5px;
+            display: flex;
+            align-items: center;
+            gap: 10px;
+        }
+
+        .sidebar-header p {
+            color: var(--text-muted);
+            font-size: 12px;
+        }
+
+        .sidebar-menu {
+            list-style: none;
+            padding: 0 10px;
+        }
+
+        .sidebar-menu li {
+            margin-bottom: 5px;
+        }
+
+        .sidebar-menu a {
+            display: flex;
+            align-items: center;
+            gap: 12px;
+            padding: 12px 15px;
+            color: var(--text-light);
+            text-decoration: none;
+            border-radius: 10px;
+            transition: var(--transition);
+            font-size: 14px;
+            cursor: pointer;
+            border: 1px solid transparent;
+        }
+
+        .sidebar-menu a:hover {
+            background: rgba(255,107,0,0.1);
+            border-color: var(--primary);
+        }
+
+        .sidebar-menu a.active {
+            background: var(--primary);
+            color: white;
+            font-weight: bold;
+        }
+
+        .sidebar-menu a .menu-icon {
+            font-size: 20px;
+            width: 25px;
+            text-align: center;
+        }
+
+        .sidebar-menu a .menu-count {
+            margin-right: auto;
+            background: rgba(255,255,255,0.15);
+            padding: 2px 10px;
+            border-radius: 12px;
+            font-size: 11px;
+            font-weight: bold;
+        }
+
+        .sidebar-menu a.active .menu-count {
+            background: rgba(255,255,255,0.25);
+        }
+
+        .sidebar-divider {
+            height: 1px;
+            background: var(--border-color);
+            margin: 15px 20px;
+        }
+
+        .sidebar-section-title {
+            color: var(--text-muted);
+            font-size: 11px;
+            padding: 10px 20px 5px;
+            text-transform: uppercase;
+            letter-spacing: 1px;
+        }
+
+        /* ===== المحتوى الرئيسي ===== */
+        .admin-main {
+            flex: 1;
+            padding: 25px;
+            overflow-x: hidden;
+        }
+
+        .admin-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 25px;
+            padding-bottom: 20px;
+            border-bottom: 1px solid var(--border-color);
+            flex-wrap: wrap;
+            gap: 15px;
+        }
+
+        .admin-header h1 {
+            color: var(--primary);
+            font-size: 26px;
+            display: flex;
+            align-items: center;
+            gap: 12px;
+        }
+
+        .admin-header-actions {
+            display: flex;
+            gap: 10px;
+            flex-wrap: wrap;
+        }
+
+        /* ===== بطاقات الإحصائيات ===== */
+        .stats-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+            gap: 15px;
+            margin-bottom: 25px;
+        }
+
+        .stat-card {
+            background: var(--bg-card);
+            border: 1px solid var(--border-color);
+            border-radius: var(--radius);
+            padding: 20px;
+            display: flex;
+            align-items: center;
+            gap: 15px;
+            transition: var(--transition);
+        }
+
+        .stat-card:hover {
+            border-color: var(--primary);
+            transform: translateY(-3px);
+        }
+
+        .stat-icon {
+            width: 55px;
+            height: 55px;
+            border-radius: 12px;
+            background: rgba(255,107,0,0.15);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 26px;
+        }
+
+        .stat-info h3 {
+            font-size: 24px;
+            color: var(--primary);
+            margin-bottom: 3px;
+        }
+
+        .stat-info p {
+            color: var(--text-muted);
+            font-size: 13px;
+        }
+
+        /* ===== شريط الأدوات ===== */
+        .toolbar {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            gap: 15px;
+            margin-bottom: 20px;
+            flex-wrap: wrap;
+        }
+
+        .toolbar-search {
+            flex: 1;
+            min-width: 200px;
+            position: relative;
+        }
+
+        .toolbar-search input {
+            width: 100%;
+            padding: 10px 16px 10px 40px;
+            border-radius: 10px;
+            border: 1px solid var(--border-color);
+            background: var(--bg-card);
+            color: var(--text-light);
+            font-size: 14px;
+            outline: none;
+            transition: var(--transition);
+        }
+
+        .toolbar-search input:focus {
+            border-color: var(--primary);
+        }
+
+        .toolbar-search::before {
+            content: '🔍';
+            position: absolute;
+            left: 14px;
+            top: 50%;
+            transform: translateY(-50%);
+            font-size: 14px;
+        }
+
+        .btn {
+            padding: 10px 20px;
+            border: none;
+            border-radius: 10px;
+            cursor: pointer;
+            font-size: 14px;
+            font-weight: bold;
+            transition: var(--transition);
+            display: inline-flex;
+            align-items: center;
+            gap: 8px;
+            text-decoration: none;
+        }
+
+        .btn-primary {
+            background: var(--primary);
+            color: white;
+        }
+
+        .btn-primary:hover {
+            background: var(--primary-dark);
+            transform: translateY(-2px);
+        }
+
+        .btn-success {
+            background: #00cc66;
+            color: white;
+        }
+
+        .btn-success:hover {
+            background: #00aa55;
+        }
+
+        .btn-danger {
+            background: #ff3333;
+            color: white;
+        }
+
+        .btn-danger:hover {
+            background: #cc0000;
+        }
+
+        .btn-warning {
+            background: #ffaa00;
+            color: white;
+        }
+
+        .btn-warning:hover {
+            background: #cc8800;
+        }
+
+        .btn-info {
+            background: #3399ff;
+            color: white;
+        }
+
+        .btn-info:hover {
+            background: #2277cc;
+        }
+
+        .btn-secondary {
+            background: var(--bg-card-hover);
+            color: var(--text-light);
+            border: 1px solid var(--border-color);
+        }
+
+        .btn-secondary:hover {
+            background: var(--bg-card);
+            border-color: var(--primary);
+        }
+
+        .btn-sm {
+            padding: 6px 12px;
+            font-size: 12px;
+        }
+
+        /* ===== الجدول ===== */
+        .data-table-container {
+            background: var(--bg-card);
+            border: 1px solid var(--border-color);
+            border-radius: var(--radius);
+            overflow: hidden;
+        }
+
+        .data-table {
+            width: 100%;
+            border-collapse: collapse;
+            font-size: 14px;
+        }
+
+        .data-table thead {
+            background: var(--secondary);
+            color: var(--primary);
+        }
+
+        .data-table th {
+            padding: 14px 16px;
+            text-align: right;
+            font-weight: bold;
+            border-bottom: 1px solid var(--border-color);
+        }
+
+        .data-table td {
+            padding: 12px 16px;
+            border-bottom: 1px solid var(--border-color);
+            vertical-align: middle;
+        }
+
+        .data-table tbody tr {
+            transition: var(--transition);
+        }
+
+        .data-table tbody tr:hover {
+            background: var(--bg-card-hover);
+        }
+
+        .data-table .command-cell {
+            font-family: 'Courier New', monospace;
+            color: #ffaa66;
+            direction: ltr;
+            text-align: left;
+            background: rgba(255,255,255,0.05);
+            padding: 4px 10px;
+            border-radius: 6px;
+            display: inline-block;
+        }
+
+        .data-table .actions-cell {
+            display: flex;
+            gap: 6px;
+        }
+
+        .empty-state {
+            text-align: center;
+            padding: 60px 20px;
+            color: var(--text-muted);
+        }
+
+        .empty-state .empty-icon {
+            font-size: 60px;
+            margin-bottom: 15px;
+            display: block;
+            opacity: 0.5;
+        }
+
+        /* ===== Modal (النافذة المنبثقة) ===== */
+        .modal-overlay {
+            display: none;
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: rgba(0,0,0,0.75);
+            z-index: 10000;
+            justify-content: center;
+            align-items: center;
+            padding: 20px;
+            animation: fadeIn 0.3s ease;
+        }
+
+        .modal-overlay.active {
+            display: flex;
+        }
+
+        .modal {
+            background: var(--bg-card);
+            border-radius: var(--radius);
+            border: 1px solid var(--border-color);
+            width: 100%;
+            max-width: 550px;
+            max-height: 90vh;
+            overflow-y: auto;
+            animation: slideUp 0.3s ease;
+        }
+
+        @keyframes slideUp {
+            from { transform: translateY(30px); opacity: 0; }
+            to { transform: translateY(0); opacity: 1; }
+        }
+
+        .modal-header {
+            padding: 20px 25px;
+            border-bottom: 1px solid var(--border-color);
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+
+        .modal-header h3 {
+            color: var(--primary);
+            font-size: 20px;
+            display: flex;
+            align-items: center;
+            gap: 10px;
+        }
+
+        .modal-close {
+            background: none;
+            border: none;
+            color: var(--text-muted);
+            font-size: 26px;
+            cursor: pointer;
+            width: 35px;
+            height: 35px;
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            transition: var(--transition);
+        }
+
+        .modal-close:hover {
+            background: rgba(255,51,51,0.2);
+            color: #ff6666;
+        }
+
+        .modal-body {
+            padding: 25px;
+        }
+
+        .form-group {
+            margin-bottom: 18px;
+        }
+
+        .form-group label {
+            display: block;
+            color: var(--text-light);
+            margin-bottom: 8px;
+            font-size: 14px;
+            font-weight: bold;
+        }
+
+        .form-group input,
+        .form-group textarea,
+        .form-group select {
+            width: 100%;
+            padding: 11px 14px;
+            border-radius: 10px;
+            border: 1px solid var(--border-color);
+            background: var(--bg-dark);
+            color: var(--text-light);
+            font-size: 14px;
+            outline: none;
+            transition: var(--transition);
+            font-family: inherit;
+        }
+
+        .form-group input:focus,
+        .form-group textarea:focus,
+        .form-group select:focus {
+            border-color: var(--primary);
+            box-shadow: 0 0 10px rgba(255,107,0,0.15);
+        }
+
+        .form-group textarea {
+            resize: vertical;
+            min-height: 80px;
+        }
+
+        .form-group select option {
+            background: var(--bg-dark);
+        }
+
+        .modal-footer {
+            padding: 15px 25px 25px;
+            display: flex;
+            gap: 10px;
+            justify-content: flex-start;
+        }
+
+        /* ===== Toast (الإشعارات) ===== */
+        .toast-container {
+            position: fixed;
+            top: 20px;
+            left: 20px;
+            z-index: 99999;
+            display: flex;
+            flex-direction: column;
+            gap: 10px;
+        }
+
+        .toast {
+            background: var(--bg-card);
+            border: 1px solid var(--border-color);
+            border-radius: 10px;
+            padding: 14px 20px;
+            min-width: 280px;
+            max-width: 400px;
+            box-shadow: 0 10px 30px rgba(0,0,0,0.5);
+            display: flex;
+            align-items: center;
+            gap: 12px;
+            animation: slideInLeft 0.3s ease;
+            border-right: 4px solid var(--primary);
+        }
+
+        @keyframes slideInLeft {
+            from { transform: translateX(-100%); opacity: 0; }
+            to { transform: translateX(0); opacity: 1; }
+        }
+
+        .toast.success { border-right-color: #00cc66; }
+        .toast.error { border-right-color: #ff3333; }
+        .toast.warning { border-right-color: #ffaa00; }
+        .toast.info { border-right-color: #3399ff; }
+
+        .toast-icon {
+            font-size: 22px;
+        }
+
+        .toast-content {
+            flex: 1;
+            color: var(--text-light);
+            font-size: 14px;
+        }
+
+        .toast-title {
+            font-weight: bold;
+            margin-bottom: 2px;
+        }
+
+        /* ===== كود التصدير ===== */
+        .code-export-area {
+            background: #0a0a1a;
+            border-radius: 10px;
+            padding: 15px;
+            font-family: 'Courier New', monospace;
+            font-size: 12px;
+            color: #66ff99;
+            max-height: 400px;
+            overflow: auto;
+            direction: ltr;
+            text-align: left;
+            white-space: pre-wrap;
+            word-break: break-all;
+            border: 1px solid var(--border-color);
+        }
+
+        /* ===== صفحة الترحيب ===== */
+        .welcome-section {
+            text-align: center;
+            padding: 40px 20px;
+        }
+
+        .welcome-section .welcome-icon {
+            font-size: 80px;
+            margin-bottom: 20px;
+            display: block;
+        }
+
+        .welcome-section h2 {
+            color: var(--primary);
+            font-size: 28px;
+            margin-bottom: 10px;
+        }
+
+        .welcome-section p {
+            color: var(--text-muted);
+            font-size: 16px;
+            max-width: 600px;
+            margin: 0 auto 30px;
+        }
+
+        /* ===== التجاوب ===== */
+        @media (max-width: 900px) {
+            .admin-wrapper.active {
+                flex-direction: column;
+            }
+            .admin-sidebar {
+                width: 100%;
+                height: auto;
+                position: relative;
+                min-height: auto;
+            }
+            .sidebar-menu {
+                display: grid;
+                grid-template-columns: repeat(auto-fill, minmax(140px, 1fr));
+                gap: 8px;
+            }
+            .sidebar-menu a {
+                justify-content: center;
+                flex-direction: column;
+                text-align: center;
+                padding: 10px;
+                font-size: 12px;
+            }
+            .sidebar-menu a .menu-count {
+                display: none;
+            }
+        }
+
+        @media (max-width: 600px) {
+            .admin-main {
+                padding: 15px;
+            }
+            .admin-header h1 {
+                font-size: 20px;
+            }
+            .data-table {
+                font-size: 12px;
+            }
+            .data-table th, .data-table td {
+                padding: 8px 10px;
+            }
+            .modal {
+                max-width: 100%;
+            }
+        }
+    </style>
+</head>
+<body>
+
+    <!-- ===== شاشة تسجيل الدخول ===== -->
+    <div class="login-screen" id="loginScreen">
+        <div class="login-box">
+            <span class="lock-icon">🔐</span>
+            <h2>لوحة التحكم</h2>
+            <p>أدخل كلمة المرور للدخول إلى لوحة الإدارة</p>
+            <input type="password" id="passwordInput" placeholder="••••" maxlength="10" onkeydown="if(event.key==='Enter') attemptLogin()">
+            <button onclick="attemptLogin()">🔓 دخول</button>
+            <div class="login-error" id="loginError"></div>
+        </div>
+    </div>
+
+    <!-- ===== لوحة التحكم ===== -->
+    <div class="admin-wrapper" id="adminWrapper">
+
+        <!-- الشريط الجانبي -->
+        <aside class="admin-sidebar">
+            <div class="sidebar-header">
+                <h3>⚙️ لوحة التحكم</h3>
+                <p>MTA San Andreas Guide</p>
+            </div>
+
+            <div class="sidebar-section-title">الرئيسية</div>
+            <ul class="sidebar-menu">
+                <li><a onclick="showSection('dashboard')" class="active" data-section="dashboard">
+                    <span class="menu-icon">📊</span>
+                    <span>نظرة عامة</span>
+                </a></li>
+            </ul>
+
+            <div class="sidebar-divider"></div>
+            <div class="sidebar-section-title">إدارة المحتوى</div>
+            <ul class="sidebar-menu">
+                <li><a onclick="showSection('commands')" data-section="commands">
+                    <span class="menu-icon">📋</span>
+                    <span>الأوامر</span>
+                    <span class="menu-count" id="countCommands">0</span>
+                </a></li>
+                <li><a onclick="showSection('rules')" data-section="rules">
+                    <span class="menu-icon">📜</span>
+                    <span>القوانين</span>
+                    <span class="menu-count" id="countRules">0</span>
+                </a></li>
+                <li><a onclick="showSection('interiors')" data-section="interiors">
+                    <span class="menu-icon">🏠</span>
+                    <span>الانترو</span>
+                    <span class="menu-count" id="countInteriors">0</span>
+                </a></li>
+                <li><a onclick="showSection('categories')" data-section="categories">
+                    <span class="menu-icon">📂</span>
+                    <span>التصنيفات</span>
+                    <span class="menu-count" id="countCategories">0</span>
+                </a></li>
+            </ul>
+
+            <div class="sidebar-divider"></div>
+            <div class="sidebar-section-title">أدوات</div>
+            <ul class="sidebar-menu">
+                <li><a onclick="showSection('introcode')" data-section="introcode">
+                    <span class="menu-icon">💻</span>
+                    <span>كود الانترو</span>
+                </a></li>
+                <li><a onclick="showSection('export')" data-section="export">
+                    <span class="menu-icon">💾</span>
+                    <span>تصدير / استيراد</span>
+                </a></li>
+            </ul>
+
+            <div class="sidebar-divider"></div>
+            <ul class="sidebar-menu">
+                <li><a onclick="logout()" style="color:#ff6666;">
+                    <span class="menu-icon">🚪</span>
+                    <span>تسجيل الخروج</span>
+                </a></li>
+            </ul>
+        </aside>
+
+        <!-- المحتوى الرئيسي -->
+        <main class="admin-main" id="adminMain">
+            <!-- سيتم تعبئته ديناميكياً -->
+        </main>
+    </div>
+
+    <!-- ===== Modal للإضافة/التعديل ===== -->
+    <div class="modal-overlay" id="modalOverlay">
+        <div class="modal">
+            <div class="modal-header">
+                <h3 id="modalTitle">إضافة عنصر</h3>
+                <button class="modal-close" onclick="closeModal()">✕</button>
+            </div>
+            <div class="modal-body" id="modalBody">
+                <!-- سيتم تعبئته ديناميكياً -->
+            </div>
+            <div class="modal-footer" id="modalFooter">
+                <button class="btn btn-primary" onclick="saveModal()">💾 حفظ</button>
+                <button class="btn btn-secondary" onclick="closeModal()">❌ إلغاء</button>
+            </div>
+        </div>
+    </div>
+
+    <!-- ===== Toast Container ===== -->
+    <div class="toast-container" id="toastContainer"></div>
+
+    <script src="data.js"></script>
+    <script>
+        // ============================================
+        // المتغيرات العامة
+        // ============================================
+        const ADMIN_PASSWORD = '0000';
+        let currentSection = 'dashboard';
+        let currentEditIndex = -1;
+        let currentEditType = '';
+
+        // ============================================
+        // تسجيل الدخول
+        // ============================================
+        function attemptLogin() {
+            const password = document.getElementById('passwordInput').value;
+            const errorEl = document.getElementById('loginError');
+            
+            if (password === ADMIN_PASSWORD) {
+                document.getElementById('loginScreen').style.display = 'none';
+                document.getElementById('adminWrapper').classList.add('active');
+                sessionStorage.setItem('adminLoggedIn', 'true');
+                updateCounts();
+                showSection('dashboard');
+                showToast('success', 'مرحباً بك!', 'تم تسجيل الدخول بنجاح');
+            } else {
+                errorEl.textContent = '❌ كلمة المرور غير صحيحة';
+                document.getElementById('passwordInput').value = '';
+                document.getElementById('passwordInput').focus();
+            }
+        }
+
+        function logout() {
+            if (confirm('هل تريد تسجيل الخروج؟')) {
+                sessionStorage.removeItem('adminLoggedIn');
+                location.reload();
+            }
+        }
+
+        // التحقق من الجلسة عند التحميل
+        window.addEventListener('DOMContentLoaded', () => {
+            if (sessionStorage.getItem('adminLoggedIn') === 'true') {
+                document.getElementById('loginScreen').style.display = 'none';
+                document.getElementById('adminWrapper').classList.add('active');
+                updateCounts();
+                showSection('dashboard');
+            } else {
+                document.getElementById('passwordInput').focus();
+            }
+        });
+
+        // ============================================
+        // التنقل بين الأقسام
+        // ============================================
+        function showSection(section) {
+            currentSection = section;
+            
+            // تحديث القائمة النشطة
+            document.querySelectorAll('.sidebar-menu a').forEach(a => {
+                a.classList.toggle('active', a.dataset.section === section);
+            });
+            
+            const main = document.getElementById('adminMain');
+            
+            switch(section) {
+                case 'dashboard': renderDashboard(); break;
+                case 'commands': renderCommands(); break;
+                case 'rules': renderRules(); break;
+                case 'interiors': renderInteriors(); break;
+                case 'categories': renderCategories(); break;
+                case 'introcode': renderIntroCode(); break;
+                case 'export': renderExport(); break;
+            }
+        }
+
+        // ============================================
+        // تحديث العدادات
+        // ============================================
+        function updateCounts() {
+            document.getElementById('countCommands').textContent = siteData.commands.length;
+            document.getElementById('countRules').textContent = siteData.rules.length;
+            document.getElementById('countInteriors').textContent = siteData.interiors.length;
+            document.getElementById('countCategories').textContent = siteData.categories.length;
+        }
+
+        // ============================================
+        // Dashboard (نظرة عامة)
+        // ============================================
+        function renderDashboard() {
+            const main = document.getElementById('adminMain');
+            main.innerHTML = `
+                <div class="admin-header">
+                    <h1>📊 نظرة عامة</h1>
+                </div>
+                
+                <div class="stats-grid">
+                    <div class="stat-card">
+                        <div class="stat-icon">📋</div>
+                        <div class="stat-info">
+                            <h3>${siteData.commands.length}</h3>
+                            <p>إجمالي الأوامر</p>
+                        </div>
+                    </div>
+                    <div class="stat-card">
+                        <div class="stat-icon">📜</div>
+                        <div class="stat-info">
+                            <h3>${siteData.rules.length}</h3>
+                            <p>إجمالي القوانين</p>
+                        </div>
+                    </div>
+                    <div class="stat-card">
+                        <div class="stat-icon">🏠</div>
+                        <div class="stat-info">
+                            <h3>${siteData.interiors.length}</h3>
+                            <p>إجمالي الانترو</p>
+                        </div>
+                    </div>
+                    <div class="stat-card">
+                        <div class="stat-icon">📂</div>
+                        <div class="stat-info">
+                            <h3>${siteData.categories.length}</h3>
+                            <p>التصنيفات</p>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="card">
+                    <h3 class="card-title">🎯 الوصول السريع</h3>
+                    <div style="display:grid;grid-template-columns:repeat(auto-fit,minmax(200px,1fr));gap:12px;margin-top:15px;">
+                        <button class="btn btn-primary" onclick="showSection('commands')">📋 إدارة الأوامر</button>
+                        <button class="btn btn-primary" onclick="showSection('rules')">📜 إدارة القوانين</button>
+                        <button class="btn btn-primary" onclick="showSection('interiors')">🏠 إدارة الانترو</button>
+                        <button class="btn btn-primary" onclick="showSection('categories')">📂 إدارة التصنيفات</button>
+                        <button class="btn btn-info" onclick="showSection('introcode')">💻 تعديل كود الانترو</button>
+                        <button class="btn btn-success" onclick="showSection('export')">💾 تصدير / استيراد</button>
+                    </div>
+                </div>
+
+                <div class="card">
+                    <h3 class="card-title">💡 تعليمات الاستخدام</h3>
+                    <div style="color:var(--text-muted);line-height:2;">
+                        <p>✅ <strong>الأوامر:</strong> إضافة/تعديل/حذف أوامر السيرفر مع تحديد التصنيف</p>
+                        <p>✅ <strong>القوانين:</strong> إدارة القوانين (النص الإنجليزي والعربي)</p>
+                        <p>✅ <strong>الانترو:</strong> إضافة بيوت جديدة مع صورها</p>
+                        <p>✅ <strong>التصنيفات:</strong> إدارة أقسام الأوامر (فاكشن، بوابة، سيارة...)</p>
+                        <p>✅ <strong>كود الانترو:</strong> تعديل كود Lua لصناعة الانترو</p>
+                        <p>✅ <strong>تصدير:</strong> حفظ التعديلات في ملف data.js الجديد</p>
+                        <p style="color:#ffaa66;margin-top:10px;">⚠️ <strong>ملاحظة:</strong> بعد التصدير، يجب استبدال محتوى ملف <code>data.js</code> بالمحتوى الجديد</p>
+                    </div>
+                </div>
+            `;
+        }
+
+        // ============================================
+        // إدارة الأوامر
+        // ============================================
+        function renderCommands() {
+            const main = document.getElementById('adminMain');
+            main.innerHTML = `
+                <div class="admin-header">
+                    <h1>📋 إدارة الأوامر</h1>
+                    <div class="admin-header-actions">
+                        <button class="btn btn-primary" onclick="openCommandModal()">➕ إضافة أمر</button>
+                    </div>
+                </div>
+
+                <div class="toolbar">
+                    <div class="toolbar-search">
+                        <input type="text" id="searchCommands" placeholder="بحث في الأوامر..." oninput="filterAdminTable('commands')">
+                    </div>
+                    <select id="filterCommandCategory" onchange="filterAdminTable('commands')" style="padding:10px 16px;border-radius:10px;border:1px solid var(--border-color);background:var(--bg-card);color:var(--text-light);outline:none;">
+                        <option value="all">📂 جميع التصنيفات</option>
+                        ${siteData.categories.map(c => `<option value="${c.name}">${c.icon} ${c.name}</option>`).join('')}
+                    </select>
+                </div>
+
+                <div class="data-table-container">
+                    <table class="data-table" id="commandsTable">
+                        <thead>
+                            <tr>
+                                <th style="width:5%;">#</th>
+                                <th style="width:25%;">الأمر</th>
+                                <th style="width:40%;">المعنى</th>
+                                <th style="width:15%;">التصنيف</th>
+                                <th style="width:15%;">الإجراءات</th>
+                            </tr>
+                        </thead>
+                        <tbody id="commandsTableBody"></tbody>
+                    </table>
+                </div>
+            `;
+            renderCommandsTable(siteData.commands);
+        }
+
+        function renderCommandsTable(commands) {
+            const tbody = document.getElementById('commandsTableBody');
+            if (!tbody) return;
+            
+            if (commands.length === 0) {
+                tbody.innerHTML = `<tr><td colspan="5"><div class="empty-state">
+                    <span class="empty-icon">📋</span>
+                    <p>لا توجد أوامر</p>
+                </div></td></tr>`;
+                return;
+            }
+            
+            tbody.innerHTML = commands.map((cmd, idx) => {
+                const realIdx = siteData.commands.indexOf(cmd);
+                return `
+                <tr>
+                    <td>${realIdx + 1}</td>
+                    <td><span class="command-cell">${escapeHtml(cmd.command)}</span></td>
+                    <td>${escapeHtml(cmd.meaning)}</td>
+                    <td><span class="category-badge">${escapeHtml(cmd.category)}</span></td>
+                    <td>
+                        <div class="actions-cell">
+                            <button class="btn btn-warning btn-sm" onclick="openCommandModal(${realIdx})">✏️</button>
+                            <button class="btn btn-danger btn-sm" onclick="deleteItem('commands', ${realIdx})">🗑️</button>
+                        </div>
+                    </td>
+                </tr>
+            `}).join('');
+        }
+
+        function openCommandModal(index = -1) {
+            currentEditIndex = index;
+            currentEditType = 'commands';
+            
+            const modal = document.getElementById('modalOverlay');
+            const title = document.getElementById('modalTitle');
+            const body = document.getElementById('modalBody');
+            
+            const item = index >= 0 ? siteData.commands[index] : { command: '', meaning: '', category: siteData.categories[0]?.name || '' };
+            
+            title.innerHTML = index >= 0 ? '✏️ تعديل أمر' : '➕ إضافة أمر جديد';
+            
+            body.innerHTML = `
+                <div class="form-group">
+                    <label>🔹 الأمر (بالإنجليزية)</label>
+                    <input type="text" id="cmd_command" value="${escapeHtml(item.command)}" placeholder="مثال: sellproperty" dir="ltr">
+                </div>
+                <div class="form-group">
+                    <label>🔹 المعنى (بالعربية)</label>
+                    <input type="text" id="cmd_meaning" value="${escapeHtml(item.meaning)}" placeholder="مثال: بيع المنزل للسيرفر">
+                </div>
+                <div class="form-group">
+                    <label>🔹 التصنيف</label>
+                    <select id="cmd_category">
+                        ${siteData.categories.map(c => `<option value="${c.name}" ${c.name === item.category ? 'selected' : ''}>${c.icon} ${c.name}</option>`).join('')}
+                    </select>
+                </div>
+            `;
+            
+            modal.classList.add('active');
+        }
+
+        // ============================================
+        // إدارة القوانين
+        // ============================================
+        function renderRules() {
+            const main = document.getElementById('adminMain');
+            main.innerHTML = `
+                <div class="admin-header">
+                    <h1>📜 إدارة القوانين</h1>
+                    <div class="admin-header-actions">
+                        <button class="btn btn-primary" onclick="openRuleModal()">➕ إضافة قانون</button>
+                    </div>
+                </div>
+
+                <div class="toolbar">
+                    <div class="toolbar-search">
+                        <input type="text" id="searchRules" placeholder="بحث في القوانين..." oninput="filterAdminTable('rules')">
+                    </div>
+                </div>
+
+                <div class="data-table-container">
+                    <table class="data-table">
+                        <thead>
+                            <tr>
+                                <th style="width:5%;">#</th>
+                                <th style="width:25%;">القانون (English)</th>
+                                <th style="width:55%;">المعنى (Arabic)</th>
+                                <th style="width:15%;">الإجراءات</th>
+                            </tr>
+                        </thead>
+                        <tbody id="rulesTableBody"></tbody>
+                    </table>
+                </div>
+            `;
+            renderRulesTable(siteData.rules);
+        }
+
+        function renderRulesTable(rules) {
+            const tbody = document.getElementById('rulesTableBody');
+            if (!tbody) return;
+            
+            if (rules.length === 0) {
+                tbody.innerHTML = `<tr><td colspan="4"><div class="empty-state">
+                    <span class="empty-icon">📜</span>
+                    <p>لا توجد قوانين</p>
+                </div></td></tr>`;
+                return;
+            }
+            
+            tbody.innerHTML = rules.map((rule) => {
+                const realIdx = siteData.rules.indexOf(rule);
+                return `
+                <tr>
+                    <td>${realIdx + 1}</td>
+                    <td style="font-weight:bold;color:#ffaa66;">${escapeHtml(rule.english)}</td>
+                    <td>${escapeHtml(rule.arabic)}</td>
+                    <td>
+                        <div class="actions-cell">
+                            <button class="btn btn-warning btn-sm" onclick="openRuleModal(${realIdx})">✏️</button>
+                            <button class="btn btn-danger btn-sm" onclick="deleteItem('rules', ${realIdx})">🗑️</button>
+                        </div>
+                    </td>
+                </tr>
+            `}).join('');
+        }
+
+        function openRuleModal(index = -1) {
+            currentEditIndex = index;
+            currentEditType = 'rules';
+            
+            const modal = document.getElementById('modalOverlay');
+            const title = document.getElementById('modalTitle');
+            const body = document.getElementById('modalBody');
+            
+            const item = index >= 0 ? siteData.rules[index] : { english: '', arabic: '' };
+            
+            title.innerHTML = index >= 0 ? '✏️ تعديل قانون' : '➕ إضافة قانون جديد';
+            
+            body.innerHTML = `
+                <div class="form-group">
+                    <label>🔹 النص الإنجليزي (اختصار القانون)</label>
+                    <input type="text" id="rule_english" value="${escapeHtml(item.english)}" placeholder="مثال: DM" dir="ltr">
+                </div>
+                <div class="form-group">
+                    <label>🔹 المعنى بالعربية</label>
+                    <textarea id="rule_arabic" placeholder="مثال: القتل بدون سبب مقنع">${escapeHtml(item.arabic)}</textarea>
+                </div>
+            `;
+            
+            modal.classList.add('active');
+        }
+
+        // ============================================
+        // إدارة الانترو
+        // ============================================
+        function renderInteriors() {
+            const main = document.getElementById('adminMain');
+            main.innerHTML = `
+                <div class="admin-header">
+                    <h1>🏠 إدارة الانترو</h1>
+                    <div class="admin-header-actions">
+                        <button class="btn btn-primary" onclick="openInteriorModal()">➕ إضافة انترو</button>
+                    </div>
+                </div>
+
+                <div class="toolbar">
+                    <div class="toolbar-search">
+                        <input type="text" id="searchInteriors" placeholder="بحث في الانترو..." oninput="filterAdminTable('interiors')">
+                    </div>
+                </div>
+
+                <div class="data-table-container">
+                    <table class="data-table">
+                        <thead>
+                            <tr>
+                                <th style="width:5%;">#</th>
+                                <th style="width:20%;">الصورة</th>
+                                <th style="width:40%;">الاسم</th>
+                                <th style="width:20%;">الرابط</th>
+                                <th style="width:15%;">الإجراءات</th>
+                            </tr>
+                        </thead>
+                        <tbody id="interiorsTableBody"></tbody>
+                    </table>
+                </div>
+            `;
+            renderInteriorsTable(siteData.interiors);
+        }
+
+        function renderInteriorsTable(interior) {
+            const tbody = document.getElementById('interiorsTableBody');
+            if (!tbody) return;
+            
+            if (interior.length === 0) {
+                tbody.innerHTML = `<tr><td colspan="5"><div class="empty-state">
+                    <span class="empty-icon">🏠</span>
+                    <p>لا توجد انترو</p>
+                </div></td></tr>`;
+                return;
+            }
+            
+            tbody.innerHTML = interior.map((int) => {
+                const realIdx = siteData.interiors.indexOf(int);
+                return `
+                <tr>
+                    <td>${realIdx + 1}</td>
+                    <td><img src="${int.image}" alt="${escapeHtml(int.name)}" style="width:80px;height:60px;object-fit:cover;border-radius:8px;border:1px solid var(--border-color);"></td>
+                    <td style="font-weight:bold;color:var(--primary);">${escapeHtml(int.name)}</td>
+                    <td style="font-size:11px;color:var(--text-muted);word-break:break-all;" dir="ltr">${escapeHtml(int.image.substring(0, 40))}...</td>
+                    <td>
+                        <div class="actions-cell">
+                            <button class="btn btn-warning btn-sm" onclick="openInteriorModal(${realIdx})">✏️</button>
+                            <button class="btn btn-danger btn-sm" onclick="deleteItem('interiors', ${realIdx})">🗑️</button>
+                        </div>
+                    </td>
+                </tr>
+            `}).join('');
+        }
+
+        function openInteriorModal(index = -1) {
+            currentEditIndex = index;
+            currentEditType = 'interiors';
+            
+            const modal = document.getElementById('modalOverlay');
+            const title = document.getElementById('modalTitle');
+            const body = document.getElementById('modalBody');
+            
+            const item = index >= 0 ? siteData.interiors[index] : { name: '', image: '' };
+            
+            title.innerHTML = index >= 0 ? '✏️ تعديل انترو' : '➕ إضافة انترو جديد';
+            
+            body.innerHTML = `
+                <div class="form-group">
+                    <label>🔹 اسم الانترو</label>
+                    <input type="text" id="int_name" value="${escapeHtml(item.name)}" placeholder="مثال: قصر">
+                </div>
+                <div class="form-group">
+                    <label>🔹 رابط الصورة</label>
+                    <input type="text" id="int_image" value="${escapeHtml(item.image)}" placeholder="https://..." dir="ltr">
+                    <small style="color:var(--text-muted);font-size:11px;margin-top:5px;display:block;">💡 يمكنك استخدام مواقع رفع الصور مثل top4top أو imgur</small>
+                </div>
+                ${item.image ? `<div style="text-align:center;margin-top:10px;">
+                    <img src="${item.image}" style="max-width:100%;max-height:200px;border-radius:10px;border:1px solid var(--border-color);">
+                </div>` : ''}
+            `;
+            
+            modal.classList.add('active');
+        }
+
+        // ============================================
+        // إدارة التصنيفات
+        // ============================================
+        function renderCategories() {
+            const main = document.getElementById('adminMain');
+            main.innerHTML = `
+                <div class="admin-header">
+                    <h1>📂 إدارة التصنيفات</h1>
+                    <div class="admin-header-actions">
+                        <button class="btn btn-primary" onclick="openCategoryModal()">➕ إضافة تصنيف</button>
+                    </div>
+                </div>
+
+                <div class="toolbar">
+                    <div class="toolbar-search">
+                        <input type="text" id="searchCategories" placeholder="بحث في التصنيفات..." oninput="filterAdminTable('categories')">
+                    </div>
+                </div>
+
+                <div class="data-table-container">
+                    <table class="data-table">
+                        <thead>
+                            <tr>
+                                <th style="width:10%;">#</th>
+                                <th style="width:15%;">الأيقونة</th>
+                                <th style="width:40%;">الاسم</th>
+                                <th style="width:20%;">عدد الأوامر</th>
+                                <th style="width:15%;">الإجراءات</th>
+                            </tr>
+                        </thead>
+                        <tbody id="categoriesTableBody"></tbody>
+                    </table>
+                </div>
+            `;
+            renderCategoriesTable(siteData.categories);
+        }
+
+        function renderCategoriesTable(categories) {
+            const tbody = document.getElementById('categoriesTableBody');
+            if (!tbody) return;
+            
+            if (categories.length === 0) {
+                tbody.innerHTML = `<tr><td colspan="5"><div class="empty-state">
+                    <span class="empty-icon">📂</span>
+                    <p>لا توجد تصنيفات</p>
+                </div></td></tr>`;
+                return;
+            }
+            
+            tbody.innerHTML = categories.map((cat) => {
+                const realIdx = siteData.categories.indexOf(cat);
+                const count = siteData.commands.filter(c => c.category === cat.name).length;
+                return `
+                <tr>
+                    <td>${cat.id}</td>
+                    <td style="font-size:24px;">${cat.icon}</td>
+                    <td style="font-weight:bold;">${escapeHtml(cat.name)}</td>
+                    <td><span class="category-badge">${count} أمر</span></td>
+                    <td>
+                        <div class="actions-cell">
+                            <button class="btn btn-warning btn-sm" onclick="openCategoryModal(${realIdx})">✏️</button>
+                            <button class="btn btn-danger btn-sm" onclick="deleteCategory(${realIdx})">🗑️</button>
+                        </div>
+                    </td>
+                </tr>
+            `}).join('');
+        }
+
+        function openCategoryModal(index = -1) {
+            currentEditIndex = index;
+            currentEditType = 'categories';
+            
+            const modal = document.getElementById('modalOverlay');
+            const title = document.getElementById('modalTitle');
+            const body = document.getElementById('modalBody');
+            
+            const item = index >= 0 ? siteData.categories[index] : { id: siteData.categories.length + 1, name: '', icon: '📁' };
+            
+            title.innerHTML = index >= 0 ? '✏️ تعديل تصنيف' : '➕ إضافة تصنيف جديد';
+            
+            body.innerHTML = `
+                <div class="form-group">
+                    <label>🔹 اسم التصنيف</label>
+                    <input type="text" id="cat_name" value="${escapeHtml(item.name)}" placeholder="مثال: فاكشن">
+                </div>
+                <div class="form-group">
+                    <label>🔹 الأيقونة (إيموجي)</label>
+                    <input type="text" id="cat_icon" value="${escapeHtml(item.icon)}" placeholder="مثال: 🏢" maxlength="4">
+                    <small style="color:var(--text-muted);font-size:11px;margin-top:5px;display:block;">💡 يمكنك نسخ الإيموجي من الإنترنت</small>
+                </div>
+            `;
+            
+            modal.classList.add('active');
+        }
+
+        function deleteCategory(index) {
+            const cat = siteData.categories[index];
+            const count = siteData.commands.filter(c => c.category === cat.name).length;
+            
+            if (count > 0) {
+                if (!confirm(`⚠️ هذا التصنيف يحتوي على ${count} أمر.\nهل تريد حذف التصنيف وجميع أوامره؟`)) return;
+                siteData.commands = siteData.commands.filter(c => c.category !== cat.name);
+            } else {
+                if (!confirm(`هل تريد حذف التصنيف "${cat.name}"؟`)) return;
+            }
+            
+            siteData.categories.splice(index, 1);
+            saveData();
+            updateCounts();
+            renderCategories();
+            showToast('success', 'تم الحذف', 'تم حذف التصنيف بنجاح');
+        }
+
+        // ============================================
+        // كود الانترو
+        // ============================================
+        function renderIntroCode() {
+            const main = document.getElementById('adminMain');
+            main.innerHTML = `
+                <div class="admin-header">
+                    <h1>💻 كود صناعة الانترو</h1>
+                    <div class="admin-header-actions">
+                        <button class="btn btn-success" onclick="saveIntroCode()">💾 حفظ التعديلات</button>
+                    </div>
+                </div>
+
+                <div class="card">
+                    <p style="color:var(--text-muted);margin-bottom:15px;">
+                        قم بتعديل كود Lua الخاص بصناعة الانترو في السيرفر
+                    </p>
+                    <textarea id="introCodeEditor" style="width:100%;min-height:500px;padding:15px;border-radius:10px;border:1px solid var(--border-color);background:#0a0a1a;color:#66ff99;font-family:'Courier New',monospace;font-size:13px;direction:ltr;text-align:left;resize:vertical;outline:none;line-height:1.8;">${escapeHtml(siteData.introCode || '')}</textarea>
+                </div>
+            `;
+        }
+
+        function saveIntroCode() {
+            const code = document.getElementById('introCodeEditor').value;
+            siteData.introCode = code;
+            saveData();
+            showToast('success', 'تم الحفظ', 'تم حفظ كود الانترو بنجاح');
+        }
+
+        // ============================================
+        // تصدير / استيراد
+        // ============================================
+        function renderExport() {
+            const main = document.getElementById('adminMain');
+            main.innerHTML = `
+                <div class="admin-header">
+                    <h1>💾 تصدير / استيراد البيانات</h1>
+                </div>
+
+                <div class="card">
+                    <h3 class="card-title">📤 تصدير ملف data.js</h3>
+                    <p style="color:var(--text-muted);margin-bottom:15px;">
+                        قم بتصدير جميع البيانات كملف data.js جديد، ثم استبدل محتوى الملف القديم بهذا المحتوى
+                    </p>
+                    <div style="display:flex;gap:10px;flex-wrap:wrap;margin-bottom:15px;">
+                        <button class="btn btn-primary" onclick="generateDataJs()">🔄 توليد الكود</button>
+                        <button class="btn btn-success" onclick="copyDataJs()">📋 نسخ الكود</button>
+                        <button class="btn btn-info" onclick="downloadDataJs()">⬇️ تحميل الملف</button>
+                    </div>
+                    <div class="code-export-area" id="dataJsOutput" style="min-height:200px;">اضغط على "توليد الكود" لعرض محتوى data.js الجديد...</div>
+                </div>
+
+                <div class="card">
+                    <h3 class="card-title">📥 استيراد البيانات</h3>
+                    <p style="color:var(--text-muted);margin-bottom:15px;">
+                        استيراد بيانات من ملف JSON (للاحتياط أو النقل)
+                    </p>
+                    <input type="file" id="importFile" accept=".json" style="margin-bottom:10px;padding:10px;border-radius:10px;border:1px solid var(--border-color);background:var(--bg-dark);color:var(--text-light);width:100%;">
+                    <button class="btn btn-warning" onclick="importDataFile()">📥 استيراد</button>
+                </div>
+
+                <div class="card">
+                    <h3 class="card-title" style="color:#ff6666;">⚠️ منطقة الخطر</h3>
+                    <p style="color:var(--text-muted);margin-bottom:15px;">
+                        إجراءات لا يمكن التراجع عنها - كن حذراً!
+                    </p>
+                    <button class="btn btn-danger" onclick="resetAllData()">🗑️ إعادة تعيين جميع البيانات</button>
+                </div>
+            `;
+        }
+
+        function generateDataJs() {
+            const output = document.getElementById('dataJsOutput');
+            const code = buildDataJsContent();
+            output.textContent = code;
+            showToast('success', 'تم التوليد', 'تم توليد محتوى data.js بنجاح');
+        }
+
+        function buildDataJsContent() {
+            let code = `// ============================================\n`;
+            code += `// قاعدة بيانات الموقع - MTA San Andreas\n`;
+            code += `// ============================================\n\n`;
+            code += `const siteData = {\n`;
+            
+            // Rules
+            code += `    rules: ${JSON.stringify(siteData.rules, null, 4)},\n\n`;
+            
+            // Categories
+            code += `    categories: ${JSON.stringify(siteData.categories, null, 4)},\n\n`;
+            
+            // Commands
+            code += `    commands: ${JSON.stringify(siteData.commands, null, 4)},\n\n`;
+            
+            // Interiors
+            code += `    interiors: ${JSON.stringify(siteData.interiors, null, 4)},\n\n`;
+            
+            // Intro Code
+            code += `    introCode: \`${siteData.introCode || ''}\`\n`;
+            
+            code += `};\n\n`;
+            
+            // باقي الدوال (نسخها من data.js الأصلي)
+            code += `// ============================================\n`;
+            code += `// دوال حفظ واسترجاع البيانات\n`;
+            code += `// ============================================\n\n`;
+            code += `function saveData() {\n    localStorage.setItem('mtaData', JSON.stringify(siteData));\n}\n\n`;
+            code += `function loadData() {\n    const saved = localStorage.getItem('mtaData');\n    if (saved) {\n        try {\n            const parsed = JSON.parse(saved);\n            Object.assign(siteData, parsed);\n        } catch(e) {\n            console.log('خطأ في تحميل البيانات');\n        }\n    }\n}\n\n`;
+            code += `function exportData() {\n    return JSON.stringify(siteData, null, 2);\n}\n\n`;
+            code += `function importData(jsonData) {\n    try {\n        const parsed = JSON.parse(jsonData);\n        Object.assign(siteData, parsed);\n        saveData();\n        return true;\n    } catch(e) {\n        return false;\n    }\n}\n\n`;
+            code += `loadData();\n\n`;
+            
+            // دوال البحث
+            code += `// ============================================\n`;
+            code += `// دوال البحث والمساعدة\n`;
+            code += `// ============================================\n\n`;
+            code += `function getCommandsByCategory(category) {\n    return siteData.commands.filter(cmd => cmd.category === category);\n}\n\n`;
+            code += `function findCommand(search) {\n    const searchLower = search.toLowerCase();\n    return siteData.commands.filter(cmd => \n        cmd.command.toLowerCase().includes(searchLower) ||\n        cmd.meaning.includes(search)\n    );\n}\n\n`;
+            code += `function findRule(search) {\n    const searchLower = search.toLowerCase();\n    return siteData.rules.filter(rule =>\n        rule.english.toLowerCase().includes(searchLower) ||\n        rule.arabic.includes(search)\n    );\n}\n\n`;
+            code += `function findInterior(search) {\n    const searchLower = search.toLowerCase();\n    return siteData.interiors.filter(int =>\n        int.name.includes(search)\n    );\n}\n\n`;
+            
+            // smartReply
+            code += `function smartReply(query) {\n    const q = query.toLowerCase().trim();\n    let response = [];\n    \n`;
+            code += `    const interiors = findInterior(q);\n    if (interiors.length > 0) {\n        response.push("🏠 **الانترو المطلوب:**");\n        interiors.forEach(int => {\n            response.push(\`<div style="text-align:center;margin:10px 0;">\`);\n            response.push(\`<strong>\${int.name}</strong>\`);\n            response.push(\`<br><img src="\${int.image}" alt="\${int.name}" style="max-width:300px;border-radius:10px;margin:10px 0;border:1px solid #333;">\`);\n            response.push(\`<br><button class="copy-btn" onclick="copyText('\${int.name}')">📋 نسخ الاسم</button>\`);\n            response.push(\`</div>\`);\n        });\n        return response.join('');\n    }\n    \n`;
+            code += `    if (q.includes('قانون') || q.includes('قوانين') || q === 'قوانين') {\n        const rules = siteData.rules.slice(0, 10);\n        response.push("📜 **القوانين:**");\n        rules.forEach(rule => {\n            response.push(\`<div style="margin:5px 0;padding:8px;background:rgba(255,255,255,0.05);border-radius:6px;">\`);\n            response.push(\`<strong>\${rule.english}</strong> = \${rule.arabic}\`);\n            response.push(\` <button class="copy-btn" onclick="copyText('\${rule.english} - \${rule.arabic}')">📋</button>\`);\n            response.push(\`</div>\`);\n        });\n        response.push(\`... وعرض \${siteData.rules.length} قانون كامل في صفحة القوانين\`);\n        return response.join('');\n    }\n    \n`;
+            code += `    const category = siteData.categories.find(c => q.includes(c.name) || c.name.includes(q));\n    if (category) {\n        const cmds = getCommandsByCategory(category.name);\n        response.push(\`📂 **قسم \${category.name} \${category.icon}** (\${cmds.length} أمر):\`);\n        cmds.slice(0, 15).forEach(cmd => {\n            response.push(\`<div style="margin:5px 0;padding:8px;background:rgba(255,255,255,0.05);border-radius:6px;">\`);\n            response.push(\`<code style="color:#ffaa66;direction:ltr;display:inline-block;">\${cmd.command}</code>\`);\n            response.push(\` = \${cmd.meaning}\`);\n            response.push(\` <button class="copy-btn" onclick="copyText('\${cmd.command}')">📋</button>\`);\n            response.push(\`</div>\`);\n        });\n        if (cmds.length > 15) response.push(\`... و \${cmds.length - 15} أمر إضافي\`);\n        return response.join('');\n    }\n    \n`;
+            code += `    const commands = findCommand(q);\n    if (commands.length > 0) {\n        response.push("🔍 **نتائج البحث:**");\n        commands.slice(0, 10).forEach(cmd => {\n            response.push(\`<div style="margin:5px 0;padding:8px;background:rgba(255,255,255,0.05);border-radius:6px;">\`);\n            response.push(\`<code style="color:#ffaa66;direction:ltr;display:inline-block;">\${cmd.command}</code>\`);\n            response.push(\` = \${cmd.meaning} (قسم: \${cmd.category})\`);\n            response.push(\` <button class="copy-btn" onclick="copyText('\${cmd.command}')">📋</button>\`);\n            response.push(\`</div>\`);\n        });\n        if (commands.length > 10) response.push(\`... و \${commands.length - 10} نتيجة إضافية\`);\n        return response.join('');\n    }\n    \n`;
+            code += `    return \`❌ **لم يتم العثور على نتائج**\\n\\n💡 جرب البحث عن:\\n• اسم أمر مثل <code>sellproperty</code>\\n• اسم قسم مثل <code>فاكشن</code>\\n• اسم انترو مثل <code>قصر</code>\\n• كلمة <code>قوانين</code>\`;\n}\n\n`;
+            
+            // copyText
+            code += `function copyText(text) {\n    navigator.clipboard.writeText(text).then(() => {\n        const btns = document.querySelectorAll('.copy-btn');\n        btns.forEach(btn => {\n            if (btn.textContent === '📋' || btn.textContent.includes('نسخ')) {\n                btn.textContent = '✅';\n                btn.classList.add('copied');\n                setTimeout(() => {\n                    btn.textContent = '📋';\n                    btn.classList.remove('copied');\n                }, 2000);\n            }\n        });\n    }).catch(() => {\n        const textarea = document.createElement('textarea');\n        textarea.value = text;\n        textarea.style.position = 'fixed';\n        textarea.style.left = '-9999px';\n        document.body.appendChild(textarea);\n        textarea.select();\n        document.execCommand('copy');\n        document.body.removeChild(textarea);\n        alert('✅ تم نسخ: ' + text);\n    });\n}\n`;
+            
+            return code;
+        }
+
+        function copyDataJs() {
+            const output = document.getElementById('dataJsOutput');
+            if (!output.textContent || output.textContent.startsWith('اضغط')) {
+                generateDataJs();
+            }
+            const text = output.textContent;
+            navigator.clipboard.writeText(text).then(() => {
+                showToast('success', 'تم النسخ', 'تم نسخ كود data.js إلى الحافظة');
+            }).catch(() => {
+                showToast('error', 'خطأ', 'فشل النسخ، قم بنسخه يدوياً');
+            });
+        }
+
+        function downloadDataJs() {
+            const code = buildDataJsContent();
+            const blob = new Blob([code], { type: 'text/javascript' });
+            const url = URL.createObjectURL(blob);
+            const a = document.createElement('a');
+            a.href = url;
+            a.download = 'data.js';
+            a.click();
+            URL.revokeObjectURL(url);
+            showToast('success', 'تم التحميل', 'تم تحميل ملف data.js');
+        }
+
+        function importDataFile() {
+            const file = document.getElementById('importFile').files[0];
+            if (!file) {
+                showToast('error', 'خطأ', 'الرجاء اختيار ملف أولاً');
+                return;
+            }
+            
+            const reader = new FileReader();
+            reader.onload = (e) => {
+                try {
+                    const data = JSON.parse(e.target.result);
+                    if (data.rules) siteData.rules = data.rules;
+                    if (data.categories) siteData.categories = data.categories;
+                    if (data.commands) siteData.commands = data.commands;
+                    if (data.interiors) siteData.interiors = data.interiors;
+                    if (data.introCode) siteData.introCode = data.introCode;
+                    saveData();
+                    updateCounts();
+                    showToast('success', 'تم الاستيراد', 'تم استيراد البيانات بنجاح');
+                } catch(err) {
+                    showToast('error', 'خطأ', 'ملف غير صالح: ' + err.message);
+                }
+            };
+            reader.readAsText(file);
+        }
+
+        function resetAllData() {
+            if (!confirm('⚠️ تحذير: سيتم حذف جميع البيانات!\nهل أنت متأكد؟')) return;
+            if (!confirm('⚠️ تأكيد أخير: هل تريد حقاً إعادة تعيين كل شيء؟')) return;
+            
+            localStorage.removeItem('mtaData');
+            location.reload();
+        }
+
+        // ============================================
+        // حفظ Modal
+        // ============================================
+        function saveModal() {
+            if (currentEditType === 'commands') {
+                const command = document.getElementById('cmd_command').value.trim();
+                const meaning = document.getElementById('cmd_meaning').value.trim();
+                const category = document.getElementById('cmd_category').value;
+                
+                if (!command || !meaning) {
+                    showToast('error', 'خطأ', 'الرجاء ملء جميع الحقول');
+                    return;
+                }
+                
+                const item = { command, meaning, category };
+                
+                if (currentEditIndex >= 0) {
+                    siteData.commands[currentEditIndex] = item;
+                    showToast('success', 'تم التعديل', 'تم تعديل الأمر بنجاح');
+                } else {
+                    siteData.commands.push(item);
+                    showToast('success', 'تمت الإضافة', 'تمت إضافة الأمر بنجاح');
+                }
+                
+                saveData();
+                updateCounts();
+                renderCommands();
+            }
+            else if (currentEditType === 'rules') {
+                const english = document.getElementById('rule_english').value.trim();
+                const arabic = document.getElementById('rule_arabic').value.trim();
+                
+                if (!english || !arabic) {
+                    showToast('error', 'خطأ', 'الرجاء ملء جميع الحقول');
+                    return;
+                }
+                
+                const item = { english, arabic };
+                
+                if (currentEditIndex >= 0) {
+                    siteData.rules[currentEditIndex] = item;
+                    showToast('success', 'تم التعديل', 'تم تعديل القانون بنجاح');
+                } else {
+                    siteData.rules.push(item);
+                    showToast('success', 'تمت الإضافة', 'تمت إضافة القانون بنجاح');
+                }
+                
+                saveData();
+                updateCounts();
+                renderRules();
+            }
+            else if (currentEditType === 'interiors') {
+                const name = document.getElementById('int_name').value.trim();
+                const image = document.getElementById('int_image').value.trim();
+                
+                if (!name || !image) {
+                    showToast('error', 'خطأ', 'الرجاء ملء جميع الحقول');
+                    return;
+                }
+                
+                const item = { name, image };
+                
+                if (currentEditIndex >= 0) {
+                    siteData.interiors[currentEditIndex] = item;
+                    showToast('success', 'تم التعديل', 'تم تعديل الانترو بنجاح');
+                } else {
+                    siteData.interiors.push(item);
+                    showToast('success', 'تمت الإضافة', 'تمت إضافة الانترو بنجاح');
+                }
+                
+                saveData();
+                updateCounts();
+                renderInteriors();
+            }
+            else if (currentEditType === 'categories') {
+                const name = document.getElementById('cat_name').value.trim();
+                const icon = document.getElementById('cat_icon').value.trim() || '📁';
+                
+                if (!name) {
+                    showToast('error', 'خطأ', 'الرجاء إدخال اسم التصنيف');
+                    return;
+                }
+                
+                if (currentEditIndex >= 0) {
+                    const oldName = siteData.categories[currentEditIndex].name;
+                    siteData.categories[currentEditIndex].name = name;
+                    siteData.categories[currentEditIndex].icon = icon;
+                    
+                    // تحديث الأوامر التي تستخدم التصنيف القديم
+                    if (oldName !== name) {
+                        siteData.commands.forEach(cmd => {
+                            if (cmd.category === oldName) cmd.category = name;
+                        });
+                    }
+                    showToast('success', 'تم التعديل', 'تم تعديل التصنيف بنجاح');
+                } else {
+                    const newId = Math.max(0, ...siteData.categories.map(c => c.id)) + 1;
+                    siteData.categories.push({ id: newId, name, icon });
+                    showToast('success', 'تمت الإضافة', 'تمت إضافة التصنيف بنجاح');
+                }
+                
+                saveData();
+                updateCounts();
+                renderCategories();
+            }
+            
+            closeModal();
+        }
+
+        // ============================================
+        // حذف عنصر
+        // ============================================
+        function deleteItem(type, index) {
+            const names = {
+                commands: 'الأمر',
+                rules: 'القانون',
+                interiors: 'الانترو'
+            };
+            
+            if (!confirm(`هل تريد حذف ${names[type]}؟`)) return;
+            
+            siteData[type].splice(index, 1);
+            saveData();
+            updateCounts();
+            
+            switch(type) {
+                case 'commands': renderCommands(); break;
+                case 'rules': renderRules(); break;
+                case 'interiors': renderInteriors(); break;
+            }
+            
+            showToast('success', 'تم الحذف', 'تم الحذف بنجاح');
+        }
+
+        // ============================================
+        // البحث والفلترة
+        // ============================================
+        function filterAdminTable(type) {
+            if (type === 'commands') {
+                const search = document.getElementById('searchCommands').value.toLowerCase().trim();
+                const category = document.getElementById('filterCommandCategory').value;
+                
+                let filtered = siteData.commands;
+                if (category !== 'all') {
+                    filtered = filtered.filter(c => c.category === category);
+                }
+                if (search) {
+                    filtered = filtered.filter(c => 
+                        c.command.toLowerCase().includes(search) ||
+                        c.meaning.toLowerCase().includes(search)
+                    );
+                }
+                renderCommandsTable(filtered);
+            }
+            else if (type === 'rules') {
+                const search = document.getElementById('searchRules').value.toLowerCase().trim();
+                let filtered = siteData.rules;
+                if (search) {
+                    filtered = filtered.filter(r => 
+                        r.english.toLowerCase().includes(search) ||
+                        r.arabic.toLowerCase().includes(search)
+                    );
+                }
+                renderRulesTable(filtered);
+            }
+            else if (type === 'interiors') {
+                const search = document.getElementById('searchInteriors').value.toLowerCase().trim();
+                let filtered = siteData.interiors;
+                if (search) {
+                    filtered = filtered.filter(i => i.name.toLowerCase().includes(search));
+                }
+                renderInteriorsTable(filtered);
+            }
+            else if (type === 'categories') {
+                const search = document.getElementById('searchCategories').value.toLowerCase().trim();
+                let filtered = siteData.categories;
+                if (search) {
+                    filtered = filtered.filter(c => c.name.toLowerCase().includes(search));
+                }
+                renderCategoriesTable(filtered);
+            }
+        }
+
+        // ============================================
+        // Modal Helpers
+        // ============================================
+        function closeModal() {
+            document.getElementById('modalOverlay').classList.remove('active');
+            currentEditIndex = -1;
+            currentEditType = '';
+        }
+
+        // إغلاق Modal عند الضغط على الخلفية
+        document.getElementById('modalOverlay').addEventListener('click', (e) => {
+            if (e.target.id === 'modalOverlay') closeModal();
+        });
+
+        // ============================================
+        // Toast (الإشعارات)
+        // ============================================
+        function showToast(type, title, message) {
+            const container = document.getElementById('toastContainer');
+            const icons = {
+                success: '✅',
+                error: '❌',
+                warning: '⚠️',
+                info: 'ℹ️'
+            };
+            
+            const toast = document.createElement('div');
+            toast.className = `toast ${type}`;
+            toast.innerHTML = `
+                <span class="toast-icon">${icons[type]}</span>
+                <div class="toast-content">
+                    <div class="toast-title">${title}</div>
+                    <div>${message}</div>
+                </div>
+            `;
+            
+            container.appendChild(toast);
+            
+            setTimeout(() => {
+                toast.style.animation = 'slideInLeft 0.3s ease reverse';
+                setTimeout(() => toast.remove(), 300);
+            }, 3000);
+        }
+
+        // ============================================
+        // أدوات مساعدة
+        // ============================================
+        function escapeHtml(text) {
+            if (!text) return '';
+            const div = document.createElement('div');
+            div.textContent = text;
+            return div.innerHTML;
+        }
+
+        // اختصارات لوحة المفاتيح
+        document.addEventListener('keydown', (e) => {
+            if (e.key === 'Escape') {
+                closeModal();
+            }
+        });
+    </script>
+
+</body>
+</html>
