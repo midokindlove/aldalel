@@ -6,7 +6,7 @@
 let adminCurrentSection = 'home';
 let adminCurrentTab = 'all';
 let adminSearchQuery = '';
-const ADMIN_PASSWORD = '00000';
+const ADMIN_PASSWORD = 'M0000';
 let isAdminLoggedIn = false;
 
 // ============================================
