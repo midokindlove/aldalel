@@ -3,11 +3,10 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>الإدارة المتطورة - الدليل MTA</title>
+    <title>الإدارة الذكية - الدليل MTA</title>
     <link rel="stylesheet" href="style.css">
     <link href="https://fonts.googleapis.com/css2?family=Cairo:wght@400;600;700&display=swap" rel="stylesheet">
     <style>
-        /* ===== التصميم الأساسي ===== */
         :root {
             --primary: #ff6b00;
             --primary-dark: #cc5500;
@@ -40,7 +39,6 @@
         ::-webkit-scrollbar { width: 8px; }
         ::-webkit-scrollbar-track { background: var(--bg-dark); }
         ::-webkit-scrollbar-thumb { background: var(--primary); border-radius: 10px; }
-        ::-webkit-scrollbar-thumb:hover { background: var(--primary-dark); }
 
         header {
             background: var(--secondary);
@@ -98,11 +96,20 @@
             transition: var(--transition);
         }
         .card:hover { border-color: var(--primary); }
-        .card-title { font-size: 22px; color: var(--primary); margin-bottom: 15px; display: flex; align-items: center; gap: 10px; }
 
+        .card-title {
+            font-size: 22px;
+            color: var(--primary);
+            margin-bottom: 15px;
+            display: flex;
+            align-items: center;
+            gap: 10px;
+        }
+
+        /* ===== الإحصائيات ===== */
         .admin-dashboard {
             display: grid;
-            grid-template-columns: repeat(auto-fit, minmax(150px, 1fr));
+            grid-template-columns: repeat(auto-fit, minmax(140px, 1fr));
             gap: 12px;
             margin-bottom: 25px;
         }
@@ -121,6 +128,7 @@
         .stat-card .label { color: var(--text-muted); font-size: 12px; margin-top: 5px; }
         .stat-card .icon-big { font-size: 28px; display: block; margin-bottom: 5px; }
 
+        /* ===== التبويبات ===== */
         .admin-tabs {
             display: flex;
             gap: 6px;
@@ -147,8 +155,12 @@
         .tab-content { display: none; animation: fadeIn 0.3s ease; }
         .tab-content.active { display: block; }
 
-        @keyframes fadeIn { from { opacity: 0; transform: translateY(10px); } to { opacity: 1; transform: translateY(0); } }
+        @keyframes fadeIn {
+            from { opacity: 0; transform: translateY(10px); }
+            to { opacity: 1; transform: translateY(0); }
+        }
 
+        /* ===== البحث ===== */
         .search-box {
             width: 100%;
             padding: 10px 16px;
@@ -163,6 +175,7 @@
         }
         .search-box:focus { border-color: var(--primary); }
 
+        /* ===== قائمة العناصر ===== */
         .item-list {
             max-height: 400px;
             overflow-y: auto;
@@ -187,7 +200,14 @@
         .item-list .item .info .title { font-weight: 600; color: var(--text-light); font-size: 14px; }
         .item-list .item .info .sub { font-size: 12px; color: var(--text-muted); }
         .item-list .item .actions { display: flex; gap: 5px; flex-shrink: 0; }
-        .item-list .item .actions button { padding: 3px 10px; border: none; border-radius: 4px; cursor: pointer; font-size: 12px; transition: var(--transition); }
+        .item-list .item .actions button {
+            padding: 3px 10px;
+            border: none;
+            border-radius: 4px;
+            cursor: pointer;
+            font-size: 12px;
+            transition: var(--transition);
+        }
 
         .btn-sm-edit { background: #ffaa00; color: white; }
         .btn-sm-edit:hover { background: #cc8800; }
@@ -196,6 +216,7 @@
         .btn-sm-move { background: #3399ff; color: white; }
         .btn-sm-move:hover { background: #2277cc; }
 
+        /* ===== النماذج ===== */
         .form-grid {
             display: grid;
             grid-template-columns: 1fr 1fr;
@@ -234,8 +255,6 @@
             font-size: 13px;
         }
         .btn:hover { transform: scale(1.02); }
-        .btn-primary { background: var(--primary); color: white; }
-        .btn-primary:hover { background: var(--primary-dark); }
         .btn-success { background: #00cc66; color: white; }
         .btn-success:hover { background: #00aa55; }
         .btn-danger { background: #ff3333; color: white; }
@@ -246,10 +265,9 @@
         .btn-info:hover { background: #2277cc; }
         .btn-purple { background: #9966ff; color: white; }
         .btn-purple:hover { background: #7744cc; }
-        .btn-pink { background: #ff66aa; color: white; }
-        .btn-pink:hover { background: #cc4488; }
         .btn-sm { padding: 4px 12px; font-size: 11px; }
 
+        /* ===== Toast ===== */
         .toast {
             position: fixed;
             bottom: 30px;
@@ -269,11 +287,81 @@
         .toast.success { border-color: #00cc66; }
         .toast.error { border-color: #ff3333; }
 
-        @keyframes slideUp { from { opacity: 0; transform: translateY(20px); } to { opacity: 1; transform: translateY(0); } }
+        @keyframes slideUp {
+            from { opacity: 0; transform: translateY(20px); }
+            to { opacity: 1; transform: translateY(0); }
+        }
 
-        .empty-state { text-align: center; padding: 25px; color: var(--text-muted); }
+        .empty-state {
+            text-align: center;
+            padding: 25px;
+            color: var(--text-muted);
+        }
         .empty-state .big-icon { font-size: 40px; display: block; margin-bottom: 10px; }
 
+        /* ===== شجرة المحتوى ===== */
+        .content-tree {
+            display: flex;
+            flex-direction: column;
+            gap: 10px;
+        }
+
+        .tree-node {
+            background: var(--bg-dark);
+            border-radius: var(--radius);
+            border: 1px solid var(--border-color);
+            overflow: hidden;
+        }
+
+        .tree-node .node-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            padding: 12px 16px;
+            background: var(--bg-card);
+            cursor: pointer;
+            transition: var(--transition);
+        }
+        .tree-node .node-header:hover { background: var(--bg-card-hover); }
+        .tree-node .node-header .node-title { font-weight: 600; color: var(--text-light); }
+        .tree-node .node-header .node-actions { display: flex; gap: 5px; }
+
+        .tree-node .node-children {
+            padding: 10px 16px;
+            border-top: 1px solid var(--border-color);
+            display: none;
+        }
+        .tree-node .node-children.open { display: block; }
+
+        .tree-node .node-child-item {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            padding: 8px 12px;
+            border-bottom: 1px solid var(--border-color);
+            border-radius: 4px;
+            transition: var(--transition);
+        }
+        .tree-node .node-child-item:hover { background: var(--bg-card-hover); }
+        .tree-node .node-child-item:last-child { border-bottom: none; }
+        .tree-node .node-child-item .child-info { flex: 1; }
+        .tree-node .node-child-item .child-info .child-title { font-size: 13px; color: var(--text-light); }
+        .tree-node .node-child-item .child-info .child-sub { font-size: 11px; color: var(--text-muted); }
+        .tree-node .node-child-item .child-actions { display: flex; gap: 4px; }
+        .tree-node .node-child-item .child-actions button {
+            padding: 2px 8px;
+            border: none;
+            border-radius: 4px;
+            cursor: pointer;
+            font-size: 10px;
+            transition: var(--transition);
+        }
+
+        .tree-level-1 { margin-right: 0; }
+        .tree-level-2 { margin-right: 30px; }
+        .tree-level-3 { margin-right: 60px; }
+
+        /* ===== كود ===== */
         .code-block-item {
             background: #0a0a1a;
             border-radius: var(--radius);
@@ -319,71 +407,13 @@
         }
         .section-header h4 { color: var(--text-muted); margin: 0; }
 
-        .content-tree {
-            display: flex;
-            flex-direction: column;
-            gap: 10px;
-        }
-
-        .tree-node {
-            background: var(--bg-dark);
-            border-radius: var(--radius);
-            border: 1px solid var(--border-color);
-            overflow: hidden;
-        }
-        .tree-node .node-header {
-            display: flex;
-            justify-content: space-between;
-            align-items: center;
-            padding: 12px 16px;
-            background: var(--bg-card);
-            cursor: pointer;
-            transition: var(--transition);
-        }
-        .tree-node .node-header:hover { background: var(--bg-card-hover); }
-        .tree-node .node-header .node-title { font-weight: 600; color: var(--text-light); }
-        .tree-node .node-header .node-actions { display: flex; gap: 5px; }
-        .tree-node .node-children {
-            padding: 10px 16px;
-            border-top: 1px solid var(--border-color);
-            display: none;
-        }
-        .tree-node .node-children.open { display: block; }
-
-        .tree-node .node-child-item {
-            display: flex;
-            justify-content: space-between;
-            align-items: center;
-            padding: 8px 12px;
-            border-bottom: 1px solid var(--border-color);
-            border-radius: 4px;
-            transition: var(--transition);
-        }
-        .tree-node .node-child-item:hover { background: var(--bg-card-hover); }
-        .tree-node .node-child-item:last-child { border-bottom: none; }
-        .tree-node .node-child-item .child-info { flex: 1; }
-        .tree-node .node-child-item .child-info .child-title { font-size: 13px; color: var(--text-light); }
-        .tree-node .node-child-item .child-info .child-sub { font-size: 11px; color: var(--text-muted); }
-        .tree-node .node-child-item .child-actions { display: flex; gap: 4px; }
-        .tree-node .node-child-item .child-actions button {
-            padding: 2px 8px;
-            border: none;
-            border-radius: 4px;
-            cursor: pointer;
-            font-size: 10px;
-            transition: var(--transition);
-        }
-
         @media (max-width: 768px) {
             .form-grid { grid-template-columns: 1fr; }
             .admin-dashboard { grid-template-columns: repeat(2, 1fr); gap: 10px; }
             .admin-tabs button { font-size: 11px; padding: 6px 10px; }
-            .stat-card .number { font-size: 22px; }
-            .stat-card .icon-big { font-size: 26px; }
-            .tree-node .node-header { flex-direction: column; align-items: stretch; gap: 8px; }
-            .tree-node .node-header .node-actions { justify-content: center; }
+            .tree-level-2 { margin-right: 15px; }
+            .tree-level-3 { margin-right: 30px; }
         }
-
         @media (max-width: 480px) {
             .admin-dashboard { grid-template-columns: 1fr 1fr; gap: 8px; }
             .stat-card { padding: 12px 10px; }
@@ -427,6 +457,11 @@
             <!-- ===== الإحصائيات ===== -->
             <div class="admin-dashboard">
                 <div class="stat-card">
+                    <span class="icon-big">📄</span>
+                    <div class="number" id="statPages">0</div>
+                    <div class="label">الصفحات</div>
+                </div>
+                <div class="stat-card">
                     <span class="icon-big">📂</span>
                     <div class="number" id="statCategories">0</div>
                     <div class="label">الأقسام</div>
@@ -454,14 +489,14 @@
                 <div class="stat-card">
                     <span class="icon-big">💾</span>
                     <div class="number" id="statSize">0</div>
-                    <div class="label">حجم البيانات (KB)</div>
+                    <div class="label">حجم البيانات</div>
                 </div>
             </div>
 
             <!-- ===== أزرار سريعة ===== -->
             <div style="display:flex;gap:8px;flex-wrap:wrap;margin-bottom:20px;">
-                <button class="btn btn-info" onclick="exportDataFile()">📤 تصدير البيانات</button>
-                <button class="btn btn-purple" onclick="document.getElementById('importFile').click()">📥 استيراد البيانات</button>
+                <button class="btn btn-info" onclick="exportDataFile()">📤 تصدير</button>
+                <button class="btn btn-purple" onclick="document.getElementById('importFile').click()">📥 استيراد</button>
                 <input type="file" id="importFile" accept=".json" style="display:none;" onchange="importDataFile(event)">
                 <button class="btn btn-warning" onclick="resetData()">🔄 إعادة ضبط</button>
                 <button class="btn btn-danger" onclick="clearAllData()">🗑️ حذف الكل</button>
@@ -469,7 +504,8 @@
 
             <!-- ===== التبويبات ===== -->
             <div class="admin-tabs">
-                <button class="active" data-tab="tabTree">🌳 هيكل الموقع</button>
+                <button class="active" data-tab="tabTree">🌳 الهيكل</button>
+                <button data-tab="tabPages">📄 الصفحات</button>
                 <button data-tab="tabCategories">📂 الأقسام</button>
                 <button data-tab="tabCommands">📋 الأوامر</button>
                 <button data-tab="tabRules">📜 القوانين</button>
@@ -477,14 +513,43 @@
                 <button data-tab="tabCodes">💻 الأكواد</button>
             </div>
 
-            <!-- ===== تبويب هيكل الموقع ===== -->
+            <!-- ===== تبويب الهيكل ===== -->
             <div id="tabTree" class="tab-content active">
                 <div class="card">
-                    <h3 class="card-title">🌳 هيكل الموقع الكامل</h3>
+                    <h3 class="card-title">🌳 هيكل الموقع</h3>
                     <p style="color:var(--text-muted);margin-bottom:15px;">
-                        هنا يمكنك رؤية هيكل الموقع بالكامل: الأقسام ← المحتوى (أوامر، قوانين، انترو، أكواد)
+                        الصفحات ← الأقسام ← المحتوى (أوامر، قوانين، انترو، أكواد)
                     </p>
                     <div id="siteTree" class="content-tree"></div>
+                </div>
+            </div>
+
+            <!-- ===== تبويب الصفحات ===== -->
+            <div id="tabPages" class="tab-content">
+                <div class="card">
+                    <h3 style="color:#3399ff;">📄 إدارة الصفحات</h3>
+                    <div class="form-grid">
+                        <div>
+                            <label>اسم الصفحة</label>
+                            <input type="text" id="newPageName" placeholder="مثال: الرئيسية">
+                        </div>
+                        <div>
+                            <label>رابط الصفحة</label>
+                            <input type="text" id="newPageLink" placeholder="مثال: index.html">
+                        </div>
+                        <div class="full">
+                            <label>الوصف</label>
+                            <input type="text" id="newPageDesc" placeholder="وصف الصفحة">
+                        </div>
+                    </div>
+                    <button class="btn btn-success" onclick="addPage()">➕ إضافة صفحة</button>
+
+                    <div class="section-header">
+                        <h4>📄 جميع الصفحات</h4>
+                        <span style="color:var(--text-muted);font-size:12px;" id="pagesCount">0 صفحة</span>
+                    </div>
+                    <input type="text" class="search-box" id="searchPages" placeholder="🔍 بحث في الصفحات..." oninput="filterItems('pages')">
+                    <div class="item-list" id="pagesList"></div>
                 </div>
             </div>
 
@@ -492,8 +557,6 @@
             <div id="tabCategories" class="tab-content">
                 <div class="card">
                     <h3 style="color:var(--primary);">📂 إدارة الأقسام</h3>
-                    <p style="color:var(--text-muted);margin-bottom:15px;">كل قسم يحتوي على محتوى (أوامر، قوانين، انترو، أكواد)</p>
-
                     <div class="form-grid">
                         <div>
                             <label>اسم القسم</label>
@@ -502,6 +565,10 @@
                         <div>
                             <label>الأيقونة</label>
                             <input type="text" id="newCategoryIcon" placeholder="مثال: 📋">
+                        </div>
+                        <div>
+                            <label>الصفحة التابع لها</label>
+                            <select id="newCategoryPage"></select>
                         </div>
                         <div class="full">
                             <label>الوصف</label>
@@ -523,8 +590,6 @@
             <div id="tabCommands" class="tab-content">
                 <div class="card">
                     <h3 style="color:#ffaa00;">📋 إدارة الأوامر</h3>
-                    <p style="color:var(--text-muted);margin-bottom:15px;">الأوامر تنتمي إلى أقسام محددة</p>
-
                     <div class="form-grid">
                         <div>
                             <label>الأمر</label>
@@ -539,7 +604,7 @@
                             <select id="newCommandCategory"></select>
                         </div>
                         <div class="full">
-                            <label>ملاحظات إضافية</label>
+                            <label>ملاحظات</label>
                             <input type="text" id="newCommandNote" placeholder="ملاحظات عن الأمر">
                         </div>
                     </div>
@@ -558,8 +623,6 @@
             <div id="tabRules" class="tab-content">
                 <div class="card">
                     <h3 style="color:#00cc66;">📜 إدارة القوانين</h3>
-                    <p style="color:var(--text-muted);margin-bottom:15px;">القوانين تنتمي إلى أقسام محددة</p>
-
                     <div class="form-grid">
                         <div>
                             <label>القانون (English)</label>
@@ -589,8 +652,6 @@
             <div id="tabInteriors" class="tab-content">
                 <div class="card">
                     <h3 style="color:#cc66ff;">🏠 إدارة الانترو</h3>
-                    <p style="color:var(--text-muted);margin-bottom:15px;">الانترو تنتمي إلى أقسام محددة</p>
-
                     <div class="form-grid">
                         <div>
                             <label>اسم الانترو</label>
@@ -624,8 +685,6 @@
             <div id="tabCodes" class="tab-content">
                 <div class="card">
                     <h3 style="color:#ff66aa;">💻 إدارة الأكواد</h3>
-                    <p style="color:var(--text-muted);margin-bottom:15px;">الأكواد تنتمي إلى أقسام محددة</p>
-
                     <div class="form-grid">
                         <div>
                             <label>اسم الكود</label>
@@ -668,40 +727,67 @@
 
     </div>
 
-    <!-- ===== Toast ===== -->
     <div id="toast" class="toast"></div>
 
     <script src="data.js"></script>
     <script>
-        // ============================================
-        // نظام الإدارة المتطور - admin.html
-        // يعمل مباشرة مع siteData من data.js
-        // ============================================
+        // ============================================================
+        // نظام الإدارة المتطور V2 - يعمل مع data.js
+        // ============================================================
 
         const ADMIN_PASSWORD = '0000';
 
-        // ===== أكواد مخصصة (تخزين منفصل) =====
-        let customCodes = [];
+        // ===== هيكل البيانات =====
+        let pages = [];
+        let codes = [];
 
-        // ===== تحميل الأكواد المخصصة =====
-        function loadCustomCodes() {
-            const saved = localStorage.getItem('customCodes');
+        // ===== تحميل البيانات =====
+        function loadPages() {
+            const saved = localStorage.getItem('adminPages');
             if (saved) {
                 try {
-                    customCodes = JSON.parse(saved);
+                    pages = JSON.parse(saved);
                 } catch (e) {
-                    customCodes = [];
+                    pages = getDefaultPages();
                 }
             } else {
-                customCodes = [];
+                pages = getDefaultPages();
             }
         }
 
-        function saveCustomCodes() {
-            localStorage.setItem('customCodes', JSON.stringify(customCodes));
+        function getDefaultPages() {
+            return [
+                { id: 1, name: "الرئيسية", link: "index.html", desc: "الصفحة الرئيسية" },
+                { id: 2, name: "الأوامر", link: "commands.html", desc: "جميع الأوامر" },
+                { id: 3, name: "القوانين", link: "rules.html", desc: "قوانين السيرفر" },
+                { id: 4, name: "الانترو", link: "intro.html", desc: "معرض الانترو" },
+                { id: 5, name: "الإدارة", link: "admin.html", desc: "لوحة التحكم" }
+            ];
         }
 
-        loadCustomCodes();
+        function savePages() {
+            localStorage.setItem('adminPages', JSON.stringify(pages));
+        }
+
+        function loadCodes() {
+            const saved = localStorage.getItem('adminCodes');
+            if (saved) {
+                try {
+                    codes = JSON.parse(saved);
+                } catch (e) {
+                    codes = [];
+                }
+            } else {
+                codes = [];
+            }
+        }
+
+        function saveCodes() {
+            localStorage.setItem('adminCodes', JSON.stringify(codes));
+        }
+
+        loadPages();
+        loadCodes();
 
         // ===== تسجيل الدخول =====
         function loginAdmin() {
@@ -721,10 +807,11 @@
             }
         }
 
-        // ===== تحميل جميع البيانات =====
+        // ===== تحميل كل البيانات =====
         function loadAllData() {
             updateSelects();
             renderTree();
+            renderPages();
             renderCategories();
             renderCommands();
             renderRules();
@@ -734,8 +821,17 @@
             setupTabs();
         }
 
-        // ===== تحديث القوائم المنسدلة =====
+        // ===== تحديث القوائم =====
         function updateSelects() {
+            // الصفحات
+            const pageSelect = document.getElementById('newCategoryPage');
+            if (pageSelect) {
+                pageSelect.innerHTML = pages.map(p =>
+                    `<option value="${p.id}">📄 ${p.name}</option>`
+                ).join('');
+            }
+
+            // الأقسام
             const catOptions = siteData.categories.map(c =>
                 `<option value="${c.name}">${c.icon || '📁'} ${c.name}</option>`
             ).join('');
@@ -767,40 +863,47 @@
             });
         }
 
-        // ===== عرض هيكل الموقع =====
+        // ============================================================
+        // عرض الهيكل (الشجرة)
+        // ============================================================
         function renderTree() {
             const container = document.getElementById('siteTree');
             if (!container) return;
 
-            if (siteData.categories.length === 0) {
-                container.innerHTML = `<div class="empty-state"><span class="big-icon">🌳</span>لا توجد أقسام</div>`;
+            if (pages.length === 0) {
+                container.innerHTML = `<div class="empty-state"><span class="big-icon">🌳</span>لا توجد صفحات</div>`;
                 return;
             }
 
             let html = '';
-            siteData.categories.forEach(cat => {
-                const commands = siteData.commands.filter(c => c.category === cat.name);
-                const rules = siteData.rules.filter(r => {
-                    // القوانين ليس لها category في data.js، نضيفها مؤقتاً
-                    return false;
-                });
-                const interiors = siteData.interiors.filter(i => {
-                    // الانترو ليس لها category في data.js، نضيفها مؤقتاً
-                    return false;
-                });
-                const codes = customCodes.filter(c => c.category === cat.name);
+            pages.forEach(page => {
+                const pageCats = siteData.categories.filter(c => c.pageId === page.id);
 
                 html += `
-                    <div class="tree-node">
+                    <div class="tree-node tree-level-1">
                         <div class="node-header" onclick="toggleNode(this)">
-                            <span class="node-title">${cat.icon || '📁'} ${cat.name}</span>
+                            <span class="node-title">📄 ${page.name}</span>
                             <div class="node-actions">
-                                <button class="btn btn-sm btn-warning" onclick="event.stopPropagation();editCategoryByName('${cat.name}')">✏️</button>
-                                <button class="btn btn-sm btn-danger" onclick="event.stopPropagation();deleteCategoryByName('${cat.name}')">🗑️</button>
+                                <button class="btn btn-sm btn-warning" onclick="event.stopPropagation();editPageById(${page.id})">✏️</button>
+                                <button class="btn btn-sm btn-danger" onclick="event.stopPropagation();deletePageById(${page.id})">🗑️</button>
                             </div>
                         </div>
-                        <div class="node-children open" style="padding:5px 15px;">
-                            ${renderCategoryItems(cat.name)}
+                        <div class="node-children open">
+                            ${pageCats.length === 0 ? '<div style="color:var(--text-muted);padding:10px;">لا توجد أقسام</div>' : ''}
+                            ${pageCats.map(cat => `
+                                <div class="tree-node tree-level-2">
+                                    <div class="node-header" onclick="toggleNode(this)">
+                                        <span class="node-title">${cat.icon || '📁'} ${cat.name}</span>
+                                        <div class="node-actions">
+                                            <button class="btn btn-sm btn-warning" onclick="event.stopPropagation();editCategoryByName('${cat.name}')">✏️</button>
+                                            <button class="btn btn-sm btn-danger" onclick="event.stopPropagation();deleteCategoryByName('${cat.name}')">🗑️</button>
+                                        </div>
+                                    </div>
+                                    <div class="node-children open" style="padding:5px 10px;">
+                                        ${renderCategoryTreeItems(cat.name)}
+                                    </div>
+                                </div>
+                            `).join('')}
                         </div>
                     </div>
                 `;
@@ -809,15 +912,16 @@
             container.innerHTML = html;
         }
 
-        function renderCategoryItems(categoryName) {
+        function renderCategoryTreeItems(categoryName) {
             const commands = siteData.commands.filter(c => c.category === categoryName);
-            const codes = customCodes.filter(c => c.category === categoryName);
+            const codesInCat = codes.filter(c => c.category === categoryName);
 
             let html = '';
 
             if (commands.length > 0) {
                 html += `<div style="color:#ffaa00;font-weight:bold;margin:5px 0;">📋 الأوامر (${commands.length}):</div>`;
                 commands.forEach(c => {
+                    const idx = siteData.commands.indexOf(c);
                     html += `
                         <div class="node-child-item">
                             <div class="child-info">
@@ -825,17 +929,18 @@
                                 <div class="child-sub">${c.meaning}</div>
                             </div>
                             <div class="child-actions">
-                                <button class="btn-sm-edit" onclick="editCommandByIndex(${siteData.commands.indexOf(c)})">✏️</button>
-                                <button class="btn-sm-delete" onclick="deleteCommandByIndex(${siteData.commands.indexOf(c)})">🗑️</button>
+                                <button class="btn-sm-edit" onclick="editCommandByIndex(${idx})">✏️</button>
+                                <button class="btn-sm-delete" onclick="deleteCommandByIndex(${idx})">🗑️</button>
                             </div>
                         </div>
                     `;
                 });
             }
 
-            if (codes.length > 0) {
-                html += `<div style="color:#ff66aa;font-weight:bold;margin:5px 0;">💻 الأكواد (${codes.length}):</div>`;
-                codes.forEach(c => {
+            if (codesInCat.length > 0) {
+                html += `<div style="color:#ff66aa;font-weight:bold;margin:5px 0;">💻 الأكواد (${codesInCat.length}):</div>`;
+                codesInCat.forEach(c => {
+                    const idx = codes.indexOf(c);
                     html += `
                         <div class="node-child-item">
                             <div class="child-info">
@@ -843,16 +948,16 @@
                                 <div class="child-sub">${c.desc || c.type || 'كود'}</div>
                             </div>
                             <div class="child-actions">
-                                <button class="btn-sm-edit" onclick="editCodeByIndex(${customCodes.indexOf(c)})">✏️</button>
-                                <button class="btn-sm-delete" onclick="deleteCodeByIndex(${customCodes.indexOf(c)})">🗑️</button>
+                                <button class="btn-sm-edit" onclick="editCodeByIndex(${idx})">✏️</button>
+                                <button class="btn-sm-delete" onclick="deleteCodeByIndex(${idx})">🗑️</button>
                             </div>
                         </div>
                     `;
                 });
             }
 
-            if (!commands.length && !codes.length) {
-                html += `<div style="color:var(--text-muted);padding:10px;">لا يوجد محتوى في هذا القسم</div>`;
+            if (!commands.length && !codesInCat.length) {
+                html += `<div style="color:var(--text-muted);padding:10px;">لا يوجد محتوى</div>`;
             }
 
             return html;
@@ -865,7 +970,41 @@
             }
         }
 
-        // ===== عرض الأقسام =====
+        // ============================================================
+        // عرض الصفحات
+        // ============================================================
+        function renderPages(filter = '') {
+            const container = document.getElementById('pagesList');
+            if (!container) return;
+
+            let items = pages;
+            if (filter) {
+                items = items.filter(p => p.name.includes(filter) || p.link.includes(filter));
+            }
+            document.getElementById('pagesCount').textContent = items.length + ' صفحة';
+
+            if (items.length === 0) {
+                container.innerHTML = `<div class="empty-state"><span class="big-icon">📄</span>لا توجد صفحات</div>`;
+                return;
+            }
+
+            container.innerHTML = items.map(p => `
+                <div class="item">
+                    <div class="info">
+                        <div class="title">📄 ${p.name}</div>
+                        <div class="sub">${p.link} · ${p.desc || 'لا يوجد وصف'}</div>
+                    </div>
+                    <div class="actions">
+                        <button class="btn-sm-edit" onclick="editPageById(${p.id})">✏️</button>
+                        <button class="btn-sm-delete" onclick="deletePageById(${p.id})">🗑️</button>
+                    </div>
+                </div>
+            `).join('');
+        }
+
+        // ============================================================
+        // عرض الأقسام
+        // ============================================================
         function renderCategories(filter = '') {
             const container = document.getElementById('categoriesList');
             if (!container) return;
@@ -877,19 +1016,21 @@
                     (c.desc || '').includes(filter)
                 );
             }
-            const countEl = document.getElementById('categoriesCount');
-            if (countEl) countEl.textContent = items.length + ' قسم';
+            document.getElementById('categoriesCount').textContent = items.length + ' قسم';
 
             if (items.length === 0) {
                 container.innerHTML = `<div class="empty-state"><span class="big-icon">📂</span>لا توجد أقسام</div>`;
                 return;
             }
 
+            const pageMap = {};
+            pages.forEach(p => pageMap[p.id] = p.name);
+
             container.innerHTML = items.map(c => `
                 <div class="item">
                     <div class="info">
                         <div class="title">${c.icon || '📁'} ${c.name}</div>
-                        <div class="sub">${c.desc || 'لا يوجد وصف'}</div>
+                        <div class="sub">صفحة: ${pageMap[c.pageId] || 'غير معروف'} · ${c.desc || 'لا يوجد وصف'}</div>
                     </div>
                     <div class="actions">
                         <button class="btn-sm-edit" onclick="editCategoryByName('${c.name}')">✏️</button>
@@ -899,7 +1040,9 @@
             `).join('');
         }
 
-        // ===== عرض الأوامر =====
+        // ============================================================
+        // عرض الأوامر
+        // ============================================================
         function renderCommands(filter = '') {
             const container = document.getElementById('commandsList');
             if (!container) return;
@@ -912,8 +1055,7 @@
                     c.category.includes(filter)
                 );
             }
-            const countEl = document.getElementById('commandsCount');
-            if (countEl) countEl.textContent = items.length + ' أمر';
+            document.getElementById('commandsCount').textContent = items.length + ' أمر';
 
             if (items.length === 0) {
                 container.innerHTML = `<div class="empty-state"><span class="big-icon">📋</span>لا توجد أوامر</div>`;
@@ -934,7 +1076,9 @@
             `).join('');
         }
 
-        // ===== عرض القوانين =====
+        // ============================================================
+        // عرض القوانين
+        // ============================================================
         function renderRules(filter = '') {
             const container = document.getElementById('rulesList');
             if (!container) return;
@@ -946,8 +1090,7 @@
                     r.arabic.includes(filter)
                 );
             }
-            const countEl = document.getElementById('rulesCount');
-            if (countEl) countEl.textContent = items.length + ' قانون';
+            document.getElementById('rulesCount').textContent = items.length + ' قانون';
 
             if (items.length === 0) {
                 container.innerHTML = `<div class="empty-state"><span class="big-icon">📜</span>لا توجد قوانين</div>`;
@@ -968,7 +1111,9 @@
             `).join('');
         }
 
-        // ===== عرض الانترو =====
+        // ============================================================
+        // عرض الانترو
+        // ============================================================
         function renderInteriors(filter = '') {
             const container = document.getElementById('interiorsList');
             if (!container) return;
@@ -980,8 +1125,7 @@
                     (i.desc || '').includes(filter)
                 );
             }
-            const countEl = document.getElementById('interiorsCount');
-            if (countEl) countEl.textContent = items.length + ' انترو';
+            document.getElementById('interiorsCount').textContent = items.length + ' انترو';
 
             if (items.length === 0) {
                 container.innerHTML = `<div class="empty-state"><span class="big-icon">🏠</span>لا توجد انترو</div>`;
@@ -1002,12 +1146,14 @@
             `).join('');
         }
 
-        // ===== عرض الأكواد =====
+        // ============================================================
+        // عرض الأكواد
+        // ============================================================
         function renderCodes(filter = '') {
             const container = document.getElementById('codesList');
             if (!container) return;
 
-            let items = customCodes;
+            let items = codes;
             if (filter) {
                 items = items.filter(c =>
                     c.name.includes(filter) ||
@@ -1016,8 +1162,7 @@
                     (c.category || '').includes(filter)
                 );
             }
-            const countEl = document.getElementById('codesCount');
-            if (countEl) countEl.textContent = items.length + ' كود';
+            document.getElementById('codesCount').textContent = items.length + ' كود';
 
             if (items.length === 0) {
                 container.innerHTML = `<div class="empty-state"><span class="big-icon">💻</span>لا توجد أكواد</div>`;
@@ -1046,9 +1191,12 @@
             `).join('');
         }
 
-        // ===== وظائف البحث =====
+        // ============================================================
+        // وظائف البحث
+        // ============================================================
         function filterItems(type) {
             const map = {
+                'pages': { input: 'searchPages', render: renderPages },
                 'categories': { input: 'searchCategories', render: renderCategories },
                 'commands': { input: 'searchCommands', render: renderCommands },
                 'rules': { input: 'searchRules', render: renderRules },
@@ -1059,44 +1207,101 @@
             if (config) {
                 const input = document.getElementById(config.input);
                 if (input) {
-                    const value = input.value.trim();
-                    config.render(value);
+                    config.render(input.value.trim());
                 }
             }
         }
 
-        // ===== تحديث الإحصائيات =====
+        // ============================================================
+        // تحديث الإحصائيات
+        // ============================================================
         function updateStats() {
-            const setStat = (id, value) => {
-                const el = document.getElementById(id);
-                if (el) el.textContent = value;
-            };
+            document.getElementById('statPages').textContent = pages.length;
+            document.getElementById('statCategories').textContent = siteData.categories.length;
+            document.getElementById('statCommands').textContent = siteData.commands.length;
+            document.getElementById('statRules').textContent = siteData.rules.length;
+            document.getElementById('statInteriors').textContent = siteData.interiors.length;
+            document.getElementById('statCodes').textContent = codes.length;
 
-            setStat('statCategories', siteData.categories.length);
-            setStat('statCommands', siteData.commands.length);
-            setStat('statRules', siteData.rules.length);
-            setStat('statInteriors', siteData.interiors.length);
-            setStat('statCodes', customCodes.length);
-
-            const totalData = {
-                categories: siteData.categories,
-                commands: siteData.commands,
-                rules: siteData.rules,
-                interiors: siteData.interiors,
-                codes: customCodes
-            };
+            const totalData = { pages, categories: siteData.categories, commands: siteData.commands, rules: siteData
+                    .rules, interiors: siteData.interiors, codes };
             const size = new Blob([JSON.stringify(totalData)]).size / 1024;
-            setStat('statSize', size.toFixed(1));
+            document.getElementById('statSize').textContent = size.toFixed(1) + ' KB';
         }
 
-        // ============================================
-        // دوال الإدارة (CRUD)
-        // ============================================
+        // ============================================================
+        // إدارة الصفحات (CRUD)
+        // ============================================================
+        function addPage() {
+            const name = document.getElementById('newPageName').value.trim();
+            const link = document.getElementById('newPageLink').value.trim();
+            const desc = document.getElementById('newPageDesc').value.trim();
 
-        // ----- إدارة الأقسام -----
+            if (!name || !link) { showToast('❌ الرجاء إدخال اسم الصفحة والرابط', 'error'); return; }
+
+            const newId = pages.length > 0 ? Math.max(...pages.map(p => p.id)) + 1 : 1;
+
+            pages.push({
+                id: newId,
+                name,
+                link,
+                desc: desc || `صفحة ${name}`
+            });
+            savePages();
+            loadAllData();
+            document.getElementById('newPageName').value = '';
+            document.getElementById('newPageLink').value = '';
+            document.getElementById('newPageDesc').value = '';
+            showToast('✅ تم إضافة الصفحة بنجاح', 'success');
+        }
+
+        function editPageById(id) {
+            const page = pages.find(p => p.id === id);
+            if (!page) return;
+
+            const newName = prompt('✏️ تعديل اسم الصفحة:', page.name);
+            if (newName && newName.trim()) {
+                page.name = newName.trim();
+                const newLink = prompt('✏️ تعديل رابط الصفحة:', page.link);
+                if (newLink !== null) page.link = newLink;
+                const newDesc = prompt('✏️ تعديل الوصف:', page.desc || '');
+                if (newDesc !== null) page.desc = newDesc;
+
+                savePages();
+                loadAllData();
+                showToast('✅ تم تعديل الصفحة بنجاح', 'success');
+            }
+        }
+
+        function deletePageById(id) {
+            const page = pages.find(p => p.id === id);
+            if (!page) return;
+
+            if (confirm(`⚠️ هل أنت متأكد من حذف الصفحة "${page.name}" وجميع أقسامها؟`)) {
+                // حذف الأقسام التابعة
+                const catsToDelete = siteData.categories.filter(c => c.pageId === id);
+                catsToDelete.forEach(c => {
+                    siteData.commands = siteData.commands.filter(cmd => cmd.category !== c.name);
+                    codes = codes.filter(code => code.category !== c.name);
+                });
+                siteData.categories = siteData.categories.filter(c => c.pageId !== id);
+                pages = pages.filter(p => p.id !== id);
+
+                saveData();
+                savePages();
+                saveCodes();
+                loadAllData();
+                showToast('✅ تم حذف الصفحة بنجاح', 'success');
+            }
+        }
+
+        // ============================================================
+        // إدارة الأقسام (CRUD)
+        // ============================================================
         function addCategory() {
             const name = document.getElementById('newCategoryName').value.trim();
             const icon = document.getElementById('newCategoryIcon').value.trim() || '📁';
+            const pageId = parseInt(document.getElementById('newCategoryPage').value);
             const desc = document.getElementById('newCategoryDesc').value.trim();
 
             if (!name) { showToast('❌ الرجاء إدخال اسم القسم', 'error'); return; }
@@ -1105,6 +1310,7 @@
                 id: siteData.categories.length + 1,
                 name,
                 icon,
+                pageId,
                 desc: desc || `قسم ${name}`
             });
             saveData();
@@ -1125,6 +1331,10 @@
                 siteData.commands.forEach(c => {
                     if (c.category === cat.name) c.category = newName.trim();
                 });
+                codes.forEach(c => {
+                    if (c.category === cat.name) c.category = newName.trim();
+                });
+
                 cat.name = newName.trim();
 
                 const newIcon = prompt('✏️ تعديل الأيقونة:', cat.icon || '📁');
@@ -1134,21 +1344,28 @@
                 if (newDesc !== null) cat.desc = newDesc;
 
                 saveData();
+                saveCodes();
                 loadAllData();
                 showToast('✅ تم تعديل القسم بنجاح', 'success');
             }
         }
 
         function deleteCategoryByName(name) {
-            if (confirm(`⚠️ هل أنت متأكد من حذف القسم "${name}"؟`)) {
+            if (confirm(`⚠️ هل أنت متأكد من حذف القسم "${name}" وجميع محتوياته؟`)) {
+                siteData.commands = siteData.commands.filter(c => c.category !== name);
+                codes = codes.filter(c => c.category !== name);
                 siteData.categories = siteData.categories.filter(c => c.name !== name);
+
                 saveData();
+                saveCodes();
                 loadAllData();
                 showToast('✅ تم حذف القسم بنجاح', 'success');
             }
         }
 
-        // ----- إدارة الأوامر -----
+        // ============================================================
+        // إدارة الأوامر (CRUD)
+        // ============================================================
         function addCommand() {
             const command = document.getElementById('newCommand').value.trim();
             const meaning = document.getElementById('newMeaning').value.trim();
@@ -1157,12 +1374,7 @@
 
             if (!command || !meaning) { showToast('❌ الرجاء إدخال الأمر والمعنى', 'error'); return; }
 
-            siteData.commands.push({
-                category,
-                command,
-                meaning,
-                note: note || ''
-            });
+            siteData.commands.push({ category, command, meaning, note: note || '' });
             saveData();
             loadAllData();
             document.getElementById('newCommand').value = '';
@@ -1200,7 +1412,9 @@
             }
         }
 
-        // ----- إدارة القوانين -----
+        // ============================================================
+        // إدارة القوانين (CRUD)
+        // ============================================================
         function addRule() {
             const english = document.getElementById('newRuleEn').value.trim();
             const arabic = document.getElementById('newRuleAr').value.trim();
@@ -1240,7 +1454,9 @@
             }
         }
 
-        // ----- إدارة الانترو -----
+        // ============================================================
+        // إدارة الانترو (CRUD)
+        // ============================================================
         function addInterior() {
             const name = document.getElementById('newInteriorName').value.trim();
             const image = document.getElementById('newInteriorImage').value.trim();
@@ -1248,11 +1464,7 @@
 
             if (!name || !image) { showToast('❌ الرجاء إدخال اسم الانترو ورابط الصورة', 'error'); return; }
 
-            siteData.interiors.push({
-                name,
-                image,
-                desc: desc || `انترو ${name}`
-            });
+            siteData.interiors.push({ name, image, desc: desc || `انترو ${name}` });
             saveData();
             loadAllData();
             document.getElementById('newInteriorName').value = '';
@@ -1288,7 +1500,9 @@
             }
         }
 
-        // ----- إدارة الأكواد -----
+        // ============================================================
+        // إدارة الأكواد (CRUD)
+        // ============================================================
         function addCode() {
             const name = document.getElementById('newCodeName').value.trim();
             const type = document.getElementById('newCodeType').value;
@@ -1298,15 +1512,15 @@
 
             if (!name || !content) { showToast('❌ الرجاء إدخال اسم الكود والمحتوى', 'error'); return; }
 
-            customCodes.push({
-                id: Date.now(),
+            codes.push({
+                id: codes.length > 0 ? Math.max(...codes.map(c => c.id)) + 1 : 1,
                 name,
                 type,
                 category,
                 content,
                 desc: desc || `كود ${name}`
             });
-            saveCustomCodes();
+            saveCodes();
             loadAllData();
             document.getElementById('newCodeName').value = '';
             document.getElementById('newCodeContent').value = '';
@@ -1315,7 +1529,7 @@
         }
 
         function editCodeByIndex(index) {
-            const code = customCodes[index];
+            const code = codes[index];
             if (!code) return;
 
             const newName = prompt('✏️ تعديل اسم الكود:', code.name);
@@ -1328,7 +1542,7 @@
                 const newCategory = prompt('✏️ تعديل القسم:', code.category || '');
                 if (newCategory !== null) code.category = newCategory;
 
-                saveCustomCodes();
+                saveCodes();
                 loadAllData();
                 showToast('✅ تم تعديل الكود بنجاح', 'success');
             }
@@ -1336,14 +1550,16 @@
 
         function deleteCodeByIndex(index) {
             if (confirm(`⚠️ هل أنت متأكد من حذف هذا الكود؟`)) {
-                customCodes.splice(index, 1);
-                saveCustomCodes();
+                codes.splice(index, 1);
+                saveCodes();
                 loadAllData();
                 showToast('✅ تم حذف الكود بنجاح', 'success');
             }
         }
 
-        // ===== نسخ الكود =====
+        // ============================================================
+        // نسخ الكود
+        // ============================================================
         function copyCodeText(encodedContent) {
             const content = decodeURIComponent(encodedContent);
             navigator.clipboard.writeText(content).then(() => {
@@ -1361,13 +1577,18 @@
             });
         }
 
-        // ============================================
+        // ============================================================
         // تصدير واستيراد البيانات
-        // ============================================
+        // ============================================================
         function exportDataFile() {
             const allData = {
-                siteData: siteData,
-                customCodes: customCodes,
+                pages: pages,
+                categories: siteData.categories,
+                commands: siteData.commands,
+                rules: siteData.rules,
+                interiors: siteData.interiors,
+                codes: codes,
+                introCode: siteData.introCode || '',
                 exportedAt: new Date().toISOString()
             };
             const data = JSON.stringify(allData, null, 2);
@@ -1389,14 +1610,18 @@
             reader.onload = function(e) {
                 try {
                     const data = JSON.parse(e.target.result);
-                    if (data.siteData) {
-                        Object.assign(siteData, data.siteData);
-                        saveData();
-                    }
-                    if (data.customCodes) {
-                        customCodes = data.customCodes;
-                        saveCustomCodes();
-                    }
+
+                    if (data.pages) { pages = data.pages;
+                        savePages(); }
+                    if (data.categories) { siteData.categories = data.categories; }
+                    if (data.commands) { siteData.commands = data.commands; }
+                    if (data.rules) { siteData.rules = data.rules; }
+                    if (data.interiors) { siteData.interiors = data.interiors; }
+                    if (data.codes) { codes = data.codes;
+                        saveCodes(); }
+                    if (data.introCode !== undefined) { siteData.introCode = data.introCode; }
+
+                    saveData();
                     loadAllData();
                     showToast('✅ تم استيراد البيانات بنجاح', 'success');
                 } catch (err) {
@@ -1407,13 +1632,14 @@
             event.target.value = '';
         }
 
-        // ============================================
+        // ============================================================
         // إعادة ضبط وحذف البيانات
-        // ============================================
+        // ============================================================
         function resetData() {
             if (confirm('⚠️ هل أنت متأكد من إعادة ضبط البيانات إلى الإعدادات الافتراضية؟')) {
                 localStorage.removeItem('mtaData');
-                localStorage.removeItem('customCodes');
+                localStorage.removeItem('adminPages');
+                localStorage.removeItem('adminCodes');
                 location.reload();
             }
         }
@@ -1425,21 +1651,21 @@
                     siteData.rules = [];
                     siteData.interiors = [];
                     siteData.introCode = '';
-                    siteData.categories = [
-                        { id: 1, name: "عام", icon: "📂", desc: "القسم العام" }
-                    ];
-                    customCodes = [];
+                    siteData.categories = [{ id: 1, name: "عام", icon: "📂", pageId: 1, desc: "القسم العام" }];
+                    pages = getDefaultPages();
+                    codes = [];
                     saveData();
-                    saveCustomCodes();
+                    savePages();
+                    saveCodes();
                     loadAllData();
                     showToast('🗑️ تم حذف جميع البيانات', 'success');
                 }
             }
         }
 
-        // ============================================
+        // ============================================================
         // Toast
-        // ============================================
+        // ============================================================
         function showToast(message, type = 'success') {
             const toast = document.getElementById('toast');
             if (!toast) return;
@@ -1451,21 +1677,20 @@
             }, 3000);
         }
 
-        // ============================================
+        // ============================================================
         // تشغيل عند التحميل
-        // ============================================
+        // ============================================================
         document.addEventListener('DOMContentLoaded', function() {
             const pwd = document.getElementById('adminPassword');
             if (pwd) pwd.focus();
-            console.log('✅ لوحة الإدارة جاهزة!');
-            console.log('📊 عدد الأقسام:', siteData.categories.length);
+
+            console.log('✅ لوحة الإدارة الذكية V2');
+            console.log('📄 عدد الصفحات:', pages.length);
+            console.log('📂 عدد الأقسام:', siteData.categories.length);
             console.log('📋 عدد الأوامر:', siteData.commands.length);
-            console.log('📜 عدد القوانين:', siteData.rules.length);
-            console.log('🏠 عدد الانترو:', siteData.interiors.length);
             console.log('🔑 الرقم السري: 0000');
         });
 
-        // ===== السماح بدخول بـ Enter =====
         document.addEventListener('keydown', function(e) {
             if (e.key === 'Enter') {
                 const pwd = document.getElementById('adminPassword');
