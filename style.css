@@ -431,6 +431,167 @@ input::placeholder, textarea::placeholder {
   background: rgba(0, 255, 136, 0.1);
 }
 
+/* ============================================
+   تحسينات البحث الذكي - صور وأزرار نسخ
+   ============================================ */
+
+.search-intros-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(180px, 1fr));
+  gap: 1rem;
+  padding: 1rem;
+}
+
+.search-intro-card {
+  background: var(--bg-dark);
+  border: 1px solid var(--border);
+  border-radius: var(--radius-md);
+  overflow: hidden;
+  cursor: pointer;
+  transition: all 0.3s ease;
+}
+
+.search-intro-card:hover {
+  border-color: var(--primary);
+  transform: translateY(-3px);
+  box-shadow: var(--shadow-glow);
+}
+
+.search-intro-card img {
+  width: 100%;
+  height: 120px;
+  object-fit: cover;
+  display: block;
+  transition: transform 0.3s ease;
+}
+
+.search-intro-card:hover img {
+  transform: scale(1.05);
+}
+
+.search-intro-info {
+  padding: 0.75rem;
+}
+
+.search-intro-name {
+  color: var(--primary);
+  font-weight: 700;
+  font-size: 0.85rem;
+  margin-bottom: 0.25rem;
+}
+
+.search-intro-caption {
+  color: var(--text-secondary);
+  font-size: 0.8rem;
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+
+.search-item-header {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 0.75rem;
+  margin-bottom: 0.35rem;
+}
+
+.search-command {
+  font-family: 'Courier New', monospace;
+  color: var(--primary);
+  background: rgba(0, 255, 136, 0.1);
+  padding: 0.25rem 0.6rem;
+  border-radius: 5px;
+  font-size: 0.9rem;
+  font-weight: 700;
+}
+
+.search-rule-text {
+  color: var(--text-secondary);
+  font-size: 0.9rem;
+  flex: 1;
+}
+
+.btn-copy-small {
+  background: rgba(0, 255, 136, 0.1);
+  border: 1px solid var(--border);
+  color: var(--primary);
+  padding: 0.25rem 0.6rem;
+  border-radius: 5px;
+  font-size: 0.75rem;
+  cursor: pointer;
+  transition: all 0.2s ease;
+  white-space: nowrap;
+  font-weight: 600;
+}
+
+.btn-copy-small:hover {
+  background: var(--primary);
+  color: var(--bg-dark);
+  transform: scale(1.05);
+}
+
+/* أزرار النسخ في الشات */
+.btn-copy-chat {
+  background: rgba(0, 255, 136, 0.15);
+  border: 1px solid var(--border);
+  color: var(--primary);
+  padding: 0.2rem 0.5rem;
+  border-radius: 5px;
+  font-size: 0.8rem;
+  cursor: pointer;
+  transition: all 0.2s ease;
+  margin-right: 0.5rem;
+  float: left;
+}
+
+.chat-message.user .btn-copy-chat {
+  background: rgba(10, 14, 39, 0.3);
+  border-color: rgba(255, 255, 255, 0.2);
+  color: var(--bg-dark);
+}
+
+.btn-copy-chat:hover {
+  background: var(--primary);
+  color: var(--bg-dark);
+}
+
+.chat-message.user .btn-copy-chat:hover {
+  background: var(--bg-dark);
+  color: var(--primary);
+}
+
+.cmd-row {
+  position: relative;
+}
+
+.cmd-row .btn-copy-chat {
+  position: absolute;
+  left: 0.5rem;
+  top: 50%;
+  transform: translateY(-50%);
+}
+
+.rule-item {
+  position: relative;
+  padding-left: 3rem !important;
+}
+
+.rule-item .btn-copy-chat {
+  position: absolute;
+  left: 0.5rem;
+  top: 50%;
+  transform: translateY(-50%);
+}
+
+/* تحسينات إضافية */
+.search-no-results {
+  padding: 2rem;
+  text-align: center;
+  color: var(--text-muted);
+  font-size: 1rem;
+}
+
 /* ===== صفحة الأوامر ===== */
 .search-box {
   margin-bottom: 2rem;
@@ -1723,6 +1884,38 @@ input::placeholder, textarea::placeholder {
     width: 35px;
     height: 35px;
     font-size: 1.2rem;
+  }
+
+  .search-intros-grid {
+    grid-template-columns: repeat(auto-fill, minmax(140px, 1fr));
+    gap: 0.75rem;
+    padding: 0.75rem;
+  }
+  
+  .search-intro-card img {
+    height: 100px;
+  }
+  
+  .search-item-header {
+    flex-direction: column;
+    align-items: flex-start;
+    gap: 0.5rem;
+  }
+  
+  .btn-copy-small {
+    align-self: flex-start;
+  }
+  
+  .cmd-row .btn-copy-chat,
+  .rule-item .btn-copy-chat {
+    position: static;
+    transform: none;
+    margin-top: 0.5rem;
+    float: none;
+  }
+  
+  .rule-item {
+    padding-left: 0.75rem !important;
   }
 
   /* Lightbox Responsive */
