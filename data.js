@@ -862,7 +862,7 @@ class DataManager {
     return false;
   }
 
-  // ===== البحث الذكي الشامل - مصحّح =====
+  // ===== البحث الذكي الشامل - مصحّح تماماً =====
   search(query) {
     const results = [];
     const q = query.toLowerCase().trim();
@@ -890,114 +890,118 @@ class DataManager {
       });
     });
 
-    // البحث في الانترو - شامل
+    // البحث في الانترو
     this.data.intros.images.forEach(intro => {
       const nameMatch = intro.name.toLowerCase().includes(q);
       const captionMatch = intro.caption.toLowerCase().includes(q);
       
-      // إذا كان البحث عن "انترو" بشكل عام، اعرض كل الانترو
-      if (q === 'انترو' || q.includes('انترو') || q.includes('interior')) {
-        results.push({ type: 'intro', section: 'الانترو', data: intro, score: 15 });
-      } else if (nameMatch || captionMatch) {
-        results.push({ type: 'intro', section: 'الانترو', data: intro, score: nameMatch ? 12 : 8 });
+      if (q === 'انترو' || q.includes('انترو') || q.includes('interior') || nameMatch || captionMatch) {
+        results.push({ type: 'intro', section: 'الانترو', data: intro, score: nameMatch ? 15 : 10 });
       }
     });
 
+    // ترتيب النتائج
     results.sort((a, b) => b.score - a.score);
     return results;
   }
 
-  // ===== الرد التلقائي الذكي مع تنسيق HTML - مصحّح =====
+  // ===== الرد التلقائي الذكي - مصحّح تماماً =====
   getAutoReply(message) {
     const msg = message.toLowerCase().trim();
     
     if (!msg) {
-      return `<p>مرحباً! 👋 كيف يمكنني مساعدتك؟</p><p>يمكنك سؤالي عن:</p><p>• الأوامر (اكتب اسم القسم)</p><p>• القوانين (اكتب اسم القانون)</p><p>• الانترو (اكتب اسم الانترو)</p><p>• أي أمر معين</p>`;
+      return `<p>مرحباً! 👋 كيف يمكنني مساعدتك؟</p>`;
     }
 
-    // البحث الذكي في كل البيانات أولاً
+    // البحث في كل البيانات
     const searchResults = this.search(msg);
     
-    // إذا وجدت نتائج، اعرضها جميعاً (أوامر + قوانين + انترو)
     if (searchResults.length > 0) {
-      const commandsBySection = {};
-      const rulesBySection = {};
-      const intros = [];
-      let totalCommands = 0;
-      let totalRules = 0;
+      // تجميع النتائج بدون تكرار
+      const commandsMap = new Map();
+      const rulesMap = new Map();
+      const introsMap = new Map();
 
       searchResults.forEach(result => {
         if (result.type === 'command') {
-          if (!commandsBySection[result.section]) commandsBySection[result.section] = [];
-          commandsBySection[result.section].push(result.data);
-          totalCommands++;
+          if (!commandsMap.has(result.section)) {
+            commandsMap.set(result.section, []);
+          }
+          // تجنب تكرار الأوامر
+          const exists = commandsMap.get(result.section).some(c => c.command === result.data.command);
+          if (!exists) {
+            commandsMap.get(result.section).push(result.data);
+          }
         } else if (result.type === 'rule') {
-          if (!rulesBySection[result.section]) rulesBySection[result.section] = [];
-          rulesBySection[result.section].push(result.data);
-          totalRules++;
+          if (!rulesMap.has(result.section)) {
+            rulesMap.set(result.section, []);
+          }
+          const exists = rulesMap.get(result.section).some(r => r === result.data);
+          if (!exists) {
+            rulesMap.get(result.section).push(result.data);
+          }
         } else if (result.type === 'intro') {
-          // تجنب التكرار
-          if (!intros.find(i => i.id === result.data.id)) {
-            intros.push(result.data);
+          if (!introsMap.has(result.data.id)) {
+            introsMap.set(result.data.id, result.data);
           }
         }
       });
 
       let response = '';
-      const maxPerSection = 6;
+      const intros = Array.from(introsMap.values());
+      const totalIntros = intros.length;
+      const totalCommands = Array.from(commandsMap.values()).reduce((sum, arr) => sum + arr.length, 0);
+      const totalRules = Array.from(rulesMap.values()).reduce((sum, arr) => sum + arr.length, 0);
 
-      // عرض الانترو أولاً إذا وجدت
-      if (intros.length > 0) {
-        response += `<p><strong>🎬 الانترو المتاح</strong> <span class="count-badge">${intros.length}</span></p>`;
-        
-        // عرض الانترو كقائمة منسقة
-        intros.slice(0, 10).forEach(intro => {
+      // عرض الانترو
+      if (totalIntros > 0) {
+        response += `<p><strong>🎬 الانترو المتاح</strong> <span class="count-badge">${totalIntros}</span></p>`;
+        intros.slice(0, 8).forEach(intro => {
           response += `<div class="cmd-row"><span class="cmd-name">${intro.name}</span><span class="cmd-desc">${intro.caption}</span></div>`;
         });
-        
-        if (intros.length > 10) {
-          response += `<p style="color:var(--text-muted);font-size:0.8rem;margin-top:0.5rem">... و ${intros.length - 10} انترو أخرى. <a href="#intros" onclick="loadPage('intros')" style="color:var(--primary);text-decoration:underline">عرض الكل في صفحة الانترو</a></p>`;
+        if (totalIntros > 8) {
+          response += `<p style="color:var(--text-muted);font-size:0.8rem;margin-top:0.5rem">... و ${totalIntros - 8} انترو أخرى</p>`;
         }
         
-        // عرض أوامر الانترو أيضاً
-        const introCommands = this.data.commands.sections.find(s => s.id === 'cmd-interiors');
-        if (introCommands && introCommands.commands.length > 0) {
-          response += `<p style="margin-top:1rem"><strong>⌨️ أوامر الانترو</strong> <span class="count-badge">${introCommands.commands.length}</span></p>`;
-          introCommands.commands.slice(0, 5).forEach(cmd => {
+        // عرض أوامر الانترو
+        const introSection = this.data.commands.sections.find(s => s.id === 'cmd-interiors');
+        if (introSection && introSection.commands.length > 0) {
+          response += `<p style="margin-top:1rem"><strong>⌨️ أوامر الانترو</strong> <span class="count-badge">${introSection.commands.length}</span></p>`;
+          introSection.commands.slice(0, 5).forEach(cmd => {
             response += `<div class="cmd-row"><span class="cmd-name">${cmd.command}</span><span class="cmd-desc">${cmd.description}</span></div>`;
           });
         }
       }
 
-      // عرض الأوامر (غير أوامر الانترو لتجنب التكرار)
+      // عرض الأوامر الأخرى
       if (totalCommands > 0) {
-        const nonIntroSections = Object.keys(commandsBySection).filter(s => s !== 'أوامر الانترو (Interiors)');
+        const sections = Array.from(commandsMap.entries());
+        const nonIntroSections = sections.filter(([name]) => !name.includes('Interiors'));
         
-        if (nonIntroSections.length > 0) {
-          response += `<p style="margin-top:0.8rem"><strong>⌨️ أوامر أخرى</strong> <span class="count-badge">${totalCommands}</span></p>`;
-          const sectionsToShow = nonIntroSections.slice(0, 3);
-          
-          sectionsToShow.forEach(sectionTitle => {
-            const cmds = commandsBySection[sectionTitle].slice(0, maxPerSection);
+        if (nonIntroSections.length > 0 && totalIntros === 0) {
+          response += `<p style="margin-top:0.8rem"><strong>⌨️ الأوامر</strong> <span class="count-badge">${totalCommands}</span></p>`;
+          nonIntroSections.slice(0, 3).forEach(([sectionTitle, cmds]) => {
             response += `<div class="section-title">📁 ${sectionTitle}</div>`;
-            cmds.forEach(cmd => {
+            cmds.slice(0, 5).forEach(cmd => {
               response += `<div class="cmd-row"><span class="cmd-name">${cmd.command}</span><span class="cmd-desc">${cmd.description}</span></div>`;
             });
-            if (commandsBySection[sectionTitle].length > maxPerSection) {
-              response += `<p style="color:var(--text-muted);font-size:0.8rem;margin-top:0.3rem">... و ${commandsBySection[sectionTitle].length - maxPerSection} أوامر أخرى</p>`;
-            }
+          });
+        } else if (nonIntroSections.length > 0) {
+          response += `<p style="margin-top:0.8rem"><strong>⌨️ أوامر ذات صلة</strong> <span class="count-badge">${totalCommands}</span></p>`;
+          nonIntroSections.slice(0, 2).forEach(([sectionTitle, cmds]) => {
+            cmds.slice(0, 3).forEach(cmd => {
+              response += `<div class="cmd-row"><span class="cmd-name">${cmd.command}</span><span class="cmd-desc">${cmd.description}</span></div>`;
+            });
           });
         }
       }
 
       // عرض القوانين
       if (totalRules > 0) {
-        response += `<p style="margin-top:0.8rem"><strong>📜 قوانين</strong> <span class="count-badge">${totalRules}</span></p>`;
-        const sections = Object.keys(rulesBySection);
-        sections.forEach(sectionTitle => {
-          const rules = rulesBySection[sectionTitle].slice(0, maxPerSection);
-          response += `<div class="section-title">📁 ${sectionTitle}</div>`;
-          rules.forEach(rule => {
+        response += `<p style="margin-top:0.8rem"><strong>📜 القوانين</strong> <span class="count-badge">${totalRules}</span></p>`;
+        const sections = Array.from(rulesMap.entries());
+        sections.slice(0, 2).forEach(([sectionTitle, rules]) => {
+          rules.slice(0, 5).forEach(rule => {
             const match = rule.match(/^([A-Z0-9\-]+)\s*=\s*(.+)$/);
             if (match) {
               response += `<div class="rule-item"><span class="rule-code">${match[1]}</span> = ${match[2]}</div>`;
@@ -1008,17 +1012,10 @@ class DataManager {
         });
       }
 
-      // ملاحظة إذا كانت النتائج كثيرة
-      const totalResults = totalCommands + totalRules + intros.length;
-      if (totalResults > 15) {
-        response += `<p style="margin-top:0.8rem;color:var(--text-muted);font-size:0.85rem">💡 هناك ${totalResults - 15} نتائج أخرى. استخدم البحث في الموقع لعرض الكل.</p>`;
-      }
-
       return response;
     }
 
-    // لم يجد شيئاً
-    return `<p>عذراً، لم أجد معلومات عن هذا الموضوع. 🤔</p><p>جرب:</p><p>• كتابة اسم قسم (سيارات، شات، فاكشن...)</p><p>• كتابة اسم أمر (Goto, Fixveh...)</p><p>• سؤال عن قانون (DM, VDM...)</p><p>• كتابة "انترو" لرؤية جميع الانترو</p>`;
+    return `<p>عذراً، لم أجد معلومات. 🤔</p><p>جرب:</p><p>• كتابة "انترو"</p><p>• كتابة اسم أمر (Goto, Fixveh)</p><p>• سؤال عن قانون (DM, VDM)</p>`;
   }
 }
 
