@@ -114,7 +114,7 @@ function renderHomePage() {
 }
 
 // ============================================
-// البحث الذكي في الصفحة الرئيسية - محسّن
+// دالة تهيئة البحث الذكي
 // ============================================
 
 function initSmartSearch() {
@@ -135,82 +135,65 @@ function initSmartSearch() {
     const results = dataManager.search(query);
     
     if (results.length === 0) {
-      resultsContainer.innerHTML = '<div class="search-no-results">😕 لا توجد نتائج</div>';
+      resultsContainer.innerHTML = '<div class="search-no-results">لا توجد نتائج</div>';
       resultsContainer.style.display = 'block';
       return;
     }
     
     // تجميع النتائج حسب النوع
-    const commands = results.filter(r => r.type === 'command').slice(0, 6);
-    const rules = results.filter(r => r.type === 'rule').slice(0, 6);
-    const intros = results.filter(r => r.type === 'intro').slice(0, 6);
+    const commands = results.filter(r => r.type === 'command').slice(0, 5);
+    const rules = results.filter(r => r.type === 'rule').slice(0, 5);
+    const intros = results.filter(r => r.type === 'intro').slice(0, 5);
     
     let html = '';
     
-    // عرض الانترو مع صور مصغرة
+    // عرض الانترو
     if (intros.length > 0) {
-      html += `<div class="search-section"><div class="search-section-title">🎬 الانترو (${intros.length})</div>`;
-      html += `<div class="search-intros-grid">`;
+      html += `<div class="search-section"><div class="search-section-title">🎬 الانترو</div>`;
       intros.forEach(intro => {
-        html += `
-          <div class="search-intro-card" onclick="openLightboxFromSearch('${intro.url}', '${intro.caption.replace(/'/g, "\\'")}')">
-            <img src="${intro.url}" alt="${intro.caption}" loading="lazy">
-            <div class="search-intro-info">
-              <div class="search-intro-name">${intro.name}</div>
-              <div class="search-intro-caption">${intro.caption}</div>
-            </div>
+        html += `<div class="search-item" onclick="loadPage('intros')">
+          <div class="search-item-icon"></div>
+          <div class="search-item-content">
+            <div class="search-item-name">${intro.name}</div>
+            <div class="search-item-desc">${intro.caption}</div>
           </div>
-        `;
-      });
-      html += `</div></div>`;
-    }
-    
-    // عرض الأوامر مع زر النسخ
-    if (commands.length > 0) {
-      html += `<div class="search-section"><div class="search-section-title">⌨️ الأوامر (${commands.length})</div>`;
-      commands.forEach(cmd => {
-        html += `
-          <div class="search-item">
-            <div class="search-item-icon">⌨️</div>
-            <div class="search-item-content">
-              <div class="search-item-header">
-                <code class="search-command">${cmd.data.command}</code>
-                <button class="btn-copy-small" onclick="copyFromSearch('${cmd.data.command.replace(/'/g, "\\'")}', this)" title="نسخ الأمر">
-                  📋 نسخ
-                </button>
-              </div>
-              <div class="search-item-desc">${cmd.data.description}</div>
-            </div>
-          </div>
-        `;
+        </div>`;
       });
       html += `</div>`;
     }
     
-    // عرض القوانين مع زر النسخ
-    if (rules.length > 0) {
-      html += `<div class="search-section"><div class="search-section-title">📜 القوانين (${rules.length})</div>`;
-      rules.forEach(rule => {
-        html += `
-          <div class="search-item">
-            <div class="search-item-icon">📜</div>
-            <div class="search-item-content">
-              <div class="search-item-header">
-                <div class="search-rule-text">${rule.data}</div>
-                <button class="btn-copy-small" onclick="copyFromSearch('${rule.data.replace(/'/g, "\\'")}', this)" title="نسخ القانون">
-                  📋 نسخ
-                </button>
-              </div>
-            </div>
+    // عرض الأوامر
+    if (commands.length > 0) {
+      html += `<div class="search-section"><div class="search-section-title">⌨️ الأوامر</div>`;
+      commands.forEach(cmd => {
+        html += `<div class="search-item">
+          <div class="search-item-icon">⌨️</div>
+          <div class="search-item-content">
+            <div class="search-item-name"><code>${cmd.data.command}</code></div>
+            <div class="search-item-desc">${cmd.data.description}</div>
           </div>
-        `;
+        </div>`;
+      });
+      html += `</div>`;
+    }
+    
+    // عرض القوانين
+    if (rules.length > 0) {
+      html += `<div class="search-section"><div class="search-section-title">📜 القوانين</div>`;
+      rules.forEach(rule => {
+        html += `<div class="search-item">
+          <div class="search-item-icon">📜</div>
+          <div class="search-item-content">
+            <div class="search-item-desc">${rule.data}</div>
+          </div>
+        </div>`;
       });
       html += `</div>`;
     }
     
     // زر عرض الكل
-    if (results.length > 18) {
-      html += `<div class="search-show-all" onclick="showAllResults('${query}')">عرض جميع النتائج (${results.length}) ←</div>`;
+    if (results.length > 15) {
+      html += `<div class="search-show-all" onclick="showAllResults('${query}')">عرض جميع النتائج (${results.length}) →</div>`;
     }
     
     resultsContainer.innerHTML = html;
@@ -238,65 +221,6 @@ function showAllResults(query) {
       searchCommands(query);
     }
   }, 100);
-}
-
-// ============================================
-// فتح Lightbox من البحث
-// ============================================
-
-function openLightboxFromSearch(url, caption) {
-  // إيجاد الانترو المناسب
-  const intro = dataManager.data.intros.images.find(i => i.url === url);
-  if (intro) {
-    openLightbox(url, caption);
-  }
-}
-
-// ============================================
-// نسخ من البحث
-// ============================================
-
-function copyFromSearch(text, button) {
-  if (navigator.clipboard && navigator.clipboard.writeText) {
-    navigator.clipboard.writeText(text).then(() => {
-      showCopyFeedback(button);
-    }).catch(() => {
-      fallbackCopySearch(text, button);
-    });
-  } else {
-    fallbackCopySearch(text, button);
-  }
-}
-
-function fallbackCopySearch(text, button) {
-  const textarea = document.createElement('textarea');
-  textarea.value = text;
-  textarea.style.position = 'fixed';
-  textarea.style.opacity = '0';
-  document.body.appendChild(textarea);
-  textarea.select();
-  
-  try {
-    document.execCommand('copy');
-    showCopyFeedback(button);
-  } catch (err) {
-    console.error('فشل النسخ:', err);
-  }
-  
-  document.body.removeChild(textarea);
-}
-
-function showCopyFeedback(button) {
-  const originalText = button.innerHTML;
-  button.innerHTML = '✅ تم النسخ';
-  button.style.background = 'var(--primary)';
-  button.style.color = 'var(--bg-dark)';
-  
-  setTimeout(() => {
-    button.innerHTML = originalText;
-    button.style.background = '';
-    button.style.color = '';
-  }, 2000);
 }
 
 // ============================================
@@ -724,6 +648,10 @@ function sendChatPageMessage() {
   }, 700);
 }
 
+// ============================================
+// دالة addChatPageMessage المحدثة مع أزرار النسخ
+// ============================================
+
 function addChatPageMessage(text, sender) {
   const messagesContainer = document.getElementById('chat-page-messages');
   if (!messagesContainer) return;
@@ -732,11 +660,26 @@ function addChatPageMessage(text, sender) {
   messageDiv.className = `chat-message ${sender}`;
   
   if (sender === 'bot') {
+    // معالجة النص للبحث عن أوامر وقوانين وإضافة أزرار نسخ
+    let processedText = text;
+    
+    // البحث عن الأوامر في النص وإضافة أزرار نسخ
+    processedText = processedText.replace(
+      /<div class="cmd-row"><span class="cmd-name">([^<]+)<\/span><span class="cmd-desc">([^<]+)<\/span><\/div>/g,
+      '<div class="cmd-row"><span class="cmd-name">$1</span><span class="cmd-desc">$2</span><button class="btn-copy-chat" onclick="copyFromChat(\'$1\', this)">📋</button></div>'
+    );
+    
+    // البحث عن القوانين في النص وإضافة أزرار نسخ
+    processedText = processedText.replace(
+      /<div class="rule-item"><span class="rule-code">([^<]+)<\/span> = ([^<]+)<\/div>/g,
+      '<div class="rule-item"><span class="rule-code">$1</span> = $2<button class="btn-copy-chat" onclick="copyFromChat(\'$1 = $2\', this)">📋</button></div>'
+    );
+    
     messageDiv.innerHTML = `
       <div class="msg-avatar">🤖</div>
       <div class="msg-bubble">
         <div class="msg-header">المساعد الآلي</div>
-        <div class="msg-text">${text}</div>
+        <div class="msg-text">${processedText}</div>
       </div>
     `;
   } else {
@@ -751,6 +694,56 @@ function addChatPageMessage(text, sender) {
   
   messagesContainer.appendChild(messageDiv);
   messagesContainer.scrollTop = messagesContainer.scrollHeight;
+}
+
+// ============================================
+// نسخ من الشات
+// ============================================
+
+function copyFromChat(text, button) {
+  // إزالة أي HTML من النص
+  const cleanText = text.replace(/<[^>]*>/g, '');
+  
+  if (navigator.clipboard && navigator.clipboard.writeText) {
+    navigator.clipboard.writeText(cleanText).then(() => {
+      showCopyFeedbackChat(button);
+    }).catch(() => {
+      fallbackCopyChat(cleanText, button);
+    });
+  } else {
+    fallbackCopyChat(cleanText, button);
+  }
+}
+
+function fallbackCopyChat(text, button) {
+  const textarea = document.createElement('textarea');
+  textarea.value = text;
+  textarea.style.position = 'fixed';
+  textarea.style.opacity = '0';
+  document.body.appendChild(textarea);
+  textarea.select();
+  
+  try {
+    document.execCommand('copy');
+    showCopyFeedbackChat(button);
+  } catch (err) {
+    console.error('فشل النسخ:', err);
+  }
+  
+  document.body.removeChild(textarea);
+}
+
+function showCopyFeedbackChat(button) {
+  const originalHTML = button.innerHTML;
+  button.innerHTML = '✅';
+  button.style.background = 'var(--primary)';
+  button.style.color = 'var(--bg-dark)';
+  
+  setTimeout(() => {
+    button.innerHTML = originalHTML;
+    button.style.background = '';
+    button.style.color = '';
+  }, 2000);
 }
 
 // ============================================
