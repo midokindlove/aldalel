@@ -862,7 +862,7 @@ class DataManager {
     return false;
   }
 
-  // ===== البحث الذكي الشامل =====
+  // ===== البحث الذكي الشامل - مصحّح =====
   search(query) {
     const results = [];
     const q = query.toLowerCase().trim();
@@ -890,11 +890,16 @@ class DataManager {
       });
     });
 
-    // البحث في الانترو
+    // البحث في الانترو - شامل
     this.data.intros.images.forEach(intro => {
-      if (intro.name.toLowerCase().includes(q) || 
-          intro.caption.toLowerCase().includes(q)) {
-        results.push({ type: 'intro', section: 'الانترو', data: intro, score: 10 });
+      const nameMatch = intro.name.toLowerCase().includes(q);
+      const captionMatch = intro.caption.toLowerCase().includes(q);
+      
+      // إذا كان البحث عن "انترو" بشكل عام، اعرض كل الانترو
+      if (q === 'انترو' || q.includes('انترو') || q.includes('interior')) {
+        results.push({ type: 'intro', section: 'الانترو', data: intro, score: 15 });
+      } else if (nameMatch || captionMatch) {
+        results.push({ type: 'intro', section: 'الانترو', data: intro, score: nameMatch ? 12 : 8 });
       }
     });
 
@@ -902,7 +907,7 @@ class DataManager {
     return results;
   }
 
-  // ===== الرد التلقائي الذكي مع تنسيق HTML =====
+  // ===== الرد التلقائي الذكي مع تنسيق HTML - مصحّح =====
   getAutoReply(message) {
     const msg = message.toLowerCase().trim();
     
@@ -931,7 +936,10 @@ class DataManager {
           rulesBySection[result.section].push(result.data);
           totalRules++;
         } else if (result.type === 'intro') {
-          intros.push(result.data);
+          // تجنب التكرار
+          if (!intros.find(i => i.id === result.data.id)) {
+            intros.push(result.data);
+          }
         }
       });
 
@@ -941,30 +949,45 @@ class DataManager {
       // عرض الانترو أولاً إذا وجدت
       if (intros.length > 0) {
         response += `<p><strong>🎬 الانترو المتاح</strong> <span class="count-badge">${intros.length}</span></p>`;
-        intros.slice(0, 6).forEach(intro => {
+        
+        // عرض الانترو كقائمة منسقة
+        intros.slice(0, 10).forEach(intro => {
           response += `<div class="cmd-row"><span class="cmd-name">${intro.name}</span><span class="cmd-desc">${intro.caption}</span></div>`;
         });
-        if (intros.length > 6) {
-          response += `<p style="color:var(--text-muted);font-size:0.8rem;margin-top:0.3rem">... و ${intros.length - 6} انترو أخرى. <a href="#intros" style="color:var(--primary);text-decoration:underline">عرض الكل</a></p>`;
+        
+        if (intros.length > 10) {
+          response += `<p style="color:var(--text-muted);font-size:0.8rem;margin-top:0.5rem">... و ${intros.length - 10} انترو أخرى. <a href="#intros" onclick="loadPage('intros')" style="color:var(--primary);text-decoration:underline">عرض الكل في صفحة الانترو</a></p>`;
+        }
+        
+        // عرض أوامر الانترو أيضاً
+        const introCommands = this.data.commands.sections.find(s => s.id === 'cmd-interiors');
+        if (introCommands && introCommands.commands.length > 0) {
+          response += `<p style="margin-top:1rem"><strong>⌨️ أوامر الانترو</strong> <span class="count-badge">${introCommands.commands.length}</span></p>`;
+          introCommands.commands.slice(0, 5).forEach(cmd => {
+            response += `<div class="cmd-row"><span class="cmd-name">${cmd.command}</span><span class="cmd-desc">${cmd.description}</span></div>`;
+          });
         }
       }
 
-      // عرض الأوامر
+      // عرض الأوامر (غير أوامر الانترو لتجنب التكرار)
       if (totalCommands > 0) {
-        response += `<p style="margin-top:0.8rem"><strong>⌨️ أوامر</strong> <span class="count-badge">${totalCommands}</span></p>`;
-        const sections = Object.keys(commandsBySection);
-        const sectionsToShow = sections.slice(0, 3);
+        const nonIntroSections = Object.keys(commandsBySection).filter(s => s !== 'أوامر الانترو (Interiors)');
         
-        sectionsToShow.forEach(sectionTitle => {
-          const cmds = commandsBySection[sectionTitle].slice(0, maxPerSection);
-          response += `<div class="section-title">📁 ${sectionTitle}</div>`;
-          cmds.forEach(cmd => {
-            response += `<div class="cmd-row"><span class="cmd-name">${cmd.command}</span><span class="cmd-desc">${cmd.description}</span></div>`;
+        if (nonIntroSections.length > 0) {
+          response += `<p style="margin-top:0.8rem"><strong>⌨️ أوامر أخرى</strong> <span class="count-badge">${totalCommands}</span></p>`;
+          const sectionsToShow = nonIntroSections.slice(0, 3);
+          
+          sectionsToShow.forEach(sectionTitle => {
+            const cmds = commandsBySection[sectionTitle].slice(0, maxPerSection);
+            response += `<div class="section-title">📁 ${sectionTitle}</div>`;
+            cmds.forEach(cmd => {
+              response += `<div class="cmd-row"><span class="cmd-name">${cmd.command}</span><span class="cmd-desc">${cmd.description}</span></div>`;
+            });
+            if (commandsBySection[sectionTitle].length > maxPerSection) {
+              response += `<p style="color:var(--text-muted);font-size:0.8rem;margin-top:0.3rem">... و ${commandsBySection[sectionTitle].length - maxPerSection} أوامر أخرى</p>`;
+            }
           });
-          if (commandsBySection[sectionTitle].length > maxPerSection) {
-            response += `<p style="color:var(--text-muted);font-size:0.8rem;margin-top:0.3rem">... و ${commandsBySection[sectionTitle].length - maxPerSection} أوامر أخرى</p>`;
-          }
-        });
+        }
       }
 
       // عرض القوانين
@@ -987,23 +1010,15 @@ class DataManager {
 
       // ملاحظة إذا كانت النتائج كثيرة
       const totalResults = totalCommands + totalRules + intros.length;
-      if (totalResults > 10) {
-        response += `<p style="margin-top:0.8rem;color:var(--text-muted);font-size:0.85rem">💡 هناك ${totalResults - 10} نتائج أخرى. استخدم البحث في الموقع لعرض الكل.</p>`;
+      if (totalResults > 15) {
+        response += `<p style="margin-top:0.8rem;color:var(--text-muted);font-size:0.85rem">💡 هناك ${totalResults - 15} نتائج أخرى. استخدم البحث في الموقع لعرض الكل.</p>`;
       }
 
       return response;
     }
 
-    // ثانياً: البحث عن تطابق في الردود المخصصة (فقط إذا لم توجد نتائج من البحث)
-    for (let autoReply of this.data.autoReplies) {
-      for (let keyword of autoReply.keywords) {
-        const kw = keyword.toLowerCase();
-        if (msg === kw || msg.includes(kw)) return autoReply.reply;
-      }
-    }
-
     // لم يجد شيئاً
-    return `<p>عذراً، لم أجد معلومات عن هذا الموضوع. 🤔</p><p>جرب:</p><p>• كتابة اسم قسم (سيارات، شات، فاكشن...)</p><p>• كتابة اسم أمر (Goto, Fixveh...)</p><p>• سؤال عن قانون (DM, VDM...)</p><p>• كتابة اسم انترو (قصر، فيلا...)</p>`;
+    return `<p>عذراً، لم أجد معلومات عن هذا الموضوع. 🤔</p><p>جرب:</p><p>• كتابة اسم قسم (سيارات، شات، فاكشن...)</p><p>• كتابة اسم أمر (Goto, Fixveh...)</p><p>• سؤال عن قانون (DM, VDM...)</p><p>• كتابة "انترو" لرؤية جميع الانترو</p>`;
   }
 }
 
